@@ -1,0 +1,352 @@
+body{
+   margin: 0;
+   background-color: rgb(250, 250, 250);
+   display: flex;
+   flex-direction: column;
+}
+
+header{
+   display: flex;
+   flex-direction: column;
+   background: #0a386c;
+   padding: 10px 10px 10px 10px;
+}
+.headerTopPart{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+}
+.webTitleText{
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 750;
+   font-style: normal;
+   color: rgb(51, 140, 242);
+}
+
+.leftSideHeader{
+   display: flex;
+   flex-direction: row;
+}
+#logo img{
+   width: 80px;
+   height: 80px;
+}
+nav{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   padding: 0px;
+   align-items: center;
+   width: 50%;
+}
+nav button{
+   background-color: transparent;
+   color: white;
+   font-size: 1rem;
+   border: 0;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 300;
+   font-style: normal;
+      transition: color 0.2s ease, transform 0.2s ease;
+
+}
+nav button:hover{
+   color: rgb(200, 200, 200);
+   transform: translateY(-2px);
+   cursor: pointer;
+}
+nav a{
+   color: rgb(84, 83, 83);
+   font-size: 1rem;
+   border: 0;
+   text-decoration: none;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 500;
+   font-style: normal;
+   background-color: white;
+   border-radius: 30px;
+   padding: 10px 30px 10px 30px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+}
+nav a:hover{
+   background-color: rgb(235, 235, 235);
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   transform: translateY(-2px);
+   cursor: pointer;
+}
+nav a.active{
+   color: white;
+   font-weight: 600;
+   background-color: rgb(37, 83, 173);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.midPart{
+   display: flex;
+   flex-direction: column;
+   background: white;
+   justify-content: center;
+   align-items: center;
+   padding: 65px 0px 65px 0px;
+}
+
+.loginBox{
+   background-color: #0a386c;
+   border-radius: 20px;
+   padding: 20px 20px 30px 20px;
+}
+.loginBoxLogoTitle{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+.loginBoxLogoTitleBackToTrack{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+.loginBoxLogoTitleBackToTrack img{
+   width: 50px;
+   height: 50px;
+}
+.loginBoxLogoTitleBackToTrack h1{
+   font-size: 1.3rem;
+   margin: 0px;
+}
+.loginBoxLogoTitle img{
+   width: 50px;
+   height: 50px;
+}  
+
+
+
+.loginText{
+   display: flex;
+   flex-direction: column;
+   padding: 0px 30px 0px 30px;
+   margin-top: 10px;
+}
+.loginText h1{
+   margin: 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 1000;
+   font-style: normal;
+   color: white;
+}
+.loginText p{
+   margin: 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 100;
+   font-style: normal;
+   color: white;
+   font-size: 0.7rem;
+   opacity: 0.7;
+}
+
+
+.inputPart{
+   display: flex;
+   flex-direction: column;
+   padding: 0px 30px 0px 30px;
+   margin-top: 10px;
+}
+.inputPart p{
+   margin: 20px 0px 10px 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 100;
+   font-style: normal;
+   color: white;
+   font-size: 0.8rem;
+}
+.inputPart input{
+   height: 30px;
+   border-radius: 10px;
+   border: 2px solid #0a386c;
+}
+.keepLogIn{
+   display: flex;
+   flex-direction: row;
+   padding: 10px 30px 0px 30px;
+}
+.keepLogIn p{
+   margin: 0;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 100;
+   font-style: normal;
+   color: white;
+   font-size: 0.8rem;
+}
+
+.signInBtn{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   padding: 10px 30px 0px 30px;
+   margin-top: 40px;
+}
+.signInBtn button{
+   height: 40px;
+   width: 100%;
+   border-radius: 10px;
+   border: 1px solid #0a386c;;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+footer{
+   width: 100%;
+   height: auto;
+   background-color: #0a386c;
+   padding: 10px 0px 10px 0px;
+   display: flex;
+   flex-direction: column;
+}
+.footerTopPart{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   padding: 0px 30px 0px 70px;
+}
+.footerLogoTitle{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+}
+.footerLogoTitle h1{
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 750;
+   font-style: normal;
+   color: rgb(51, 140, 242);
+   margin: 0px 0px 0px 0px;
+}
+.footerLogoTitle p{
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 400;
+   font-style: normal;
+   color: white;
+   margin: 0;
+
+}
+.footerLogoTitle img{
+   width: 80px;
+   height: 80px;
+}
+.footerNav{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   gap: 100px;
+}
+.footerNavLinks{
+   display: flex;
+   flex-direction: column;
+}
+.footerNavLinks h1{
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 400;
+   font-size: 1rem;
+   font-style: normal;
+   color: white;
+   margin: 0px 0px 10px 0px;
+}
+.footerNavLinks a{
+   text-decoration: none;
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 200;
+   font-size: 0.9rem;
+   font-style: normal;
+   color: white;
+   margin-top: 10px;
+      transition: transform 0.2s ease, color 0.2s ease;
+
+}
+.footerNavLinks a:hover{
+   color: rgb(180, 180, 180);
+   transform: scale(1.03);
+   cursor: pointer;
+}
+.footerBigLogo img{
+   margin-top: 20px;
+   width: 110px;
+   height: 110px;
+}
+.footerBottomPart{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.footerBottomPart p{
+   font-size: 0.9rem;
+   font-style: normal;
+   color: white;
+   margin: 20px 0px 0px 0px;
+}
