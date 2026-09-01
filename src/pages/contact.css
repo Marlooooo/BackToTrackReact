@@ -1,0 +1,142 @@
+.mainContentContactUs{
+   padding: 70px 140px 70px 140px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+}
+.mainContentContactUsLeft{
+   display: flex;
+   flex-direction: column;
+}
+.mainContentContactUsLeft h4{
+   font-family: "Poppins", sans-serif;
+   color: #0a386c;
+   font-weight: 900;
+   font-style: normal;
+   font-size: 1.3rem;
+   margin: 0px 0px 5px 0px;
+}
+.mainContentContactUsLeft h1{
+   font-family: "Poppins", sans-serif;
+   font-weight: 900;
+   font-style: normal;
+   font-size: 1.8rem;
+   margin: 0px;
+}
+.mainContentContactUsLeft p{
+   color: black;
+   font-family: "Poppins", sans-serif;
+   font-weight: 100;
+   font-style: normal;
+   font-size: 0.9rem;
+}
+.contactsDetailsDiv{
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+   padding: 30px 0px 0px 0px;
+}
+.contactsDetails{
+   display: flex;
+   flex-direction: row;
+   gap: 20px;
+   align-items: center;
+}
+.contactsDetails h3{
+   color: black;
+   font-family: "Poppins", sans-serif;
+   font-weight: 600;
+   font-style: normal;
+   font-size: 1.3rem;
+   margin: 0px 0px 5px 0px;
+}
+.contactsDetails p{
+   color: black;
+   font-family: "Poppins", sans-serif;
+   font-weight: 100;
+   font-style: normal;
+   font-size: 0.8rem;
+   margin: 0px;
+}
+.location_on, .attach_email, .call{
+   font-size: 25px;
+   color: white;
+   padding: 15px;
+   border-radius: 50px;
+   background-color: #437dc0;
+}
+
+
+
+.mainContentContactUsRight{
+   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.15);
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+   border: 1px solid gray;
+   padding: 10px 20px 30px 20px;
+   gap: 25px;
+   border-radius: 20px;
+}
+.mainContentContactUsRight h1{
+   font-family: "Poppins", sans-serif;
+   font-weight: 800;
+   font-size: 1.5rem;
+   margin: 0px;
+}
+.mainContentContactUsRight h6{
+   font-family: "Poppins", sans-serif;
+   font-size: 0.8rem;
+   font-weight: 100;
+   margin: 0px 0px 10px 0px;
+}
+.nameAndEmailDiv{
+   display: flex;
+   flex-direction: row;
+   gap: 50px;
+   width: 100%;
+}
+.subjectDiv, .messageDiv{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+.nameAndEmailDiv input{
+   height: 25px;
+   border: 1px solid gray;
+   border-radius: 10px;
+   padding: 5px 0px 5px 10px;
+}
+.subjectDiv input{
+   height: 25px;
+   border: 1px solid gray;
+   border-radius: 10px;
+   padding: 5px 0px 5px 10px;
+}
+.messageDiv input{
+   height: 100px;
+   border-radius: 10px;
+   border: 1px solid gray;
+}
+
+.submitBtn {
+   width: 100%;
+   height: auto;
+}
+.submitBtn button{
+   color: white;
+   font-size: 15px;
+   width: 100%;
+   height: 40px;
+   border: 1px solid black;
+   border-radius: 20px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+   gap: 5px;
+   background-color: #437dc0;
+} 
+.submitBtn span{
+   font-size: 20px;
+}

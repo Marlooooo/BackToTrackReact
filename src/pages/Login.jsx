@@ -52,9 +52,9 @@
             </div>
 
             <nav>
-               <button>Impact</button>
-               <button>Contact</button>
-               <button>About Us</button>
+               <Link to="/impact" className="room"> Impact</Link>
+               <Link to="/contact" className="room">Contact </Link>
+               <Link to="/about" className="room">About Us</Link>
 
                <Link to="/"> Home</Link>
                <Link to="/login" className="active">
@@ -65,7 +65,7 @@
          </div>
          </header>
 
-         <div className="midPart">
+         <div className="midpartLogin">
          <div className="loginBox">
             <div className="loginBoxLogoTitle">
                <div className="loginBoxLogoTitleBackToTrack">
@@ -122,7 +122,7 @@
          </div>
          </div>
 
-         <footer>
+      <footer>
          <div className="footerTopPart">
             <div className="footerLogoTitle">
                <div>
@@ -137,18 +137,18 @@
             <div className="footerNav">
                <div className="footerNavLinks">
                <h1>Quick Links</h1>
-               <Link to="/">Home</Link>
-               <Link to="/about">About</Link>
+               <Link to="/" className="active"> Home</Link>
+               <Link to="about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="/contact">Contact</Link>
-               <Link to="/socials">Socials</Link>
+               <Link to="contact">Contact</Link>
+               <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Partners</h1>
-               <Link to="/tesda">Tesda</Link>
-               <Link to="/pogo-grande">Pogo Grande</Link>
+               <Link to="">Tesda</Link>
+               <Link to="">Pogo Grande</Link>
                </div>
             </div>
 
@@ -160,7 +160,7 @@
          <div className="footerBottomPart">
             <p>© 2026 BackToTrack.</p>
          </div>
-         </footer>
+      </footer>
       </>
    );
    }

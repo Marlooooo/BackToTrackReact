@@ -40,7 +40,7 @@ nav{
    align-items: center;
    width: 50%;
 }
-nav button{
+.room{
    background-color: transparent;
    color: white;
    font-size: 1rem;
@@ -52,8 +52,8 @@ nav button{
       transition: color 0.2s ease, transform 0.2s ease;
 
 }
-nav button:hover{
-   color: rgb(200, 200, 200);
+.room:hover{
+   background-color: transparent;
    transform: translateY(-2px);
    cursor: pointer;
 }
@@ -98,7 +98,7 @@ nav a.active{
 
 
 
-.midPart{
+.midpartLogin{
    display: flex;
    flex-direction: column;
    background: white;
@@ -152,7 +152,7 @@ nav a.active{
    color: white;
 }
 .loginText p{
-   margin: 0px;
+   margin: 20px 0px 0px 0px;
    font-family: "Wix Madefor Text", sans-serif;
    font-optical-sizing: auto;
    font-weight: 100;
@@ -182,6 +182,7 @@ nav a.active{
    height: 30px;
    border-radius: 10px;
    border: 2px solid #0a386c;
+   padding: 0px 0px 0px 10px;
 }
 .keepLogIn{
    display: flex;
@@ -210,7 +211,8 @@ nav a.active{
    height: 40px;
    width: 100%;
    border-radius: 10px;
-   border: 1px solid #0a386c;;
+   border: 1px solid #0a386c;
+   cursor: pointer;
 }
 
 

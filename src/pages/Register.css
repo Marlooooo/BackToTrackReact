@@ -1,0 +1,159 @@
+main{
+   background-color: transparent !important;
+   height: auto;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 30px 0px 30px 0px;
+}
+.registrationWorks{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between
+;}
+.registrationWorks img{
+   height: 100px;
+}
+.registrationWorks h3{
+   margin: 10px 0px 10px 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 520;
+   font-style: normal;
+   color: black;
+   font-size: 1.3rem;
+   
+}
+.registrationWorks h1{
+   margin: 10px 0px 10px 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 1000;
+   font-style: normal;
+   color: black;
+   font-size: 1.9rem;
+}
+.registrationWorks p{
+   margin: 10px 0px 10px 0px;
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 400;
+   font-style: normal;
+   color: black;
+   font-size: 0.9rem;
+   opacity: 0.8;
+}
+.howToGetAnAcc h2{
+   margin: 10px 0px 10px 0px;
+   font-family: "Wix Madefor Text", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 600;
+   font-style: normal;
+   color: black;
+   font-size: 1.2rem;
+}
+.threeSteps{
+   display: flex;
+   flex-direction: row;
+   gap: 20px;
+}
+.stepsBox{
+   width: 290px;
+   height: auto;
+   background: rgb(254, 254, 254);
+   border: 0.5px solid rgb(239, 239, 239);
+   border-radius: 14px;
+   padding: 5px 15px 30px 15px;
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+}
+.stepsBox h4{
+   margin: 15px 0px 10px 0px;
+   font-size: 0.9rem;
+   font-family: "Wix Madefor Text", sans-serif;
+}
+.stepsBox p{
+   text-align: start;
+   color: black;
+   font-size: 0.7rem;
+   font-family: Inter, sans-serif;
+}
+.number{
+   padding: 5px 10px 5px 10px;
+   background-color: #0a386c;
+   border-radius: 50%;
+   color: white;
+   margin-right: 5px;
+}
+.backToLogin {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+   background-color: #0A1A3F;
+   border-radius: 20px;
+   padding: 13px 25px 13px 25px;
+   margin: 20px 0px 20px 0px;
+}
+.backToLogin h1, p, a{
+   color: white;
+   margin: 10px 0px 10px 0px;
+}
+.backToLogin h1{
+   font-size: 1.1rem;
+   font-weight: 700;
+   font-family: "Wix Madefor Text", sans-serif;
+}
+.backToLogin p{
+   font-size: 0.8rem;
+   font-weight: 500;
+   font-family: Inter, sans-serif;
+}
+.backToLogin a{
+   font-size: 0.8rem;
+   color: black;
+   text-decoration: none;
+   padding: 11px 20px 11px 20px;
+   background-color: white;
+   border-radius: 20px;
+   font-family: Inter, sans-serif;
+}
+.needHelp{
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+.findBarangayContact, .officialLogin{
+   width: 450px;
+   height: fit-content;
+   background: rgb(254, 254, 254);
+   border: 0.5px solid rgb(239, 239, 239);
+   border-radius: 14px;
+   padding: 10px;
+   display: flex;
+   flex-direction: column;
+}
+.findBarangayContact p, .officialLogin p{
+   color: black;
+   font-family: Inter, sans-serif;
+   font-size: 0.8rem;
+}
+.findBarangayContact h4, .officialLogin h4{
+   color: black;
+   font-family: Inter, sans-serif;
+   font-size: 1rem;
+   margin: 10px 0px 5px 0px;
+}
+.findBarangayContact a, .officialLogin a{
+   color: black;
+   width: fit-content;
+   padding: 5px 20px 5px 20px;
+   border: 1px solid black;
+   text-decoration: none;
+   font-family: Inter, sans-serif;
+   border-radius: 20px;
+   font-size: 0.8rem;
+}

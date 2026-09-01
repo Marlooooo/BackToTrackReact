@@ -12,6 +12,7 @@ header{
    border-radius: 0% 0% 20% 20% / 10% 10% 20% 20%;
    padding: 10px 10px 70px 10px;
 }
+
 .headerTopPart{
    display: flex;
    flex-direction: row;
@@ -41,7 +42,7 @@ nav{
    align-items: center;
    width: 50%;
 }
-nav button{
+.room{
    background-color: transparent;
    color: white;
    font-size: 1rem;
@@ -53,8 +54,8 @@ nav button{
       transition: color 0.2s ease, transform 0.2s ease;
 
 }
-nav button:hover{
-   color: rgb(200, 200, 200);
+.room:hover{
+   background-color: transparent;
    transform: translateY(-2px);
    cursor: pointer;
 }
@@ -99,7 +100,7 @@ nav a:hover{
    font-style: normal;
    color: white;
    line-height: 130%;
-   font-size: 3rem;
+   font-size: 3.2rem;
 }
 .headerBottomPart p{
    font-family: "Open Sans", sans-serif;
@@ -107,7 +108,7 @@ nav a:hover{
    font-weight: 200;
    font-style: normal;
    color: white;
-   font-size: 1.1rem;
+   font-size: 1.2rem;
 }
 .twoStartBtn{
    display: flex;
@@ -157,11 +158,12 @@ nav a:hover{
 
 
 .midPart{
+   background-color: transparent !important;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: center;
-   padding: 30px 0px 0px 0px;
+   padding: 0px 0px 0px 0px !important;
 }
 .socialImp{
    display: flex;
@@ -203,7 +205,7 @@ nav a:hover{
 .cards{
    width: 250px;
    height: 250px;
-   background: white;
+   background: rgb(255, 254, 254);
    border: 1px solid white;
    border-radius: 14px;
    padding: 10px;

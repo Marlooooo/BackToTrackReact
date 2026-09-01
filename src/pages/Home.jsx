@@ -19,11 +19,11 @@
                </div>
             </div>
 
-            
             <nav>
-               <button>Impact</button>
-               <button>Contact</button>
-               <button>About Us</button>
+               <Link to="/impact" className="room"> Impact</Link>
+               <Link to="/contact" className="room">Contact </Link>
+               <Link to="/about" className="room">About Us</Link>
+
 
                <Link to="/" className="active"> Home</Link>
                <Link to="/login" className="btn">Login </Link>
@@ -39,10 +39,10 @@
                and Opportunities.
                </h1>
                <p>
-               BackToTrack is a centralized platform <br /> that connects
-               out-of-school youth, TESDA,
+               BackToTrack is a centralized platform that connects<br />
+               Out-Of-School Youth, Maxima Technical & Skills Training
                <br />
-               employers, and business for a stronger <br />
+               Institute, employers, and business for a stronger <br />
                workforce and a better community.
                </p>
 
@@ -65,7 +65,7 @@
             <p>
                BackToTrack creates positve change for the Community, Local
                Business, <br />
-               TESDA, and Baranggay Pogo Grande
+               Maxima Technical & Skills Training Institute , and Baranggay Pogo Grande
             </p>
          </div>
 
@@ -153,43 +153,43 @@
          </div>
 
          <footer>
-         <div className="footerTopPart">
-            <div className="footerLogoTitle">
-               <div>
-               <img src={logo} alt="" />
+            <div className="footerTopPart">
+               <div className="footerLogoTitle">
+                  <div>
+                  <img src={logo} alt="" />
+                  </div>
+                  <div>
+                  <h1>BackToTrack</h1>
+                  <p>Let's Build Opportunities.</p>
+                  </div>
                </div>
-               <div>
-               <h1>BackToTrack</h1>
-               <p>Let's Build Opportunities.</p>
+
+               <div className="footerNav">
+                  <div className="footerNavLinks">
+                  <h1>Quick Links</h1>
+                  <Link to="/" className="active"> Home</Link>
+                  <Link to="about">About</Link>
+                  </div>
+                  <div className="footerNavLinks">
+                  <h1>Supports</h1>
+                  <Link to="contact">Contact</Link>
+                  <Link to="">Socials</Link>
+                  </div>
+                  <div className="footerNavLinks">
+                  <h1>Partners</h1>
+                  <Link to="">Tesda</Link>
+                  <Link to="">Pogo Grande</Link>
+                  </div>
+               </div>
+
+               <div className="footerBigLogo">
+                  <img src={tesdaLogo} alt="" />
                </div>
             </div>
 
-            <div className="footerNav">
-               <div className="footerNavLinks">
-               <h1>Quick Links</h1>
-               <Link to="/" className="active"> Home</Link>
-               <a href="#">About</a>
-               </div>
-               <div className="footerNavLinks">
-               <h1>Supports</h1>
-               <a href="#">Contact</a>
-               <a href="#">Socials</a>
-               </div>
-               <div className="footerNavLinks">
-               <h1>Partners</h1>
-               <a href="#">Tesda</a>
-               <a href="#">Pogo Grande</a>
-               </div>
+            <div className="footerBottomPart">
+               <p>© 2026 BackToTrack.</p>
             </div>
-
-            <div className="footerBigLogo">
-               <img src={tesdaLogo} alt="" />
-            </div>
-         </div>
-
-         <div className="footerBottomPart">
-            <p>© 2026 BackToTrack.</p>
-         </div>
          </footer>
       </>
    );
