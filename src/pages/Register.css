@@ -18,7 +18,7 @@ main{
 }
 .registrationWorks h3{
    margin: 10px 0px 10px 0px;
-   font-family: "Wix Madefor Text", sans-serif;
+   font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 520;
    font-style: normal;
@@ -28,7 +28,7 @@ main{
 }
 .registrationWorks h1{
    margin: 10px 0px 10px 0px;
-   font-family: "Wix Madefor Text", sans-serif;
+   font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 1000;
    font-style: normal;
@@ -37,17 +37,17 @@ main{
 }
 .registrationWorks p{
    margin: 10px 0px 10px 0px;
-   font-family: "Inter", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
    font-weight: 400;
    font-style: normal;
    color: black;
    font-size: 0.9rem;
-   opacity: 0.8;
+   opacity: 0.9;
 }
 .howToGetAnAcc h2{
    margin: 10px 0px 10px 0px;
-   font-family: "Wix Madefor Text", sans-serif;
+   font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 600;
    font-style: normal;
@@ -73,13 +73,15 @@ main{
 .stepsBox h4{
    margin: 15px 0px 10px 0px;
    font-size: 0.9rem;
-   font-family: "Wix Madefor Text", sans-serif;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
 }
 .stepsBox p{
    text-align: start;
    color: black;
-   font-size: 0.7rem;
-   font-family: Inter, sans-serif;
+   font-size: 0.8rem;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
 }
 .number{
    padding: 5px 10px 5px 10px;
@@ -105,12 +107,14 @@ main{
 .backToLogin h1{
    font-size: 1.1rem;
    font-weight: 700;
-   font-family: "Wix Madefor Text", sans-serif;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
 }
 .backToLogin p{
    font-size: 0.8rem;
    font-weight: 500;
-   font-family: Inter, sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
 }
 .backToLogin a{
    font-size: 0.8rem;
@@ -119,7 +123,8 @@ main{
    padding: 11px 20px 11px 20px;
    background-color: white;
    border-radius: 20px;
-   font-family: Inter, sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
 }
 .needHelp{
    display: flex;
@@ -136,16 +141,18 @@ main{
    display: flex;
    flex-direction: column;
 }
-.findBarangayContact p, .officialLogin p{
-   color: black;
-   font-family: Inter, sans-serif;
-   font-size: 0.8rem;
-}
 .findBarangayContact h4, .officialLogin h4{
    color: black;
-   font-family: Inter, sans-serif;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
    font-size: 1rem;
    margin: 10px 0px 5px 0px;
+}
+.findBarangayContact p, .officialLogin p{
+   color: black;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
+   font-size: 0.8rem;
 }
 .findBarangayContact a, .officialLogin a{
    color: black;
@@ -153,7 +160,8 @@ main{
    padding: 5px 20px 5px 20px;
    border: 1px solid black;
    text-decoration: none;
-   font-family: Inter, sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
    border-radius: 20px;
    font-size: 0.8rem;
 }

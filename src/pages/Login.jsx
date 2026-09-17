@@ -3,11 +3,19 @@
    import logo from "../assets/BackToTrack_Logo3.png";
    import tesdaLogo from "../assets/Tesda_Logo4.png";
    import "./Login.css";
+   
+
+
+   function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
+   }
 
    function Login() {
+
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [keepMeLogin, setKeepMeLogin] = useState(false);
    const [error, setError] = useState("");
    const navigate = useNavigate();
 
@@ -15,19 +23,33 @@
       e.preventDefault();
       setError("");
 
-      try {
-         const res = await fetch("http://127.0.0.1:8000/api/login", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ email, password, keepMeLogin }),
+      try { 
+         // get CSRF cookie first — required by Sanctum
+         await fetch("http://localhost:8000/sanctum/csrf-cookie", {
+            credentials: "include",
+         });
+
+         const xsrfToken = getCookie("XSRF-TOKEN"); // ADD THIS
+
+
+         const res = await fetch("http://localhost:8000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json",                
+               "X-XSRF-TOKEN": xsrfToken, // ADD THIS  
+               },
+            credentials: "include", // <-- add this
+            body: JSON.stringify({ email, password }),
          });
 
          const data = await res.json();
 
          if (data.success) {
-         if (data.role === "maxima_tesda_school") navigate("/tesda/dashboard");
-         else if (data.role === "barangay_officials")
-            navigate("/barangay/dashboard");
+
+         localStorage.setItem("userName", data.name);
+         localStorage.setItem("userRole", data.role);
+
+         if (data.role === "maxima_tesda_school") navigate("/maxima/dashboard");
+         else if (data.role === "sk_officials") navigate("/barangay/dashboard");
          else if (data.role === "osy") navigate("/osy/dashboard");
          } else {
          setError(data.message || "Invalid email or password.");
@@ -41,44 +63,69 @@
    return (
       <>
          <header>
-         <div className="headerTopPart">
-            <div className="leftSideHeader">
-               <div id="logo">
-               <img src={logo} alt="" />
+            
+               <div className="leftSideHeader">
+                  <div id="logo">
+                     <img src={logo} alt="" />
+                  </div>
+                  <div id="webTitle">
+                     <h1>BackToTrack</h1>
+                  </div>
                </div>
-               <div id="webTitle">
-               <h1 className="webTitleText">BackToTrack</h1>
-               </div>
-            </div>
 
-            <nav>
-               <Link to="/impact" className="room"> Impact</Link>
-               <Link to="/contact" className="room">Contact </Link>
-               <Link to="/about" className="room">About Us</Link>
+               <nav>
+                  <Link to="/impact" className="room">
+                  {" "}
+                  Impact
+                  </Link>
 
-               <Link to="/"> Home</Link>
-               <Link to="/login" className="active">
-               Login
-               </Link>
-               <Link to="/register">Register</Link>
-            </nav>
-         </div>
+                  <Link to="/contact" className="room">
+                  Contact{" "}
+                  </Link>
+
+                  <Link to="/about" className="room">
+                  About Us
+                  </Link>
+
+                  <Link to="/" className="btn">
+                  {" "}
+                  Home
+                  </Link>
+
+                  <Link to="/login" className="active">
+                  Login{" "}
+                  </Link>
+                  
+                  <Link to="/register" className="btn">
+                  Register
+                  </Link>
+               </nav>
+         
          </header>
 
-         <div className="midpartLogin">
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className="midpartLogin">
          <div className="loginBox">
+            
             <div className="loginBoxLogoTitle">
-               <div className="loginBoxLogoTitleBackToTrack">
+            
                <img src={logo} alt="" />
-               <h1 className="webTitleText">BackToTrack</h1>
-               </div>
-               <img src={tesdaLogo} alt="" />
+               <h1 className="webTitleText">WELCOME BACK</h1>
+               <p>Login To BackToTrack</p>
+               
             </div>
 
-            <div className="loginText">
-               <h1>Log In</h1>
-               <p>Please fill up the following to log in your account</p>
-            </div>
 
             <form onSubmit={handleSubmit}>
                <div className="inputPart">
@@ -103,14 +150,8 @@
                />
                </div>
 
-               <div className="keepLogIn">
-               <input
-                  type="checkbox"
-                  name="keepMeLogin"
-                  checked={keepMeLogin}
-                  onChange={(e) => setKeepMeLogin(e.target.checked)}
-               />
-               <p>Keep Me Log In</p>
+               <div className="forgotPassword">
+                  <Link to="/forgot-password">Forgot Password?</Link>
                </div>
 
                {error && <p className="errorText">{error}</p>}
@@ -120,9 +161,18 @@
                </div>
             </form>
          </div>
-         </div>
+      </div>
 
-      <footer>
+
+
+
+
+
+
+
+
+
+         <footer>
          <div className="footerTopPart">
             <div className="footerLogoTitle">
                <div>
@@ -130,14 +180,22 @@
                </div>
                <div>
                <h1>BackToTrack</h1>
-               <p>Let's Build Opportunities.</p>
+               <h6>SK Federation Out-of-School Youth Profiling,<br />
+                  Referral, and Training Monitoring System.
+               </h6>
+               <p>
+                  Let's Build Opportunities.
+               </p>
                </div>
             </div>
 
             <div className="footerNav">
                <div className="footerNavLinks">
                <h1>Quick Links</h1>
-               <Link to="/" className="active"> Home</Link>
+               <Link to="/" className="active">
+                  {" "}
+                  Home
+               </Link>
                <Link to="about">About</Link>
                </div>
                <div className="footerNavLinks">
@@ -147,7 +205,7 @@
                </div>
                <div className="footerNavLinks">
                <h1>Partners</h1>
-               <Link to="">Tesda</Link>
+               <Link to="">Maxima</Link>
                <Link to="">Pogo Grande</Link>
                </div>
             </div>
@@ -160,7 +218,7 @@
          <div className="footerBottomPart">
             <p>© 2026 BackToTrack.</p>
          </div>
-      </footer>
+         </footer>
       </>
    );
    }

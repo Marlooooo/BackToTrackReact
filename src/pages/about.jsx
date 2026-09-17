@@ -8,35 +8,44 @@ function aboutUs() {
    return (
       <>
          <header>
-         <div className="headerTopPart">
-            <div className="leftSideHeader">
-               <div id="logo">
-               <img src={logo} alt="" />
+            
+               <div className="leftSideHeader">
+                  <div id="logo">
+                     <img src={logo} alt="" />
+                  </div>
+                  <div id="webTitle">
+                     <h1>BackToTrack</h1>
+                  </div>
                </div>
-               <div id="webTitle">
-               <h1 className="webTitleText">BackToTrack</h1>
-               </div>
-            </div>
 
-            <nav>
-               <Link to="/impact" className="room">
-               {" "}
-               Impact
-               </Link>
-               <Link to="/contact" className="room">
-               Contact{" "}
-               </Link>
-               <Link to="/about" className="room activeICA">
-               About Us
-               </Link>
+               <nav>
+                  <Link to="/impact" className="room">
+                  {" "}
+                  Impact
+                  </Link>
 
-               <Link to="/"> Home</Link>
-               <Link to="/login">Login</Link>
-               <Link to="/register">
-               Register
-               </Link>
-            </nav>
-         </div>
+                  <Link to="/contact" className="room">
+                  Contact{" "}
+                  </Link>
+
+                  <Link to="/about" className="room activeICA">
+                  About Us
+                  </Link>
+
+                  <Link to="/" className="btn">
+                  {" "}
+                  Home
+                  </Link>
+
+                  <Link to="/login" className="btn">
+                  Login{" "}
+                  </Link>
+                  
+                  <Link to="/register" className="btn">
+                  Register
+                  </Link>
+               </nav>
+         
          </header>
 
 
@@ -158,25 +167,33 @@ function aboutUs() {
                </div>
                <div>
                <h1>BackToTrack</h1>
-               <p>Let's Build Opportunities.</p>
+               <h6>SK Federation Out-of-School Youth Profiling,<br />
+                  Referral, and Training Monitoring System.
+               </h6>
+               <p>
+                  Let's Build Opportunities.
+               </p>
                </div>
             </div>
 
             <div className="footerNav">
                <div className="footerNavLinks">
                <h1>Quick Links</h1>
-               <Link to="/">Home</Link>
-               <Link to="/about">About</Link>
+               <Link to="/" className="active">
+                  {" "}
+                  Home
+               </Link>
+               <Link to="about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="/contact">Contact</Link>
-               <Link to="/socials">Socials</Link>
+               <Link to="contact">Contact</Link>
+               <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Partners</h1>
-               <Link to="/tesda">Tesda</Link>
-               <Link to="/pogo-grande">Pogo Grande</Link>
+               <Link to="">Maxima</Link>
+               <Link to="">Pogo Grande</Link>
                </div>
             </div>
 

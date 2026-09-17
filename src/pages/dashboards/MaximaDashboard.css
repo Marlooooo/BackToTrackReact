@@ -1,0 +1,49 @@
+.maximaDashboardBody{
+   height: 100vh;
+   width: 100%;
+   background-color: whitesmoke;
+   display: flex;
+   flex-direction: row;
+}
+.maximaMainDashboard{
+   display: flex;
+   flex-direction: column;
+   margin-left: 20px;
+}
+.maximaMainDashboardTop{
+   display: flex;
+   flex-direction: row;
+   align-items: start;
+}
+.maximaMainDashboardMid{
+   display: flex;
+   flex-direction: row;
+   gap: 20px;
+   align-items: center;
+}
+.referralRequestDiv{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 600px;
+   height: 400px;
+   border: 1px solid black;
+   border-radius: 10px;
+}
+.referralRequestDiv p,.threeMidSmallCards p{
+   color: black;
+}
+.threeMidSmallDiv{
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+.threeMidSmallCards{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   border: 1px solid black;
+   border-radius: 10px;
+
+}
+

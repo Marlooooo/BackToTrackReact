@@ -7,33 +7,44 @@ function Contact() {
    return (
       <>
          <header>
-         <div className="headerTopPart">
-            <div className="leftSideHeader">
-               <div id="logo">
-               <img src={logo} alt="" />
+            
+               <div className="leftSideHeader">
+                  <div id="logo">
+                     <img src={logo} alt="" />
+                  </div>
+                  <div id="webTitle">
+                     <h1>BackToTrack</h1>
+                  </div>
                </div>
-               <div id="webTitle">
-               <h1 className="webTitleText">BackToTrack</h1>
-               </div>
-            </div>
 
-            <nav>
-               <Link to="/impact" className="room">
-               {" "}
-               Impact
-               </Link>
-               <Link to="/contact" className="room activeICA">
-               Contact{" "}
-               </Link>
-               <Link to="/about" className="room">
-               About Us
-               </Link>
+               <nav>
+                  <Link to="/impact" className="room">
+                  {" "}
+                  Impact
+                  </Link>
 
-               <Link to="/"> Home</Link>
-               <Link to="/login">Login</Link>
-               <Link to="/register">Register</Link>
-            </nav>
-         </div>
+                  <Link to="/contact" className="room activeICA">
+                  Contact{" "}
+                  </Link>
+
+                  <Link to="/about" className="room">
+                  About Us
+                  </Link>
+
+                  <Link to="/" className="btn">
+                  {" "}
+                  Home
+                  </Link>
+
+                  <Link to="/login" className="btn">
+                  Login{" "}
+                  </Link>
+                  
+                  <Link to="/register" className="btn">
+                  Register
+                  </Link>
+               </nav>
+         
          </header>
 
 
@@ -44,8 +55,8 @@ function Contact() {
             <div className="mainContentContactUsLeft">
 
                <div>
-                  <h4>Contact Us</h4>
-                  <h1>We’d Love to Hear From You!</h1>
+                  <h1>Contact Us</h1>
+                  <h4>We’d Love to Hear From You!</h4>
                   <p>Have questions about BackToTrack? We're here to help. <br />
                      Send us a message or reach out through the contact information <br />
                      below.
@@ -112,7 +123,7 @@ function Contact() {
 
                <div className="subjectDiv">
                   <h6>Subject</h6>
-                  <input type="text" name="subject" id="subject" placeholder="fuck you" />
+                  <input type="text" name="subject" id="subject" placeholder="Query" />
                </div>
 
                <div className="messageDiv">
@@ -144,7 +155,6 @@ function Contact() {
 
 
 
-
          <footer>
          <div className="footerTopPart">
             <div className="footerLogoTitle">
@@ -153,25 +163,33 @@ function Contact() {
                </div>
                <div>
                <h1>BackToTrack</h1>
-               <p>Let's Build Opportunities.</p>
+               <h6>SK Federation Out-of-School Youth Profiling,<br />
+                  Referral, and Training Monitoring System.
+               </h6>
+               <p>
+                  Let's Build Opportunities.
+               </p>
                </div>
             </div>
 
             <div className="footerNav">
                <div className="footerNavLinks">
                <h1>Quick Links</h1>
-               <Link to="/">Home</Link>
-               <Link to="/about">About</Link>
+               <Link to="/" className="active">
+                  {" "}
+                  Home
+               </Link>
+               <Link to="about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="/contact">Contact</Link>
-               <Link to="/socials">Socials</Link>
+               <Link to="contact">Contact</Link>
+               <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Partners</h1>
-               <Link to="/tesda">Tesda</Link>
-               <Link to="/pogo-grande">Pogo Grande</Link>
+               <Link to="">Maxima</Link>
+               <Link to="">Pogo Grande</Link>
                </div>
             </div>
 

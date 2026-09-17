@@ -7,32 +7,25 @@ body{
 }
 header{
    display: flex;
-   flex-direction: column;
-   background: #0a386c;
-   border-radius: 0% 0% 20% 20% / 10% 10% 20% 20%;
-   padding: 10px 10px 70px 10px;
-}
-
-.headerTopPart{
-   display: flex;
    flex-direction: row;
+   background: #252641;
+   padding: 10px 10px 10px 10px;
    justify-content: space-around;
 }
-.webTitleText{
+.leftSideHeader{
+   display: flex;
+   flex-direction: row;
+}
+.leftSideHeader img{
+   width: 80px;
+   height: 80px;
+}
+.leftSideHeader h1{
    font-family: "Lexend", sans-serif;
    font-optical-sizing: auto;
    font-weight: 750;
    font-style: normal;
    color: rgb(51, 140, 242);
-}
-
-.leftSideHeader{
-   display: flex;
-   flex-direction: row;
-}
-#logo img{
-   width: 80px;
-   height: 80px;
 }
 nav{
    display: flex;
@@ -65,7 +58,7 @@ nav a.active{
    background-color: rgb(37, 83, 173);
 }
 nav a{
-   color: rgb(84, 83, 83);
+   color: black;
    font-size: 1rem;
    border: 0;
    text-decoration: none;
@@ -75,12 +68,11 @@ nav a{
    font-style: normal;
    background-color: white;
    border-radius: 30px;
-   padding: 10px 30px 10px 30px;
+   padding: 10px 20px 10px 20px;
       transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 
 }
 nav a:hover{
-   background-color: rgb(235, 235, 235);
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
    transform: translateY(-2px);
    cursor: pointer;
@@ -92,6 +84,7 @@ nav a:hover{
    display: flex;
    flex-wrap: wrap;
    justify-content: space-around;
+   background-color: #252641;
 }
 .headerBottomPart h1{
    font-family: "Open Sans", sans-serif;
@@ -99,16 +92,23 @@ nav a:hover{
    font-weight: 800;
    font-style: normal;
    color: white;
-   line-height: 130%;
-   font-size: 3.2rem;
+   line-height: 105%;
+   font-size: 3rem;
+   margin: 20px 0px 20px 0px;
 }
 .headerBottomPart p{
-   font-family: "Open Sans", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 200;
+   font-weight: 100;
    font-style: normal;
    color: white;
-   font-size: 1.2rem;
+   font-size: 0.9rem;
+   margin: 10px 0px 20px 0px;
+}
+.leftSide{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
 }
 .twoStartBtn{
    display: flex;
@@ -171,26 +171,27 @@ nav a:hover{
    align-items: center;
    justify-content: center;
 }
-.socialImp h1{
+.socialImp h2{
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 800;
    font-style: normal;
    color: rgb(5, 144, 176);
    line-height: 130%;
-   font-size: 3rem;
+   font-size: 2.8rem;
+   margin: 30px 0px 20px 0px;
 }
 .socialSpan{
-   color: #0a386c;
+   color: #252641;
 }
 .socialImp p{
    margin: 0;
-   font-family: "Open Sans", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
    font-weight: 400;
    font-style: normal;
    color: black;
-   font-size: 1rem;
+   font-size: 0.9rem;
    text-align: center;
 }
 
@@ -220,7 +221,7 @@ nav a:hover{
    border-radius: 50px;
    font-size: 20px !important;
 }
-.cards h2{
+.cards h3{
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-weight: 600;
@@ -228,10 +229,10 @@ nav a:hover{
    color: black;
    font-size: 1.4rem;
    text-align: center;
-   color: #0a386c;
+   color: #252641;
 }
 .cards p{
-   font-family: "Open Sans", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
    font-weight: 500;
    font-style: normal;
@@ -246,7 +247,7 @@ nav a:hover{
    display: flex;
    flex-direction: row;
    padding: 20px 45px 20px 45px;
-   background-color: #0a386c;
+   background-color: #252641;
    border-radius: 40px;
    align-items: center;   
    gap: 40px;
@@ -257,7 +258,7 @@ nav a:hover{
    height: 100px;
 }
 
-.ourGoal h1{
+.ourGoal h4{
    margin: 0px;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
@@ -268,11 +269,11 @@ nav a:hover{
 }
 .ourGoal p{
    margin: 10px 0px 5px 0px;
-   font-family: "Open Sans", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 400;
+   font-weight: 200;
    font-style: normal;
-   font-size: 1rem;
+   font-size: 0.8rem;
    opacity: 0.8;
    color: white;
 }
@@ -285,11 +286,11 @@ nav a:hover{
 .targetMarketGoal h4{
    text-align: center;
    margin: 15px 0px 0px 0px;
-   font-family: "Open Sans", sans-serif;
+   font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 550;
+   font-weight: 200;
    font-style: normal;
-   font-size: 1rem;
+   font-size: 0.9rem;
    color: white;
 }
 .youth, .business, .community{
@@ -317,7 +318,7 @@ nav a:hover{
 footer{
    width: 100%;
    height: auto;
-   background-color: #0a386c;
+   background-color: #252641;
    padding: 10px 0px 10px 0px;
    display: flex;
    flex-direction: column;
@@ -335,6 +336,10 @@ footer{
    justify-content: center;
    gap: 10px;
 }
+.footerLogoTitle img{
+   width: 80px;
+   height: 80px;
+}
 .footerLogoTitle h1{
    font-family: "Lexend", sans-serif;
    font-optical-sizing: auto;
@@ -343,18 +348,22 @@ footer{
    color: rgb(51, 140, 242);
    margin: 0px 0px 0px 0px;
 }
+.footerLogoTitle h6{
+   font-family: "Lexend", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 300;
+   font-style: normal;
+   color: white;
+   opacity: 0.9;
+   margin: 0px 0px 20px 0px;
+}
 .footerLogoTitle p{
    font-family: "Lexend", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 400;
+   font-weight: 300;
    font-style: normal;
    color: white;
    margin: 0;
-
-}
-.footerLogoTitle img{
-   width: 80px;
-   height: 80px;
 }
 .footerNav{
    display: flex;
@@ -368,23 +377,23 @@ footer{
    flex-direction: column;
 }
 .footerNavLinks h1{
-   font-family: "Lexend", sans-serif;
+   font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 400;
-   font-size: 1rem;
+   font-weight: 600;
    font-style: normal;
+   font-size: 0.9rem;
    color: white;
-   margin: 0px 0px 10px 0px;
+   margin: 0px 0px 25px 0px;
 }
 .footerNavLinks a{
    text-decoration: none;
-   font-family: "Lexend", sans-serif;
+   font-family: "Wix Madefor Text", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 200;
-   font-size: 0.9rem;
+   font-weight: 100;
    font-style: normal;
+   font-size: 0.8rem;
+   margin: 0px 0px 9px 0px;
    color: white;
-   margin-top: 10px;
       transition: transform 0.2s ease, color 0.2s ease;
 
 }
@@ -400,6 +409,7 @@ footer{
 }
 .footerBottomPart{
    display: flex;
+   flex-direction: row;
    align-items: center;
    justify-content: center;
 }
@@ -408,6 +418,10 @@ footer{
    font-style: normal;
    color: white;
    margin: 20px 0px 0px 0px;
+   border-top: 1px solid gray;
+   width: 80%;
+   text-align: center;
+   padding: 20px 0px 0px 0px;
 }
 
 

@@ -1,10 +1,15 @@
+   import BarangaySideBar from '../../components/skOfficialSideBar';
+   import './BarangayDashboard.css'
+   
+   
    function BarangayDashboard() {
    return (
-      <div>
-         <h1>Barangay Officials Dashboard</h1>
-         <p>Welcome! This is a placeholder — we'll build this out next.</p>
-      </div>
-   );
+   <>
+   
+      <BarangaySideBar/>
+   
+   </>
+      );
    }
 
    export default BarangayDashboard;

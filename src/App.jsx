@@ -1,3 +1,7 @@
+import ProtectedRoute from "./components/ProtectedRoute";
+
+
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from './pages/Login';
@@ -11,9 +15,16 @@ import Impact from './pages/impact';
 
 
 
-import BarangayDashboard from "./pages/dashboards/BarangayDashboard";
-import MaximaTesdaDashboard from "./pages/dashboards/TesdaDashboard";
 import OsyDashboard from './pages/dashboards/OsyDashboard';
+
+
+
+import MaximaTesdaDashboard from "./pages/dashboards/MaximaDashboard";
+import MaximaProgramManagement from "./pages/dashboards/MaximaProgramManagement"
+import MaximaReferrals from './pages/dashboards/MaximaReferrals';
+
+
+import BarangayDashboard from "./pages/dashboards/BarangayDashboard";
 
 
 
@@ -31,10 +42,20 @@ function App() {
 
 
 
+         <Route path="/osy/dashboard" element={<ProtectedRoute> <OsyDashboard /> </ProtectedRoute>} />
 
-         <Route path="/barangay/dashboard" element={<BarangayDashboard/>} />
-         <Route path="/tesda/dashboard" element={<MaximaTesdaDashboard/>} />
-         <Route path="/osy/dashboard" element={<OsyDashboard/>} />
+
+
+
+         <Route path="/maxima/dashboard" element={ <ProtectedRoute> <MaximaTesdaDashboard/> </ProtectedRoute>} />
+         <Route path="/maxima/management" element={<ProtectedRoute> <MaximaProgramManagement> </MaximaProgramManagement> </ProtectedRoute>}/>
+         <Route path="/maxima/referrals" element={<ProtectedRoute> <MaximaReferrals> </MaximaReferrals> </ProtectedRoute>}/>
+
+
+
+         <Route path="/barangay/dashboard" element={<ProtectedRoute> <BarangayDashboard/> </ProtectedRoute> } />
+
+
          </Routes>
       </BrowserRouter>
    );

@@ -8,27 +8,31 @@
    display: flex;
    flex-direction: column;
 }
-.mainContentContactUsLeft h4{
-   font-family: "Poppins", sans-serif;
-   color: #0a386c;
-   font-weight: 900;
-   font-style: normal;
-   font-size: 1.3rem;
-   margin: 0px 0px 5px 0px;
-}
 .mainContentContactUsLeft h1{
-   font-family: "Poppins", sans-serif;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
    font-weight: 900;
    font-style: normal;
-   font-size: 1.8rem;
-   margin: 0px;
+   font-size: 2rem;
+   margin: 0px 0px 15px 0px;
+   color: #437dc0;
+}
+.mainContentContactUsLeft h4{
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 900;
+   font-style: normal;
+   font-size: 1.5rem;
+   margin: 0;
 }
 .mainContentContactUsLeft p{
    color: black;
-   font-family: "Poppins", sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
    font-weight: 100;
    font-style: normal;
    font-size: 0.9rem;
+   margin: 0;
 }
 .contactsDetailsDiv{
    display: flex;
@@ -44,15 +48,17 @@
 }
 .contactsDetails h3{
    color: black;
-   font-family: "Poppins", sans-serif;
-   font-weight: 600;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 700;
    font-style: normal;
-   font-size: 1.3rem;
+   font-size: 1.1rem;
    margin: 0px 0px 5px 0px;
 }
 .contactsDetails p{
    color: black;
-   font-family: "Poppins", sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
    font-weight: 100;
    font-style: normal;
    font-size: 0.8rem;
@@ -79,13 +85,15 @@
    border-radius: 20px;
 }
 .mainContentContactUsRight h1{
-   font-family: "Poppins", sans-serif;
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
    font-weight: 800;
    font-size: 1.5rem;
    margin: 0px;
 }
 .mainContentContactUsRight h6{
-   font-family: "Poppins", sans-serif;
+   font-family: "Nunito", sans-serif;
+   font-optical-sizing: auto;
    font-size: 0.8rem;
    font-weight: 100;
    margin: 0px 0px 10px 0px;

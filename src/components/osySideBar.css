@@ -1,0 +1,159 @@
+.sideBarDiv {
+   height: 100vh;
+   width: 19%;
+   background-color: #0f1a3c;
+   display: flex;
+   flex-direction: column;
+   padding: 10px 20px 10px 20px;
+   box-sizing: border-box;
+   overflow-y: auto;
+   overflow-x: auto;
+}
+
+
+.navBarTitleLogo{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 10px;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.navBarTitleLogo img{
+   height: 30px;
+   padding: 10px;
+   background-color: white;
+   border-radius: 20px;
+}
+.navBarTitleLogo h1{
+   color: white;
+   font-size: 1.2rem;
+   font-family: "Urbanist", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 700;
+   font-style: normal;
+}
+
+
+
+.linkDiv{
+   display: flex;
+   flex-direction: column;
+   justify-content: start;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.linkDiv h2, .linkDivLogOut h2{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: bold;
+   margin: 20px 0px 0px 0px;
+   color: gray;
+   font-size: 0.6rem;
+}
+.linkDiv div{
+   width: 90%;
+   margin: 5px 0px 0px 0px;
+   padding: 10px 0px 10px 5px;
+   border-radius: 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: start;
+}
+.linkDiv span{
+   color: white;
+   margin-right: 15px;
+   font-size: 16px;
+   display: inline-block;               /* NEW — same reason */
+   transition: transform 0.15s ease;    /* NEW */
+;
+}
+.linkDiv div:hover span{
+   transform: scale(1.15);              /* NEW — icon grows a bit on hover, scoped to row hover */
+}
+.linkDiv a{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+   text-decoration: none;
+   font-size: 0.9rem;
+   margin: 0px;
+   display: inline-block;              /* NEW — needed so transform/scale doesn't get ignored */
+   transition: font-size 0.15s ease;    /* NEW — smooths the size change */
+}
+.linkDiv a:hover{
+   font-size: 1rem;                     /* NEW — slightly bigger text on hover */
+}
+
+
+
+
+.linkDivLogOut{
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.linkDivLogOut div{
+   width: 50%;
+   height: auto;
+   margin: 15px 0px 0px 0px;
+}
+.linkDivLogOut button{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+   border: 0;
+   color: black;
+   cursor: pointer;
+   background-color: rgb(170, 246, 246);   
+   padding: 5px 0px 5px 5px;
+   border-radius: 10px;
+   width: 100%;
+   transition: font-size 0.15s ease;   /* NEW */
+}
+.linkDivLogOut button:hover{
+   font-size: 0.9rem;                  /* NEW — grows the button's text on hover */
+}
+.linkDivLogOut .logOutIcon{
+   color: black;
+   margin: 0px;
+   margin-right: 10px;
+   font-size: 20px;
+   display: inline-block;               /* NEW */
+   transition: transform 0.15s ease;    /* NEW */
+}
+.linkDivLogOut button:hover .logOutIcon{
+   transform: scale(1.1);              /* NEW — icon grows in step with the text */
+}
+.linkDivLogOut .userInfo{
+   width: 100%;
+   margin: 15px 0px 0px 0px;
+}
+.userName{
+   color: white;
+   font-family: "Inter", sans-serif;
+   font-size: 0.9rem;
+   font-weight: 600;
+}
+
+
+
+
+.linkDiv div:has(a.active) {
+   background-color: white;
+   font-style: normal;
+
+}
+.linkDiv a.active{
+   color: #0f1a3c;
+}
+.linkDiv div:has(a.active) span {
+   color: #0f1a3c;
+}

@@ -1,10 +1,16 @@
+import OsySideBar from '../../components/osySideBar';
+import "./OsyDashboard.css"
+
    function OsyDashboard() {
    return (
-      <div>
-         <h1>Osy Dashboard</h1>
-         <p>Welcome! This is a placeholder — we'll build this out next.</p>
-      </div>
-   );
+      <>
+         <div className='osyDashboardBody'>
+            
+            <OsySideBar/>
+            
+         </div>
+      </>
+      );
    }
 
    export default OsyDashboard;
