@@ -1,0 +1,371 @@
+   .programManagementMainDiv {
+   flex: 1;
+   padding: 36px 44px;
+   background: #F6F8F6;
+   min-height: 100vh;
+   box-sizing: border-box;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   }
+
+   .programManagementTopPart {
+   margin-bottom: 22px;
+   }
+
+   .programManagementTopPart h1 {
+   margin: 0 0 4px;
+   font-size: 23px;
+   font-weight: 700;
+   color: #16231C;
+   letter-spacing: -0.01em;
+   }
+
+   .programManagementTopPart p {
+   margin: 0;
+   color: #62705F;
+   font-size: 13.5px;
+   }
+
+   .programManagementBotPart {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   }
+
+   /* Toolbar: search + status filter + add button */
+
+   .programManagementAddDiv {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   }
+
+   .programSearchInput {
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   padding: 10px 18px;
+   flex: 1;
+   max-width: 320px;
+   font-size: 13.5px;
+   color: #16231C;
+   outline: none;
+   }
+
+   .programSearchInput:focus {
+   border-color: #2F6E4F;
+   }
+
+   .programStatusFilter {
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   border-radius: 999px;
+   padding: 10px 16px;
+   font-size: 13.5px;
+   color: #3D4A3F;
+   cursor: pointer;
+   }
+
+   .programAddBtn {
+   margin-left: auto;
+   border: none;
+   border-radius: 8px;
+   padding: 10px 18px;
+   font-size: 13.5px;
+   font-weight: 600;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   cursor: pointer;
+   transition: background 0.15s ease;
+   }
+
+   .programAddBtn:hover {
+   background: #275C42;
+   }
+
+   /* List / table area */
+
+   .programManagementList {
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 14px;
+   overflow: hidden;
+   }
+
+   .pmgmtEmpty {
+   padding: 56px 24px;
+   text-align: center;
+   color: #62705F;
+   }
+
+   .pmgmtEmpty span {
+   display: block;
+   margin-top: 6px;
+   font-size: 12.5px;
+   color: #94A092;
+   }
+
+   .pmgmtBanner {
+   padding: 12px 16px;
+   font-size: 13.5px;
+   margin: 16px;
+   border-radius: 8px;
+   }
+
+   .pmgmtBannerError {
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+   }
+
+   .programTable {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13.5px;
+   }
+
+   .programTable thead th {
+   text-align: left;
+   padding: 13px 20px;
+   color: #7C877E;
+   font-weight: 600;
+   font-size: 12px;
+   border-bottom: 1px solid #EEF2EE;
+   }
+
+   .programTable tbody tr:hover {
+   background: #FAFBF9;
+   }
+
+   .programTable tbody td {
+   padding: 15px 20px;
+   border-bottom: 1px solid #F1F4F1;
+   color: #29332C;
+   }
+
+   .programTable tbody tr:last-child td {
+   border-bottom: none;
+   }
+
+   .programTable__name {
+   font-weight: 600;
+   color: #16231C;
+   }
+
+   .programTable__actions {
+   display: flex;
+   gap: 8px;
+   white-space: nowrap;
+   }
+
+   .programEditBtn,
+   .programDeleteBtn {
+   border: 1px solid #DCE6DE;
+   background: transparent;
+   border-radius: 7px;
+   padding: 6px 12px;
+   font-size: 12.5px;
+   font-weight: 500;
+   cursor: pointer;
+   color: #3D4A3F;
+   }
+
+   .programEditBtn:hover {
+   background: #F1F4F1;
+   }
+
+   .programDeleteBtn {
+   color: #A23E3E;
+   }
+
+   .programDeleteBtn:hover {
+   background: #FBEBEB;
+   border-color: #F0CACA;
+   }
+
+   /* Tags & status pills — namespaced so they never collide with another page's .tag / .status */
+
+   .pmgmtTag,
+   .pmgmtStatus {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   font-size: 11.5px;
+   font-weight: 600;
+   }
+
+   .pmgmtTagYes {
+   background: #FBF0DD;
+   color: #96701E;
+   }
+
+   .pmgmtTagNo {
+   background: #F0F1EE;
+   color: #8A968A;
+   }
+
+   .pmgmtStatusActive {
+   background: #E3F0E7;
+   color: #2F6E4F;
+   }
+
+   .pmgmtStatusInactive {
+   background: #F0F1EE;
+   color: #7C877E;
+   }
+
+   /* Buttons used inside this page's modals — namespaced instead of a shared .btn */
+
+   .pmgmtBtn {
+   border: none;
+   border-radius: 8px;
+   padding: 9px 18px;
+   font-size: 13.5px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease;
+   }
+
+   .pmgmtBtnPrimary {
+   background: #2F6E4F;
+   color: #FFFFFF;
+   }
+
+   .pmgmtBtnPrimary:hover {
+   background: #275C42;
+   }
+
+   .pmgmtBtnGhost {
+   background: transparent;
+   color: #3D4A3F;
+   border: 1px solid #DCE6DE;
+   }
+
+   .pmgmtBtnGhost:hover {
+   background: #F1F4F1;
+   }
+
+   .pmgmtBtnDanger {
+   background: #A23E3E;
+   color: #FFFFFF;
+   }
+
+   .pmgmtBtnDanger:hover {
+   background: #8A3333;
+   }
+
+   .pmgmtBtn:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+   }
+
+   /* Modal — namespaced instead of shared .modal / .modalOverlay */
+
+   .pmgmtModalOverlay {
+   position: fixed;
+   inset: 0;
+   background: rgba(16, 23, 18, 0.45);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   z-index: 50;
+   }
+
+   .pmgmtModal {
+   background: #FFFFFF;
+   border-radius: 16px;
+   padding: 28px;
+   width: 100%;
+   max-width: 480px;
+   max-height: 90vh;
+   overflow-y: auto;
+   }
+
+   .pmgmtModalSmall {
+   max-width: 400px;
+   }
+
+   .pmgmtModal h2 {
+   margin: 0 0 16px;
+   font-size: 18px;
+   color: #16231C;
+   }
+
+   .pmgmtForm {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+   }
+
+   .pmgmtForm label {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   font-size: 12.5px;
+   color: #3D4A3F;
+   font-weight: 600;
+   }
+
+   .pmgmtForm input,
+   .pmgmtForm textarea,
+   .pmgmtForm select {
+   font-family: inherit;
+   font-size: 14px;
+   font-weight: 400;
+   padding: 9px 12px;
+   border: 1px solid #DCE6DE;
+   border-radius: 8px;
+   color: #16231C;
+   resize: vertical;
+   }
+
+   .pmgmtForm input:focus,
+   .pmgmtForm textarea:focus,
+   .pmgmtForm select:focus {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 1px;
+   }
+
+   .pmgmtFormRow {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 14px;
+   }
+
+   .pmgmtFormCheckbox {
+   flex-direction: row !important;
+   align-items: center;
+   gap: 8px !important;
+   margin-top: auto;
+   }
+
+   .pmgmtModalActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   margin-top: 8px;
+   }
+
+   @media (max-width: 640px) {
+   .programManagementMainDiv {
+      padding: 20px;
+   }
+
+   .programManagementAddDiv {
+      flex-wrap: wrap;
+   }
+
+   .programSearchInput {
+      max-width: none;
+      order: 1;
+      flex-basis: 100%;
+   }
+
+   .programAddBtn {
+      margin-left: 0;
+   }
+
+   .pmgmtFormRow {
+      grid-template-columns: 1fr;
+   }
+   }

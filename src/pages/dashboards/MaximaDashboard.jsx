@@ -24,37 +24,52 @@
                   </div>
 
                   <div className='threeMidSmallDiv'>
-                     <div className='threeMidSmallCards'>
-                        <p>Enrollees</p>
-                        <h2></h2>
-                        <p>Pending</p>
+
+                     <div className='threeMidSmallCardsDiv'>
+                        <div className='threeMidSmallCards'>
+                           <p>Enrollees</p>
+                           <h2></h2>
+                           <p>Pending</p>
+                        </div>
+                        <div className='threeMidSmallCards'>
+                           <p>Active Trainings</p>
+                           <h2></h2>
+                           <p>On Going</p>
+                        </div>
                      </div>
-                     <div className='threeMidSmallCards'>
-                        <p>Active Trainings</p>
-                        <h2></h2>
-                        <p>On Going</p>
-                     </div>
-                     <div className='threeMidSmallCards'>
-                        <p>Completed Trainings</p>
-                        <h2></h2>
-                        <p>This Year</p>
+
+                     <div className='threeMidSmallCardsDiv'>
+                        <div className='threeMidSmallCards'>
+                           <p>Completed Trainings</p>
+                           <h2></h2>
+                           <p>This Year</p>
+                        </div>
+                        <div className='threeMidSmallCards'>
+                           <p>Completed Trainings</p>
+                           <h2></h2>
+                           <p>This Year</p>
+                        </div>
                      </div>
 
                   </div>
+
                </div>
+
+
 
                <div className='maximaMainDashboardBot'>
 
-                  <div className=''>
-                     
+                  <div className='dashboardBotLeft'>
+                     <h1></h1>
                   </div>
 
-                  <div className=''>
-                     
+                  <div className='dashboardBotRight'>
+                     <h1></h1>
                   </div>
-                  
 
                </div>
+
+
 
             </div>
 
