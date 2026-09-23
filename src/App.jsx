@@ -15,27 +15,27 @@ import Impact from './pages/impact';
 
 
 
-import OsyDashboard from './pages/dashboards/OsyDashboard';
-import OsyMyProfile from './pages/dashboards/OsyMyProfile';
-import OsyAvailCourses from './pages/dashboards/OsyAvailCourses';
-import OsyApplicationDets from './pages/dashboards/OsyApplicationDets';
-import OsyTrainingProg from './pages/dashboards/OsyTrainingProg';
-import OsyNotif from './pages/dashboards/OsyNotif';
+import OsyDashboard from './pages/dashboards/osy/OsyDashboard';
+import OsyMyProfile from './pages/dashboards/osy/OsyMyProfile';
+import OsyAvailCourses from './pages/dashboards/osy/OsyAvailCourses';
+import OsyApplicationDets from './pages/dashboards/osy/OsyApplicationDets';
+import OsyTrainingProg from './pages/dashboards/osy/OsyTrainingProg';
+import OsyNotif from './pages/dashboards/osy/OsyNotif';
 
 
 
 
 
-import MaximaTesdaDashboard from "./pages/dashboards/MaximaDashboard";
-import MaximaProgramManagement from "./pages/dashboards/MaximaProgramManagement"
-import MaximaReferrals from './pages/dashboards/MaximaReferrals';
+import MaximaTesdaDashboard from "./pages/dashboards/maxima/MaximaDashboard";
+import MaximaProgramManagement from "./pages/dashboards/maxima/MaximaProgramManagement"
+import MaximaReferrals from './pages/dashboards/maxima/MaximaReferrals';
 
 
 
 
 
 
-import BarangayDashboard from "./pages/dashboards/BarangayDashboard";
+import BarangayDashboard from "./pages/dashboards/barangay/BarangayDashboard";
 
 
 
@@ -66,9 +66,11 @@ function App() {
 
 
 
+
          <Route path="/maxima/dashboard" element={ <ProtectedRoute> <MaximaTesdaDashboard/> </ProtectedRoute>} />
          <Route path="/maxima/management" element={<ProtectedRoute> <MaximaProgramManagement> </MaximaProgramManagement> </ProtectedRoute>}/>
          <Route path="/maxima/referrals" element={<ProtectedRoute> <MaximaReferrals> </MaximaReferrals> </ProtectedRoute>}/>
+
 
 
 

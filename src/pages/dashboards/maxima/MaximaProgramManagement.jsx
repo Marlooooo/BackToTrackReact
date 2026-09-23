@@ -1,5 +1,5 @@
    import { useEffect, useMemo, useState } from 'react';
-   import MaximaSideBar from '../../components/maximaSideBar';
+   import MaximaSideBar from '../../../components/maximaSideBar';
    import './MaximaProgramManagement.css';
 
    function getCookie(name) {

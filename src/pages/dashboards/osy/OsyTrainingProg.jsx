@@ -1,4 +1,4 @@
-import OsySideBar from '../../components/osySideBar';
+import OsySideBar from '../../../components/osySideBar';
 import "./OsyTrainingProg.css"
 
    function OsyTrainingProg() {

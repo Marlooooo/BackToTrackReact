@@ -1,4 +1,4 @@
-   import BarangaySideBar from '../../components/skOfficialSideBar';
+   import BarangaySideBar from '../../../components/skOfficialSideBar';
    import './BarangayDashboard.css'
    
    

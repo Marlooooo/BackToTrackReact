@@ -1,4 +1,4 @@
-   import MaximaSideBar from '../../components/maximaSideBar';
+   import MaximaSideBar from '../../../components/maximaSideBar';
    import './MaximaDashboard.css'
    
    
