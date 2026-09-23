@@ -71,41 +71,41 @@ function OsySideBar() {
                   <span>
                   <i className="las la-user"></i>
                   </span>
-                  <Link to="/osy/profile">
-                  My Profile
-                  </Link>
+                  <NavLink to="/osy/profile" className={({ isActive }) => isActive ? "active" : ""}>
+                     My Profile
+                  </NavLink>
                </div>
                <div>
                   <span>
                   <i className="las la-graduation-cap"></i>
                   </span>
-                  <Link to="/osy/courses">
+                  <NavLink to="/osy/courses" className={({ isActive }) => isActive ? "active" : ""}>
                   Available Courses
-                  </Link>
+                  </NavLink>
                </div>
                <div>
                   <span>
                   <i className="las la-clipboard-list"></i>
                   </span>
-                  <Link to="/osy/applications">
+                  <NavLink to="/osy/applications" className={({ isActive }) => isActive ? "active" : ""}>
                   Application Details
-                  </Link>
+                  </NavLink>
                </div>
                <div>
                   <span>
                   <i className="las la-chart-line"></i>
                   </span>
-                  <Link to="/osy/training">
+                  <NavLink to="/osy/training" className={({ isActive }) => isActive ? "active" : ""}>
                   Training Progress
-                  </Link>
+                  </NavLink>
                </div>
                <div>
                   <span>
                   <i className="las la-briefcase"></i>
                   </span>
-                  <Link to="/osy/jobs">
+                  <NavLink to="/osy/jobs" className={({ isActive }) => isActive ? "active" : ""}>
                   Job Opportunities
-                  </Link>
+                  </NavLink>
                </div>
             </div>
 
@@ -116,9 +116,9 @@ function OsySideBar() {
                   <span>
                   <i className="las la-bell"></i>
                   </span>
-                  <Link to="/osy/notifications">
+                  <NavLink to="/osy/notifications" className={({ isActive }) => isActive ? "active" : ""}>
                   Notifications
-                  </Link>
+                  </NavLink>
                </div>
             </div>
 

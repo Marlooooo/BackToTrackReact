@@ -16,6 +16,13 @@ import Impact from './pages/impact';
 
 
 import OsyDashboard from './pages/dashboards/OsyDashboard';
+import OsyMyProfile from './pages/dashboards/OsyMyProfile';
+import OsyAvailCourses from './pages/dashboards/OsyAvailCourses';
+import OsyApplicationDets from './pages/dashboards/OsyApplicationDets';
+import OsyTrainingProg from './pages/dashboards/OsyTrainingProg';
+import OsyNotif from './pages/dashboards/OsyNotif';
+
+
 
 
 
@@ -24,7 +31,14 @@ import MaximaProgramManagement from "./pages/dashboards/MaximaProgramManagement"
 import MaximaReferrals from './pages/dashboards/MaximaReferrals';
 
 
+
+
+
+
 import BarangayDashboard from "./pages/dashboards/BarangayDashboard";
+
+
+
 
 
 
@@ -43,6 +57,11 @@ function App() {
 
 
          <Route path="/osy/dashboard" element={<ProtectedRoute> <OsyDashboard /> </ProtectedRoute>} />
+         <Route path="/osy/profile" element={<ProtectedRoute> <OsyMyProfile /> </ProtectedRoute>} />
+         <Route path="/osy/courses" element={<ProtectedRoute> <OsyAvailCourses /> </ProtectedRoute>} />
+         <Route path="/osy/applications" element={<ProtectedRoute> <OsyApplicationDets /> </ProtectedRoute>} />
+         <Route path="/osy/training" element={<ProtectedRoute> <OsyTrainingProg /> </ProtectedRoute>} />
+         <Route path="/osy/notifications" element={<ProtectedRoute> <OsyNotif /> </ProtectedRoute>} />
 
 
 

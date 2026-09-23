@@ -2,6 +2,15 @@
    import MaximaSideBar from '../../components/maximaSideBar';
    import './MaximaProgramManagement.css';
 
+   function getCookie(name) {
+   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+   return match ? decodeURIComponent(match[2]) : null;
+   }
+
+   async function ensureCsrfCookie() {
+   await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
+   }
+
    const EMPTY_FORM = {
    name: '',
    description: '',
@@ -97,10 +106,16 @@
       const method = editingId ? 'PUT' : 'POST';
 
       try {
+         await ensureCsrfCookie();
+
          const res = await fetch(url, {
          method,
          credentials: 'include',
-         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+         headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+         },
          body: JSON.stringify({ ...form, slots: Number(form.slots) || 0 }),
          });
 
@@ -121,10 +136,15 @@
    async function confirmDelete() {
       if (!deleteTarget) return;
       try {
+         await ensureCsrfCookie();
+
          const res = await fetch(`/api/training-programs/${deleteTarget.id}`, {
          method: 'DELETE',
          credentials: 'include',
-         headers: { Accept: 'application/json' },
+         headers: {
+            Accept: 'application/json',
+            'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+         },
          });
          if (!res.ok) throw new Error('Could not remove the program.');
          setPrograms((prev) => prev.filter((p) => p.id !== deleteTarget.id));
