@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./skOfficialSideBar.css";
 import BackToTrack_Logo3 from "../assets/BackToTrack_Logo3.png";
 import { useNavigate } from "react-router-dom";
 
-// ADD THIS — same helper as in Login.jsx
+// same helper as in Login.jsx
 function getCookie(name) {
    const value = `; ${document.cookie}`;
    const parts = value.split(`; ${name}=`);
@@ -13,7 +12,7 @@ function getCookie(name) {
 }
 
 function SkOfficialSideBar() {
-      
+
    const [userName, setUserName] = useState("");
    const navigate = useNavigate();
 
@@ -46,7 +45,7 @@ function SkOfficialSideBar() {
    return (
       <>
          <div className="sideBarDiv">
-            <div className="navBarTitleLogo">   
+            <div className="navBarTitleLogo">
                <img src={BackToTrack_Logo3} alt="" />
                <h1>BackToTrack</h1>
             </div>
@@ -58,7 +57,7 @@ function SkOfficialSideBar() {
                   <span>
                   <i className="las la-border-all"></i>
                   </span>
-                  <NavLink to="/maxima/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
                   DASHBOARD
                   </NavLink>
                </div>
@@ -68,20 +67,20 @@ function SkOfficialSideBar() {
                <h2>MY WORKSPACE</h2>
 
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   folder_copy
                   </span>
-                  <Link to="/barangay/management">
+                  <NavLink to="/barangay/management" className={({ isActive }) => isActive ? "active" : ""}>
                   OSY Management
-                  </Link>
+                  </NavLink>
                </div>
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   quick_reference_all
                   </span>
-                  <Link to="/barangay/referrals">
+                  <NavLink to="/barangay/referrals" className={({ isActive }) => isActive ? "active" : ""}>
                   Referral Management
-                  </Link>
+                  </NavLink>
                </div>
 
             </div>
@@ -90,54 +89,52 @@ function SkOfficialSideBar() {
                <h2>MONITORING</h2>
 
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <Link to="/maxima/monitoring">
+                  <NavLink to="/barangay/monitoring/training" className={({ isActive }) => isActive ? "active" : ""}>
                   Training Monitoring
-                  </Link>
+                  </NavLink>
                </div>
 
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <Link to="/maxima/monitoring">
+                  <NavLink to="/barangay/monitoring/employment" className={({ isActive }) => isActive ? "active" : ""}>
                   Employment Tracking
-                  </Link>
+                  </NavLink>
                </div>
 
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <Link to="/maxima/monitoring">
+                  <NavLink to="/barangay/monitoring/recommendation" className={({ isActive }) => isActive ? "active" : ""}>
                   Course Recommendation
-                  </Link>
+                  </NavLink>
                </div>
-
 
             </div>
-
 
             <div className="linkDiv">
                <h2>REPORTS AND UPDATES</h2>
 
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   lab_profile
                   </span>
-                  <Link to="/maxima/reports">
+                  <NavLink to="/barangay/reports" className={({ isActive }) => isActive ? "active" : ""}>
                   Reports
-                  </Link>
+                  </NavLink>
                </div>
                <div>
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                   notifications_active
                   </span>
-                  <Link to="/maxima/announcements">
-                  Notifications  
-                  </Link>
+                  <NavLink to="/barangay/announcements" className={({ isActive }) => isActive ? "active" : ""}>
+                  Notifications
+                  </NavLink>
                </div>
             </div>
 

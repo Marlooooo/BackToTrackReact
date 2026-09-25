@@ -39,7 +39,8 @@ import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement';
 
 
 import BarangayDashboard from "./pages/dashboards/barangay/BarangayDashboard";
-
+import BarangayOsyManagement from "./pages/dashboards/barangay/BarangayOsyManagement";
+import BarangayReferralManagement from "./pages/dashboards/barangay/BarangayReferralManagement";
 
 
 
@@ -80,8 +81,9 @@ function App() {
 
 
 
-         <Route path="/barangay/dashboard" element={<ProtectedRoute> <BarangayDashboard/> </ProtectedRoute> } />
-
+         <Route path="/barangay/dashboard" element={<ProtectedRoute> <BarangayDashboard/> </ProtectedRoute>} />
+         <Route path="/barangay/management" element={<ProtectedRoute> <BarangayOsyManagement/> </ProtectedRoute>} />
+         <Route path="/barangay/referrals" element={<ProtectedRoute> <BarangayReferralManagement/> </ProtectedRoute>} />
 
          </Routes>
       </BrowserRouter>
