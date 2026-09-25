@@ -29,7 +29,10 @@ import OsyNotif from './pages/dashboards/osy/OsyNotif';
 import MaximaTesdaDashboard from "./pages/dashboards/maxima/MaximaDashboard";
 import MaximaProgramManagement from "./pages/dashboards/maxima/MaximaProgramManagement"
 import MaximaReferrals from './pages/dashboards/maxima/MaximaReferrals';
-
+import MaximaEnrollees from './pages/dashboards/maxima/MaximaEnrollees';
+import MaximaProgressMonitoring from './pages/dashboards/maxima/MaximaProgressMonitoring';
+import MaximaReports from './pages/dashboards/maxima/MaximaReports';
+import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement';
 
 
 
@@ -70,7 +73,10 @@ function App() {
          <Route path="/maxima/dashboard" element={ <ProtectedRoute> <MaximaTesdaDashboard/> </ProtectedRoute>} />
          <Route path="/maxima/management" element={<ProtectedRoute> <MaximaProgramManagement> </MaximaProgramManagement> </ProtectedRoute>}/>
          <Route path="/maxima/referrals" element={<ProtectedRoute> <MaximaReferrals> </MaximaReferrals> </ProtectedRoute>}/>
-
+         <Route path="/maxima/enrollees" element={<ProtectedRoute> <MaximaEnrollees/> </ProtectedRoute>}/>
+         <Route path="/maxima/monitoring" element={<ProtectedRoute> <MaximaProgressMonitoring/> </ProtectedRoute>}/>
+         <Route path="/maxima/reports" element={<ProtectedRoute> <MaximaReports/> </ProtectedRoute>}/>
+         <Route path="/maxima/announcements" element={<ProtectedRoute> <MaximaAnnouncement/> </ProtectedRoute>}/>
 
 
 
