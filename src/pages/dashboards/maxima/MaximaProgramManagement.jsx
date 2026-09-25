@@ -1,4 +1,4 @@
-   import { useEffect, useMemo, useState } from 'react';
+   import { useEffect, useMemo, useRef, useState } from 'react';
    import MaximaSideBar from '../../../components/maximaSideBar';
    import './MaximaProgramManagement.css';
 
@@ -32,9 +32,12 @@
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [editingId, setEditingId] = useState(null);
    const [form, setForm] = useState(EMPTY_FORM);
+   const [imageFile, setImageFile] = useState(null);
+   const [imagePreview, setImagePreview] = useState(null);
    const [saving, setSaving] = useState(false);
    const [formError, setFormError] = useState(null);
    const [deleteTarget, setDeleteTarget] = useState(null);
+   const fileInputRef = useRef(null);
 
    useEffect(() => {
       fetchPrograms();
@@ -66,10 +69,17 @@
       });
    }, [programs, search, statusFilter]);
 
+   function resetImageState() {
+      setImageFile(null);
+      setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+   }
+
    function openAddModal() {
       setEditingId(null);
       setForm(EMPTY_FORM);
       setFormError(null);
+      resetImageState();
       setIsModalOpen(true);
    }
 
@@ -85,6 +95,8 @@
          status: program.status ?? 'active',
       });
       setFormError(null);
+      setImageFile(null);
+      setImagePreview(program.image_url ?? null);
       setIsModalOpen(true);
    }
 
@@ -97,31 +109,47 @@
       setForm((prev) => ({ ...prev, [field]: value }));
    }
 
+   function handleImageChange(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+   }
+
    async function handleSubmit(e) {
       e.preventDefault();
       setSaving(true);
       setFormError(null);
 
       const url = editingId ? `/api/training-programs/${editingId}` : '/api/training-programs';
-      const method = editingId ? 'PUT' : 'POST';
+
+      const body = new FormData();
+      body.append('name', form.name);
+      body.append('description', form.description ?? '');
+      body.append('requirements', form.requirements ?? '');
+      body.append('schedule', form.schedule ?? '');
+      body.append('slots', String(Number(form.slots) || 0));
+      body.append('tesda_accredited', form.tesda_accredited ? '1' : '0');
+      body.append('status', form.status);
+      if (imageFile) body.append('image', imageFile);
+      if (editingId) body.append('_method', 'PUT');
 
       try {
          await ensureCsrfCookie();
 
          const res = await fetch(url, {
-         method,
+         method: 'POST',
          credentials: 'include',
          headers: {
-            'Content-Type': 'application/json',
             Accept: 'application/json',
             'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
          },
-         body: JSON.stringify({ ...form, slots: Number(form.slots) || 0 }),
+         body,
          });
 
          if (!res.ok) {
-         const body = await res.json().catch(() => null);
-         throw new Error(body?.message ?? 'Could not save the program.');
+         const responseBody = await res.json().catch(() => null);
+         throw new Error(responseBody?.message ?? 'Could not save the program.');
          }
 
          setIsModalOpen(false);
@@ -210,7 +238,7 @@
                   <table className="programTable">
                      <thead>
                      <tr>
-                        <th>Program name</th>
+                        <th>Program</th>
                         <th>Schedule</th>
                         <th>Slots</th>
                         <th>TESDA</th>
@@ -221,7 +249,20 @@
                      <tbody>
                      {visiblePrograms.map((program) => (
                         <tr key={program.id}>
-                           <td className="programTable__name">{program.name}</td>
+                           <td>
+                           <div className="programTable__nameCell">
+                              <div className="programTable__thumb">
+                                 {program.image_url ? (
+                                 <img src={program.image_url} alt="" />
+                                 ) : (
+                                 <span className="programTable__thumbFallback">
+                                    {program.name?.charAt(0)?.toUpperCase() || '?'}
+                                 </span>
+                                 )}
+                              </div>
+                              <span className="programTable__name">{program.name}</span>
+                           </div>
+                           </td>
                            <td>{program.schedule || '—'}</td>
                            <td>{program.slots}</td>
                            <td>
@@ -263,6 +304,30 @@
                <h2>{editingId ? 'Edit Program' : 'Add Program'}</h2>
 
                <form onSubmit={handleSubmit} className="pmgmtForm">
+               <label className="pmgmtImageLabel">
+                  Program image
+                  <div
+                     className="pmgmtImageDrop"
+                     onClick={() => fileInputRef.current?.click()}
+                  >
+                     {imagePreview ? (
+                     <img src={imagePreview} alt="Preview" />
+                     ) : (
+                     <div className="pmgmtImageDropPlaceholder">
+                        <span>Click to upload</span>
+                        <small>PNG or JPG, up to 2MB</small>
+                     </div>
+                     )}
+                  </div>
+                  <input
+                     ref={fileInputRef}
+                     type="file"
+                     accept="image/*"
+                     onChange={handleImageChange}
+                     hidden
+                  />
+               </label>
+
                <label>
                   Program name
                   <input

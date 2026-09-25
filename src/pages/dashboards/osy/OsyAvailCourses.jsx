@@ -2,7 +2,17 @@
    import OsySideBar from '../../../components/osySideBar';
    import "./OsyAvailCourses.css"
 
+   function IconSearch() {
+   return (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+         <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+         <path d="M20 20L16.5 16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+   );
+   }
+
    function OsyAvailCourses() {
+
    const [courses, setCourses] = useState([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
@@ -24,7 +34,7 @@
          if (!res.ok) throw new Error('Could not load available courses.');
          const data = await res.json();
          const list = data.data ?? data;
-         setCourses(list.filter((c) => c.status === 'active'));
+         setCourses(list);
       } catch (err) {
          setError(err.message);
       } finally {
@@ -44,18 +54,20 @@
 
          <OsySideBar/>
 
+
          <div className='osyAvailCoursesBrowse'>
             <div className='osyAvailCoursesTop'>
-               <div className="osyCoursesHeading">
-               <h1>Available Courses</h1>
-               <p>Browse the training programs currently open for referral.</p>
-               </div>
 
+               <div className='osyAvailCoursesBrowseTop'>
+                  <h1>Browse Courses</h1>
+               </div>
+               
                <div className="osyCoursesSearchWrap">
+               <IconSearch />
                <input
                   type="text"
                   className="osyCoursesSearchInput"
-                  placeholder="Search courses..."
+                  placeholder="Search Courses"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                />
@@ -76,34 +88,40 @@
                <div className="osyCoursesGrid">
                   {visibleCourses.map((course) => (
                      <div className="osyCourseCard" key={course.id}>
-                     <div className="osyCourseCard__top">
-                        <h3>{course.name}</h3>
-                        {course.tesda_accredited && (
-                           <span className="osyCourseTag osyCourseTagAccredited">TESDA Accredited</span>
+                     <div className="osyCourseCard__imageWrap">
+                        {course.image_url ? (
+                           <img src={course.image_url} alt={course.name} />
+                        ) : (
+                           <div className="osyCourseCard__imagePlaceholder">
+                           <span>COURSES</span>
+                           </div>
                         )}
                      </div>
 
-                     {course.description && (
-                        <p className="osyCourseCard__desc">{course.description}</p>
-                     )}
+                     <div className="osyCourseCard__body">
+                        <h3>{course.name}</h3>
 
-                     <div className="osyCourseCard__meta">
-                        <div>
-                           <span className="osyCourseMetaLabel">Schedule</span>
-                           <span>{course.schedule || 'To be announced'}</span>
+                        <div className="osyCourseField">
+                           <span className="osyCourseFieldLabel">Schedule</span>
+                           <span className="osyCourseFieldValue">{course.schedule || 'To be announced'}</span>
                         </div>
-                        <div>
-                           <span className="osyCourseMetaLabel">Slots</span>
-                           <span>{course.slots}</span>
+
+                        <div className="osyCourseField">
+                           <span className="osyCourseFieldLabel">Training Center</span>
+                           <span className="osyCourseFieldValue">Maxima Training Center</span>
                         </div>
+
+                        <span className={`osyCourseStatus ${course.status === 'active' ? 'osyCourseStatusActive' : 'osyCourseStatusInactive'}`}>
+                           {course.status === 'active' ? 'Active' : 'Inactive'}
+                        </span>
+
+                        <button
+                           className="osyCourseViewBtn"
+                           onClick={() => setViewTarget(course)}
+                        >
+                           View Details
+                        </button>
                      </div>
-
-                     <button
-                        className="osyCourseViewBtn"
-                        onClick={() => setViewTarget(course)}
-                     >
-                        View details
-                     </button>
                      </div>
                   ))}
                </div>
@@ -116,10 +134,16 @@
          {viewTarget && (
          <div className="osyCoursesModalOverlay" onClick={() => setViewTarget(null)}>
             <div className="osyCoursesModal" onClick={(e) => e.stopPropagation()}>
+               {viewTarget.image_url && (
+               <div className="osyCoursesModal__image">
+                  <img src={viewTarget.image_url} alt={viewTarget.name} />
+               </div>
+               )}
+
                <div className="osyCoursesModal__header">
                <h2>{viewTarget.name}</h2>
                {viewTarget.tesda_accredited && (
-                  <span className="osyCourseTag osyCourseTagAccredited">TESDA Accredited</span>
+                  <span className="osyCourseTagAccredited">TESDA Accredited</span>
                )}
                </div>
 
@@ -127,6 +151,10 @@
                <div>
                   <dt>Schedule</dt>
                   <dd>{viewTarget.schedule || 'To be announced'}</dd>
+               </div>
+               <div>
+                  <dt>Training Center</dt>
+                  <dd>Maxima Training Center</dd>
                </div>
                <div>
                   <dt>Slots available</dt>

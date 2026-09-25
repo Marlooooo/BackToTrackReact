@@ -1,40 +1,39 @@
    .programManagementMainDiv {
    flex: 1;
-   padding: 36px 44px;
-   background: #F6F8F6;
+   padding: 40px 48px;
+   background: #F5F7F5;
    min-height: 100vh;
    box-sizing: border-box;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
    }
 
    .programManagementTopPart {
-   margin-bottom: 22px;
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
    }
 
    .programManagementTopPart h1 {
    margin: 0 0 4px;
-   font-size: 23px;
+   font-size: 24px;
    font-weight: 700;
-   color: #16231C;
-   letter-spacing: -0.01em;
+   color: #14201A;
+   letter-spacing: -0.015em;
    }
 
    .programManagementTopPart p {
    margin: 0;
-   color: #62705F;
+   color: #66746A;
    font-size: 13.5px;
    }
 
    .programManagementBotPart {
    display: flex;
    flex-direction: column;
-   gap: 20px;
-   border-radius: 10px;
-   border: 1px solid gray;
-   padding: 30px 20px 30px 20px;
+   gap: 22px;
    }
 
-   /* Toolbar: search + status filter + add button */
+   /* Toolbar */
 
    .programManagementAddDiv {
    display: flex;
@@ -52,6 +51,7 @@
    font-size: 13.5px;
    color: #16231C;
    outline: none;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
    }
 
    .programSearchInput:focus {
@@ -66,23 +66,26 @@
    font-size: 13.5px;
    color: #3D4A3F;
    cursor: pointer;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
    }
 
    .programAddBtn {
    margin-left: auto;
    border: none;
-   border-radius: 8px;
-   padding: 10px 18px;
+   border-radius: 9px;
+   padding: 10px 20px;
    font-size: 13.5px;
    font-weight: 600;
    background: #2F6E4F;
    color: #FFFFFF;
    cursor: pointer;
-   transition: background 0.15s ease;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
+   transition: background 0.15s ease, box-shadow 0.15s ease;
    }
 
    .programAddBtn:hover {
    background: #275C42;
+   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
    }
 
    /* List / table area */
@@ -90,12 +93,13 @@
    .programManagementList {
    background: #FFFFFF;
    border: 1px solid #E3E9E3;
-   border-radius: 14px;
+   border-radius: 16px;
    overflow: hidden;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
    }
 
    .pmgmtEmpty {
-   padding: 56px 24px;
+   padding: 60px 24px;
    text-align: center;
    color: #62705F;
    }
@@ -128,11 +132,14 @@
 
    .programTable thead th {
    text-align: left;
-   padding: 13px 20px;
+   padding: 14px 22px;
    color: #7C877E;
    font-weight: 600;
-   font-size: 12px;
+   font-size: 11.5px;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
    border-bottom: 1px solid #EEF2EE;
+   background: #FBFCFB;
    }
 
    .programTable tbody tr:hover {
@@ -140,7 +147,7 @@
    }
 
    .programTable tbody td {
-   padding: 15px 20px;
+   padding: 13px 22px;
    border-bottom: 1px solid #F1F4F1;
    color: #29332C;
    }
@@ -149,9 +156,39 @@
    border-bottom: none;
    }
 
+   .programTable__nameCell {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   }
+
+   .programTable__thumb {
+   width: 40px;
+   height: 40px;
+   border-radius: 9px;
+   overflow: hidden;
+   flex-shrink: 0;
+   background: #EAF1EC;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   }
+
+   .programTable__thumb img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   }
+
+   .programTable__thumbFallback {
+   font-size: 14px;
+   font-weight: 700;
+   color: #2F6E4F;
+   }
+
    .programTable__name {
    font-weight: 600;
-   color: #16231C;
+   color: #14201A;
    }
 
    .programTable__actions {
@@ -165,11 +202,12 @@
    border: 1px solid #DCE6DE;
    background: transparent;
    border-radius: 7px;
-   padding: 6px 12px;
+   padding: 6px 13px;
    font-size: 12.5px;
    font-weight: 500;
    cursor: pointer;
    color: #3D4A3F;
+   transition: background 0.15s ease;
    }
 
    .programEditBtn:hover {
@@ -185,14 +223,14 @@
    border-color: #F0CACA;
    }
 
-   /* Tags & status pills — namespaced so they never collide with another page's .tag / .status */
+   /* Tags & status pills */
 
    .pmgmtTag,
    .pmgmtStatus {
    display: inline-block;
    padding: 3px 11px;
    border-radius: 999px;
-   font-size: 11.5px;
+   font-size: 11px;
    font-weight: 600;
    }
 
@@ -216,7 +254,7 @@
    color: #7C877E;
    }
 
-   /* Buttons used inside this page's modals — namespaced instead of a shared .btn */
+   /* Buttons used inside modals */
 
    .pmgmtBtn {
    border: none;
@@ -261,12 +299,12 @@
    cursor: not-allowed;
    }
 
-   /* Modal — namespaced instead of shared .modal / .modalOverlay */
+   /* Modal */
 
    .pmgmtModalOverlay {
    position: fixed;
    inset: 0;
-   background: rgba(16, 23, 18, 0.45);
+   background: rgba(16, 23, 18, 0.5);
    display: flex;
    align-items: center;
    justify-content: center;
@@ -276,12 +314,13 @@
 
    .pmgmtModal {
    background: #FFFFFF;
-   border-radius: 16px;
-   padding: 28px;
+   border-radius: 18px;
+   padding: 30px;
    width: 100%;
    max-width: 480px;
    max-height: 90vh;
    overflow-y: auto;
+   box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
    }
 
    .pmgmtModalSmall {
@@ -289,9 +328,10 @@
    }
 
    .pmgmtModal h2 {
-   margin: 0 0 16px;
+   margin: 0 0 18px;
    font-size: 18px;
-   color: #16231C;
+   font-weight: 700;
+   color: #14201A;
    }
 
    .pmgmtForm {
@@ -347,6 +387,56 @@
    justify-content: flex-end;
    gap: 10px;
    margin-top: 8px;
+   }
+
+   /* Image upload */
+
+   .pmgmtImageLabel {
+   gap: 8px !important;
+   }
+
+   .pmgmtImageDrop {
+   width: 100%;
+   height: 140px;
+   border: 1.5px dashed #C7D4C9;
+   border-radius: 12px;
+   background: #FAFBF9;
+   cursor: pointer;
+   overflow: hidden;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: border-color 0.15s ease, background 0.15s ease;
+   }
+
+   .pmgmtImageDrop:hover {
+   border-color: #2F6E4F;
+   background: #F3F8F4;
+   }
+
+   .pmgmtImageDrop img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   }
+
+   .pmgmtImageDropPlaceholder {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 3px;
+   color: #7C877E;
+   }
+
+   .pmgmtImageDropPlaceholder span {
+   font-size: 13px;
+   font-weight: 600;
+   color: #4B564F;
+   }
+
+   .pmgmtImageDropPlaceholder small {
+   font-size: 11px;
+   color: #94A092;
    }
 
    @media (max-width: 640px) {
