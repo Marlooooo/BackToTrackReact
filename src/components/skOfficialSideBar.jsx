@@ -35,6 +35,7 @@ function SkOfficialSideBar() {
       } catch (err) {
          console.error("Logout failed:", err);
       } finally {
+         localStorage.removeItem("token"); 
          localStorage.removeItem("userName");
          localStorage.removeItem("userRole");
          navigate("/login", { replace: true });

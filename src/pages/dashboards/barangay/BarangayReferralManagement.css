@@ -1,0 +1,634 @@
+
+.barangayReferralManagementBody,
+.referralModalOverlay {
+   --referral-bg: #f4f6fa;
+   --referral-surface: #ffffff;
+   --referral-border: #e3e7ee;
+   --referral-border-strong: #c9d1de;
+   --referral-text: #1b2536;
+   --referral-muted: #667085;
+
+   --referral-primary: #1d4ed8;
+   --referral-primary-dark: #1e40af;
+   --referral-primary-soft: #e8eefc;
+
+   --referral-approved: #15803d;
+   --referral-approved-soft: #e7f6ec;
+   --referral-pending: #b45309;
+   --referral-pending-soft: #fdf3dc;
+   --referral-rejected: #b91c1c;
+   --referral-rejected-soft: #fdeaea;
+
+   --referral-radius: 12px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page layout
+   -------------------------------------------------------------------------- */
+.barangayReferralManagementBody {
+   display: flex;
+   flex-direction: row;
+   min-height: 100vh;
+   background: var(--referral-bg);
+   color: var(--referral-text);
+}
+
+.barangayMainContent {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 24px;
+   min-width: 0;
+   padding: 32px 40px 48px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page heading
+   -------------------------------------------------------------------------- */
+.referralManagementTopPart h1 {
+   margin: 0;
+   font-size: 1.75rem;
+   font-weight: 700;
+   letter-spacing: -0.01em;
+}
+
+.referralManagementTopPart p {
+   margin: 6px 0 0;
+   color: var(--referral-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   Summary cards (Approved / Pending / Rejected)
+   -------------------------------------------------------------------------- */
+.referralManagementMidPart {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 16px;
+}
+
+.referralStatCard {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 20px 24px;
+   border: 1px solid var(--referral-border);
+   border-radius: var(--referral-radius);
+   background: var(--referral-surface);
+   font: inherit;
+   color: inherit;
+   text-align: left;
+   cursor: pointer;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Coloured bar on the left edge tells the status apart at a glance */
+.referralStatCard::before {
+   content: '';
+   position: absolute;
+   top: 18px;
+   bottom: 18px;
+   left: 0;
+   width: 4px;
+   border-radius: 0 4px 4px 0;
+   background: var(--referral-accent);
+}
+
+.referralStatCard.approved { --referral-accent: var(--referral-approved); }
+.referralStatCard.pending  { --referral-accent: var(--referral-pending); }
+.referralStatCard.rejected { --referral-accent: var(--referral-rejected); }
+
+.referralStatCard:hover {
+   border-color: var(--referral-border-strong);
+}
+
+.referralStatCard.active {
+   border-color: var(--referral-accent);
+   box-shadow: 0 0 0 1px var(--referral-accent);
+}
+
+.referralStatLabel {
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: var(--referral-muted);
+}
+
+.referralStatCount {
+   font-size: 2.25rem;
+   font-weight: 700;
+   line-height: 1.1;
+}
+
+.referralStatHint {
+   font-size: 0.8rem;
+   color: var(--referral-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   Toolbar (search + create button)
+   -------------------------------------------------------------------------- */
+.referralManagementBotPart {
+   display: flex;
+   flex-direction: column;
+   gap: 16px;
+}
+
+.referralSearchAndAddReferral {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+}
+
+.referralSearchBox {
+   position: relative;
+   flex: 1;
+   max-width: 380px;
+   min-width: 220px;
+}
+
+.referralSearchBox svg {
+   position: absolute;
+   top: 50%;
+   left: 12px;
+   transform: translateY(-50%);
+   color: var(--referral-muted);
+   pointer-events: none;
+}
+
+.referralSearchBox input {
+   width: 100%;
+   height: 42px;
+   padding: 0 12px 0 38px;
+   border: 1px solid var(--referral-border-strong);
+   border-radius: 10px;
+   background: var(--referral-surface);
+   font: inherit;
+   color: inherit;
+}
+
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.referralPrimaryBtn,
+.referralSecondaryBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 42px;
+   padding: 0 18px;
+   border-radius: 10px;
+   font: inherit;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.referralPrimaryBtn {
+   border: 1px solid var(--referral-primary);
+   background: var(--referral-primary);
+   color: #ffffff;
+}
+
+.referralPrimaryBtn:hover:not(:disabled) {
+   border-color: var(--referral-primary-dark);
+   background: var(--referral-primary-dark);
+}
+
+.referralPrimaryBtn:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+.referralSecondaryBtn {
+   border: 1px solid var(--referral-border-strong);
+   background: var(--referral-surface);
+   color: var(--referral-text);
+}
+
+.referralSecondaryBtn:hover {
+   background: var(--referral-bg);
+}
+
+.referralLinkBtn {
+   padding: 4px 8px;
+   border: 0;
+   border-radius: 6px;
+   background: none;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: var(--referral-primary);
+   cursor: pointer;
+}
+
+.referralLinkBtn:hover {
+   background: var(--referral-primary-soft);
+}
+
+.referralIconBtn {
+   display: grid;
+   place-items: center;
+   width: 36px;
+   height: 36px;
+   border: 0;
+   border-radius: 8px;
+   background: none;
+   color: var(--referral-muted);
+   cursor: pointer;
+}
+
+.referralIconBtn:hover {
+   background: var(--referral-bg);
+   color: var(--referral-text);
+}
+
+
+/* --------------------------------------------------------------------------
+   Referral list card
+   -------------------------------------------------------------------------- */
+.referralList {
+   overflow: hidden;
+   border: 1px solid var(--referral-border);
+   border-radius: var(--referral-radius);
+   background: var(--referral-surface);
+}
+
+.referralListHeader {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   min-height: 60px;
+   padding: 12px 20px;
+   border-bottom: 1px solid var(--referral-border);
+}
+
+.referralListTitle {
+   margin: 0;
+   font-size: 1rem;
+   font-weight: 600;
+}
+
+.referralListCount {
+   margin-left: 8px;
+   font-size: 0.875rem;
+   font-weight: 400;
+   color: var(--referral-muted);
+}
+
+.referralTableWrap {
+   overflow-x: auto;
+}
+
+.referralTable {
+   width: 100%;
+   min-width: 720px;
+   border-collapse: collapse;
+}
+
+.referralTable th {
+   padding: 12px 20px;
+   background: var(--referral-bg);
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: var(--referral-muted);
+   text-align: left;
+   white-space: nowrap;
+}
+
+.referralTable td {
+   padding: 14px 20px;
+   border-top: 1px solid var(--referral-border);
+   font-size: 0.925rem;
+   vertical-align: middle;
+}
+
+.referralTable tbody tr:hover {
+   background: #fafbfd;
+}
+
+.referralPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.referralPersonName {
+   font-weight: 600;
+}
+
+.referralAvatar {
+   display: grid;
+   flex-shrink: 0;
+   place-items: center;
+   width: 36px;
+   height: 36px;
+   border-radius: 50%;
+   background: var(--referral-primary-soft);
+   font-size: 0.8rem;
+   font-weight: 700;
+   color: var(--referral-primary);
+}
+
+.referralRemarks {
+   max-width: 260px;
+   overflow: hidden;
+   color: var(--referral-muted);
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.referralDate {
+   color: var(--referral-muted);
+   white-space: nowrap;
+}
+
+
+/* --------------------------------------------------------------------------
+   Status badge
+   -------------------------------------------------------------------------- */
+.referralStatusBadge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 4px 10px;
+   border-radius: 999px;
+   font-size: 0.8rem;
+   font-weight: 600;
+   white-space: nowrap;
+}
+
+.referralStatusBadge::before {
+   content: '';
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
+}
+
+.referralStatusBadge.approved {
+   background: var(--referral-approved-soft);
+   color: var(--referral-approved);
+}
+
+.referralStatusBadge.pending {
+   background: var(--referral-pending-soft);
+   color: var(--referral-pending);
+}
+
+.referralStatusBadge.rejected {
+   background: var(--referral-rejected-soft);
+   color: var(--referral-rejected);
+}
+
+
+/* --------------------------------------------------------------------------
+   Empty, loading and error states
+   -------------------------------------------------------------------------- */
+.referralEmptyState {
+   padding: 56px 24px;
+   text-align: center;
+}
+
+.referralEmptyState strong {
+   display: block;
+   margin-bottom: 4px;
+   font-size: 1rem;
+}
+
+.referralEmptyState p {
+   margin: 0;
+   color: var(--referral-muted);
+}
+
+.referralErrorBox,
+.referralFormError {
+   padding: 10px 14px;
+   border-radius: 8px;
+   background: var(--referral-rejected-soft);
+   font-size: 0.9rem;
+   color: var(--referral-rejected);
+}
+
+.referralErrorBox {
+   margin: 16px 20px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Create referral modal
+   -------------------------------------------------------------------------- */
+.referralModalOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 100;
+   display: grid;
+   place-items: center;
+   padding: 16px;
+   background: rgba(16, 24, 40, 0.5);
+   animation: referralFadeIn 0.15s ease;
+}
+
+.referralModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 520px;
+   max-height: calc(100vh - 32px);
+   border-radius: 16px;
+   background: var(--referral-surface);
+   color: var(--referral-text);
+   box-shadow: 0 24px 48px rgba(16, 24, 40, 0.24);
+}
+
+.referralModalHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 20px 24px 12px;
+}
+
+.referralModalHeader h2 {
+   margin: 0;
+   font-size: 1.25rem;
+}
+
+.referralModalHeader p {
+   margin: 4px 0 0;
+   font-size: 0.875rem;
+   color: var(--referral-muted);
+}
+
+.referralModalBody {
+   display: flex;
+   flex-direction: column;
+   gap: 18px;
+   padding: 12px 24px 20px;
+   overflow-y: auto;
+}
+
+.referralModalFooter {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   padding: 16px 24px;
+   border-top: 1px solid var(--referral-border);
+}
+
+
+/* --------------------------------------------------------------------------
+   Form fields
+   -------------------------------------------------------------------------- */
+.referralField {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.referralField label {
+   font-size: 0.875rem;
+   font-weight: 600;
+}
+
+.referralInput {
+   width: 100%;
+   padding: 10px 12px;
+   border: 1px solid var(--referral-border-strong);
+   border-radius: 10px;
+   background: var(--referral-surface);
+   font: inherit;
+   color: inherit;
+}
+
+textarea.referralInput {
+   resize: vertical;
+   width: 100%;
+   box-sizing: border-box;
+}
+
+.referralOptionList {
+   max-height: 200px;
+   margin: 0;
+   padding: 4px;
+   overflow-y: auto;
+   border: 1px solid var(--referral-border);
+   border-radius: 10px;
+   list-style: none;
+}
+
+.referralOption {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   padding: 8px 10px;
+   border: 0;
+   border-radius: 8px;
+   background: none;
+   font: inherit;
+   color: inherit;
+   text-align: left;
+   cursor: pointer;
+}
+
+.referralOption:hover {
+   background: var(--referral-bg);
+}
+
+.referralOptionName {
+   font-weight: 600;
+}
+
+.referralOptionMeta {
+   font-size: 0.8rem;
+   color: var(--referral-muted);
+}
+
+.referralOptionEmpty {
+   padding: 12px 10px;
+   font-size: 0.875rem;
+   color: var(--referral-muted);
+}
+
+.referralSelectedOsy {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   padding: 10px 12px;
+   border-radius: 10px;
+   background: var(--referral-bg);
+}
+
+.referralSelectedOsy .referralPersonName {
+   flex: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   Focus states (keyboard and form)
+   -------------------------------------------------------------------------- */
+.referralStatCard:focus-visible,
+.referralPrimaryBtn:focus-visible,
+.referralSecondaryBtn:focus-visible,
+.referralLinkBtn:focus-visible,
+.referralIconBtn:focus-visible,
+.referralOption:focus-visible {
+   outline: 2px solid var(--referral-primary);
+   outline-offset: 2px;
+}
+
+.referralSearchBox input:focus,
+.referralInput:focus {
+   border-color: var(--referral-primary);
+   outline: none;
+   box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+
+/* --------------------------------------------------------------------------
+   Animation
+   -------------------------------------------------------------------------- */
+@keyframes referralFadeIn {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .referralModalOverlay {
+      animation: none;
+   }
+
+   .referralStatCard,
+   .referralPrimaryBtn,
+   .referralSecondaryBtn {
+      transition: none;
+   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+   .barangayMainContent {
+      padding: 24px;
+   }
+}
+
+@media (max-width: 800px) {
+   .referralManagementMidPart {
+      grid-template-columns: 1fr;
+   }
+
+   .referralSearchBox {
+      max-width: none;
+   }
+}

@@ -1,0 +1,678 @@
+
+
+   /* Colors live on :root because the modals render outside the page wrapper. */
+   :root {
+   --bosy-green: #2F6E4F;
+   --bosy-green-dark: #275C42;
+   --bosy-green-soft: #E3F0E7;
+
+   --bosy-ink: #14201A;
+   --bosy-text: #29332C;
+   --bosy-muted: #66746A;
+   --bosy-faint: #94A092;
+
+   --bosy-bg: #F5F7F5;
+   --bosy-surface: #FFFFFF;
+   --bosy-hover: #F1F4F1;
+   --bosy-border: #DCE6DE;
+   --bosy-line: #EEF2EE;
+
+   --bosy-danger: #A23E3E;
+   --bosy-danger-dark: #8A3333;
+   --bosy-danger-bg: #FBEBEB;
+   --bosy-danger-border: #F0CACA;
+   }
+
+   /* ---------- Page layout ---------- */
+
+   .barangayOsyManagementBody {
+   display: flex;
+   height: 100vh;
+   overflow: hidden;
+
+   }
+
+   .barangayMainContent {
+   flex: 1;
+   min-width: 0;
+   min-height: 100%;
+   padding: 40px 48px;
+   box-sizing: border-box;
+   background: var(--bosy-bg);
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   overflow-y: auto;
+   }
+
+   .barangayMainContentTopPart {
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
+   }
+
+   .barangayMainContentTopPart h1 {
+   margin: 0 0 4px;
+   font-size: 24px;
+   font-weight: 700;
+   color: var(--bosy-ink);
+   letter-spacing: -0.015em;
+   }
+
+   .barangayMainContentTopPart p {
+   margin: 0;
+   font-size: 13.5px;
+   color: var(--bosy-muted);
+   }
+
+   .barangayMainContentBotPart {
+   display: flex;
+   flex-direction: column;
+   gap: 22px;
+   }
+
+   /* ---------- Toolbar ---------- */
+
+   .searchAndAddOsy {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   }
+
+   .osySearchInput,
+   .osyStatusFilter {
+   background: var(--bosy-surface);
+   border: 1px solid var(--bosy-border);
+   border-radius: 999px;
+   font-size: 13.5px;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   }
+
+   .osySearchInput {
+   flex: 1;
+   max-width: 360px;
+   padding: 10px 18px;
+   color: #16231C;
+   outline: none;
+   }
+
+   .osySearchInput:focus {
+   border-color: var(--bosy-green);
+   }
+
+   .osyStatusFilter {
+   padding: 10px 16px;
+   color: #3D4A3F;
+   cursor: pointer;
+   }
+
+   .osyAddBtn {
+   margin-left: auto;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 9px;
+   background: var(--bosy-green);
+   color: #FFFFFF;
+   font-size: 13.5px;
+   font-weight: 600;
+   white-space: nowrap;
+   cursor: pointer;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
+   transition: background 0.15s ease;
+   }
+
+   .osyAddBtn:hover {
+   background: var(--bosy-green-dark);
+   }
+
+   /* ---------- List card ---------- */
+
+   .osyList {
+   overflow-x: auto;
+   background: var(--bosy-surface);
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   }
+
+   .osyList > .bosyBanner {
+   margin: 16px;
+   }
+
+   .osyCount {
+   margin: 0;
+   padding: 14px 20px;
+   border-bottom: 1px solid var(--bosy-line);
+   font-size: 12.5px;
+   color: var(--bosy-faint);
+   }
+
+   .bosyEmpty {
+   padding: 60px 24px;
+   text-align: center;
+   color: #62705F;
+   }
+
+   .bosyEmpty span {
+   display: block;
+   margin-top: 6px;
+   font-size: 12.5px;
+   color: var(--bosy-faint);
+   }
+
+   /* ---------- Banners ---------- */
+
+   .bosyBanner {
+   margin: 0;
+   padding: 12px 16px;
+   border-radius: 8px;
+   font-size: 13.5px;
+   }
+
+   .bosyBannerError {
+   background: var(--bosy-danger-bg);
+   color: var(--bosy-danger);
+   border: 1px solid var(--bosy-danger-border);
+   }
+
+   .bosyBannerInfo {
+   background: #EAF0EE;
+   color: var(--bosy-green);
+   border: 1px solid var(--bosy-border);
+   }
+
+   /* ---------- Table ---------- */
+
+   .osyTable {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13.5px;
+   }
+   
+   .osyTable thead th {
+   padding: 14px 20px;
+   border-bottom: 1px solid var(--bosy-line);
+   background: #FBFCFB;
+   text-align: left;
+   white-space: nowrap;
+   font-size: 11.5px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   }
+
+   .osyTable tbody tr:hover {
+   background: #FAFBF9;
+   }
+
+   .osyTable tbody td {
+   padding: 13px 20px;
+   border-bottom: 1px solid #F1F4F1;
+   color: var(--bosy-text);
+   }
+
+   .osyTable tbody tr:last-child td {
+   border-bottom: none;
+   }
+
+   .osyTable__name {
+   font-weight: 600;
+   color: var(--bosy-ink);
+   white-space: nowrap;
+   }
+
+   .osyTable__address {
+   max-width: 220px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   }
+
+   .osyTable__actions {
+   text-align: right;
+   white-space: nowrap;
+   }
+
+   .osyTable__actions button + button {
+   margin-left: 8px;
+   }
+
+   .osyViewBtn,
+   .osyEditBtn,
+   .osyDeleteBtn {
+   padding: 6px 12px;
+   border: 1px solid var(--bosy-border);
+   border-radius: 7px;
+   background: transparent;
+   color: #3D4A3F;
+   font-size: 12.5px;
+   font-weight: 500;
+   cursor: pointer;
+   transition: background 0.15s ease;
+   }
+
+   .osyViewBtn:hover,
+   .osyEditBtn:hover {
+   background: var(--bosy-hover);
+   }
+
+   .osyDeleteBtn {
+   color: var(--bosy-danger);
+   }
+
+   .osyDeleteBtn:hover {
+   background: var(--bosy-danger-bg);
+   border-color: var(--bosy-danger-border);
+   }
+
+   /* ---------- Status pills (one per stage) ---------- */
+
+   .bosyStatus {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   font-size: 11px;
+   font-weight: 600;
+   white-space: nowrap;
+   }
+
+   .bosyStatus--Registered      { background: #EAF0EE; color: #55665C; }
+   .bosyStatus--Validated       { background: #E4EBF6; color: #3A5D8F; }
+   .bosyStatus--Referred        { background: #FBF0DD; color: #96701E; }
+   .bosyStatus--AcceptedbyTESDA { background: #EEE6F4; color: #71549A; }
+   .bosyStatus--TrainingStarted { background: #FBE9DA; color: #B0621F; }
+   .bosyStatus--Completed       { background: var(--bosy-green-soft); color: var(--bosy-green); }
+
+   /* ---------- Buttons (inside modals) ---------- */
+
+   .bosyBtn {
+   padding: 9px 18px;
+   border: none;
+   border-radius: 8px;
+   font-size: 13.5px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease;
+   }
+
+   .bosyBtnPrimary {
+   background: var(--bosy-green);
+   color: #FFFFFF;
+   }
+
+   .bosyBtnPrimary:hover {
+   background: var(--bosy-green-dark);
+   }
+
+   .bosyBtnGhost {
+   background: transparent;
+   color: #3D4A3F;
+   border: 1px solid var(--bosy-border);
+   }
+
+   .bosyBtnGhost:hover {
+   background: var(--bosy-hover);
+   }
+
+   .bosyBtnDanger {
+   background: var(--bosy-danger);
+   color: #FFFFFF;
+   }
+
+   .bosyBtnDanger:hover {
+   background: var(--bosy-danger-dark);
+   }
+
+   .bosyBtn:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+   }
+
+   /* Keyboard focus for every button on the page */
+   .osyAddBtn:focus-visible,
+   .osyViewBtn:focus-visible,
+   .osyEditBtn:focus-visible,
+   .osyDeleteBtn:focus-visible,
+   .bosyBtn:focus-visible {
+   outline: 2px solid var(--bosy-green);
+   outline-offset: 2px;
+   }
+
+   /* ---------- Modal shell ---------- */
+
+   .bosyModalOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 50;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   background: rgba(16, 23, 18, 0.5);
+   }
+
+   .bosyModal {
+   width: 100%;
+   max-width: 480px;
+   max-height: 90vh;
+   padding: 30px;
+   overflow-y: auto;
+   background: var(--bosy-surface);
+   border-radius: 18px;
+   box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
+   }
+
+   .bosyModalLarge { max-width: 640px; }
+   .bosyModalSmall { max-width: 400px; }
+
+   .bosyModal h2 {
+   margin: 0 0 18px;
+   font-size: 18px;
+   font-weight: 700;
+   color: var(--bosy-ink);
+   }
+
+   .bosyModalSmall p {
+   margin: 0 0 20px;
+   font-size: 13.5px;
+   line-height: 1.5;
+   color: var(--bosy-text);
+   }
+
+   .bosyModalActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   margin-top: 4px;
+   }
+
+   /* ---------- Stepper ---------- */
+
+   .bosyStepper {
+   display: flex;
+   gap: 8px;
+   margin: 0 0 22px;
+   padding: 0;
+   list-style: none;
+   }
+
+   .bosyStepper__item {
+   flex: 1;
+   padding-top: 10px;
+   border-top: 3px solid #E3E9E3;
+   transition: border-color 0.2s ease;
+   }
+
+   .bosyStepper__item--active { border-top-color: var(--bosy-green); }
+   .bosyStepper__item--done   { border-top-color: #8DB8A2; }
+
+   .bosyStepper__btn {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 0;
+   border: 0;
+   background: none;
+   font-family: inherit;
+   font-size: 12.5px;
+   font-weight: 600;
+   color: var(--bosy-faint);
+   cursor: default;
+   }
+
+   .bosyStepper__item--active .bosyStepper__btn { color: var(--bosy-ink); }
+
+   .bosyStepper__item--done .bosyStepper__btn {
+   color: var(--bosy-green);
+   cursor: pointer;
+   }
+
+   .bosyStepper__btn:focus-visible {
+   outline: 2px solid var(--bosy-green);
+   outline-offset: 3px;
+   border-radius: 4px;
+   }
+
+   .bosyStepper__dot {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   width: 22px;
+   height: 22px;
+   border-radius: 50%;
+   background: #EAF0EE;
+   color: #55665C;
+   font-size: 11.5px;
+   }
+
+   .bosyStepper__item--active .bosyStepper__dot {
+   background: var(--bosy-green);
+   color: #FFFFFF;
+   }
+
+   .bosyStepper__item--done .bosyStepper__dot {
+   background: var(--bosy-green-soft);
+   color: var(--bosy-green);
+   }
+
+   /* ---------- Form ---------- */
+
+   .bosyForm {
+   display: flex;
+   flex-direction: column;
+   gap: 22px;
+   }
+
+   .bosyFormSection {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+   }
+
+   /* A divider only between sections, never after the last one */
+   .bosyFormSection + .bosyFormSection {
+   padding-top: 22px;
+   border-top: 1px solid var(--bosy-line);
+   }
+
+   .bosyFormSection h3 {
+   margin: 0;
+   font-size: 13px;
+   font-weight: 700;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: var(--bosy-green);
+   }
+
+   .bosyFormSectionNote {
+   margin: -8px 0 0;
+   font-size: 12px;
+   color: var(--bosy-faint);
+   }
+
+   .bosyForm label {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   min-width: 0;
+   font-size: 12.5px;
+   font-weight: 600;
+   color: #3D4A3F;
+   }
+
+   .bosyForm input:not([type='checkbox']),
+   .bosyForm textarea,
+   .bosyForm select {
+   min-width: 0;
+   box-sizing: border-box;
+   padding: 9px 12px;
+   border: 1px solid var(--bosy-border);
+   border-radius: 8px;
+   font-family: inherit;
+   font-size: 14px;
+   font-weight: 400;
+   color: #16231C;
+   }
+
+   .bosyForm textarea {
+   resize: vertical;
+   }
+
+   .bosyForm :is(input, textarea, select):focus {
+   outline: 2px solid var(--bosy-green);
+   outline-offset: 1px;
+   }
+
+   .bosyFormRow {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 14px;
+   }
+
+   .bosyFormRow--3 {
+   grid-template-columns: repeat(3, 1fr);
+   }
+
+   .bosyForm .bosyCheckboxLabel {
+   flex-direction: row;
+   align-items: center;
+   gap: 8px;
+   }
+
+   .bosyFieldError {
+   display: block;
+   font-size: 12px;
+   font-weight: 400;
+   color: var(--bosy-danger);
+   }
+
+   /* ---------- Course suggestions ---------- */
+
+   .bosyRecs .bosyEmpty {
+   padding: 14px 0;
+   text-align: left;
+   }
+
+   .bosyRecList {
+   display: grid;
+   gap: 8px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+   }
+
+   .bosyRecItem {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   padding: 10px 12px;
+   border: 1px solid var(--bosy-border);
+   border-radius: 8px;
+   }
+
+   .bosyRecWhy {
+   font-size: 0.8rem;
+   color: var(--bosy-muted);
+   }
+
+   /* ---------- View modal ---------- */
+
+   .bosyViewHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+   margin-bottom: 20px;
+   }
+
+   .bosyViewHeader h2 {
+   margin: 0 0 4px;
+   }
+
+   .bosyViewSubline {
+   font-size: 13px;
+   color: var(--bosy-muted);
+   }
+
+   .bosyDetailGrid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 16px;
+   margin: 0 0 22px;
+   }
+
+   .bosyDetailGrid dt {
+   margin-bottom: 2px;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.03em;
+   text-transform: uppercase;
+   color: #8A968A;
+   }
+
+   .bosyDetailGrid dd {
+   margin: 0;
+   font-size: 14px;
+   color: var(--bosy-text);
+   }
+
+   .bosyNotesBlock {
+   margin-bottom: 16px;
+   }
+
+   .bosyNotesBlock h4 {
+   margin: 0 0 4px;
+   font-size: 12px;
+   font-weight: 700;
+   letter-spacing: 0.03em;
+   text-transform: uppercase;
+   color: var(--bosy-green);
+   }
+
+   .bosyNotesBlock p {
+   margin: 0;
+   font-size: 13.5px;
+   line-height: 1.55;
+   color: #4B564F;
+   white-space: pre-wrap;
+   }
+
+   /* ---------- Small screens ---------- */
+
+   @media (max-width: 768px) {
+   .barangayMainContent {
+      padding: 20px;
+   }
+
+   .bosyModal {
+      padding: 22px;
+   }
+
+   .searchAndAddOsy {
+      flex-wrap: wrap;
+   }
+
+   .osySearchInput {
+      flex-basis: 100%;
+      max-width: none;
+   }
+
+   .osyAddBtn {
+      margin-left: 0;
+   }
+
+   .bosyFormRow,
+   .bosyFormRow--3,
+   .bosyDetailGrid {
+      grid-template-columns: 1fr;
+   }
+
+   /* Show only the active step's label */
+   .bosyStepper__label {
+      display: none;
+   }
+
+   .bosyStepper__item--active .bosyStepper__label {
+      display: inline;
+   }
+   }

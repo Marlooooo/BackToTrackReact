@@ -1,5 +1,6 @@
 .maximaDashboardBody{
-   height: 100vh;
+   height: 100vh;        /* fixed height, not min-height */
+   overflow: hidden;     /* the page itself doesn't scroll */
    width: 100%;
    background-color: rgb(243, 243, 243);
    display: flex;

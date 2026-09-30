@@ -4,7 +4,7 @@ import './MaximaAnnouncement.css';
 function MaximaAnnouncement() {
    return (
       <>
-         <div className='maximaAnnouncementBody'>
+         <div className='maximaDashboardBody'>
             <MaximaSideBar/>
 
             <div className='maximaMainContent'>

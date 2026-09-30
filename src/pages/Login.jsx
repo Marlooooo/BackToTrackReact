@@ -45,6 +45,7 @@
 
          if (data.success) {
 
+         localStorage.setItem("token", data.token); 
          localStorage.setItem("userName", data.name);
          localStorage.setItem("userRole", data.role);
 

@@ -4,7 +4,7 @@ import './MaximaProgressMonitoring.css';
 function MaximaProgressMonitoring() {
    return (
       <>
-         <div className='maximaProgressMonitoringBody'>
+         <div className='maximaDashboardBody'>
             <MaximaSideBar/>
 
             <div className='maximaMainContent'>

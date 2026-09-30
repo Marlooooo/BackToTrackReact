@@ -4,7 +4,7 @@ import './MaximaEnrollees.css';
 function MaximaEnrollees() {
    return (
       <>
-         <div className='maximaEnrolleesBody'>
+         <div className='maximaDashboardBody'>
             <MaximaSideBar/>
 
             <div className='maximaMainContent'>

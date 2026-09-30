@@ -156,3 +156,171 @@
 .linkDiv div:has(a.active) span {
    color: #0f1a3c;
 }
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   RESPONSIVE SIDEBAR
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+   .sideBarDiv {
+      width: 25%;
+   }
+
+   .navBarTitleLogo h1 {
+      font-size: 1rem;
+   }
+
+   .linkDiv a {
+      font-size: 0.75rem;
+   }
+
+   .linkDiv span {
+      margin-right: 10px;
+   }
+
+   .linkDivLogOut div {
+      width: 70%;
+   }
+}
+
+
+/* Small Tablet */
+@media (max-width: 768px) {
+
+   .sideBarDiv {
+      width: 30%;
+      padding: 10px 15px 10px 15px;
+   }
+
+   .navBarTitleLogo {
+      gap: 7px;
+   }
+
+   .navBarTitleLogo img {
+      height: 30px;
+   }
+
+   .navBarTitleLogo h1 {
+      font-size: 0.9rem;
+   }
+
+   .linkDiv a {
+      font-size: 0.7rem;
+   }
+
+   .linkDiv span {
+      font-size: 14px;
+      margin-right: 8px;
+   }
+
+   .linkDivLogOut div {
+      width: 80%;
+   }
+
+   .userName {
+      font-size: 0.8rem;
+   }
+}
+
+
+/* Mobile */
+@media (max-width: 480px) {
+
+   .sideBarDiv {
+      width: 38%;
+      padding: 10px 10px 10px 10px;
+   }
+
+   .navBarTitleLogo {
+      gap: 5px;
+   }
+
+   .navBarTitleLogo img {
+      height: 27px;
+   }
+
+   .navBarTitleLogo h1 {
+      font-size: 0.8rem;
+   }
+
+   .linkDiv h2,
+   .linkDivLogOut h2 {
+      font-size: 0.5rem;
+   }
+
+   .linkDiv div {
+      padding: 8px 0px 8px 5px;
+   }
+
+   .linkDiv span {
+      font-size: 13px;
+      margin-right: 7px;
+   }
+
+   .linkDiv a {
+      font-size: 0.65rem;
+   }
+
+   .linkDivLogOut div {
+      width: 100%;
+   }
+
+   .linkDivLogOut button {
+      font-size: 0.7rem;
+   }
+
+   .linkDivLogOut .logOutIcon {
+      font-size: 17px;
+      margin-right: 7px;
+   }
+
+   .userName {
+      font-size: 0.7rem;
+   }
+}
+
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+
+   .sideBarDiv {
+      width: 45%;
+      padding: 10px 8px 10px 8px;
+   }
+
+   .navBarTitleLogo h1 {
+      font-size: 0.7rem;
+   }
+
+   .navBarTitleLogo img {
+      height: 24px;
+   }
+
+   .linkDiv a {
+      font-size: 0.6rem;
+   }
+
+   .linkDiv span {
+      font-size: 12px;
+      margin-right: 5px;
+   }
+
+   .linkDivLogOut button {
+      font-size: 0.6rem;
+   }
+
+   .userName {
+      font-size: 0.65rem;
+   }
+}

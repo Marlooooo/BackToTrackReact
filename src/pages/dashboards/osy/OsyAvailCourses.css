@@ -1,15 +1,17 @@
    .osyAvailCoursesBody {
    display: flex;
    flex-direction: row;
-   min-height: 100vh;
+   height: 100vh;        /* fixed height, not min-height */
+   overflow: hidden;     /* the page itself doesn't scroll */
    }
 
    .osyAvailCoursesBrowse {
-   flex: 1;
-   display: flex;
-   flex-direction: column;
-   min-width: 0;
-   background: #F5F7F5;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #F5F7F5;
+      overflow-y: auto;     /* this is the part that scrolls */
    }
 
    .osyAvailCoursesTop {

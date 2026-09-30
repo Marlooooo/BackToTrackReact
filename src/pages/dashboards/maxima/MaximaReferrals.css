@@ -1,0 +1,693 @@
+.maximaReferralMainDiv{
+   display: flex;
+   flex-direction: column;
+   padding: 40px;
+   box-sizing: border-box;
+}
+.maximaReferralMainDivTop h1,
+.maximaReferralMainDivTop p {
+   color: #1b2a41;
+}
+
+/* --------------------------------------------------------------------------
+   Design tokens (scoped to the page content and the modal)
+   -------------------------------------------------------------------------- */
+
+.referralContent,
+.referralModalOverlay {
+   --referral-ink: #1b2a41;
+   --referral-muted: #5f6b7d;
+   --referral-line: #e3e8ef;
+   --referral-tint: #f5f7fb;
+   --referral-surface: #ffffff;
+
+   --referral-brand: #1d4f91;
+   --referral-brand-dark: #163d70;
+   --referral-brand-soft: #e6eefa;
+
+   --referral-pending: #a35f00;
+   --referral-pending-bg: #fff3d9;
+
+   --referral-approved: #1b7a4b;
+   --referral-approved-bg: #e2f5ea;
+
+   --referral-rejected: #b3261e;
+   --referral-rejected-bg: #fde8e6;
+
+   --referral-teal: #0e7490;
+   --referral-teal-bg: #dff3f7;
+
+   color: var(--referral-ink);
+}
+
+.referralContent {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Summary cards
+   -------------------------------------------------------------------------- */
+
+.referralStats {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 16px;
+}
+
+.referralStat {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   padding: 18px 20px;
+   background: var(--referral-surface);
+   border: 1px solid var(--referral-line);
+   border-left-width: 4px;
+   border-radius: 10px;
+}
+
+.referralStatPending {
+   border-left-color: var(--referral-pending);
+}
+
+.referralStatApproved {
+   border-left-color: var(--referral-approved);
+}
+
+.referralStatRejected {
+   border-left-color: var(--referral-rejected);
+}
+
+.referralStatNumber {
+   font-size: 30px;
+   font-weight: 700;
+   line-height: 1.1;
+}
+
+.referralStatPending .referralStatNumber {
+   color: var(--referral-pending);
+}
+
+.referralStatApproved .referralStatNumber {
+   color: var(--referral-approved);
+}
+
+.referralStatRejected .referralStatNumber {
+   color: var(--referral-rejected);
+}
+
+.referralStatLabel {
+   font-size: 15px;
+   font-weight: 600;
+}
+
+.referralStatNote {
+   font-size: 13px;
+   color: var(--referral-muted);
+}
+
+
+/* --------------------------------------------------------------------------
+   Panel and toolbar
+   -------------------------------------------------------------------------- */
+
+.referralPanel {
+   background: var(--referral-surface);
+   border: 1px solid var(--referral-line);
+   border-radius: 12px;
+   overflow: hidden;
+}
+
+.referralToolbar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 16px 20px;
+   border-bottom: 1px solid var(--referral-line);
+}
+
+
+/* Search */
+
+.referralSearch {
+   position: relative;
+   flex: 1 1 260px;
+   max-width: 360px;
+}
+
+.referralSearchIcon {
+   position: absolute;
+   top: 50%;
+   left: 12px;
+   transform: translateY(-50%);
+   color: var(--referral-muted);
+   pointer-events: none;
+}
+
+.referralSearchInput {
+   box-sizing: border-box;
+   width: 100%;
+   padding: 9px 12px 9px 36px;
+   font: inherit;
+   font-size: 14px;
+   color: var(--referral-ink);
+   background: var(--referral-tint);
+   border: 1px solid var(--referral-line);
+   border-radius: 8px;
+}
+
+.referralSearchInput:focus {
+   outline: none;
+   background: #ffffff;
+   border-color: var(--referral-brand);
+   box-shadow: 0 0 0 3px rgba(29, 79, 145, 0.15);
+}
+
+
+/* Filters */
+
+.referralFilters {
+   display: inline-flex;
+   gap: 2px;
+   padding: 3px;
+   background: var(--referral-tint);
+   border-radius: 9px;
+}
+
+.referralFilterBtn {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 6px 12px;
+   font: inherit;
+   font-size: 13px;
+   font-weight: 500;
+   color: var(--referral-muted);
+   background: transparent;
+   border: 0;
+   border-radius: 7px;
+   cursor: pointer;
+}
+
+.referralFilterBtn:hover {
+   color: var(--referral-ink);
+}
+
+.referralFilterBtnActive {
+   color: var(--referral-brand);
+   background: #ffffff;
+   box-shadow: 0 1px 2px rgba(27, 42, 65, 0.12);
+}
+
+.referralFilterCount {
+   padding: 1px 7px;
+   font-size: 12px;
+   color: var(--referral-muted);
+   background: var(--referral-line);
+   border-radius: 10px;
+}
+
+.referralFilterBtnActive .referralFilterCount {
+   color: #ffffff;
+   background: var(--referral-brand);
+}
+
+
+/* --------------------------------------------------------------------------
+   Table
+   -------------------------------------------------------------------------- */
+
+.referralTableWrap {
+   overflow-x: auto;
+}
+
+.referralTable {
+   width: 100%;
+   font-size: 14px;
+   border-collapse: collapse;
+}
+
+.referralTable th {
+   padding: 12px 20px;
+   font-size: 13px;
+   font-weight: 600;
+   color: var(--referral-muted);
+   text-align: left;
+   white-space: nowrap;
+   background: var(--referral-tint);
+}
+
+.referralTable td {
+   padding: 14px 20px;
+   vertical-align: middle;
+   border-top: 1px solid var(--referral-line);
+}
+
+.referralTable tbody tr:hover {
+   background: #fafbfe;
+}
+
+.referralActionCell {
+   text-align: right;
+   white-space: nowrap;
+}
+
+
+/* OSY name + avatar */
+
+.referralOsyCell {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.referralOsyName {
+   font-weight: 600;
+}
+
+.referralOsySub {
+   max-width: 240px;
+   overflow: hidden;
+   font-size: 13px;
+   color: var(--referral-muted);
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.referralAvatar {
+   display: inline-flex;
+   flex: none;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   font-size: 13px;
+   font-weight: 700;
+   color: var(--referral-brand);
+   background: var(--referral-brand-soft);
+   border-radius: 50%;
+}
+
+.referralAvatarLarge {
+   width: 46px;
+   height: 46px;
+   font-size: 16px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Status badges
+   -------------------------------------------------------------------------- */
+
+.referralBadge {
+   display: inline-block;
+   padding: 3px 10px;
+   font-size: 12px;
+   font-weight: 600;
+   white-space: nowrap;
+   border-radius: 999px;
+}
+
+.referralBadgePending {
+   color: var(--referral-pending);
+   background: var(--referral-pending-bg);
+}
+
+.referralBadgeAccepted {
+   color: var(--referral-brand);
+   background: var(--referral-brand-soft);
+}
+
+.referralBadgeTraining {
+   color: var(--referral-teal);
+   background: var(--referral-teal-bg);
+}
+
+.referralBadgeCompleted {
+   color: var(--referral-approved);
+   background: var(--referral-approved-bg);
+}
+
+.referralBadgeRejected {
+   color: var(--referral-rejected);
+   background: var(--referral-rejected-bg);
+}
+
+
+/* --------------------------------------------------------------------------
+   Empty, loading, and error states
+   -------------------------------------------------------------------------- */
+
+.referralState {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 4px;
+   padding: 48px 20px;
+   text-align: center;
+   color: var(--referral-muted);
+}
+
+.referralState strong {
+   color: var(--referral-ink);
+}
+
+.referralStateError {
+   color: var(--referral-rejected);
+}
+
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+.referralBtn {
+   padding: 8px 16px;
+   font: inherit;
+   font-size: 14px;
+   font-weight: 600;
+   border: 1px solid transparent;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: background-color 0.15s, border-color 0.15s;
+}
+
+.referralBtn:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+.referralBtnPrimary {
+   color: #ffffff;
+   background: var(--referral-brand);
+}
+
+.referralBtnPrimary:hover:not(:disabled) {
+   background: var(--referral-brand-dark);
+}
+
+.referralBtnGhost {
+   color: var(--referral-ink);
+   background: #ffffff;
+   border-color: var(--referral-line);
+}
+
+.referralBtnGhost:hover:not(:disabled) {
+   background: var(--referral-tint);
+}
+
+.referralBtnDanger {
+   color: var(--referral-rejected);
+   background: #ffffff;
+   border-color: #f0b8b3;
+}
+
+.referralBtnDanger:hover:not(:disabled) {
+   background: var(--referral-rejected-bg);
+}
+
+.referralBtn:focus-visible,
+.referralFilterBtn:focus-visible {
+   outline: 2px solid var(--referral-brand);
+   outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Modal
+   -------------------------------------------------------------------------- */
+
+.referralModalOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 16px;
+   background: rgba(20, 30, 48, 0.5);
+   animation: referralFade 0.15s ease-out;
+}
+
+.referralModal {
+   width: 560px;
+   max-width: 100%;
+   max-height: 90vh;
+   overflow-y: auto;
+   background: var(--referral-surface);
+   border-radius: 14px;
+   box-shadow: 0 20px 50px rgba(20, 30, 48, 0.3);
+   animation: referralRise 0.18s ease-out;
+}
+
+.referralModalHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 22px 24px 18px;
+   border-bottom: 1px solid var(--referral-line);
+}
+
+.referralModalTitle {
+   margin: 0;
+   font-size: 20px;
+   line-height: 1.25;
+}
+
+.referralModalBody {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   padding: 22px 24px;
+}
+
+.referralModalFooter {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: flex-end;
+   gap: 8px;
+   padding: 16px 24px;
+   background: var(--referral-tint);
+   border-top: 1px solid var(--referral-line);
+   border-radius: 0 0 14px 14px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Progress steps (inside the modal)
+   -------------------------------------------------------------------------- */
+
+.referralSteps {
+   display: flex;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.referralStep {
+   position: relative;
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+   text-align: center;
+}
+
+.referralStep:not(:last-child)::after {
+   content: '';
+   position: absolute;
+   top: 13px;
+   right: calc(-50% + 18px);
+   left: calc(50% + 18px);
+   height: 2px;
+   background: var(--referral-line);
+}
+
+.referralStepDone:not(:last-child)::after {
+   background: var(--referral-brand);
+}
+
+.referralStepDot {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 28px;
+   height: 28px;
+   font-size: 13px;
+   font-weight: 700;
+   color: var(--referral-muted);
+   background: var(--referral-line);
+   border-radius: 50%;
+}
+
+.referralStepDone .referralStepDot,
+.referralStepActive .referralStepDot {
+   color: #ffffff;
+   background: var(--referral-brand);
+}
+
+.referralStepActive .referralStepDot {
+   box-shadow: 0 0 0 4px rgba(29, 79, 145, 0.18);
+}
+
+.referralStepLabel {
+   font-size: 12px;
+   color: var(--referral-muted);
+}
+
+.referralStepActive .referralStepLabel {
+   font-weight: 600;
+   color: var(--referral-ink);
+}
+
+.referralRejectedNote {
+   padding: 10px 14px;
+   font-size: 14px;
+   font-weight: 600;
+   color: var(--referral-rejected);
+   background: var(--referral-rejected-bg);
+   border-radius: 8px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Details
+   -------------------------------------------------------------------------- */
+
+.referralDetailGrid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 16px 24px;
+   margin: 0;
+}
+
+.referralDetailItem {
+   min-width: 0;
+}
+
+.referralDetailLabel {
+   margin: 0 0 2px;
+   font-size: 13px;
+   font-weight: 500;
+   color: var(--referral-muted);
+}
+
+.referralDetailValue {
+   margin: 0;
+   font-size: 14px;
+   font-weight: 500;
+   overflow-wrap: anywhere;
+}
+
+.referralRemarksBox {
+   padding: 12px 14px;
+   background: var(--referral-tint);
+   border-radius: 8px;
+}
+
+.referralRemarksBox p {
+   margin: 4px 0 0;
+   font-size: 14px;
+   line-height: 1.5;
+}
+
+
+/* --------------------------------------------------------------------------
+   Remarks form
+   -------------------------------------------------------------------------- */
+
+.referralField {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.referralLabel {
+   font-size: 14px;
+   font-weight: 600;
+}
+
+.referralTextarea {
+   box-sizing: border-box;
+   width: 100%;
+   padding: 10px 12px;
+   font: inherit;
+   font-size: 14px;
+   color: var(--referral-ink);
+   border: 1px solid var(--referral-line);
+   border-radius: 8px;
+   resize: vertical;
+}
+
+.referralTextarea:focus {
+   outline: none;
+   border-color: var(--referral-brand);
+   box-shadow: 0 0 0 3px rgba(29, 79, 145, 0.15);
+}
+
+.referralFormError {
+   padding: 10px 14px;
+   font-size: 14px;
+   color: var(--referral-rejected);
+   background: var(--referral-rejected-bg);
+   border-radius: 8px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Animations
+   -------------------------------------------------------------------------- */
+
+@keyframes referralFade {
+   from {
+      opacity: 0;
+   }
+
+   to {
+      opacity: 1;
+   }
+}
+
+@keyframes referralRise {
+   from {
+      opacity: 0;
+      transform: translateY(8px);
+   }
+
+   to {
+      opacity: 1;
+      transform: none;
+   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+   .referralStats {
+      grid-template-columns: 1fr;
+   }
+
+   .referralDetailGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .referralStepLabel {
+      font-size: 11px;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .referralModalOverlay,
+   .referralModal {
+      animation: none;
+   }
+}
