@@ -62,6 +62,8 @@ const APPROVED = ['Accepted by TESDA', 'Training Started', 'Completed'];
 const REJECTED = ['Rejected'];
 const groupOf = (status) => (APPROVED.includes(status) ? 'approved' : REJECTED.includes(status) ? 'rejected' : 'pending');
 
+const REMARKS_LIMIT = 500;
+
 function BarangayReferralManagement() {
    const [referrals, setReferrals] = useState([]);
    const [counts, setCounts] = useState({ approved: 0, pending: 0, rejected: 0 });
@@ -109,12 +111,15 @@ function BarangayReferralManagement() {
    useEffect(() => {
       if (!showModal) return;
       const t = setTimeout(async () => {
-         const data = await apiFetch(
-            `${API}/referrals/osy-options?search=${encodeURIComponent(osySearch)}`
-         );
+         try {
+            const data = await apiFetch(
+               `${API}/referrals/osy-options?search=${encodeURIComponent(osySearch)}`
+            );
 
-         setOsyOptions(data);
-
+            setOsyOptions(data);
+         } catch (err) {
+            setFormError(err.message);
+         }
       }, 300);
       return () => clearTimeout(t);
    }, [osySearch, showModal]);
@@ -123,20 +128,44 @@ function BarangayReferralManagement() {
    useEffect(() => {
       if (!showModal) return;
       (async () => {
-         const data = await apiFetch(`${API}/referrals/program-options`);
+         try {
+            const data = await apiFetch(`${API}/referrals/program-options`);
 
-         setPrograms(data);
+            setPrograms(data);
+         } catch (err) {
+            setFormError(err.message);
+         }
       })();
    }, [showModal]);
 
-   const closeModal = () => {
+   const closeModal = useCallback(() => {
       setShowModal(false);
       setOsySearch('');
       setSelectedOsy(null);
       setProgramId('');
       setRemarks('');
       setFormError('');
-   };
+   }, []);
+
+   // lock the page behind the modal while it is open
+   useEffect(() => {
+      if (!showModal) return;
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+         document.body.style.overflow = previousOverflow;
+      };
+   }, [showModal]);
+
+   // Escape closes the modal (but never while a save is running)
+   useEffect(() => {
+      if (!showModal) return;
+      const onKeyDown = (e) => {
+         if (e.key === 'Escape' && !saving) closeModal();
+      };
+      document.addEventListener('keydown', onKeyDown);
+      return () => document.removeEventListener('keydown', onKeyDown);
+   }, [showModal, saving, closeModal]);
 
    const submitReferral = async (e) => {
       e.preventDefault();
@@ -304,14 +333,27 @@ function BarangayReferralManagement() {
          </div>
 
          {showModal && (
-            <div className='referralModalOverlay' onClick={closeModal}>
-               <form className='referralModal' onClick={(e) => e.stopPropagation()} onSubmit={submitReferral}>
+            <div className='referralModalOverlay'>
+               <form
+                  className='referralModal'
+                  role='dialog'
+                  aria-modal='true'
+                  aria-labelledby='referralModalTitle'
+                  onSubmit={submitReferral}
+                  noValidate
+               >
                   <div className='referralModalHeader'>
                      <div>
-                        <h2>Create referral</h2>
+                        <h2 id='referralModalTitle'>Create referral</h2>
                         <p>Refer an OSY to a MAXIMA training program.</p>
                      </div>
-                     <button type='button' className='referralIconBtn' onClick={closeModal} aria-label='Close'>
+                     <button
+                        type='button'
+                        className='referralIconBtn'
+                        onClick={closeModal}
+                        disabled={saving}
+                        aria-label='Close'
+                     >
                         <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' aria-hidden='true'>
                            <line x1='18' y1='6' x2='6' y2='18' />
                            <line x1='6' y1='6' x2='18' y2='18' />
@@ -321,17 +363,29 @@ function BarangayReferralManagement() {
 
                   <div className='referralModalBody'>
                      <div className='referralField'>
-                        <label htmlFor='osySearch'>OSY profile</label>
                         {selectedOsy ? (
-                           <div className='referralSelectedOsy'>
-                              <span className='referralAvatar'>{initials(selectedOsy)}</span>
-                              <span className='referralPersonName'>{fullName(selectedOsy)}</span>
-                              <button type='button' className='referralLinkBtn' onClick={() => setSelectedOsy(null)}>
-                                 Change
-                              </button>
-                           </div>
+                           <>
+                              <span className='referralLabel'>
+                                 OSY profile<span className='referralRequired'>*</span>
+                              </span>
+                              <div className='referralSelectedOsy'>
+                                 <span className='referralAvatar'>{initials(selectedOsy)}</span>
+                                 <span className='referralPersonName'>{fullName(selectedOsy)}</span>
+                                 <button
+                                    type='button'
+                                    className='referralLinkBtn'
+                                    onClick={() => setSelectedOsy(null)}
+                                    disabled={saving}
+                                 >
+                                    Change
+                                 </button>
+                              </div>
+                           </>
                         ) : (
                            <>
+                              <label htmlFor='osySearch'>
+                                 OSY profile<span className='referralRequired'>*</span>
+                              </label>
                               <input
                                  id='osySearch'
                                  className='referralInput'
@@ -358,18 +412,30 @@ function BarangayReferralManagement() {
                      </div>
 
                      <div className='referralField'>
-                        <label htmlFor='referralProgram'>Training program</label>
-                        <select
-                           id='referralProgram'
-                           className='referralInput'
-                           value={programId}
-                           onChange={(e) => setProgramId(e.target.value)}
+                        <span className='referralLabel' id='referralProgramLabel'>
+                           Training program<span className='referralRequired'>*</span>
+                        </span>
+                        <div
+                           className='referralChoiceList'
+                           role='radiogroup'
+                           aria-labelledby='referralProgramLabel'
                         >
-                           <option value=''>Select a program</option>
+                           {programs.length === 0 && (
+                              <p className='referralOptionEmpty'>No training programs available.</p>
+                           )}
                            {programs.map((pr) => (
-                              <option key={pr.id} value={pr.id}>{programName(pr)}</option>
+                              <label key={pr.id} className='referralChoice'>
+                                 <input
+                                    type='radio'
+                                    name='referralProgram'
+                                    value={pr.id}
+                                    checked={String(programId) === String(pr.id)}
+                                    onChange={() => setProgramId(pr.id)}
+                                 />
+                                 <span className='referralChoiceBody'>{programName(pr)}</span>
+                              </label>
                            ))}
-                        </select>
+                        </div>
                      </div>
 
                      <div className='referralField'>
@@ -378,17 +444,21 @@ function BarangayReferralManagement() {
                            id='referralRemarks'
                            className='referralInput'
                            rows={3}
+                           maxLength={REMARKS_LIMIT}
                            value={remarks}
                            onChange={(e) => setRemarks(e.target.value)}
                            placeholder='Why is this OSY a good fit for the program?'
                         />
+                        <span className='referralFieldHint'>{remarks.length}/{REMARKS_LIMIT}</span>
                      </div>
 
-                     {formError && <p className='referralFormError'>{formError}</p>}
+                     {formError && <p className='referralFormError' role='alert'>{formError}</p>}
                   </div>
 
                   <div className='referralModalFooter'>
-                     <button type='button' className='referralSecondaryBtn' onClick={closeModal}>Cancel</button>
+                     <button type='button' className='referralSecondaryBtn' onClick={closeModal} disabled={saving}>
+                        Cancel
+                     </button>
                      <button type='submit' className='referralPrimaryBtn' disabled={saving}>
                         {saving ? 'Saving...' : 'Submit referral'}
                      </button>

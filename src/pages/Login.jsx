@@ -17,13 +17,15 @@
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [error, setError] = useState("");
+   const [loading, setLoading] = useState(false);
    const navigate = useNavigate();
 
    const handleSubmit = async (e) => {
       e.preventDefault();
       setError("");
+      setLoading(true);
 
-      try { 
+      try {
          // get CSRF cookie first — required by Sanctum
          await fetch("http://localhost:8000/sanctum/csrf-cookie", {
             credentials: "include",
@@ -58,7 +60,9 @@
       } catch (err) {
          setError("Something went wrong. Please try again.");
          console.error(err);
-      }
+      } finally {
+      setLoading(false);
+   }
    };
 
    return (
@@ -155,10 +159,12 @@
                   <Link to="/forgot-password">Forgot Password?</Link>
                </div>
 
-               {error && <p className="errorText">{error}</p>}
+               {error && <p className="errorText" role="alert">{error}</p>}
 
                <div className="signInBtn">
-               <button type="submit">Sign In</button>
+                  <button type="submit" disabled={loading}>
+                     {loading ? "Signing in..." : "Sign In"}
+                  </button>
                </div>
             </form>
          </div>

@@ -5,7 +5,7 @@
    min-height: 100vh;
    box-sizing: border-box;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-   overflow-y: auto;     /* this is the part that scrolls */
+   overflow-y: auto;
    }
 
    .programManagementTopPart {
@@ -20,12 +20,14 @@
    font-weight: 700;
    color: #14201A;
    letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
    }
 
    .programManagementTopPart p {
    margin: 0;
    color: #66746A;
    font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
    }
 
    .programManagementBotPart {
@@ -141,6 +143,7 @@
    letter-spacing: 0.04em;
    border-bottom: 1px solid #EEF2EE;
    background: #FBFCFB;
+   font-family: "Open Sans", sans-serif;
    }
 
    .programTable tbody tr:hover {
@@ -151,6 +154,7 @@
    padding: 13px 22px;
    border-bottom: 1px solid #F1F4F1;
    color: #29332C;
+   font-family: "Nunito", sans-serif;
    }
 
    .programTable tbody tr:last-child td {
@@ -259,40 +263,55 @@
 
    .pmgmtBtn {
    border: none;
-   border-radius: 8px;
-   padding: 9px 18px;
+   border-radius: 9px;
+   padding: 10px 20px;
    font-size: 13.5px;
    font-weight: 600;
    cursor: pointer;
-   transition: background 0.15s ease;
+   transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+   }
+
+   .pmgmtBtnSm {
+   padding: 6px 14px;
+   font-size: 12.5px;
+   font-weight: 500;
    }
 
    .pmgmtBtnPrimary {
    background: #2F6E4F;
    color: #FFFFFF;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
    }
 
-   .pmgmtBtnPrimary:hover {
+   .pmgmtBtnPrimary:hover:not(:disabled) {
    background: #275C42;
+   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
    }
 
    .pmgmtBtnGhost {
-   background: transparent;
+   background: #FFFFFF;
    color: #3D4A3F;
    border: 1px solid #DCE6DE;
    }
 
-   .pmgmtBtnGhost:hover {
+   .pmgmtBtnGhost:hover:not(:disabled) {
    background: #F1F4F1;
+   border-color: #C7D4C9;
    }
 
    .pmgmtBtnDanger {
-   background: #A23E3E;
+   background: #B24545;
    color: #FFFFFF;
+   box-shadow: 0 2px 6px rgba(178, 69, 69, 0.25);
    }
 
-   .pmgmtBtnDanger:hover {
-   background: #8A3333;
+   .pmgmtBtnDanger:hover:not(:disabled) {
+   background: #973838;
+   }
+
+   .pmgmtBtn:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
    }
 
    .pmgmtBtn:disabled {
@@ -300,74 +319,206 @@
    cursor: not-allowed;
    }
 
-   /* Modal */
+   /* Modal shell */
 
    .pmgmtModalOverlay {
    position: fixed;
    inset: 0;
-   background: rgba(16, 23, 18, 0.5);
+   background: rgba(16, 23, 18, 0.55);
+   backdrop-filter: blur(3px);
    display: flex;
    align-items: center;
    justify-content: center;
    padding: 20px;
    z-index: 50;
+   animation: pmgmtFadeIn 0.18s ease;
    }
 
    .pmgmtModal {
    background: #FFFFFF;
    border-radius: 18px;
-   padding: 30px;
    width: 100%;
-   max-width: 480px;
+   max-width: 560px;
    max-height: 90vh;
-   overflow-y: auto;
-   box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
+   display: flex;
+   flex-direction: column;
+   overflow: hidden;
+   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
+   animation: pmgmtSlideUp 0.22s ease;
    }
 
    .pmgmtModalSmall {
-   max-width: 400px;
+   max-width: 420px;
    }
 
-   .pmgmtModal h2 {
-   margin: 0 0 18px;
+   @keyframes pmgmtFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+   }
+
+   @keyframes pmgmtSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+   }
+
+   /* Header */
+
+   .pmgmtModalHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 24px 28px 18px;
+   border-bottom: 1px solid #EEF2EE;
+   }
+
+   .pmgmtModalHeader h2 {
+   margin: 0 0 4px;
    font-size: 18px;
    font-weight: 700;
    color: #14201A;
+   letter-spacing: -0.01em;
+   font-family: "Open Sans", sans-serif;
    }
 
+   .pmgmtModalHeader p {
+   margin: 0;
+   font-size: 13px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .pmgmtModalClose {
+   flex-shrink: 0;
+   width: 32px;
+   height: 32px;
+   border: none;
+   border-radius: 8px;
+   background: transparent;
+   color: #7C877E;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+   }
+
+   .pmgmtModalClose:hover:not(:disabled) {
+   background: #F1F4F1;
+   color: #14201A;
+   }
+
+   .pmgmtModalClose:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+   }
+
+   /* Body and footer */
+
    .pmgmtForm {
+   display: flex;
+   flex-direction: column;
+   min-height: 0;
+   flex: 1;
+   }
+
+   .pmgmtModalBody {
+   padding: 22px 28px;
+   overflow-y: auto;
+   display: flex;
+   flex-direction: column;
+   gap: 26px;
+   }
+
+   .pmgmtModalFooter {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   padding: 16px 28px;
+   border-top: 1px solid #EEF2EE;
+   background: #FBFCFB;
+   }
+
+   .pmgmtModalFooterCenter {
+   justify-content: center;
+   }
+
+   /* Sections and fields */
+
+   .pmgmtSection {
    display: flex;
    flex-direction: column;
    gap: 14px;
    }
 
-   .pmgmtForm label {
+   .pmgmtSectionTitle {
+   font-size: 11.5px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.06em;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+   }
+
+   .pmgmtField {
    display: flex;
    flex-direction: column;
    gap: 6px;
-   font-size: 12.5px;
-   color: #3D4A3F;
-   font-weight: 600;
    }
 
-   .pmgmtForm input,
+   .pmgmtLabel {
+   display: block;
+   font-size: 12.5px;
+   font-weight: 600;
+   color: #3D4A3F;
+   font-family: "Open Sans", sans-serif;
+   }
+
+   .pmgmtLabel em {
+   color: #B24545;
+   font-style: normal;
+   }
+
+   .pmgmtHint {
+   display: block;
+   font-size: 12px;
+   color: #94A092;
+   font-weight: 400;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .pmgmtCounter {
+   align-self: flex-end;
+   font-size: 11px;
+   color: #94A092;
+   }
+
+   .pmgmtForm input[type="text"],
+   .pmgmtForm input[type="number"],
    .pmgmtForm textarea,
    .pmgmtForm select {
-   font-family: inherit;
+   font-family: "Nunito", sans-serif;
    font-size: 14px;
    font-weight: 400;
-   padding: 9px 12px;
+   padding: 10px 12px;
    border: 1px solid #DCE6DE;
-   border-radius: 8px;
+   border-radius: 9px;
    color: #16231C;
+   background: #FFFFFF;
    resize: vertical;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
    }
 
-   .pmgmtForm input:focus,
+   .pmgmtForm input::placeholder,
+   .pmgmtForm textarea::placeholder {
+   color: #A9B3AB;
+   }
+
+   .pmgmtForm input[type="text"]:focus,
+   .pmgmtForm input[type="number"]:focus,
    .pmgmtForm textarea:focus,
    .pmgmtForm select:focus {
-   outline: 2px solid #2F6E4F;
-   outline-offset: 1px;
+   outline: none;
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
    }
 
    .pmgmtFormRow {
@@ -376,29 +527,83 @@
    gap: 14px;
    }
 
-   .pmgmtFormCheckbox {
-   flex-direction: row !important;
+   /* Toggle switch */
+
+   .pmgmtSwitchRow {
+   display: flex;
    align-items: center;
-   gap: 8px !important;
-   margin-top: auto;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 12px 14px;
+   border: 1px solid #E3E9E3;
+   border-radius: 10px;
+   background: #FAFBF9;
+   cursor: pointer;
    }
 
-   .pmgmtModalActions {
-   display: flex;
-   justify-content: flex-end;
-   gap: 10px;
-   margin-top: 8px;
+   .pmgmtSwitch {
+   position: relative;
+   flex-shrink: 0;
+   width: 42px;
+   height: 24px;
+   }
+
+   .pmgmtSwitch input {
+   position: absolute;
+   inset: 0;
+   width: 100%;
+   height: 100%;
+   margin: 0;
+   opacity: 0;
+   cursor: pointer;
+   z-index: 1;
+   }
+
+   .pmgmtSwitchTrack {
+   position: absolute;
+   inset: 0;
+   border-radius: 999px;
+   background: #CBD5CD;
+   transition: background 0.2s ease;
+   }
+
+   .pmgmtSwitchTrack::after {
+   content: '';
+   position: absolute;
+   top: 3px;
+   left: 3px;
+   width: 18px;
+   height: 18px;
+   border-radius: 50%;
+   background: #FFFFFF;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+   transition: transform 0.2s ease;
+   }
+
+   .pmgmtSwitch input:checked + .pmgmtSwitchTrack {
+   background: #2F6E4F;
+   }
+
+   .pmgmtSwitch input:checked + .pmgmtSwitchTrack::after {
+   transform: translateX(18px);
+   }
+
+   .pmgmtSwitch input:focus-visible + .pmgmtSwitchTrack {
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.25);
    }
 
    /* Image upload */
 
-   .pmgmtImageLabel {
-   gap: 8px !important;
+   .pmgmtImageRow {
+   display: flex;
+   gap: 16px;
+   align-items: center;
    }
 
    .pmgmtImageDrop {
-   width: 100%;
-   height: 140px;
+   width: 140px;
+   height: 100px;
+   flex-shrink: 0;
    border: 1.5px dashed #C7D4C9;
    border-radius: 12px;
    background: #FAFBF9;
@@ -410,9 +615,11 @@
    transition: border-color 0.15s ease, background 0.15s ease;
    }
 
-   .pmgmtImageDrop:hover {
+   .pmgmtImageDrop:hover,
+   .pmgmtImageDrop:focus-visible {
    border-color: #2F6E4F;
    background: #F3F8F4;
+   outline: none;
    }
 
    .pmgmtImageDrop img {
@@ -425,20 +632,76 @@
    display: flex;
    flex-direction: column;
    align-items: center;
-   gap: 3px;
+   gap: 6px;
    color: #7C877E;
    }
 
    .pmgmtImageDropPlaceholder span {
-   font-size: 13px;
+   font-size: 12.5px;
    font-weight: 600;
    color: #4B564F;
    }
 
-   .pmgmtImageDropPlaceholder small {
-   font-size: 11px;
+   .pmgmtImageInfo p {
+   margin: 0 0 2px;
+   font-size: 13px;
+   color: #4B564F;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .pmgmtImageInfo p.pmgmtHint {
+   font-size: 12px;
    color: #94A092;
    }
+
+   .pmgmtImageBtns {
+   display: flex;
+   gap: 8px;
+   margin-top: 10px;
+   }
+
+   /* In-modal error banner */
+
+   .pmgmtBannerInModal {
+   margin: 0;
+   }
+
+   /* Remove confirmation */
+
+   .pmgmtConfirmBody {
+   padding: 32px 28px 8px;
+   text-align: center;
+   }
+
+   .pmgmtConfirmIcon {
+   width: 52px;
+   height: 52px;
+   margin: 0 auto 16px;
+   border-radius: 50%;
+   background: #FBEBEB;
+   color: #B24545;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   }
+
+   .pmgmtConfirmBody h2 {
+   margin: 0 0 8px;
+   font-size: 18px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+   }
+
+   .pmgmtConfirmBody p {
+   margin: 0 0 20px;
+   font-size: 13.5px;
+   line-height: 1.55;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+   }
+
+   /* Responsive */
 
    @media (max-width: 640px) {
    .programManagementMainDiv {
@@ -461,5 +724,17 @@
 
    .pmgmtFormRow {
       grid-template-columns: 1fr;
+   }
+
+   .pmgmtModalHeader,
+   .pmgmtModalBody,
+   .pmgmtModalFooter {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+
+   .pmgmtImageRow {
+      flex-direction: column;
+      align-items: flex-start;
    }
    }

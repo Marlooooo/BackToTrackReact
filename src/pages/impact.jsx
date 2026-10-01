@@ -107,6 +107,45 @@ function Impact() {
 
             <div className="impactMainContentBot">
 
+               <div className="impactMainContentBotTitle">
+                  <h2>How we make an Impact.</h2>
+               </div>
+
+               <div className="impactMainContentBotITTC">
+                  <div>
+                     <span className="material-symbols-outlined impactIcon">person_search</span>
+                     <h3>Identity</h3>
+                     <p>We identify out-of-school youth and assess their needs and interests.</p>
+                  </div>
+                  <span className="material-symbols-outlined impactArrow">arrow_forward</span>
+                  <div>
+                     <span className="material-symbols-outlined impactIcon">menu_book</span>
+                     <h3>Train</h3>
+                     <p>We connect them to
+                     suitable skills training
+                     programs and resources.
+                     </p>
+                  </div>
+                  <span className="material-symbols-outlined impactArrow">arrow_forward</span>
+                  <div>
+                     <span className="material-symbols-outlined impactIcon">trending_up</span>
+                     <h3>Track</h3>
+                     <p>We monitor their progress
+                     and provide guidance
+                     every step of the way.
+                     </p>
+                  </div>
+                  <span className="material-symbols-outlined impactArrow">arrow_forward</span>
+                  <div>
+                     <span className="material-symbols-outlined impactIcon">handshake</span>
+                     <h3>Connect</h3>
+                     <p>We connect them to
+                     career opportunities
+                     and a better future.
+                     </p>
+                  </div>
+               </div>
+
             </div>
 
          </div>

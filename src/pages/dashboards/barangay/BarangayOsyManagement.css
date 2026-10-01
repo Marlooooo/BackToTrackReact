@@ -1,28 +1,3 @@
-
-
-   /* Colors live on :root because the modals render outside the page wrapper. */
-   :root {
-   --bosy-green: #2F6E4F;
-   --bosy-green-dark: #275C42;
-   --bosy-green-soft: #E3F0E7;
-
-   --bosy-ink: #14201A;
-   --bosy-text: #29332C;
-   --bosy-muted: #66746A;
-   --bosy-faint: #94A092;
-
-   --bosy-bg: #F5F7F5;
-   --bosy-surface: #FFFFFF;
-   --bosy-hover: #F1F4F1;
-   --bosy-border: #DCE6DE;
-   --bosy-line: #EEF2EE;
-
-   --bosy-danger: #A23E3E;
-   --bosy-danger-dark: #8A3333;
-   --bosy-danger-bg: #FBEBEB;
-   --bosy-danger-border: #F0CACA;
-   }
-
    /* ---------- Page layout ---------- */
 
    .barangayOsyManagementBody {
@@ -38,7 +13,7 @@
    min-height: 100%;
    padding: 40px 48px;
    box-sizing: border-box;
-   background: var(--bosy-bg);
+   background: #F5F7F5;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
    overflow-y: auto;
    }
@@ -53,20 +28,27 @@
    margin: 0 0 4px;
    font-size: 24px;
    font-weight: 700;
-   color: var(--bosy-ink);
+   color: #14201A;
    letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
    }
 
    .barangayMainContentTopPart p {
    margin: 0;
    font-size: 13.5px;
-   color: var(--bosy-muted);
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
    }
 
    .barangayMainContentBotPart {
    display: flex;
    flex-direction: column;
    gap: 22px;
+   padding: 20px;
+   box-sizing: border-box;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
    }
 
    /* ---------- Toolbar ---------- */
@@ -79,8 +61,8 @@
 
    .osySearchInput,
    .osyStatusFilter {
-   background: var(--bosy-surface);
-   border: 1px solid var(--bosy-border);
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
    border-radius: 999px;
    font-size: 13.5px;
    box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
@@ -95,7 +77,7 @@
    }
 
    .osySearchInput:focus {
-   border-color: var(--bosy-green);
+   border-color: #2F6E4F;
    }
 
    .osyStatusFilter {
@@ -109,7 +91,7 @@
    padding: 10px 20px;
    border: none;
    border-radius: 9px;
-   background: var(--bosy-green);
+   background: #2F6E4F;
    color: #FFFFFF;
    font-size: 13.5px;
    font-weight: 600;
@@ -120,17 +102,15 @@
    }
 
    .osyAddBtn:hover {
-   background: var(--bosy-green-dark);
+   background: #275C42;
    }
 
    /* ---------- List card ---------- */
 
    .osyList {
    overflow-x: auto;
-   background: var(--bosy-surface);
-   border: 1px solid #E3E9E3;
+   background: #FFFFFF;
    border-radius: 16px;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
    }
 
    .osyList > .bosyBanner {
@@ -140,9 +120,10 @@
    .osyCount {
    margin: 0;
    padding: 14px 20px;
-   border-bottom: 1px solid var(--bosy-line);
+   border-bottom: 1px solid #EEF2EE;
    font-size: 12.5px;
-   color: var(--bosy-faint);
+   color: #94A092;
+   font-family: "Open Sans", sans-serif;
    }
 
    .bosyEmpty {
@@ -155,7 +136,7 @@
    display: block;
    margin-top: 6px;
    font-size: 12.5px;
-   color: var(--bosy-faint);
+   color: #94A092;
    }
 
    /* ---------- Banners ---------- */
@@ -168,15 +149,15 @@
    }
 
    .bosyBannerError {
-   background: var(--bosy-danger-bg);
-   color: var(--bosy-danger);
-   border: 1px solid var(--bosy-danger-border);
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
    }
 
    .bosyBannerInfo {
    background: #EAF0EE;
-   color: var(--bosy-green);
-   border: 1px solid var(--bosy-border);
+   color: #2F6E4F;
+   border: 1px solid #DCE6DE;
    }
 
    /* ---------- Table ---------- */
@@ -189,7 +170,7 @@
    
    .osyTable thead th {
    padding: 14px 20px;
-   border-bottom: 1px solid var(--bosy-line);
+   border-bottom: 1px solid #EEF2EE;
    background: #FBFCFB;
    text-align: left;
    white-space: nowrap;
@@ -198,6 +179,7 @@
    letter-spacing: 0.04em;
    text-transform: uppercase;
    color: #7C877E;
+   font-family: "Open Sans", sans-serif;
    }
 
    .osyTable tbody tr:hover {
@@ -207,7 +189,8 @@
    .osyTable tbody td {
    padding: 13px 20px;
    border-bottom: 1px solid #F1F4F1;
-   color: var(--bosy-text);
+   color: #29332C;
+   font-family: "Nunito", sans-serif;
    }
 
    .osyTable tbody tr:last-child td {
@@ -216,7 +199,7 @@
 
    .osyTable__name {
    font-weight: 600;
-   color: var(--bosy-ink);
+   color: #14201A;
    white-space: nowrap;
    }
 
@@ -240,7 +223,7 @@
    .osyEditBtn,
    .osyDeleteBtn {
    padding: 6px 12px;
-   border: 1px solid var(--bosy-border);
+   border: 1px solid #DCE6DE;
    border-radius: 7px;
    background: transparent;
    color: #3D4A3F;
@@ -252,16 +235,16 @@
 
    .osyViewBtn:hover,
    .osyEditBtn:hover {
-   background: var(--bosy-hover);
+   background: #F1F4F1;
    }
 
    .osyDeleteBtn {
-   color: var(--bosy-danger);
+   color: #A23E3E;
    }
 
    .osyDeleteBtn:hover {
-   background: var(--bosy-danger-bg);
-   border-color: var(--bosy-danger-border);
+   background: #FBEBEB;
+   border-color: #F0CACA;
    }
 
    /* ---------- Status pills (one per stage) ---------- */
@@ -280,7 +263,7 @@
    .bosyStatus--Referred        { background: #FBF0DD; color: #96701E; }
    .bosyStatus--AcceptedbyTESDA { background: #EEE6F4; color: #71549A; }
    .bosyStatus--TrainingStarted { background: #FBE9DA; color: #B0621F; }
-   .bosyStatus--Completed       { background: var(--bosy-green-soft); color: var(--bosy-green); }
+   .bosyStatus--Completed       { background: #E3F0E7; color: #2F6E4F; }
 
    /* ---------- Buttons (inside modals) ---------- */
 
@@ -295,31 +278,31 @@
    }
 
    .bosyBtnPrimary {
-   background: var(--bosy-green);
+   background: #2F6E4F;
    color: #FFFFFF;
    }
 
    .bosyBtnPrimary:hover {
-   background: var(--bosy-green-dark);
+   background: #275C42;
    }
 
    .bosyBtnGhost {
    background: transparent;
    color: #3D4A3F;
-   border: 1px solid var(--bosy-border);
+   border: 1px solid #DCE6DE;
    }
 
    .bosyBtnGhost:hover {
-   background: var(--bosy-hover);
+   background: #F1F4F1;
    }
 
    .bosyBtnDanger {
-   background: var(--bosy-danger);
+   background: #A23E3E;
    color: #FFFFFF;
    }
 
    .bosyBtnDanger:hover {
-   background: var(--bosy-danger-dark);
+   background: #8A3333;
    }
 
    .bosyBtn:disabled {
@@ -333,7 +316,7 @@
    .osyEditBtn:focus-visible,
    .osyDeleteBtn:focus-visible,
    .bosyBtn:focus-visible {
-   outline: 2px solid var(--bosy-green);
+   outline: 2px solid #2F6E4F;
    outline-offset: 2px;
    }
 
@@ -356,7 +339,7 @@
    max-height: 90vh;
    padding: 30px;
    overflow-y: auto;
-   background: var(--bosy-surface);
+   background: #FFFFFF;
    border-radius: 18px;
    box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
    }
@@ -368,14 +351,14 @@
    margin: 0 0 18px;
    font-size: 18px;
    font-weight: 700;
-   color: var(--bosy-ink);
+   color: #14201A;
    }
 
    .bosyModalSmall p {
    margin: 0 0 20px;
    font-size: 13.5px;
    line-height: 1.5;
-   color: var(--bosy-text);
+   color: #29332C;
    }
 
    .bosyModalActions {
@@ -402,7 +385,7 @@
    transition: border-color 0.2s ease;
    }
 
-   .bosyStepper__item--active { border-top-color: var(--bosy-green); }
+   .bosyStepper__item--active { border-top-color: #2F6E4F; }
    .bosyStepper__item--done   { border-top-color: #8DB8A2; }
 
    .bosyStepper__btn {
@@ -415,19 +398,19 @@
    font-family: inherit;
    font-size: 12.5px;
    font-weight: 600;
-   color: var(--bosy-faint);
+   color: #94A092;
    cursor: default;
    }
 
-   .bosyStepper__item--active .bosyStepper__btn { color: var(--bosy-ink); }
+   .bosyStepper__item--active .bosyStepper__btn { color: #14201A; }
 
    .bosyStepper__item--done .bosyStepper__btn {
-   color: var(--bosy-green);
+   color: #2F6E4F;
    cursor: pointer;
    }
 
    .bosyStepper__btn:focus-visible {
-   outline: 2px solid var(--bosy-green);
+   outline: 2px solid #2F6E4F;
    outline-offset: 3px;
    border-radius: 4px;
    }
@@ -446,13 +429,13 @@
    }
 
    .bosyStepper__item--active .bosyStepper__dot {
-   background: var(--bosy-green);
+   background: #2F6E4F;
    color: #FFFFFF;
    }
 
    .bosyStepper__item--done .bosyStepper__dot {
-   background: var(--bosy-green-soft);
-   color: var(--bosy-green);
+   background: #E3F0E7;
+   color: #2F6E4F;
    }
 
    /* ---------- Form ---------- */
@@ -472,7 +455,7 @@
    /* A divider only between sections, never after the last one */
    .bosyFormSection + .bosyFormSection {
    padding-top: 22px;
-   border-top: 1px solid var(--bosy-line);
+   border-top: 1px solid #EEF2EE;
    }
 
    .bosyFormSection h3 {
@@ -481,13 +464,13 @@
    font-weight: 700;
    letter-spacing: 0.04em;
    text-transform: uppercase;
-   color: var(--bosy-green);
+   color: #2F6E4F;
    }
 
    .bosyFormSectionNote {
    margin: -8px 0 0;
    font-size: 12px;
-   color: var(--bosy-faint);
+   color: #94A092;
    }
 
    .bosyForm label {
@@ -506,7 +489,7 @@
    min-width: 0;
    box-sizing: border-box;
    padding: 9px 12px;
-   border: 1px solid var(--bosy-border);
+   border: 1px solid #DCE6DE;
    border-radius: 8px;
    font-family: inherit;
    font-size: 14px;
@@ -519,7 +502,7 @@
    }
 
    .bosyForm :is(input, textarea, select):focus {
-   outline: 2px solid var(--bosy-green);
+   outline: 2px solid #2F6E4F;
    outline-offset: 1px;
    }
 
@@ -543,7 +526,7 @@
    display: block;
    font-size: 12px;
    font-weight: 400;
-   color: var(--bosy-danger);
+   color: #A23E3E;
    }
 
    /* ---------- Course suggestions ---------- */
@@ -566,13 +549,13 @@
    flex-direction: column;
    gap: 2px;
    padding: 10px 12px;
-   border: 1px solid var(--bosy-border);
+   border: 1px solid #DCE6DE;
    border-radius: 8px;
    }
 
    .bosyRecWhy {
    font-size: 0.8rem;
-   color: var(--bosy-muted);
+   color: #66746A;
    }
 
    /* ---------- View modal ---------- */
@@ -591,7 +574,7 @@
 
    .bosyViewSubline {
    font-size: 13px;
-   color: var(--bosy-muted);
+   color: #66746A;
    }
 
    .bosyDetailGrid {
@@ -613,7 +596,7 @@
    .bosyDetailGrid dd {
    margin: 0;
    font-size: 14px;
-   color: var(--bosy-text);
+   color: #29332C;
    }
 
    .bosyNotesBlock {
@@ -626,7 +609,7 @@
    font-weight: 700;
    letter-spacing: 0.03em;
    text-transform: uppercase;
-   color: var(--bosy-green);
+   color: #2F6E4F;
    }
 
    .bosyNotesBlock p {

@@ -34,6 +34,7 @@
    const [form, setForm] = useState(EMPTY_FORM);
    const [imageFile, setImageFile] = useState(null);
    const [imagePreview, setImagePreview] = useState(null);
+   const [existingImage, setExistingImage] = useState(null);
    const [saving, setSaving] = useState(false);
    const [formError, setFormError] = useState(null);
    const [deleteTarget, setDeleteTarget] = useState(null);
@@ -42,6 +43,19 @@
    useEffect(() => {
       fetchPrograms();
    }, []);
+
+   // Close modals with the Escape key (never by clicking outside).
+   // Remove this effect if you don't want Escape to close them either.
+   useEffect(() => {
+      if (!isModalOpen && !deleteTarget) return;
+      function onKeyDown(e) {
+         if (e.key !== 'Escape' || saving) return;
+         setIsModalOpen(false);
+         setDeleteTarget(null);
+      }
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+   }, [isModalOpen, deleteTarget, saving]);
 
    async function fetchPrograms() {
       setLoading(true);
@@ -72,6 +86,7 @@
    function resetImageState() {
       setImageFile(null);
       setImagePreview(null);
+      setExistingImage(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
    }
 
@@ -97,6 +112,8 @@
       setFormError(null);
       setImageFile(null);
       setImagePreview(program.image_url ?? null);
+      setExistingImage(program.image_url ?? null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       setIsModalOpen(true);
    }
 
@@ -114,6 +131,13 @@
       if (!file) return;
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
+   }
+
+   // Discards a newly picked file and goes back to the saved image (if any)
+   function handleUndoImage() {
+      setImageFile(null);
+      setImagePreview(existingImage);
+      if (fileInputRef.current) fileInputRef.current.value = '';
    }
 
    async function handleSubmit(e) {
@@ -185,20 +209,17 @@
 
    return (
       <>
-         <div className='maximaDashboardBody'>
+         <div className="maximaDashboardBody">
+         <MaximaSideBar />
 
-         <MaximaSideBar/>
-
-         <div className='programManagementMainDiv'>
-
-            <div className='programManagementTopPart'>
+         <div className="programManagementMainDiv">
+            <div className="programManagementTopPart">
                <h1>Program Management</h1>
                <p>Manage MAXIMA training programs and information.</p>
             </div>
 
-            <div className='programManagementBotPart'>
-
-               <div className='programManagementAddDiv'>
+            <div className="programManagementBotPart">
+               <div className="programManagementAddDiv">
                <input
                   type="text"
                   className="programSearchInput"
@@ -222,10 +243,8 @@
                </button>
                </div>
 
-               <div className='programManagementList'>
-               {error && (
-                  <div className="pmgmtBanner pmgmtBannerError">{error}</div>
-               )}
+               <div className="programManagementList">
+               {error && <div className="pmgmtBanner pmgmtBannerError">{error}</div>}
 
                {loading ? (
                   <div className="pmgmtEmpty">Loading programs…</div>
@@ -266,12 +285,22 @@
                            <td>{program.schedule || '—'}</td>
                            <td>{program.slots}</td>
                            <td>
-                           <span className={`pmgmtTag ${program.tesda_accredited ? 'pmgmtTagYes' : 'pmgmtTagNo'}`}>
+                           <span
+                              className={`pmgmtTag ${
+                                 program.tesda_accredited ? 'pmgmtTagYes' : 'pmgmtTagNo'
+                              }`}
+                           >
                               {program.tesda_accredited ? 'Accredited' : 'Not accredited'}
                            </span>
                            </td>
                            <td>
-                           <span className={`pmgmtStatus ${program.status === 'active' ? 'pmgmtStatusActive' : 'pmgmtStatusInactive'}`}>
+                           <span
+                              className={`pmgmtStatus ${
+                                 program.status === 'active'
+                                 ? 'pmgmtStatusActive'
+                                 : 'pmgmtStatusInactive'
+                              }`}
+                           >
                               {program.status === 'active' ? 'Active' : 'Inactive'}
                            </span>
                            </td>
@@ -293,118 +322,224 @@
                )}
                </div>
             </div>
-
+         </div>
          </div>
 
-         </div>
-
+         {/* Add / Edit modal (does not close when clicking outside) */}
          {isModalOpen && (
-         <div className="pmgmtModalOverlay" onClick={closeModal}>
-            <div className="pmgmtModal" onClick={(e) => e.stopPropagation()}>
-               <h2>{editingId ? 'Edit Program' : 'Add Program'}</h2>
+         <div className="pmgmtModalOverlay">
+            <div
+               className="pmgmtModal"
+               role="dialog"
+               aria-modal="true"
+               aria-labelledby="programModalTitle"
+            >
+               <div className="pmgmtModalHeader">
+               <div>
+                  <h2 id="programModalTitle">{editingId ? 'Edit Program' : 'Add New Program'}</h2>
+                  <p>
+                     {editingId
+                     ? 'Update the details of this training program.'
+                     : 'Fill in the details to create a new training program.'}
+                  </p>
+               </div>
+               <button
+                  type="button"
+                  className="pmgmtModalClose"
+                  onClick={closeModal}
+                  disabled={saving}
+                  aria-label="Close"
+               >
+                  ✕
+               </button>
+               </div>
 
                <form onSubmit={handleSubmit} className="pmgmtForm">
-               <label className="pmgmtImageLabel">
-                  Program image
-                  <div
-                     className="pmgmtImageDrop"
-                     onClick={() => fileInputRef.current?.click()}
-                  >
-                     {imagePreview ? (
-                     <img src={imagePreview} alt="Preview" />
-                     ) : (
-                     <div className="pmgmtImageDropPlaceholder">
-                        <span>Click to upload</span>
-                        <small>PNG or JPG, up to 2MB</small>
+               <div className="pmgmtModalBody">
+                  {/* Image */}
+                  <div className="pmgmtSection">
+                     <span className="pmgmtSectionTitle">Program image</span>
+                     <div className="pmgmtImageRow">
+                     <div
+                        className="pmgmtImageDrop"
+                        onClick={() => fileInputRef.current?.click()}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                           if (e.key === 'Enter' || e.key === ' ') {
+                           e.preventDefault();
+                           fileInputRef.current?.click();
+                           }
+                        }}
+                     >
+                        {imagePreview ? (
+                           <img src={imagePreview} alt="Preview" />
+                        ) : (
+                           <div className="pmgmtImageDropPlaceholder">
+                           <svg
+                              width="26"
+                              height="26"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                           >
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                              <polyline points="17 8 12 3 7 8" />
+                              <line x1="12" y1="3" x2="12" y2="15" />
+                           </svg>
+                           <span>Click to upload</span>
+                           </div>
+                        )}
                      </div>
-                     )}
-                  </div>
-                  <input
+
+                     <div className="pmgmtImageInfo">
+                        <p>PNG or JPG, up to 2MB.</p>
+                        <p className="pmgmtHint">A clear landscape photo works best.</p>
+                        <div className="pmgmtImageBtns">
+                           <button
+                           type="button"
+                           className="pmgmtBtn pmgmtBtnGhost pmgmtBtnSm"
+                           onClick={() => fileInputRef.current?.click()}
+                           >
+                           {imagePreview ? 'Change' : 'Upload'}
+                           </button>
+                           {imageFile && (
+                           <button
+                              type="button"
+                              className="pmgmtBtn pmgmtBtnGhost pmgmtBtnSm"
+                              onClick={handleUndoImage}
+                           >
+                              Undo
+                           </button>
+                           )}
+                        </div>
+                     </div>
+                     </div>
+                     <input
                      ref={fileInputRef}
                      type="file"
                      accept="image/*"
                      onChange={handleImageChange}
                      hidden
-                  />
-               </label>
-
-               <label>
-                  Program name
-                  <input
-                     type="text"
-                     value={form.name}
-                     onChange={(e) => handleChange('name', e.target.value)}
-                     required
-                  />
-               </label>
-
-               <label>
-                  Description
-                  <textarea
-                     rows={3}
-                     value={form.description}
-                     onChange={(e) => handleChange('description', e.target.value)}
-                  />
-               </label>
-
-               <label>
-                  Requirements
-                  <textarea
-                     rows={3}
-                     value={form.requirements}
-                     onChange={(e) => handleChange('requirements', e.target.value)}
-                     placeholder="e.g. Valid ID, Certificate of Residency"
-                  />
-               </label>
-
-               <div className="pmgmtFormRow">
-                  <label>
-                     Schedule
-                     <input
-                     type="text"
-                     value={form.schedule}
-                     onChange={(e) => handleChange('schedule', e.target.value)}
-                     placeholder="e.g. Mon–Fri, 8AM–5PM"
                      />
-                  </label>
+                  </div>
 
-                  <label>
-                     Slots
+                  {/* Program information */}
+                  <div className="pmgmtSection">
+                     <span className="pmgmtSectionTitle">Program information</span>
+
+                     <label className="pmgmtField">
+                     <span className="pmgmtLabel">
+                        Program name <em>*</em>
+                     </span>
                      <input
-                     type="number"
-                     min="0"
-                     value={form.slots}
-                     onChange={(e) => handleChange('slots', e.target.value)}
-                     required
+                        type="text"
+                        value={form.name}
+                        onChange={(e) => handleChange('name', e.target.value)}
+                        placeholder="e.g. Welding NC II"
+                        required
                      />
-                  </label>
-               </div>
+                     </label>
 
-               <div className="pmgmtFormRow">
-                  <label>
-                     Status
-                     <select value={form.status} onChange={(e) => handleChange('status', e.target.value)}>
-                     <option value="active">Active</option>
-                     <option value="inactive">Inactive</option>
+                     <label className="pmgmtField">
+                     <span className="pmgmtLabel">Description</span>
+                     <textarea
+                        rows={3}
+                        maxLength={500}
+                        value={form.description}
+                        onChange={(e) => handleChange('description', e.target.value)}
+                        placeholder="Briefly describe what this program covers"
+                     />
+                     <span className="pmgmtCounter">{form.description.length}/500</span>
+                     </label>
+
+                     <label className="pmgmtField">
+                     <span className="pmgmtLabel">Requirements</span>
+                     <textarea
+                        rows={3}
+                        value={form.requirements}
+                        onChange={(e) => handleChange('requirements', e.target.value)}
+                        placeholder="e.g. Valid ID, Certificate of Residency"
+                     />
+                     </label>
+                  </div>
+
+                  {/* Schedule & availability */}
+                  <div className="pmgmtSection">
+                     <span className="pmgmtSectionTitle">Schedule &amp; availability</span>
+
+                     <div className="pmgmtFormRow">
+                     <label className="pmgmtField">
+                        <span className="pmgmtLabel">Schedule</span>
+                        <input
+                           type="text"
+                           value={form.schedule}
+                           onChange={(e) => handleChange('schedule', e.target.value)}
+                           placeholder="e.g. Mon–Fri, 8AM–5PM"
+                        />
+                     </label>
+
+                     <label className="pmgmtField">
+                        <span className="pmgmtLabel">
+                           Slots <em>*</em>
+                        </span>
+                        <input
+                           type="number"
+                           min="0"
+                           value={form.slots}
+                           onChange={(e) => handleChange('slots', e.target.value)}
+                           placeholder="0"
+                           required
+                        />
+                     </label>
+                     </div>
+
+                     <label className="pmgmtField">
+                     <span className="pmgmtLabel">Status</span>
+                     <select
+                        value={form.status}
+                        onChange={(e) => handleChange('status', e.target.value)}
+                     >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                      </select>
-                  </label>
+                     </label>
 
-                  <label className="pmgmtFormCheckbox">
-                     <input
-                     type="checkbox"
-                     checked={form.tesda_accredited}
-                     onChange={(e) => handleChange('tesda_accredited', e.target.checked)}
-                     />
-                     TESDA accredited
-                  </label>
+                     <label className="pmgmtSwitchRow">
+                     <div>
+                        <span className="pmgmtLabel">TESDA accredited</span>
+                        <span className="pmgmtHint">
+                           Turn on if this program is accredited by TESDA.
+                        </span>
+                     </div>
+                     <span className="pmgmtSwitch">
+                        <input
+                           type="checkbox"
+                           checked={form.tesda_accredited}
+                           onChange={(e) => handleChange('tesda_accredited', e.target.checked)}
+                        />
+                        <span className="pmgmtSwitchTrack" />
+                     </span>
+                     </label>
+                  </div>
+
+                  {formError && (
+                     <div className="pmgmtBanner pmgmtBannerError pmgmtBannerInModal" role="alert">
+                     {formError}
+                     </div>
+                  )}
                </div>
 
-               {formError && (
-                  <div className="pmgmtBanner pmgmtBannerError">{formError}</div>
-               )}
-
-               <div className="pmgmtModalActions">
-                  <button type="button" className="pmgmtBtn pmgmtBtnGhost" onClick={closeModal} disabled={saving}>
+               <div className="pmgmtModalFooter">
+                  <button
+                     type="button"
+                     className="pmgmtBtn pmgmtBtnGhost"
+                     onClick={closeModal}
+                     disabled={saving}
+                  >
                      Cancel
                   </button>
                   <button type="submit" className="pmgmtBtn pmgmtBtnPrimary" disabled={saving}>
@@ -416,15 +551,39 @@
          </div>
          )}
 
+         {/* Remove confirmation modal (does not close when clicking outside) */}
          {deleteTarget && (
-         <div className="pmgmtModalOverlay" onClick={() => setDeleteTarget(null)}>
-            <div className="pmgmtModal pmgmtModalSmall" onClick={(e) => e.stopPropagation()}>
-               <h2>Remove program?</h2>
+         <div className="pmgmtModalOverlay">
+            <div
+               className="pmgmtModal pmgmtModalSmall"
+               role="alertdialog"
+               aria-modal="true"
+               aria-labelledby="deleteModalTitle"
+            >
+               <div className="pmgmtConfirmBody">
+               <div className="pmgmtConfirmIcon">
+                  <svg
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     strokeWidth="2"
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                  >
+                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                     <line x1="12" y1="9" x2="12" y2="13" />
+                     <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+               </div>
+               <h2 id="deleteModalTitle">Remove program?</h2>
                <p>
-               This will remove <strong>{deleteTarget.name}</strong>. Referrals already linked to it are not
-               deleted, but the program will no longer be available for new referrals.
+                  This will remove <strong>{deleteTarget.name}</strong>. Referrals already linked to
+                  it are not deleted, but the program will no longer be available for new referrals.
                </p>
-               <div className="pmgmtModalActions">
+               </div>
+               <div className="pmgmtModalFooter pmgmtModalFooterCenter">
                <button className="pmgmtBtn pmgmtBtnGhost" onClick={() => setDeleteTarget(null)}>
                   Cancel
                </button>
@@ -438,5 +597,4 @@
       </>
    );
    }
-
-   export default MaximaProgramManagement;
+export default MaximaProgramManagement;

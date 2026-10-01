@@ -189,7 +189,7 @@ function ReferralRow({ referral, onOpen }) {
          <td className='referralActionCell'>
             <button
                type='button'
-               className={`referralBtn ${canReview ? 'referralBtnPrimary' : 'referralBtnGhost'}`}
+               className={`referralBtn referralBtnSm ${canReview ? 'referralBtnPrimary' : 'referralBtnGhost'}`}
                onClick={() => onOpen(referral)}
             >
                {canReview ? 'Review' : 'View'}
@@ -201,7 +201,7 @@ function ReferralRow({ referral, onOpen }) {
 
 
 /* -------------------------------------------------------------------------- */
-/* Review modal                                                               */
+/* Review modal (does not close when clicking outside)                        */
 /* -------------------------------------------------------------------------- */
 
 function ReferralModal({
@@ -209,15 +209,20 @@ function ReferralModal({
    remarks,
    onRemarksChange,
    saving,
+   pendingStatus,
    error,
    onClose,
    onAction,
 }) {
-   const actions = NEXT[referral.status] ?? [];
+   // "Rejected" goes first so the main (primary) action sits on the far right
+   const actions = [...(NEXT[referral.status] ?? [])].sort(
+      (a, b) => (b === 'Rejected' ? 1 : 0) - (a === 'Rejected' ? 1 : 0)
+   );
    const stepIndex = STEPS.indexOf(referral.status);
    const osy = referral.osy_profile;
 
-   // Escape closes the modal
+   // Escape closes the modal (onClose is ignored while saving).
+   // Remove this effect if you don't want Escape to close it either.
    useEffect(() => {
       function handleKeyDown(e) {
          if (e.key === 'Escape') onClose();
@@ -228,13 +233,12 @@ function ReferralModal({
    }, [onClose]);
 
    return (
-      <div className='referralModalOverlay' onClick={onClose}>
+      <div className='referralModalOverlay'>
          <div
             className='referralModal'
             role='dialog'
             aria-modal='true'
             aria-labelledby='referralModalTitle'
-            onClick={(e) => e.stopPropagation()}
          >
 
             {/* Header */}
@@ -248,94 +252,129 @@ function ReferralModal({
                      <h2 id='referralModalTitle' className='referralModalTitle'>
                         {fullName(osy)}
                      </h2>
-                     <div className='referralOsySub'>
+                     <p className='referralModalSub'>
                         Referred {formatDate(referral.created_at)}
-                     </div>
+                     </p>
                   </div>
                </div>
 
-               <StatusBadge status={referral.status} />
+               <div className='referralModalHeaderRight'>
+                  <StatusBadge status={referral.status} />
+
+                  <button
+                     type='button'
+                     className='referralModalClose'
+                     onClick={onClose}
+                     disabled={saving}
+                     aria-label='Close'
+                  >
+                     ✕
+                  </button>
+               </div>
             </div>
 
             {/* Body */}
             <div className='referralModalBody'>
 
-               {referral.status === 'Rejected' ? (
-                  <div className='referralRejectedNote'>
-                     This referral was rejected.
-                  </div>
-               ) : (
-                  <ol className='referralSteps' aria-label='Referral progress'>
-                     {STEPS.map((step, index) => {
-                        let state = 'Todo';
-                        if (index < stepIndex) state = 'Done';
-                        if (index === stepIndex) state = 'Active';
+               {/* Progress */}
+               <div className='referralSection'>
+                  <span className='referralSectionTitle'>Referral progress</span>
 
-                        return (
-                           <li
-                              key={step}
-                              className={`referralStep referralStep${state}`}
-                           >
-                              <span className='referralStepDot'>
-                                 {index < stepIndex ? '✓' : index + 1}
-                              </span>
-                              <span className='referralStepLabel'>{step}</span>
-                           </li>
-                        );
-                     })}
-                  </ol>
-               )}
+                  {referral.status === 'Rejected' ? (
+                     <div className='referralRejectedNote'>
+                        This referral was rejected.
+                     </div>
+                  ) : (
+                     <ol className='referralSteps' aria-label='Referral progress'>
+                        {STEPS.map((step, index) => {
+                           let state = 'Todo';
+                           if (index < stepIndex) state = 'Done';
+                           if (index === stepIndex) state = 'Active';
 
-               <dl className='referralDetailGrid'>
-                  <Detail
-                     label='Program'
-                     value={programName(referral.training_program)}
-                  />
-                  <Detail
-                     label='Referred by'
-                     value={referral.referrer?.name}
-                  />
-                  <Detail
-                     label='Address'
-                     value={osy?.address}
-                  />
-                  <Detail
-                     label='Contact number'
-                     value={osy?.contact_number}
-                  />
-                  <Detail
-                     label='Preferred career'
-                     value={osy?.preferred_career}
-                  />
-                  <Detail
-                     label='Reviewed by'
-                     value={referral.reviewer?.name}
-                  />
-               </dl>
+                           return (
+                              <li
+                                 key={step}
+                                 className={`referralStep referralStep${state}`}
+                              >
+                                 <span className='referralStepDot'>
+                                    {index < stepIndex ? '✓' : index + 1}
+                                 </span>
+                                 <span className='referralStepLabel'>{step}</span>
+                              </li>
+                           );
+                        })}
+                     </ol>
+                  )}
+               </div>
 
-               {referral.remarks && (
-                  <div className='referralRemarksBox'>
-                     <span className='referralDetailLabel'>Remarks</span>
-                     <p>{referral.remarks}</p>
-                  </div>
-               )}
+               {/* Details */}
+               <div className='referralSection'>
+                  <span className='referralSectionTitle'>Referral details</span>
 
-               {actions.length > 0 && (
-                  <div className='referralField'>
-                     <label className='referralLabel' htmlFor='referralRemarks'>
-                        Remarks
-                        {actions.includes('Rejected')
-                           ? ' (required if rejecting)'
-                           : ' (optional)'}
-                     </label>
-
-                     <textarea
-                        id='referralRemarks'
-                        className='referralTextarea'
-                        rows={3}
-                        value={remarks}
-                        onChange={(e) => onRemarksChange(e.target.value)}
+                  <dl className='referralDetailGrid'>
+                     <Detail
+                        label='Program'
+                        value={programName(referral.training_program)}
                      />
+                     <Detail
+                        label='Referred by'
+                        value={referral.referrer?.name}
+                     />
+                     <Detail
+                        label='Address'
+                        value={osy?.address}
+                     />
+                     <Detail
+                        label='Contact number'
+                        value={osy?.contact_number}
+                     />
+                     <Detail
+                        label='Preferred career'
+                        value={osy?.preferred_career}
+                     />
+                     <Detail
+                        label='Reviewed by'
+                        value={referral.reviewer?.name}
+                     />
+                  </dl>
+               </div>
+
+               {/* Previous remarks */}
+               {referral.remarks && (
+                  <div className='referralSection'>
+                     <span className='referralSectionTitle'>Previous remarks</span>
+
+                     <div className='referralRemarksBox'>
+                        <p>{referral.remarks}</p>
+                     </div>
+                  </div>
+               )}
+
+               {/* Review decision */}
+               {actions.length > 0 && (
+                  <div className='referralSection'>
+                     <span className='referralSectionTitle'>Your review</span>
+
+                     <div className='referralField'>
+                        <label className='referralLabel' htmlFor='referralRemarks'>
+                           Remarks{' '}
+                           {actions.includes('Rejected') ? (
+                              <span className='referralHint'>(required if rejecting)</span>
+                           ) : (
+                              <span className='referralHint'>(optional)</span>
+                           )}
+                        </label>
+
+                        <textarea
+                           id='referralRemarks'
+                           className='referralTextarea'
+                           rows={3}
+                           placeholder='Add a note about your decision'
+                           value={remarks}
+                           onChange={(e) => onRemarksChange(e.target.value)}
+                           disabled={saving}
+                        />
+                     </div>
                   </div>
                )}
 
@@ -366,7 +405,7 @@ function ReferralModal({
                      onClick={() => onAction(status)}
                      disabled={saving}
                   >
-                     {saving
+                     {saving && pendingStatus === status
                         ? 'Saving…'
                         : status === 'Rejected'
                            ? 'Reject'
@@ -398,6 +437,7 @@ function MaximaReferrals() {
    const [selected, setSelected] = useState(null);
    const [remarks, setRemarks] = useState('');
    const [saving, setSaving] = useState(false);
+   const [pendingStatus, setPendingStatus] = useState(null);
    const [actionError, setActionError] = useState('');
 
    const total = counts.pending + counts.approved + counts.rejected;
@@ -442,6 +482,7 @@ function MaximaReferrals() {
       setSelected(referral);
       setRemarks('');
       setActionError('');
+      setPendingStatus(null);
    }
 
    function closeReferral() {
@@ -450,6 +491,7 @@ function MaximaReferrals() {
       setSelected(null);
       setRemarks('');
       setActionError('');
+      setPendingStatus(null);
    }
 
    async function updateStatus(status) {
@@ -460,6 +502,7 @@ function MaximaReferrals() {
 
       try {
          setSaving(true);
+         setPendingStatus(status);
          setActionError('');
 
          await apiFetch(`/api/maxima/referrals/${selected.id}/status`, {
@@ -474,6 +517,7 @@ function MaximaReferrals() {
          setActionError(err.message || 'Could not update this referral.');
       } finally {
          setSaving(false);
+         setPendingStatus(null);
       }
    }
 
@@ -633,6 +677,7 @@ function MaximaReferrals() {
                   remarks={remarks}
                   onRemarksChange={setRemarks}
                   saving={saving}
+                  pendingStatus={pendingStatus}
                   error={actionError}
                   onClose={closeReferral}
                   onAction={updateStatus}

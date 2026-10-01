@@ -101,3 +101,103 @@
    font-weight: 100;
    line-height: 25px;
 }
+
+
+
+.impactMainContentBot{
+   background-color: #f3f6fd;
+   padding: 50px 5% 70px 5%;
+}
+
+.impactMainContentBotTitle{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-bottom: 60px;
+}
+.impactMainContentBotTitle h2{
+   font-family: "Open Sans", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 700;
+   font-size: 1.4rem;
+   color: #0a386c;
+   margin: 0px;
+   text-align: center;
+}
+.impactMainContentBotTitle h2::after{
+   content: "";
+   display: block;
+   width: 90px;
+   height: 2px;
+   background-color: #0a386c;
+   margin: 14px auto 0px auto;
+}
+
+.impactMainContentBotITTC{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: flex-start;
+   gap: 20px;
+}
+.impactMainContentBotITTC > div{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+   width: 220px;
+}
+
+.impactMainContentBotITTC .impactIcon{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 110px;
+   height: 110px;
+   border-radius: 50%;
+   background-color: #d3dcfa;
+   color: #2a8be8;
+   font-size: 56px;
+   box-shadow: 0px 8px 20px rgba(42, 139, 232, 0.18);
+   margin-bottom: 25px;
+}
+
+.impactMainContentBotITTC .impactArrow{
+   color: #2a8be8;
+   font-size: 56px;
+   margin-top: 27px;
+   font-variation-settings: "FILL" 1, "wght" 700;
+}
+
+.impactMainContentBotITTC h3{
+   font-family: "Open Sans", sans-serif;
+   font-weight: 700;
+   font-size: 1.1rem;
+   color: #0a386c;
+   margin: 0px 0px 12px 0px;
+}
+.impactMainContentBotITTC p{
+   font-family: "Nunito", sans-serif;
+   font-weight: 500;
+   font-size: 0.95rem;
+   line-height: 1.5;
+   color: #1f2a44;
+   margin: 0px;
+}
+
+/* tablets and phones: stack the steps, arrows point down */
+@media (max-width: 900px){
+   .impactMainContentBotITTC{
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+   }
+   .impactMainContentBotITTC > div{
+      width: 100%;
+      max-width: 320px;
+   }
+   .impactMainContentBotITTC .impactArrow{
+      margin-top: 0px;
+      transform: rotate(90deg);
+   }
+}
