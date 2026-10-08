@@ -21,6 +21,7 @@ import OsyAvailCourses from './pages/dashboards/osy/OsyAvailCourses';
 import OsyApplicationDets from './pages/dashboards/osy/OsyApplicationDets';
 import OsyTrainingProg from './pages/dashboards/osy/OsyTrainingProg';
 import OsyNotif from './pages/dashboards/osy/OsyNotif';
+import OsyAnnouncement from './pages/dashboards/osy/OsyAnnouncement';
 
 
 
@@ -32,8 +33,8 @@ import MaximaReferrals from './pages/dashboards/maxima/MaximaReferrals';
 import MaximaEnrollees from './pages/dashboards/maxima/MaximaEnrollees';
 import MaximaProgressMonitoring from './pages/dashboards/maxima/MaximaProgressMonitoring';
 import MaximaReports from './pages/dashboards/maxima/MaximaReports';
-import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement';
-
+import MaximaNotifications from './pages/dashboards/maxima/MaximaReferralNotifications';
+import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement'; 
 
 
 
@@ -66,7 +67,7 @@ function App() {
          <Route path="/osy/applications" element={<ProtectedRoute> <OsyApplicationDets /> </ProtectedRoute>} />
          <Route path="/osy/training" element={<ProtectedRoute> <OsyTrainingProg /> </ProtectedRoute>} />
          <Route path="/osy/notifications" element={<ProtectedRoute> <OsyNotif /> </ProtectedRoute>} />
-
+         <Route path="/osy/announcements" element={<ProtectedRoute> <OsyAnnouncement /> </ProtectedRoute>} />
 
 
 
@@ -77,7 +78,9 @@ function App() {
          <Route path="/maxima/enrollees" element={<ProtectedRoute> <MaximaEnrollees/> </ProtectedRoute>}/>
          <Route path="/maxima/monitoring" element={<ProtectedRoute> <MaximaProgressMonitoring/> </ProtectedRoute>}/>
          <Route path="/maxima/reports" element={<ProtectedRoute> <MaximaReports/> </ProtectedRoute>}/>
-         <Route path="/maxima/announcements" element={<ProtectedRoute> <MaximaAnnouncement/> </ProtectedRoute>}/>
+         <Route path="/maxima/notifications" element={<ProtectedRoute> <MaximaNotifications/> </ProtectedRoute>}/>
+         <Route path="/maxima/announcements" element={<ProtectedRoute> <MaximaAnnouncement/> </ProtectedRoute>}/> 
+
 
 
 

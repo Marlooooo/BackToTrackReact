@@ -62,15 +62,15 @@ async function apiFetch(url, { method = 'GET', body } = {}) {
 
 // current status => statuses Maxima can move it to
 const NEXT = {
-   'Referred': ['Accepted by TESDA', 'Rejected'],
-   'Accepted by TESDA': ['Training Started'],
+   'Referred': ['Accepted by Maxima', 'Rejected'],
+   'Accepted by Maxima': ['Training Started'],
    'Training Started': ['Completed'],
 };
 
 // the path a referral follows once it is accepted
 const STEPS = [
    'Referred',
-   'Accepted by TESDA',
+   'Accepted by Maxima',
    'Training Started',
    'Completed',
 ];
@@ -79,7 +79,7 @@ const BADGE_CLASS = {
    'Registered': 'referralBadgePending',
    'Validated': 'referralBadgePending',
    'Referred': 'referralBadgePending',
-   'Accepted by TESDA': 'referralBadgeAccepted',
+   'Accepted by Maxima': 'referralBadgeAccepted',
    'Training Started': 'referralBadgeTraining',
    'Completed': 'referralBadgeCompleted',
    'Rejected': 'referralBadgeRejected',

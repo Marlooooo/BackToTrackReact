@@ -58,7 +58,7 @@ const initials = (p) =>
 const programName = (p) => p?.name ?? `Program #${p?.id ?? '?'}`;
 
 // Maps the referrals.status enum to the three summary boxes.
-const APPROVED = ['Accepted by TESDA', 'Training Started', 'Completed'];
+const APPROVED = ['Accepted by Maxima', 'Training Started', 'Completed'];
 const REJECTED = ['Rejected'];
 const groupOf = (status) => (APPROVED.includes(status) ? 'approved' : REJECTED.includes(status) ? 'rejected' : 'pending');
 

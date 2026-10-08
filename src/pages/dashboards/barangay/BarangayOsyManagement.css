@@ -261,7 +261,7 @@
    .bosyStatus--Registered      { background: #EAF0EE; color: #55665C; }
    .bosyStatus--Validated       { background: #E4EBF6; color: #3A5D8F; }
    .bosyStatus--Referred        { background: #FBF0DD; color: #96701E; }
-   .bosyStatus--AcceptedbyTESDA { background: #EEE6F4; color: #71549A; }
+   .bosyStatus--AcceptedbyMaxima { background: #EEE6F4; color: #71549A; }
    .bosyStatus--TrainingStarted { background: #FBE9DA; color: #B0621F; }
    .bosyStatus--Completed       { background: #E3F0E7; color: #2F6E4F; }
 
@@ -352,6 +352,7 @@
    font-size: 18px;
    font-weight: 700;
    color: #14201A;
+   font-family: "Open Sans", sans-serif;
    }
 
    .bosyModalSmall p {
@@ -359,6 +360,7 @@
    font-size: 13.5px;
    line-height: 1.5;
    color: #29332C;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyModalActions {
@@ -465,6 +467,7 @@
    letter-spacing: 0.04em;
    text-transform: uppercase;
    color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
    }
 
    .bosyFormSectionNote {
@@ -481,6 +484,7 @@
    font-size: 12.5px;
    font-weight: 600;
    color: #3D4A3F;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyForm input:not([type='checkbox']),

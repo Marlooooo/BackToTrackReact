@@ -1,150 +1,311 @@
-.mainContentContactUs{
-   padding: 70px 140px 70px 140px;
-   display: flex;
-   flex-direction: row;
-   justify-content: space-around;
-}
-.mainContentContactUsLeft{
+.contactSection{
+   padding: 70px 140px;
+   background-color: #f4f8fc;
    display: flex;
    flex-direction: column;
-}
-.mainContentContactUsLeft h1{
-   font-family: "Open Sans", sans-serif;
-   font-optical-sizing: auto;
-   font-weight: 900;
-   font-style: normal;
-   font-size: 2rem;
-   margin: 0px 0px 15px 0px;
-   color: #437dc0;
-}
-.mainContentContactUsLeft h4{
-   font-family: "Open Sans", sans-serif;
-   font-optical-sizing: auto;
-   font-weight: 900;
-   font-style: normal;
-   font-size: 1.5rem;
-   margin: 0;
-}
-.mainContentContactUsLeft p{
-   color: black;
-   font-family: "Nunito", sans-serif;
-   font-optical-sizing: auto;
-   font-weight: 100;
-   font-style: normal;
-   font-size: 0.9rem;
-   margin: 0;
-}
-.contactsDetailsDiv{
-   display: flex;
-   flex-direction: column;
-   gap: 30px;
-   padding: 30px 0px 0px 0px;
-}
-.contactsDetails{
-   display: flex;
-   flex-direction: row;
-   gap: 20px;
    align-items: center;
+   gap: 45px;
 }
-.contactsDetails h3{
-   color: black;
+
+/* ---------- Intro ---------- */
+.contactIntro{
+   text-align: center;
+   max-width: 640px;
+}
+.contactBadge{
+   display: inline-block;
+   padding: 6px 18px;
+   margin-bottom: 14px;
+   border-radius: 50px;
+   background-color: #e3eefb;
+   color: #437dc0;
    font-family: "Open Sans", sans-serif;
-   font-optical-sizing: auto;
    font-weight: 700;
-   font-style: normal;
-   font-size: 1.1rem;
-   margin: 0px 0px 5px 0px;
-}
-.contactsDetails p{
-   color: black;
-   font-family: "Nunito", sans-serif;
-   font-optical-sizing: auto;
-   font-weight: 100;
-   font-style: normal;
    font-size: 0.8rem;
+   letter-spacing: 1px;
+   text-transform: uppercase;
+}
+.contactIntro h1{
+   font-family: "Open Sans", sans-serif;
+   font-weight: 900;
+   font-size: 2.4rem;
+   color: #1e2a3a;
+   margin: 0px 0px 14px 0px;
+}
+.contactIntro p{
+   font-family: "Nunito", sans-serif;
+   font-weight: 400;
+   font-size: 1rem;
+   line-height: 1.7;
+   color: #5f6f82;
    margin: 0px;
 }
-.location_on, .attach_email, .call{
-   font-size: 25px;
-   color: white;
-   padding: 15px;
-   border-radius: 50px;
-   background-color: #437dc0;
+
+/* ---------- Main card ---------- */
+.contactWrapper{
+   display: grid;
+   grid-template-columns: 1fr 1.4fr;
+   width: 100%;
+   max-width: 1000px;
+   background-color: #ffffff;
+   border-radius: 24px;
+   box-shadow: 0px 20px 60px rgba(31, 69, 115, 0.15);
+   overflow: hidden;
 }
 
-
-
-.mainContentContactUsRight{
-   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.15);
+/* ---------- Left info panel ---------- */
+.contactInfoPanel{
+   position: relative;
    display: flex;
    flex-direction: column;
-   align-items: start;
-   border: 1px solid gray;
-   padding: 10px 20px 30px 20px;
-   gap: 25px;
-   border-radius: 20px;
+   justify-content: space-between;
+   gap: 40px;
+   padding: 45px 40px;
+   background: linear-gradient(160deg, #437dc0 0%, #2a5a99 100%);
+   color: #ffffff;
+   overflow: hidden;
 }
-.mainContentContactUsRight h1{
+.contactInfoPanel::before{
+   content: "";
+   position: absolute;
+   top: -80px;
+   right: -80px;
+   width: 220px;
+   height: 220px;
+   border-radius: 50%;
+   background-color: rgba(255, 255, 255, 0.08);
+}
+.contactInfoPanel::after{
+   content: "";
+   position: absolute;
+   bottom: -100px;
+   left: -60px;
+   width: 240px;
+   height: 240px;
+   border-radius: 50%;
+   background-color: rgba(255, 255, 255, 0.06);
+}
+.contactInfoHead,
+.contactInfoList{
+   position: relative;
+   z-index: 1;
+}
+.contactInfoHead h2{
    font-family: "Open Sans", sans-serif;
-   font-optical-sizing: auto;
    font-weight: 800;
-   font-size: 1.5rem;
-   margin: 0px;
-}
-.mainContentContactUsRight h6{
-   font-family: "Nunito", sans-serif;
-   font-optical-sizing: auto;
-   font-size: 0.8rem;
-   font-weight: 100;
+   font-size: 1.6rem;
+   color: #ffffff;
    margin: 0px 0px 10px 0px;
 }
-.nameAndEmailDiv{
-   display: flex;
-   flex-direction: row;
-   gap: 50px;
-   width: 100%;
+.contactInfoHead p{
+   font-family: "Nunito", sans-serif;
+   font-weight: 400;
+   font-size: 0.95rem;
+   line-height: 1.6;
+   color: rgba(255, 255, 255, 0.85);
+   margin: 0px;
 }
-.subjectDiv, .messageDiv{
+.contactInfoList{
    display: flex;
    flex-direction: column;
-   width: 100%;
+   gap: 26px;
 }
-.nameAndEmailDiv input{
-   height: 25px;
-   border: 1px solid gray;
-   border-radius: 10px;
-   padding: 5px 0px 5px 10px;
+.contactInfoItem{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 16px;
 }
-.subjectDiv input{
-   height: 25px;
-   border: 1px solid gray;
-   border-radius: 10px;
-   padding: 5px 0px 5px 10px;
+.contactInfoIcon{
+   flex-shrink: 0;
+   width: 50px;
+   height: 50px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 14px;
+   background-color: rgba(255, 255, 255, 0.18);
 }
-.messageDiv input{
-   height: 100px;
-   border-radius: 10px;
-   border: 1px solid gray;
+.contactInfoIcon span{
+   font-size: 24px;
+   color: #ffffff;
+}
+.contactInfoText h3{
+   font-family: "Open Sans", sans-serif;
+   font-weight: 700;
+   font-size: 0.75rem;
+   letter-spacing: 1px;
+   text-transform: uppercase;
+   color: rgba(255, 255, 255, 0.7);
+   margin: 0px 0px 4px 0px;
+}
+.contactInfoText p{
+   font-family: "Nunito", sans-serif;
+   font-weight: 600;
+   font-size: 0.95rem;
+   color: #ffffff;
+   margin: 0px;
+   word-break: break-word;
 }
 
-.submitBtn {
-   width: 100%;
-   height: auto;
+/* ---------- Right form panel ---------- */
+.contactFormPanel{
+   padding: 45px 40px;
 }
-.submitBtn button{
-   color: white;
-   font-size: 15px;
+.contactFormPanel h2{
+   font-family: "Open Sans", sans-serif;
+   font-weight: 800;
+   font-size: 1.6rem;
+   color: #1e2a3a;
+   margin: 0px 0px 8px 0px;
+}
+.contactFormSub{
+   font-family: "Nunito", sans-serif;
+   font-weight: 400;
+   font-size: 0.95rem;
+   color: #5f6f82;
+   margin: 0px 0px 28px 0px;
+}
+.contactForm{
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+.contactFormRow{
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 20px;
+}
+.contactField{
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+.contactField label{
+   font-family: "Open Sans", sans-serif;
+   font-weight: 700;
+   font-size: 0.85rem;
+   color: #1e2a3a;
+}
+.contactField input,
+.contactField textarea{
    width: 100%;
-   height: 40px;
-   border: 1px solid black;
-   border-radius: 20px;
+   box-sizing: border-box;
+   padding: 13px 16px;
+   border: 1.5px solid #d9e2ec;
+   border-radius: 12px;
+   background-color: #f9fbfd;
+   font-family: "Nunito", sans-serif;
+   font-weight: 400;
+   font-size: 0.95rem;
+   color: #1e2a3a;
+   outline: none;
+   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.contactField input::placeholder,
+.contactField textarea::placeholder{
+   color: #9aa8b8;
+}
+.contactField input:focus,
+.contactField textarea:focus{
+   border-color: #437dc0;
+   background-color: #ffffff;
+   box-shadow: 0px 0px 0px 4px rgba(67, 125, 192, 0.15);
+}
+.contactField textarea{
+   min-height: 150px;
+   resize: vertical;
+}
+.contactCounter{
+   align-self: flex-end;
+   font-family: "Nunito", sans-serif;
+   font-size: 0.75rem;
+   color: #8a98a8;
+}
+
+/* ---------- Status message ---------- */
+.contactStatus{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 8px;
+   margin: 0px;
+   padding: 12px 16px;
+   border-radius: 12px;
+   font-family: "Nunito", sans-serif;
+   font-weight: 600;
+   font-size: 0.9rem;
+}
+.contactStatus span{
+   font-size: 20px;
+}
+.contactStatus.success{
+   background-color: #e8f6ee;
+   border: 1px solid #bfe5cf;
+   color: #1e7a46;
+}
+.contactStatus.error{
+   background-color: #fdecec;
+   border: 1px solid #f5c2c0;
+   color: #b3261e;
+}
+
+/* ---------- Submit button ---------- */
+.contactSubmitBtn{
    display: flex;
    flex-direction: row;
    align-items: center;
    justify-content: center;
-   gap: 5px;
+   gap: 8px;
+   width: 100%;
+   padding: 14px;
+   border: none;
+   border-radius: 12px;
    background-color: #437dc0;
-} 
-.submitBtn span{
+   color: #ffffff;
+   font-family: "Open Sans", sans-serif;
+   font-weight: 700;
+   font-size: 1rem;
+   cursor: pointer;
+   box-shadow: 0px 8px 20px rgba(67, 125, 192, 0.35);
+   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.contactSubmitBtn:hover{
+   background-color: #356aa8;
+   transform: translateY(-2px);
+   box-shadow: 0px 12px 24px rgba(67, 125, 192, 0.4);
+}
+.contactSubmitBtn:disabled{
+   opacity: 0.7;
+   cursor: not-allowed;
+   transform: none;
+   box-shadow: none;
+}
+.contactSubmitBtn span{
    font-size: 20px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px){
+   .contactSection{
+      padding: 50px 40px;
+   }
+}
+@media (max-width: 768px){
+   .contactSection{
+      padding: 40px 20px;
+   }
+   .contactIntro h1{
+      font-size: 1.8rem;
+   }
+   .contactWrapper{
+      grid-template-columns: 1fr;
+   }
+   .contactInfoPanel,
+   .contactFormPanel{
+      padding: 32px 24px;
+   }
+   .contactFormRow{
+      grid-template-columns: 1fr;
+   }
 }

@@ -121,6 +121,15 @@ function MaximaSideBar() {
                   <span className="material-symbols-outlined">
                   notifications_active
                   </span>
+                  <NavLink to="/maxima/notifications" className={({ isActive }) => isActive ? "active" : ""}>
+                  Notifications
+                  </NavLink>
+               </div>
+               {/* NEW: Announcements */}
+               <div>
+                  <span className="material-symbols-outlined">
+                  campaign
+                  </span>
                   <NavLink to="/maxima/announcements" className={({ isActive }) => isActive ? "active" : ""}>
                   Announcements
                   </NavLink>

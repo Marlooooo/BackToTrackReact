@@ -11,7 +11,11 @@
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
    }
-
+   const redirects = {
+      maxima_tesda_school: "/maxima/dashboard",
+      sk_officials: "/barangay/dashboard",
+      osy: "/osy/dashboard",
+   };
    function Login() {
 
    const [email, setEmail] = useState("");
@@ -26,43 +30,37 @@
       setLoading(true);
 
       try {
-         // get CSRF cookie first — required by Sanctum
          await fetch("http://localhost:8000/sanctum/csrf-cookie", {
             credentials: "include",
          });
 
-         const xsrfToken = getCookie("XSRF-TOKEN"); // ADD THIS
-
-
          const res = await fetch("http://localhost:8000/api/login", {
             method: "POST",
-            headers: { "Content-Type": "application/json",                
-               "X-XSRF-TOKEN": xsrfToken, // ADD THIS  
-               },
-            credentials: "include", // <-- add this
+            headers: {
+               "Content-Type": "application/json",
+               "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
+            },
+            credentials: "include",
             body: JSON.stringify({ email, password }),
          });
 
          const data = await res.json();
 
-         if (data.success) {
+         if (!data.success) {
+            setError(data.message || "Invalid email or password.");
+            return;
+         }
 
-         localStorage.setItem("token", data.token); 
+         localStorage.setItem("token", data.token);
          localStorage.setItem("userName", data.name);
          localStorage.setItem("userRole", data.role);
-
-         if (data.role === "maxima_tesda_school") navigate("/maxima/dashboard");
-         else if (data.role === "sk_officials") navigate("/barangay/dashboard");
-         else if (data.role === "osy") navigate("/osy/dashboard");
-         } else {
-         setError(data.message || "Invalid email or password.");
-         }
+         navigate(redirects[data.role] || "/");
       } catch (err) {
          setError("Something went wrong. Please try again.");
          console.error(err);
       } finally {
-      setLoading(false);
-   }
+         setLoading(false);
+      }
    };
 
    return (

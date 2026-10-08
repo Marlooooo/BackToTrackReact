@@ -1,0 +1,518 @@
+.maximaEnrolleesMainContent{
+   width: 81%;
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
+   padding: 50px;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.enrolleesPage {
+   max-width: 100%;
+}
+
+.enrolleesHeader {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 24px;
+}
+
+.enrolleesTitle {
+   margin: 0 0 4px;
+   font-size: 28px;
+   font-weight: 700;
+   color: #111827;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesSubtitle {
+   margin: 0;
+   font-size: 14px;
+   color: #6b7280;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Summary cards */
+.enrolleesSummary {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 16px;
+   margin-bottom: 24px;
+}
+
+.enrolleesSummaryCard {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   padding: 18px 20px;
+   background: #ffffff;
+   border: 1px solid #e5e7eb;
+   border-left: 4px solid #6b7280;
+   border-radius: 10px;
+   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.enrolleesSummaryTotal {
+   border-left-color: #1d4ed8;
+}
+
+.enrolleesSummaryAccepted {
+   border-left-color: #0891b2;
+}
+
+.enrolleesSummaryOngoing {
+   border-left-color: #d97706;
+}
+
+.enrolleesSummaryCompleted {
+   border-left-color: #059669;
+}
+
+.enrolleesSummaryLabel {
+   font-size: 13px;
+   font-weight: 500;
+   color: #6b7280;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesSummaryValue {
+   font-size: 30px;
+   font-weight: 700;
+   color: #111827;
+   line-height: 1;
+   font-family: "Open Sans", sans-serif;
+}
+
+/* Main panel */
+.enrolleesPanel {
+   background: #ffffff;
+   border: 1px solid #e5e7eb;
+   border-radius: 12px;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+   overflow: hidden;
+}
+
+.enrolleesToolbar {
+   display: flex;
+   gap: 12px;
+   padding: 16px 20px;
+   border-bottom: 1px solid #e5e7eb;
+   background: #f9fafb;
+}
+
+.enrolleesSearch,
+.enrolleesFilter {
+   padding: 10px 14px;
+   border: 1px solid #d1d5db;
+   border-radius: 8px;
+   font-family: "Nunito", sans-serif;
+   font-size: 14px;
+   color: #111827;
+   background: #ffffff;
+   outline: none;
+}
+
+.enrolleesSearch {
+   flex: 1;
+   min-width: 0;
+}
+
+.enrolleesSearch:focus,
+.enrolleesFilter:focus {
+   border-color: #2563eb;
+   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.enrolleesError {
+   margin: 16px 20px 0;
+   padding: 10px 14px;
+   background: #fee2e2;
+   color: #991b1b;
+   border-radius: 8px;
+   font-size: 14px;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesEmpty {
+   padding: 48px 20px;
+   text-align: center;
+   color: #6b7280;
+   font-size: 14px;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Table */
+.enrolleesTableWrap {
+   overflow-x: auto;
+}
+
+.enrolleesTable {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.enrolleesTable th {
+   padding: 12px 20px;
+   text-align: left;
+   font-size: 12px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #6b7280;
+   background: #f9fafb;
+   border-bottom: 1px solid #e5e7eb;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesTable td {
+   padding: 14px 20px;
+   font-size: 14px;
+   color: #374151;
+   border-bottom: 1px solid #f3f4f6;
+   vertical-align: middle;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesTable tbody tr:hover {
+   background: #f9fafb;
+}
+
+.enrolleesTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+.enrolleesActionsHead {
+   text-align: right !important;
+}
+
+.enrolleesPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.enrolleesPersonName {
+   font-weight: 600;
+   color: #111827;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesAvatar {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #dbeafe;
+   color: #1d4ed8;
+   font-size: 13px;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesAvatarLarge {
+   width: 56px;
+   height: 56px;
+   font-size: 20px;
+}
+
+/* Status badges */
+.enrolleesBadge {
+   display: inline-block;
+   padding: 4px 12px;
+   border-radius: 999px;
+   background: #f3f4f6;
+   color: #374151;
+   font-size: 12px;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesBadgeAccepted {
+   background: #cffafe;
+   color: #155e75;
+}
+
+.enrolleesBadgeOngoing {
+   background: #fef3c7;
+   color: #92400e;
+}
+
+.enrolleesBadgeCompleted {
+   background: #d1fae5;
+   color: #065f46;
+}
+
+/* Buttons */
+.enrolleesActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 8px;
+}
+
+.enrolleesViewBtn {
+   padding: 7px 14px;
+   border: 1px solid #d1d5db;
+   border-radius: 6px;
+   background: #ffffff;
+   color: #374151;
+   font-family: inherit;
+   font-size: 13px;
+   font-weight: 500;
+   cursor: pointer;
+   white-space: nowrap;
+}
+
+.enrolleesViewBtn:hover {
+   background: #f3f4f6;
+}
+
+.enrolleesActionBtn {
+   padding: 7px 14px;
+   border: none;
+   border-radius: 6px;
+   background: #2563eb;
+   color: #ffffff;
+   font-family: inherit;
+   font-size: 13px;
+   font-weight: 500;
+   cursor: pointer;
+   white-space: nowrap;
+}
+
+.enrolleesActionBtn:hover {
+   background: #1d4ed8;
+}
+
+.enrolleesActionBtn:disabled {
+   background: #93c5fd;
+   cursor: not-allowed;
+}
+
+/* Details modal */
+.enrolleesModalOverlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 24px;
+   background: rgba(17, 24, 39, 0.55);
+   /* the modal is rendered outside the main content, so set the base font here */
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.enrolleesModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 760px;
+   max-height: 90vh;
+   background: #ffffff;
+   border-radius: 14px;
+   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+   overflow: hidden;
+}
+
+.enrolleesModalHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   padding: 24px 28px;
+   border-bottom: 1px solid #e5e7eb;
+   background: #f9fafb;
+}
+
+.enrolleesModalIdentity {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+}
+
+.enrolleesModalName {
+   margin: 0 0 6px;
+   font-size: 22px;
+   font-weight: 700;
+   color: #111827;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesModalClose {
+   border: none;
+   background: transparent;
+   font-family: inherit;
+   font-size: 28px;
+   line-height: 1;
+   color: #6b7280;
+   cursor: pointer;
+}
+
+.enrolleesModalClose:hover {
+   color: #111827;
+}
+
+.enrolleesModalBody {
+   flex: 1;
+   padding: 8px 28px 20px;
+   overflow-y: auto;
+}
+
+.enrolleesSection {
+   padding: 20px 0;
+   border-bottom: 1px solid #f3f4f6;
+}
+
+.enrolleesSection:last-child {
+   border-bottom: none;
+}
+
+.enrolleesSectionTitle {
+   margin: 0 0 14px;
+   font-size: 13px;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+   text-transform: uppercase;
+   color: #1d4ed8;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesDetailGrid {
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 16px 24px;
+}
+
+.enrolleesDetailItem {
+   display: flex;
+   flex-direction: column;
+   gap: 3px;
+   min-width: 0;
+}
+
+.enrolleesDetailWide {
+   grid-column: 1 / -1;
+}
+
+.enrolleesDetailLabel {
+   font-size: 12px;
+   font-weight: 500;
+   color: #6b7280;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesDetailValue {
+   font-size: 14px;
+   color: #111827;
+   word-break: break-word;
+   white-space: pre-line;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesMuted {
+   margin: 0;
+   font-size: 14px;
+   color: #6b7280;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Timeline */
+.enrolleesTimeline {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.enrolleesTimelineItem {
+   position: relative;
+   display: flex;
+   gap: 14px;
+   padding-bottom: 18px;
+}
+
+.enrolleesTimelineItem:not(:last-child)::before {
+   content: '';
+   position: absolute;
+   top: 16px;
+   left: 5px;
+   bottom: 0;
+   width: 2px;
+   background: #e5e7eb;
+}
+
+.enrolleesTimelineItem:last-child {
+   padding-bottom: 0;
+}
+
+.enrolleesTimelineDot {
+   width: 12px;
+   height: 12px;
+   margin-top: 4px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2563eb;
+   box-shadow: 0 0 0 3px #dbeafe;
+}
+
+.enrolleesTimelineContent {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+}
+
+.enrolleesTimelineStatus {
+   font-size: 14px;
+   font-weight: 600;
+   color: #111827;
+   font-family: "Open Sans", sans-serif;
+}
+
+.enrolleesTimelineMeta {
+   font-size: 12px;
+   color: #6b7280;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesTimelineRemarks {
+   font-size: 13px;
+   color: #374151;
+   font-family: "Nunito", sans-serif;
+}
+
+.enrolleesModalFooter {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   padding: 16px 28px;
+   border-top: 1px solid #e5e7eb;
+   background: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+   .enrolleesSummary {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 600px) {
+   .enrolleesSummary {
+      grid-template-columns: 1fr;
+   }
+
+   .enrolleesToolbar {
+      flex-direction: column;
+   }
+
+   .enrolleesDetailGrid {
+      grid-template-columns: 1fr;
+   }
+}

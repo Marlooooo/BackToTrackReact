@@ -56,7 +56,7 @@
    'Registered',
    'Validated',
    'Referred',
-   'Accepted by TESDA',
+   'Accepted by Maxima',
    'Training Started',
    'Completed',
    ];
@@ -233,7 +233,7 @@
          if (!cancelled) setItems(body.data ?? []);
          } catch (err) {
          if (!cancelled) {
-            setItems([]);
+            setItems([]);  
             setError(err.message);
          }
          } finally {

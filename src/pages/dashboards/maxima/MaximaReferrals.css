@@ -418,6 +418,7 @@
    outline-offset: 2px;
 }
 
+
 /* Modal shell */
 
 .referralModalOverlay {
@@ -428,22 +429,22 @@
    align-items: center;
    justify-content: center;
    padding: 20px;
-   background: rgba(16, 23, 18, 0.55);
-   backdrop-filter: blur(3px);
-   animation: referralFade 0.18s ease;
+   background: rgba(17, 24, 39, 0.5);
+   animation: referralFade 0.15s ease;
 }
 
 .referralModal {
    display: flex;
    flex-direction: column;
    width: 100%;
-   max-width: 600px;
+   max-width: 560px;
    max-height: 90vh;
    overflow: hidden;
    background: #FFFFFF;
-   border-radius: 18px;
-   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
-   animation: referralRise 0.22s ease;
+   border: 1px solid #D9DEE3;
+   border-radius: 8px;
+   box-shadow: 0 10px 30px rgba(17, 24, 39, 0.18);
+   animation: referralFade 0.15s ease;
 }
 
 /* Modal header */
@@ -453,24 +454,30 @@
    align-items: flex-start;
    justify-content: space-between;
    gap: 16px;
-   padding: 22px 24px 18px 28px;
-   border-bottom: 1px solid #EEF2EE;
+   padding: 20px 24px;
+   border-bottom: 1px solid #E5E7EB;
+}
+
+.referralModal .referralAvatar {
+   color: #374151;
+   background: #F3F4F6;
+   border: 1px solid #E5E7EB;
+   border-radius: 8px;
 }
 
 .referralModalTitle {
    margin: 0 0 2px;
-   font-size: 18px;
-   font-weight: 700;
-   line-height: 1.25;
-   letter-spacing: -0.01em;
-   color: #14201A;
+   font-size: 17px;
+   font-weight: 600;
+   line-height: 1.3;
+   color: #111827;
    font-family: "Open Sans", sans-serif;
 }
 
 .referralModalSub {
    margin: 0;
    font-size: 13px;
-   color: #66746A;
+   color: #6B7280;
    font-family: "Nunito", sans-serif;
 }
 
@@ -478,25 +485,25 @@
    display: flex;
    flex-shrink: 0;
    align-items: center;
-   gap: 10px;
+   gap: 8px;
 }
 
 .referralModalClose {
    flex-shrink: 0;
-   width: 32px;
-   height: 32px;
-   font-size: 14px;
-   color: #7C877E;
+   width: 30px;
+   height: 30px;
+   font-size: 13px;
+   color: #6B7280;
    background: transparent;
    border: none;
-   border-radius: 8px;
+   border-radius: 6px;
    cursor: pointer;
    transition: background 0.15s ease, color 0.15s ease;
 }
 
 .referralModalClose:hover:not(:disabled) {
-   color: #14201A;
-   background: #F1F4F1;
+   color: #111827;
+   background: #F3F4F6;
 }
 
 .referralModalClose:disabled {
@@ -509,8 +516,8 @@
 .referralModalBody {
    display: flex;
    flex-direction: column;
-   gap: 26px;
-   padding: 22px 28px;
+   gap: 0;
+   padding: 0 24px;
    overflow-y: auto;
 }
 
@@ -518,10 +525,57 @@
    display: flex;
    flex-wrap: wrap;
    justify-content: flex-end;
-   gap: 10px;
-   padding: 16px 28px;
-   background: #FBFCFB;
-   border-top: 1px solid #EEF2EE;
+   gap: 8px;
+   padding: 14px 24px;
+   background: #F9FAFB;
+   border-top: 1px solid #E5E7EB;
+}
+
+/* Modal buttons (scoped so the table buttons are not affected) */
+
+.referralModal .referralBtn {
+   padding: 8px 16px;
+   font-size: 13px;
+   font-weight: 600;
+   border-radius: 6px;
+   box-shadow: none;
+}
+
+.referralModal .referralBtnPrimary {
+   color: #FFFFFF;
+   background: #2F6E4F;
+   border: 1px solid #2F6E4F;
+   box-shadow: none;
+}
+
+.referralModal .referralBtnPrimary:hover:not(:disabled) {
+   background: #275C42;
+   border-color: #275C42;
+   box-shadow: none;
+}
+
+.referralModal .referralBtnGhost {
+   color: #374151;
+   background: #FFFFFF;
+   border: 1px solid #D1D5DB;
+}
+
+.referralModal .referralBtnGhost:hover:not(:disabled) {
+   background: #F3F4F6;
+   border-color: #9CA3AF;
+}
+
+.referralModal .referralBtnDanger {
+   color: #B42318;
+   background: #FFFFFF;
+   border: 1px solid #D1D5DB;
+   box-shadow: none;
+}
+
+.referralModal .referralBtnDanger:hover:not(:disabled) {
+   color: #B42318;
+   background: #FEF3F2;
+   border-color: #B42318;
 }
 
 /* Modal sections */
@@ -529,15 +583,19 @@
 .referralSection {
    display: flex;
    flex-direction: column;
-   gap: 14px;
+   gap: 12px;
+   padding: 20px 0;
+   border-bottom: 1px solid #E5E7EB;
+}
+
+.referralSection:last-child {
+   border-bottom: none;
 }
 
 .referralSectionTitle {
-   font-size: 11.5px;
-   font-weight: 700;
-   text-transform: uppercase;
-   letter-spacing: 0.06em;
-   color: #2F6E4F;
+   font-size: 13px;
+   font-weight: 600;
+   color: #111827;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -566,8 +624,8 @@
    top: 13px;
    right: calc(-50% + 18px);
    left: calc(50% + 18px);
-   height: 2px;
-   background: #E3E9E3;
+   height: 1px;
+   background: #D1D5DB;
 }
 
 .referralStepDone:not(:last-child)::after {
@@ -578,44 +636,50 @@
    display: inline-flex;
    align-items: center;
    justify-content: center;
-   width: 28px;
-   height: 28px;
-   font-size: 13px;
-   font-weight: 700;
-   color: #66746A;
-   background: #E3E9E3;
+   box-sizing: border-box;
+   width: 26px;
+   height: 26px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #9CA3AF;
+   background: #FFFFFF;
+   border: 1px solid #D1D5DB;
    border-radius: 50%;
 }
 
-.referralStepDone .referralStepDot,
-.referralStepActive .referralStepDot {
+.referralStepDone .referralStepDot {
    color: #FFFFFF;
    background: #2F6E4F;
+   border-color: #2F6E4F;
 }
 
 .referralStepActive .referralStepDot {
-   box-shadow: 0 0 0 4px rgba(47, 110, 79, 0.18);
+   color: #2F6E4F;
+   background: #FFFFFF;
+   border: 2px solid #2F6E4F;
+   box-shadow: none;
 }
 
 .referralStepLabel {
    font-size: 12px;
-   color: #66746A;
+   color: #6B7280;
    font-family: "Nunito", sans-serif;
 }
 
 .referralStepActive .referralStepLabel {
    font-weight: 600;
-   color: #14201A;
+   color: #111827;
 }
 
 .referralRejectedNote {
-   padding: 10px 14px;
+   padding: 0 0 0 12px;
    font-size: 13.5px;
    font-weight: 600;
-   color: #A23E3E;
-   background: #FBEBEB;
-   border: 1px solid #F0CACA;
-   border-radius: 8px;
+   color: #B42318;
+   background: transparent;
+   border: none;
+   border-left: 3px solid #B42318;
+   border-radius: 0;
 }
 
 /* Details */
@@ -623,12 +687,12 @@
 .referralDetailGrid {
    display: grid;
    grid-template-columns: 1fr 1fr;
-   gap: 16px 24px;
+   gap: 14px 24px;
    margin: 0;
-   padding: 16px 18px;
-   background: #FAFBF9;
-   border: 1px solid #E3E9E3;
-   border-radius: 12px;
+   padding: 0;
+   background: transparent;
+   border: none;
+   border-radius: 0;
 }
 
 .referralDetailItem {
@@ -638,8 +702,8 @@
 .referralDetailLabel {
    margin: 0 0 2px;
    font-size: 12px;
-   font-weight: 600;
-   color: #94A092;
+   font-weight: 500;
+   color: #6B7280;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -647,23 +711,24 @@
    margin: 0;
    font-size: 14px;
    font-weight: 500;
-   color: #29332C;
+   color: #111827;
    overflow-wrap: anywhere;
    font-family: "Nunito", sans-serif;
 }
 
 .referralRemarksBox {
-   padding: 12px 14px;
-   background: #FAFBF9;
-   border: 1px solid #E3E9E3;
-   border-radius: 10px;
+   padding: 2px 0 2px 12px;
+   background: transparent;
+   border: none;
+   border-left: 3px solid #D1D5DB;
+   border-radius: 0;
 }
 
 .referralRemarksBox p {
    margin: 0;
    font-size: 14px;
    line-height: 1.55;
-   color: #29332C;
+   color: #374151;
    font-family: "Nunito", sans-serif;
 }
 
@@ -676,55 +741,58 @@
 }
 
 .referralLabel {
-   font-size: 12.5px;
-   font-weight: 600;
-   color: #3D4A3F;
+   font-size: 13px;
+   font-weight: 500;
+   color: #374151;
    font-family: "Open Sans", sans-serif;
 }
 
 .referralHint {
    font-weight: 400;
-   color: #94A092;
+   color: #6B7280;
    font-family: "Nunito", sans-serif;
 }
 
 .referralTextarea {
    box-sizing: border-box;
    width: 100%;
-   padding: 10px 12px;
+   padding: 9px 12px;
    font-family: "Nunito", sans-serif;
    font-size: 14px;
-   color: #16231C;
+   color: #111827;
    background: #FFFFFF;
-   border: 1px solid #DCE6DE;
-   border-radius: 9px;
+   border: 1px solid #D1D5DB;
+   border-radius: 6px;
    resize: vertical;
    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .referralTextarea::placeholder {
-   color: #A9B3AB;
+   color: #9CA3AF;
 }
 
 .referralTextarea:focus {
    outline: none;
    border-color: #2F6E4F;
-   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+   box-shadow: 0 0 0 2px rgba(47, 110, 79, 0.15);
 }
 
 .referralTextarea:disabled {
-   background: #F1F4F1;
+   background: #F3F4F6;
    cursor: not-allowed;
 }
 
 .referralFormError {
-   padding: 12px 16px;
+   margin: 0 0 20px;
+   padding: 0 0 0 12px;
    font-size: 13.5px;
-   color: #A23E3E;
-   background: #FBEBEB;
-   border: 1px solid #F0CACA;
-   border-radius: 8px;
+   color: #B42318;
+   background: transparent;
+   border: none;
+   border-left: 3px solid #B42318;
+   border-radius: 0;
 }
+
 
 /* Animations */
 

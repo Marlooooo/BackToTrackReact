@@ -67,14 +67,14 @@ function OsySideBar() {
             <div className="linkDiv">
                <h2>MY WORKSPACE</h2>
 
-               <div>
+               {/* <div>
                   <span>
                   <i className="las la-user"></i>
                   </span>
                   <NavLink to="/osy/profile" className={({ isActive }) => isActive ? "active" : ""}>
                      My Profile
                   </NavLink>
-               </div>
+               </div>  */}
                <div>
                   <span>
                   <i className="las la-graduation-cap"></i>
@@ -83,14 +83,14 @@ function OsySideBar() {
                   Available Courses
                   </NavLink>
                </div>
-               <div>
+               {/* <div>
                   <span>
                   <i className="las la-clipboard-list"></i>
                   </span>
                   <NavLink to="/osy/applications" className={({ isActive }) => isActive ? "active" : ""}>
                   Application Details
                   </NavLink>
-               </div>
+               </div> */}
                <div>
                   <span>
                   <i className="las la-chart-line"></i>
@@ -99,14 +99,14 @@ function OsySideBar() {
                   Training Progress
                   </NavLink>
                </div>
-               <div>
+               {/* <div>
                   <span>
                   <i className="las la-briefcase"></i>
                   </span>
                   <NavLink to="/osy/jobs" className={({ isActive }) => isActive ? "active" : ""}>
                   Job Opportunities
                   </NavLink>
-               </div>
+               </div> */}
             </div>
 
             <div className="linkDiv">
@@ -118,6 +118,15 @@ function OsySideBar() {
                   </span>
                   <NavLink to="/osy/notifications" className={({ isActive }) => isActive ? "active" : ""}>
                   Notifications
+                  </NavLink>
+               </div>
+               {/* NEW: Announcements */}
+               <div>
+                  <span>
+                  <i className="las la-bullhorn"></i>
+                  </span>
+                  <NavLink to="/osy/announcements" className={({ isActive }) => isActive ? "active" : ""}>
+                  Announcements
                   </NavLink>
                </div>
             </div>

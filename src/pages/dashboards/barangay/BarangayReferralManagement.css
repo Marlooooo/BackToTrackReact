@@ -16,6 +16,10 @@
    gap: 24px;
    min-width: 0;
    padding: 32px 40px 48px;
+   height: 100vh;          
+   box-sizing: border-box; 
+   overflow-y: auto;      
+   overflow-x: hidden;    
 }
 
 

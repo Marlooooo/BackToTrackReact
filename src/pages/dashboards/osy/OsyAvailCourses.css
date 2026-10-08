@@ -1,25 +1,41 @@
-   .osyAvailCoursesBody {
+.osyAvailCoursesBody {
    display: flex;
    flex-direction: row;
-   height: 100vh;        /* fixed height, not min-height */
-   overflow: hidden;     /* the page itself doesn't scroll */
-   }
+   height: 100vh;        
+   overflow: hidden;  
+}
 
-   .osyAvailCoursesBrowse {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      background: #F5F7F5;
-      overflow-y: auto;     /* this is the part that scrolls */
-   }
+.osyAvailCoursesBrowse {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+   background: #F5F7F5;
+   overflow-y: auto;   
+}
 
-   .osyAvailCoursesTop {
+.osyAvailCoursesTop {
    padding: 32px 48px 20px;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-   }
+}
 
-   .osyCoursesSearchWrap {
+.osyCoursesSubtitle {
+   margin: 4px 0 0;
+   font-size: 13.5px;
+   color: #62705F;
+}
+
+
+
+.osyCoursesToolbar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 12px;
+   margin-top: 18px;
+}
+
+.osyCoursesSearchWrap {
    display: flex;
    align-items: center;
    gap: 10px;
@@ -27,64 +43,126 @@
    border: 1px solid #DCE6DE;
    border-radius: 999px;
    padding: 11px 20px;
-   max-width: 360px;
+   width: 320px;
+   max-width: 100%;
    color: #8A968A;
    box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
-   }
+}
 
-   .osyCoursesSearchInput {
+.osyCoursesSearchWrap:focus-within {
+   border-color: #2F6E4F;
+}
+
+.osyCoursesSearchInput {
    border: none;
    outline: none;
    font-size: 13.5px;
    flex: 1;
    color: #16231C;
    background: transparent;
-   }
+}
 
-   .osyAvailCoursesBot {
+.osyCoursesChips {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+}
+
+.osyCoursesChip {
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   color: #3D4A3F;
+   border-radius: 999px;
+   padding: 9px 16px;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+}
+
+.osyCoursesChip:hover {
+   background: #F1F4F1;
+}
+
+.osyCoursesChipOn,
+.osyCoursesChipOn:hover {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+   color: #FFFFFF;
+}
+
+.osyCoursesSort {
+   margin-left: auto;
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   border-radius: 999px;
+   padding: 9px 14px;
+   font-size: 13px;
+   color: #3D4A3F;
+   cursor: pointer;
+}
+
+.osyAvailCoursesBot {
    flex: 1;
    padding: 10px 48px 44px;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-   }
+}
 
-   .osyCoursesBanner {
+
+.osyCoursesBanner {
    padding: 12px 16px;
    border-radius: 8px;
    font-size: 13.5px;
    margin-bottom: 16px;
-   }
+}
 
-   .osyCoursesBannerError {
+.osyCoursesBannerError {
    background: #FBEBEB;
    color: #A23E3E;
    border: 1px solid #F0CACA;
-   }
+}
 
-   .osyCoursesEmpty {
+.osyCoursesRetry {
+   margin-left: 8px;
+   background: none;
+   border: none;
+   color: inherit;
+   font-weight: 700;
+   text-decoration: underline;
+   cursor: pointer;
+}
+
+.osyCoursesEmpty {
    background: #FFFFFF;
    border: 1px dashed #DCE6DE;
    border-radius: 16px;
    padding: 60px 24px;
    text-align: center;
    color: #62705F;
-   }
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+}
 
-   .osyCoursesEmpty span {
-   display: block;
-   margin-top: 6px;
+.osyCoursesEmpty p {
+   margin: 0;
+   font-weight: 600;
+}
+
+.osyCoursesEmpty span {
    font-size: 12.5px;
    color: #94A092;
-   }
+   margin-bottom: 10px;
+}
 
-   /* Card grid */
 
-   .osyCoursesGrid {
+.osyCoursesGrid {
    display: grid;
    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
    gap: 22px;
-   }
+}
 
-   .osyCourseCard {
+.osyCourseCard {
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
@@ -92,97 +170,123 @@
    display: flex;
    flex-direction: column;
    box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
-   transition: box-shadow 0.15s ease, transform 0.15s ease;
-   }
+}
 
-   .osyCourseCard:hover {
-   box-shadow: 0 10px 24px rgba(20, 32, 26, 0.08);
-   transform: translateY(-2px);
-   }
+.osyCourseSkeleton {
+   height: 340px;
+   background: linear-gradient(90deg, #EEF2EE 25%, #F7F9F7 50%, #EEF2EE 75%);
+   background-size: 200% 100%;
+   animation: osyShimmer 1.4s infinite;
+}
 
-   .osyCourseCard__imageWrap {
+@keyframes osyShimmer {
+   to {
+      background-position: -200% 0;
+   }
+}
+
+.osyCourseCard__imageWrap {
+   position: relative;
    width: 100%;
    height: 120px;
    border-radius: 12px;
    overflow: hidden;
    margin-bottom: 16px;
-   }
+}
 
-   .osyCourseCard__imageWrap img {
+.osyCourseCard__imageWrap img {
    width: 100%;
    height: 100%;
    object-fit: cover;
-   }
+}
 
-   .osyCourseCard__imagePlaceholder {
+.osyCourseCard__badge {
+   position: absolute;
+   left: 8px;
+   top: 8px;
+   background: #FBF0DD;
+   color: #96701E;
+   font-size: 10.5px;
+   font-weight: 700;
+   padding: 4px 10px;
+   border-radius: 999px;
+}
+
+.osyCourseCard__imagePlaceholder {
    width: 100%;
    height: 100%;
    display: flex;
    align-items: center;
    justify-content: center;
    background: linear-gradient(135deg, #DCEBE1, #C3DDCC);
-   }
+}
 
-   .osyCourseCard__imagePlaceholder span {
+.osyCourseCard__imagePlaceholder span {
    font-size: 15px;
    font-weight: 800;
    letter-spacing: 0.08em;
    color: #2F6E4F;
-   }
+}
 
-   .osyCourseCard__body {
+.osyCourseCard__body {
    display: flex;
    flex-direction: column;
    gap: 12px;
    padding: 0 4px 4px;
-   }
+   flex: 1;
+}
 
-   .osyCourseCard__body h3 {
+.osyCourseCard__body h3 {
    margin: 0;
    font-size: 16px;
    font-weight: 700;
    color: #1E5B3F;
    line-height: 1.3;
-   }
+}
 
-   .osyCourseField {
+.osyCourseField {
    display: flex;
    flex-direction: column;
    gap: 2px;
-   }
+}
 
-   .osyCourseFieldLabel {
+.osyCourseFieldLabel {
    font-size: 12.5px;
    font-weight: 700;
    color: #3D4A3F;
-   }
+}
 
-   .osyCourseFieldValue {
+.osyCourseFieldValue {
    font-size: 13px;
    color: #62705F;
-   }
+}
 
-   .osyCourseStatus {
+.osyCourseSlots {
    align-self: flex-start;
    display: inline-block;
    padding: 3px 12px;
    border-radius: 999px;
-   font-size: 11px;
+   font-size: 11.5px;
    font-weight: 700;
-   }
+}
 
-   .osyCourseStatusActive {
+.osyCourseSlots--ok {
    background: #E3F0E7;
    color: #2F6E4F;
-   }
+}
 
-   .osyCourseStatusInactive {
+.osyCourseSlots--low {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+.osyCourseSlots--closed {
    background: #FBE3E7;
    color: #B3455E;
-   }
+}
 
-   .osyCourseViewBtn {
-   margin-top: 4px;
+.osyCourseViewBtn {
+   margin-top: auto;
    border: 1.5px solid #2F6E4F;
    background: transparent;
    color: #2F6E4F;
@@ -193,119 +297,256 @@
    cursor: pointer;
    width: 100%;
    transition: background 0.15s ease, color 0.15s ease;
-   }
+}
 
-   .osyCourseViewBtn:hover {
+.osyCourseViewBtn:hover {
    background: #2F6E4F;
    color: #FFFFFF;
-   }
+}
 
-   /* Modal */
 
-   .osyCoursesModalOverlay {
+.osyDrawerOverlay {
    position: fixed;
    inset: 0;
    background: rgba(16, 23, 18, 0.5);
    display: flex;
-   align-items: center;
-   justify-content: center;
-   padding: 20px;
+   justify-content: flex-end;
    z-index: 50;
-   }
+   animation: osyFade 0.18s ease-out;
+}
 
-   .osyCoursesModal {
+.osyDrawer {
    background: #FFFFFF;
-   border-radius: 18px;
    width: 100%;
-   max-width: 460px;
-   max-height: 90vh;
-   overflow-y: auto;
+   max-width: 480px;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-   box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
-   }
+   box-shadow: -20px 0 50px rgba(16, 23, 18, 0.2);
+   animation: osySlide 0.22s ease-out;
+}
 
-   .osyCoursesModal__image {
-   width: 100%;
-   height: 160px;
+@keyframes osyFade {
+   from {
+      opacity: 0;
    }
+}
 
-   .osyCoursesModal__image img {
+@keyframes osySlide {
+   from {
+      transform: translateX(32px);
+      opacity: 0;
+   }
+}
+
+.osyDrawer__hero {
+   position: relative;
+   height: 200px;
+   flex-shrink: 0;
+}
+
+.osyDrawer__hero img {
    width: 100%;
    height: 100%;
    object-fit: cover;
-   }
+}
 
-   .osyCoursesModal__header {
+.osyDrawer__close {
+   position: absolute;
+   top: 14px;
+   right: 14px;
+   width: 34px;
+   height: 34px;
+   border-radius: 50%;
+   border: none;
+   background: rgba(255, 255, 255, 0.92);
+   font-size: 22px;
+   line-height: 1;
+   cursor: pointer;
+   color: #29332C;
+}
+
+.osyDrawer__scroll {
+   flex: 1;
+   overflow-y: auto;
+   padding: 22px 28px;
+}
+
+.osyDrawer__tags {
    display: flex;
-   align-items: flex-start;
-   justify-content: space-between;
-   gap: 12px;
-   padding: 22px 28px 0;
-   margin-bottom: 18px;
-   }
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-bottom: 10px;
+}
 
-   .osyCoursesModal__header h2 {
-   margin: 0;
-   font-size: 18px;
-   font-weight: 700;
+.osyDrawer__head h2 {
+   margin: 0 0 18px;
+   font-size: 22px;
+   line-height: 1.25;
    color: #14201A;
-   }
+}
 
-   .osyCourseTagAccredited {
+.osyCourseTagAccredited {
    display: inline-block;
-   padding: 4px 11px;
+   padding: 3px 12px;
    border-radius: 999px;
-   font-size: 10.5px;
+   font-size: 11.5px;
    font-weight: 700;
-   white-space: nowrap;
    background: #FBF0DD;
    color: #96701E;
-   }
+}
 
-   .osyCoursesDetailList {
+.osyDrawer__facts {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 16px;
+   padding: 14px 16px;
+   background: #F5F7F5;
+   border-radius: 12px;
+   margin-bottom: 22px;
+}
+
+.osyDrawer__facts > div {
    display: flex;
    flex-direction: column;
-   gap: 14px;
-   margin: 0;
-   padding: 0 28px 22px;
-   }
+   gap: 2px;
+}
 
-   .osyCoursesDetailList dt {
-   font-size: 11.5px;
+.osyDrawer__tabs {
+   display: flex;
+   gap: 22px;
+   border-bottom: 1px solid #E7ECE8;
+   margin-bottom: 16px;
+}
+
+.osyDrawer__tabs button {
+   background: none;
+   border: none;
+   padding: 8px 0 10px;
+   font-size: 14px;
    font-weight: 600;
    color: #8A968A;
-   margin-bottom: 2px;
-   }
+   cursor: pointer;
+   border-bottom: 2px solid transparent;
+   margin-bottom: -1px;
+}
 
-   .osyCoursesDetailList dd {
+.osyDrawer__tabs button.on {
+   color: #1E5B3F;
+   border-bottom-color: #2F6E4F;
+}
+
+.osyDrawer__text {
    margin: 0;
    font-size: 14px;
+   line-height: 1.65;
    color: #29332C;
    white-space: pre-wrap;
-   }
+   max-width: 62ch;
+}
 
-   .osyCoursesModal__actions {
+.osyDrawer__hint {
+   margin: 0 0 12px;
+   font-size: 13px;
+   color: #62705F;
+}
+
+.osyDrawer__checklist {
+   list-style: none;
+   margin: 0;
+   padding: 0;
    display: flex;
-   justify-content: flex-end;
-   padding: 0 28px 24px;
-   }
+   flex-direction: column;
+   gap: 10px;
+}
 
-   .osyCoursesBtnGhost {
+.osyDrawer__checklist li {
+   display: flex;
+   gap: 10px;
+   align-items: flex-start;
+   font-size: 14px;
+   color: #29332C;
+   line-height: 1.45;
+}
+
+.osyDrawer__tick {
+   flex-shrink: 0;
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   margin-top: 1px;
+}
+
+.osyDrawer__actions {
+   display: flex;
+   gap: 10px;
+   justify-content: flex-end;
+   padding: 16px 28px;
+   border-top: 1px solid #E7ECE8;
+}
+
+
+.osyCoursesBtnGhost {
    border: 1px solid #DCE6DE;
    background: transparent;
    color: #3D4A3F;
    border-radius: 8px;
-   padding: 9px 18px;
+   padding: 10px 18px;
    font-size: 13.5px;
    font-weight: 600;
    cursor: pointer;
-   }
+}
 
-   .osyCoursesBtnGhost:hover {
+.osyCoursesBtnGhost:hover {
    background: #F1F4F1;
-   }
+}
 
-   @media (max-width: 640px) {
+.osyCoursesBtnPrimary {
+   border: none;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   border-radius: 8px;
+   padding: 10px 20px;
+   font-size: 13.5px;
+   font-weight: 700;
+   cursor: pointer;
+}
+
+.osyCoursesBtnPrimary:hover:not(:disabled) {
+   background: #1E5B3F;
+}
+
+.osyCoursesBtnPrimary:disabled {
+   background: #C9D3CB;
+   cursor: not-allowed;
+}
+
+
+.osyCoursesChip:focus-visible,
+.osyCourseViewBtn:focus-visible,
+.osyCoursesBtnGhost:focus-visible,
+.osyCoursesBtnPrimary:focus-visible,
+.osyDrawer__tabs button:focus-visible,
+.osyDrawer__close:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .osyDrawerOverlay,
+   .osyDrawer,
+   .osyCourseSkeleton {
+      animation: none;
+   }
+}
+
+@media (max-width: 640px) {
    .osyAvailCoursesBody {
       flex-direction: column;
    }
@@ -315,7 +556,11 @@
    }
 
    .osyCoursesSearchWrap {
-      max-width: none;
+      width: 100%;
+   }
+
+   .osyCoursesSort {
+      margin-left: 0;
    }
 
    .osyAvailCoursesBot {
@@ -325,4 +570,12 @@
    .osyCoursesGrid {
       grid-template-columns: 1fr;
    }
+
+   .osyDrawer {
+      max-width: none;
    }
+
+   .osyDrawer__hero {
+      height: 150px;
+   }
+}
