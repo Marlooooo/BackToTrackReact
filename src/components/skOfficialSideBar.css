@@ -1,0 +1,394 @@
+.skSideBarDiv {
+   height: 100vh;
+   width: 19%;
+   background-color: #0f1a3c;
+   display: flex;
+   flex-direction: column;
+   padding: 10px 20px 10px 20px;
+   box-sizing: border-box;
+   overflow-y: auto;
+   overflow-x: auto;
+}
+
+
+.skNavBarTitleLogo{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 10px;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.skNavBarTitleLogo img{
+   height: 35px;
+   padding: 0px 5px 0px 5px;
+   border-radius: 20px;
+}
+.skNavBarTitleLogo h1{
+   color: white;
+   font-size: 1.2rem;
+   font-family: "Urbanist", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 700;
+   font-style: normal;
+}
+
+
+
+.skLinkDiv{
+   display: flex;
+   flex-direction: column;
+   justify-content: start;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.skLinkDiv h2, .skLinkDivLogOut h2{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: bold;
+   margin: 20px 0px 0px 0px;
+   color: gray;
+   font-size: 0.6rem;
+}
+.skLinkDiv div{
+   width: 90%;
+   margin: 5px 0px 0px 0px;
+   padding: 10px 0px 10px 5px;
+   border-radius: 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: start;
+}
+.skLinkDiv span{
+   color: white;
+   margin-right: 15px;
+   font-size: 16px;
+   display: inline-block;
+   transition: transform 0.15s ease;
+}
+.skLinkDiv div:hover span{
+   transform: scale(1.15);
+}
+.skLinkDiv a{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+   text-decoration: none;
+   font-size: 0.8rem;
+   margin: 0px;
+   display: inline-block;
+   transition: font-size 0.15s ease;
+}
+.skLinkDiv a:hover{
+   font-size: 13.5px;
+}
+
+
+
+
+.skLinkDivLogOut{
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.skLinkDivLogOut div{
+   width: 50%;
+   height: auto;
+   margin: 15px 0px 0px 0px;
+}
+.skLinkDivLogOut button{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+   border: 0;
+   color: black;
+   cursor: pointer;
+   background-color: rgb(170, 246, 246);   
+   padding: 5px 0px 5px 5px;
+   border-radius: 10px;
+   width: 100%;
+   transition: font-size 0.15s ease;
+}
+.skLinkDivLogOut button:hover{
+   font-size: 0.9rem;
+}
+.skLinkDivLogOut .skLogOutIcon{
+   color: black;
+   margin: 0px;
+   margin-right: 10px;
+   font-size: 20px;
+   display: inline-block;
+   transition: transform 0.15s ease;
+}
+.skLinkDivLogOut button:hover .skLogOutIcon{
+   transform: scale(1.1);
+}
+.skLinkDivLogOut .skUserInfo{
+   width: 100%;
+   margin: 15px 0px 0px 0px;
+}
+.skUserName{
+   color: white;
+   font-family: "Inter", sans-serif;
+   font-size: 0.9rem;
+   font-weight: 600;
+}
+
+
+
+
+.skLinkDiv div:has(a.skActive) {
+   background-color: white;
+   font-style: normal;
+}
+.skLinkDiv a.skActive{
+   color: #0f1a3c;
+}
+.skLinkDiv div:has(a.skActive) span {
+   color: #0f1a3c;
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   RESPONSIVE SIDEBAR
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+   .skSideBarDiv {
+      width: 25%;
+   }
+
+   .skNavBarTitleLogo h1 {
+      font-size: 1rem;
+   }
+
+   .skLinkDiv a {
+      font-size: 0.75rem;
+   }
+
+   .skLinkDiv span {
+      margin-right: 10px;
+   }
+
+   .skLinkDivLogOut div {
+      width: 70%;
+   }
+}
+
+
+/* Small Tablet */
+@media (max-width: 768px) {
+
+   .skSideBarDiv {
+      width: 30%;
+      padding: 10px 15px 10px 15px;
+   }
+
+   .skNavBarTitleLogo {
+      gap: 7px;
+   }
+
+   .skNavBarTitleLogo img {
+      height: 30px;
+   }
+
+   .skNavBarTitleLogo h1 {
+      font-size: 0.9rem;
+   }
+
+   .skLinkDiv a {
+      font-size: 0.7rem;
+   }
+
+   .skLinkDiv span {
+      font-size: 14px;
+      margin-right: 8px;
+   }
+
+   .skLinkDivLogOut div {
+      width: 80%;
+   }
+
+   .skUserName {
+      font-size: 0.8rem;
+   }
+}
+
+
+/* Mobile */
+@media (max-width: 480px) {
+
+   .skSideBarDiv {
+      width: 38%;
+      padding: 10px 10px 10px 10px;
+   }
+
+   .skNavBarTitleLogo {
+      gap: 5px;
+   }
+
+   .skNavBarTitleLogo img {
+      height: 27px;
+   }
+
+   .skNavBarTitleLogo h1 {
+      font-size: 0.8rem;
+   }
+
+   .skLinkDiv h2,
+   .skLinkDivLogOut h2 {
+      font-size: 0.5rem;
+   }
+
+   .skLinkDiv div {
+      padding: 8px 0px 8px 5px;
+   }
+
+   .skLinkDiv span {
+      font-size: 13px;
+      margin-right: 7px;
+   }
+
+   .skLinkDiv a {
+      font-size: 0.65rem;
+   }
+
+   .skLinkDivLogOut div {
+      width: 100%;
+   }
+
+   .skLinkDivLogOut button {
+      font-size: 0.7rem;
+   }
+
+   .skLinkDivLogOut .skLogOutIcon {
+      font-size: 17px;
+      margin-right: 7px;
+   }
+
+   .skUserName {
+      font-size: 0.7rem;
+   }
+}
+
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+
+   .skSideBarDiv {
+      width: 45%;
+      padding: 10px 8px 10px 8px;
+   }
+
+   .skNavBarTitleLogo h1 {
+      font-size: 0.7rem;
+   }
+
+   .skNavBarTitleLogo img {
+      height: 24px;
+   }
+
+   .skLinkDiv a {
+      font-size: 0.6rem;
+   }
+
+   .skLinkDiv span {
+      font-size: 12px;
+      margin-right: 5px;
+   }
+
+   .skLinkDivLogOut button {
+      font-size: 0.6rem;
+   }
+
+   .skUserName {
+      font-size: 0.65rem;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   BURGER MENU
+   (keep this at the very bottom so it overrides the widths above)
+========================= */
+.skBurgerBtn,
+.skSideBarOverlay {
+   display: none;
+}
+
+@media (max-width: 768px) {
+
+   .skBurgerBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 998;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 10px;
+      background-color: #0f1a3c;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+   }
+
+   .skSideBarDiv {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 260px;
+      max-width: 80%;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+   }
+
+   .skSideBarDiv.skOpen {
+      transform: translateX(0);
+   }
+
+   .skSideBarOverlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+   }
+
+   .skSideBarOverlay.skShow {
+      opacity: 1;
+      pointer-events: auto;
+   }
+}

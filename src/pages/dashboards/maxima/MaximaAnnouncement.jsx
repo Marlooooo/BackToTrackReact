@@ -217,9 +217,6 @@ function MaximaAnnouncement() {
             {/* ---------- Page header ---------- */}
             <header className="mAnn-header">
                <div className="mAnn-headerLeft">
-                  <div className="mAnn-titleIcon">
-                     <span className="material-symbols-outlined">campaign</span>
-                  </div>
                   <div>
                      <h1>Announcements</h1>
                      <p className="mAnn-sub">

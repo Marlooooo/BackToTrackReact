@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./skOfficialSideBar.css";
 import BackToTrack_Logo3 from "../assets/BackToTrack_Logo3.png";
@@ -14,12 +15,18 @@ function getCookie(name) {
 function SkOfficialSideBar() {
 
    const [userName, setUserName] = useState("");
+   const [isOpen, setIsOpen] = useState(false);
    const navigate = useNavigate();
+   const location = useLocation();
 
    useEffect(() => {
       const storedName = localStorage.getItem("userName");
       setUserName(storedName || "User");
    }, []);
+
+   useEffect(() => {
+      setIsOpen(false);
+   }, [location.pathname]);
 
    const handleLogout = async () => {
       try {
@@ -45,33 +52,39 @@ function SkOfficialSideBar() {
 
    return (
       <>
-         <div className="sideBarDiv">
-            <div className="navBarTitleLogo">
+         <button className="skBurgerBtn" onClick={() => setIsOpen(true)}>
+            <i className="las la-bars"></i>
+         </button>
+
+         <div className={`skSideBarOverlay ${isOpen ? "skShow" : ""}`} onClick={() => setIsOpen(false)}></div>
+
+         <div className={`skSideBarDiv ${isOpen ? "skOpen" : ""}`}>
+            <div className="skNavBarTitleLogo">
                <img src={BackToTrack_Logo3} alt="" />
                <h1>BackToTrack</h1>
             </div>
 
-            <div className="linkDiv">
+            <div className="skLinkDiv">
                <h2>OVERVIEW</h2>
 
                <div>
                   <span>
                   <i className="las la-border-all"></i>
                   </span>
-                  <NavLink to="/barangay/dashboard" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/dashboard" className={({ isActive }) => isActive ? "skActive" : ""}>
                   DASHBOARD
                   </NavLink>
                </div>
             </div>
 
-            <div className="linkDiv">
+            <div className="skLinkDiv">
                <h2>MY WORKSPACE</h2>
 
                <div>
                   <span className="material-symbols-outlined">
                   folder_copy
                   </span>
-                  <NavLink to="/barangay/management" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/management" className={({ isActive }) => isActive ? "skActive" : ""}>
                   OSY Management
                   </NavLink>
                </div>
@@ -79,21 +92,21 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   quick_reference_all
                   </span>
-                  <NavLink to="/barangay/referrals" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/referrals" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Referral Management
                   </NavLink>
                </div>
 
             </div>
 
-            <div className="linkDiv">
+            <div className="skLinkDiv">
                <h2>MONITORING</h2>
 
                <div>
                   <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <NavLink to="/barangay/monitoring/training" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/monitoring/training" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Training Monitoring
                   </NavLink>
                </div>
@@ -102,7 +115,7 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <NavLink to="/barangay/monitoring/employment" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/monitoring/employment" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Employment Tracking
                   </NavLink>
                </div>
@@ -111,21 +124,21 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <NavLink to="/barangay/monitoring/recommendation" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/monitoring/recommendation" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Course Recommendation
                   </NavLink>
                </div>
 
             </div>
 
-            <div className="linkDiv">
+            <div className="skLinkDiv">
                <h2>REPORTS AND UPDATES</h2>
 
                <div>
                   <span className="material-symbols-outlined">
                   lab_profile
                   </span>
-                  <NavLink to="/barangay/reports" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/reports" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Reports
                   </NavLink>
                </div>
@@ -133,22 +146,22 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   notifications_active
                   </span>
-                  <NavLink to="/barangay/announcements" className={({ isActive }) => isActive ? "active" : ""}>
+                  <NavLink to="/barangay/announcements" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Notifications
                   </NavLink>
                </div>
             </div>
 
-            <div className="linkDivLogOut">
+            <div className="skLinkDivLogOut">
                <h2>ACCOUNT</h2>
 
-               <div className="userInfo">
-                  <span className="userName">{userName}</span>
+               <div className="skUserInfo">
+                  <span className="skUserName">{userName}</span>
                </div>
 
                <div>
                   <button onClick={handleLogout}>Log Out
-                        <span className="logOutIcon">
+                        <span className="skLogOutIcon">
                         <i className="las la-sign-out-alt"></i>
                      </span>
                   </button>

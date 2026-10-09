@@ -91,9 +91,6 @@ function OsyAnnouncement() {
          <main className="oAnn-main">
             {/* ---------- Page header ---------- */}
             <header className="oAnn-header">
-               <div className="oAnn-titleIcon">
-                  <i className="las la-bullhorn"></i>
-               </div>
                <div>
                   <h1>Announcements</h1>
                   <p className="oAnn-sub">Latest updates, news and reminders from Maxima.</p>

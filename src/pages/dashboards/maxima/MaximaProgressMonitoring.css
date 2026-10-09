@@ -1,0 +1,1174 @@
+/* Page shell */
+.maximaProgMonitoringMainContent{
+   width: 81%;
+}
+.pmPage {
+   flex: 1;
+   box-sizing: border-box;
+   min-width: 0;
+   width: 100%;
+   
+   min-height: 100vh;
+   padding: 50px;
+   background: #F5F7F5;
+   color: #29332C;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   overflow-y: auto;
+}
+
+/* Form controls do not inherit fonts by default */
+
+.pmPage button,
+.pmPage input,
+.pmPage select,
+.pmPage textarea,
+.pmOverlay button,
+.pmOverlay input,
+.pmOverlay select,
+.pmOverlay textarea {
+   font-family: "Nunito", sans-serif;
+}
+
+/* Visible keyboard focus */
+
+.pmPage button:focus-visible,
+.pmOverlay button:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+/* Header */
+
+.pmHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
+}
+
+.pmTitle {
+   margin: 0 0 4px;
+   font-size: 24px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmSubtitle {
+   margin: 0;
+   color: #66746A;
+   font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Stat cards */
+
+.pmStats {
+   display: grid;
+   grid-template-columns: repeat(5, minmax(0, 1fr));
+   gap: 16px;
+   margin-bottom: 22px;
+}
+
+.pmStatCard {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   padding: 18px 20px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.pmStatIcon {
+   width: 46px;
+   height: 46px;
+   flex-shrink: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 12px;
+   font-size: 26px;
+}
+
+.pmIconBlue { background: #E4EDF3; color: #35607A; }
+.pmIconGreen { background: #E3F0E7; color: #2F6E4F; }
+.pmIconRed { background: #FBEBEB; color: #A23E3E; }
+.pmIconAmber { background: #FBF0DD; color: #96701E; }
+.pmIconSlate { background: #F0F1EE; color: #7C877E; }
+
+.pmStatValue {
+   display: block;
+   font-size: 24px;
+   font-weight: 700;
+   color: #14201A;
+   line-height: 1.1;
+   letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmStatLabel {
+   display: block;
+   margin-top: 4px;
+   font-size: 13px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Panel and toolbar */
+
+.pmPanel {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   max-height: calc(100vh - 300px);
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+   box-sizing: border-box;
+}
+
+.pmToolbar {
+   display: flex;
+   align-items: center;
+   flex-shrink: 0;
+   gap: 12px;
+   padding: 16px 22px;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.pmSearchBox {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   flex: 1;
+   max-width: 320px;
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   padding: 0 18px;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+}
+
+.pmSearchBox:focus-within {
+   border-color: #2F6E4F;
+}
+
+.pmSearchBox .material-symbols-outlined {
+   font-size: 20px;
+   color: #94A092;
+}
+
+.pmSearchBox input {
+   flex: 1;
+   border: none;
+   background: transparent;
+   outline: none;
+   padding: 10px 0;
+   font-size: 13.5px;
+   color: #16231C;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmSelect {
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   border-radius: 999px;
+   padding: 10px 16px;
+   font-size: 13.5px;
+   color: #3D4A3F;
+   outline: none;
+   cursor: pointer;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   font-family: "Nunito", sans-serif;
+}
+
+.pmSelect:focus {
+   border-color: #2F6E4F;
+}
+
+/* Table */
+
+.pmTableWrap {
+   flex: 1;
+   min-height: 0;
+   overflow: auto;
+}
+
+.pmTable {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13.5px;
+}
+
+.pmTable th {
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   text-align: left;
+   padding: 14px 22px;
+   font-size: 11.5px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+   color: #7C877E;
+   background: #FBFCFB;
+   border-bottom: 1px solid #EEF2EE;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmTable td {
+   padding: 13px 22px;
+   font-size: 13.5px;
+   color: #29332C;
+   border-bottom: 1px solid #F1F4F1;
+   vertical-align: middle;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmTable tbody tr:hover {
+   background: #FAFBF9;
+}
+
+.pmTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+.pmRowAlert {
+   background: #FDF6F6;
+}
+
+.pmEmpty {
+   text-align: center;
+   padding: 60px 24px !important;
+   color: #62705F !important;
+}
+
+.pmCellNote {
+   display: block;
+   margin-top: 3px;
+   font-size: 12px;
+   color: #94A092;
+}
+
+.pmRateGood { color: #2F6E4F; font-weight: 600; }
+.pmRateWarn { color: #96701E; font-weight: 600; }
+.pmRateLow { color: #A23E3E; font-weight: 600; }
+
+.pmPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.pmAvatar {
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 9px;
+   background: #EAF1EC;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.pmAvatarLarge {
+   width: 52px;
+   height: 52px;
+   border-radius: 12px;
+   font-size: 17px;
+}
+
+.pmPersonName {
+   display: block;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.pmFlag {
+   display: inline-flex;
+   align-items: center;
+   gap: 3px;
+   margin-top: 2px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #A23E3E;
+}
+
+.pmFlag .material-symbols-outlined {
+   font-size: 14px;
+}
+
+/* Badges */
+
+.pmBadge {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   font-size: 11px;
+   font-weight: 600;
+   text-transform: capitalize;
+   background: #F0F1EE;
+   color: #7C877E;
+   white-space: nowrap;
+}
+
+.pmBadgeOngoing { background: #E3F0E7; color: #2F6E4F; }
+.pmBadgeCompleted { background: #E4EDF3; color: #35607A; }
+.pmBadgeDropped { background: #FBEBEB; color: #A23E3E; }
+.pmBadgePending { background: #FBF0DD; color: #96701E; }
+
+/* Buttons */
+
+.pmBtnPrimary,
+.pmBtnSuccess,
+.pmBtnDanger {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   border: none;
+   color: #FFFFFF;
+   padding: 10px 20px;
+   border-radius: 9px;
+   font-size: 13.5px;
+   font-weight: 600;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pmBtnPrimary {
+   background: #2F6E4F;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
+}
+
+.pmBtnPrimary:hover:not(:disabled) {
+   background: #275C42;
+   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
+}
+
+.pmBtnPrimary:disabled {
+   background: #9DBFAD;
+   box-shadow: none;
+   cursor: not-allowed;
+}
+
+.pmBtnPrimary .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.pmBtnSuccess {
+   background: #3C8A5E;
+   box-shadow: 0 2px 6px rgba(60, 138, 94, 0.25);
+}
+
+.pmBtnSuccess:hover:not(:disabled) {
+   background: #2F7550;
+}
+
+.pmBtnDanger {
+   background: #B24545;
+   box-shadow: 0 2px 6px rgba(178, 69, 69, 0.25);
+}
+
+.pmBtnDanger:hover:not(:disabled) {
+   background: #973838;
+}
+
+.pmBtnDanger:disabled {
+   background: #DDA5A5;
+   box-shadow: none;
+   cursor: not-allowed;
+}
+
+.pmBtnGhost {
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   color: #3D4A3F;
+   padding: 10px 20px;
+   border-radius: 9px;
+   font-size: 13.5px;
+   font-weight: 600;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pmBtnGhost:hover:not(:disabled) {
+   background: #F1F4F1;
+   border-color: #C7D4C9;
+}
+
+.pmBtnSmall {
+   padding: 6px 14px;
+   font-size: 12.5px;
+   font-weight: 500;
+}
+
+.pmIconBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 32px;
+   height: 32px;
+   flex-shrink: 0;
+   border: 1px solid #DCE6DE;
+   background: transparent;
+   color: #3D4A3F;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: background 0.15s ease;
+}
+
+.pmIconBtn:hover {
+   background: #F1F4F1;
+}
+
+.pmIconBtn .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.pmIconBtnDanger {
+   color: #A23E3E;
+}
+
+.pmIconBtnDanger:hover {
+   background: #FBEBEB;
+   border-color: #F0CACA;
+}
+
+/* Alerts */
+
+.pmAlert {
+   margin: 16px;
+   padding: 12px 16px;
+   border-radius: 8px;
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+   font-size: 13.5px;
+}
+
+.pmAlertWarn {
+   background: #FBF0DD;
+   color: #96701E;
+   border-color: #F1DFB8;
+}
+
+.pmAlertList {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin-bottom: 16px;
+}
+
+.pmAlertList .pmAlert {
+   margin: 0;
+}
+
+/* Modal shell
+   Layout: overlay > modal (flex column) > header (fixed) + body (scrolls) */
+
+.pmOverlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-sizing: border-box;
+   padding: 20px;
+   background: rgba(16, 23, 18, 0.55);
+   backdrop-filter: blur(3px);
+   overscroll-behavior: contain;
+   z-index: 1000;
+   font-family: "Nunito", sans-serif;
+   animation: pmFadeIn 0.18s ease;
+}
+
+.pmModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 880px;
+   max-height: 92vh;
+   max-height: 92dvh;
+   background: #FFFFFF;
+   border-radius: 18px;
+   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
+   overflow: hidden;
+   animation: pmSlideUp 0.22s ease;
+}
+
+@keyframes pmFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
+@keyframes pmSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .pmOverlay,
+   .pmModal {
+      animation: none;
+   }
+}
+
+.pmModalLoading {
+   padding: 60px;
+   text-align: center;
+   color: #66746A;
+}
+
+/* Header */
+
+.pmModalHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 24px 28px 18px;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.pmModalName {
+   margin: 0 0 4px;
+   font-size: 18px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.01em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmModalProgram {
+   margin: 0;
+   font-size: 13px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmModalHeaderRight {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.pmCloseBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   width: 32px;
+   height: 32px;
+   border: none;
+   border-radius: 8px;
+   background: transparent;
+   color: #7C877E;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.pmCloseBtn:hover:not(:disabled) {
+   background: #F1F4F1;
+   color: #14201A;
+}
+
+.pmCloseBtn:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+}
+
+/* Body */
+
+.pmModalBody {
+   flex: 1;
+   min-height: 0;
+   padding: 22px 28px;
+   overflow-y: auto;
+   overscroll-behavior: contain;
+}
+
+.pmModalBody .pmAlert {
+   margin: 0 0 16px;
+}
+
+/* Metrics */
+
+.pmMetrics {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 14px;
+   margin-bottom: 22px;
+}
+
+.pmMetric {
+   background: #FAFBF9;
+   border: 1px solid #E3E9E3;
+   border-radius: 12px;
+   padding: 14px 16px;
+}
+
+.pmMetricLabel {
+   display: block;
+   font-size: 11.5px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+   color: #7C877E;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmMetricValue {
+   display: block;
+   margin-top: 6px;
+   font-size: 20px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+/* Tabs */
+
+.pmTabs {
+   display: flex;
+   gap: 6px;
+   border-bottom: 1px solid #E3E9E3;
+   margin-bottom: 20px;
+   overflow-x: auto;
+}
+
+.pmTab {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   border: none;
+   background: transparent;
+   padding: 10px 16px;
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #66746A;
+   cursor: pointer;
+   border-bottom: 2px solid transparent;
+   margin-bottom: -1px;
+   white-space: nowrap;
+   transition: color 0.15s ease;
+}
+
+.pmTab:hover {
+   color: #14201A;
+}
+
+.pmTabActive {
+   color: #2F6E4F;
+   border-bottom-color: #2F6E4F;
+}
+
+.pmTabDot {
+   min-width: 20px;
+   padding: 1px 6px;
+   border-radius: 999px;
+   background: #B24545;
+   color: #FFFFFF;
+   font-size: 11px;
+   font-weight: 600;
+   text-align: center;
+}
+
+/* Sections and shared blocks */
+
+.pmSectionBar {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin: 4px 0 14px;
+}
+
+.pmSectionTitle {
+   font-size: 11.5px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.06em;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmSubHeading {
+   margin: 22px 0 10px;
+   font-size: 15px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmHint {
+   margin: 10px 0 14px;
+   font-size: 12px;
+   color: #94A092;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmEmptyBlock {
+   padding: 28px 16px;
+   text-align: center;
+   color: #94A092;
+   background: #FAFBF9;
+   border: 1.5px dashed #C7D4C9;
+   border-radius: 12px;
+}
+
+.pmActionBar {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 14px 16px;
+   margin-bottom: 18px;
+   background: #FAFBF9;
+   border: 1px solid #E3E9E3;
+   border-radius: 10px;
+}
+
+.pmActionBar p {
+   margin: 0;
+   font-size: 13.5px;
+   color: #4B564F;
+}
+
+.pmActionButtons {
+   display: flex;
+   gap: 10px;
+   flex-shrink: 0;
+}
+
+.pmInfoGrid {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 12px;
+}
+
+.pmInfoItem {
+   background: #FAFBF9;
+   border: 1px solid #F1F4F1;
+   border-radius: 10px;
+   padding: 12px 14px;
+}
+
+.pmInfoItem span {
+   display: block;
+   font-size: 12px;
+   color: #66746A;
+}
+
+.pmInfoItem strong {
+   display: block;
+   margin-top: 3px;
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+/* Forms */
+
+.pmForm {
+   background: #FAFBF9;
+   border: 1px solid #E3E9E3;
+   border-radius: 12px;
+   padding: 20px;
+   margin-bottom: 18px;
+}
+
+.pmFormTitle {
+   margin: 0 0 16px;
+   font-size: 16px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.01em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmFormGrid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 14px;
+   margin-bottom: 14px;
+}
+
+.pmField {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.pmField span {
+   display: block;
+   font-size: 12.5px;
+   font-weight: 600;
+   color: #3D4A3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmField input,
+.pmField select,
+.pmField textarea,
+.pmInlineForm input,
+.pmConcernActions input,
+.pmDocControls select,
+.pmDocControls input {
+   font-family: "Nunito", sans-serif;
+   font-size: 14px;
+   font-weight: 400;
+   padding: 10px 12px;
+   border: 1px solid #DCE6DE;
+   border-radius: 9px;
+   color: #16231C;
+   background: #FFFFFF;
+   outline: none;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pmField input::placeholder,
+.pmField textarea::placeholder,
+.pmInlineForm input::placeholder,
+.pmConcernActions input::placeholder,
+.pmDocControls input::placeholder {
+   color: #A9B3AB;
+}
+
+.pmField input:focus,
+.pmField select:focus,
+.pmField textarea:focus,
+.pmInlineForm input:focus,
+.pmConcernActions input:focus,
+.pmDocControls select:focus,
+.pmDocControls input:focus {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+.pmField textarea {
+   resize: vertical;
+}
+
+.pmFormActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 10px;
+   margin-top: 16px;
+}
+
+.pmInlineForm {
+   display: flex;
+   gap: 10px;
+   margin-top: 16px;
+}
+
+.pmInlineForm input {
+   flex: 1;
+}
+
+/* Attendance */
+
+.pmAttChips {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 10px;
+   margin-bottom: 18px;
+}
+
+.pmAttChip {
+   background: #FAFBF9;
+   border: 1px solid #E3E9E3;
+   border-radius: 10px;
+   padding: 12px;
+   text-align: center;
+}
+
+.pmAttChip strong {
+   display: block;
+   font-size: 20px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmAttChip span {
+   display: block;
+   margin-top: 2px;
+   font-size: 12px;
+   color: #66746A;
+}
+
+.pmMiniWrap {
+   border: 1px solid #E3E9E3;
+   border-radius: 12px;
+   overflow: hidden;
+}
+
+.pmMiniTable td,
+.pmMiniTable th {
+   padding: 10px 16px;
+}
+
+/* Documents */
+
+.pmDocList {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.pmDocRow {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   border: 1px solid #E3E9E3;
+   border-radius: 12px;
+   padding: 12px 16px;
+   background: #FFFFFF;
+}
+
+.pmDocRowDone {
+   background: #F3F8F4;
+   border-color: #CFE3D5;
+}
+
+.pmDocName span {
+   display: block;
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.pmDocName small {
+   display: block;
+   margin-top: 2px;
+   font-size: 12px;
+   color: #2F6E4F;
+}
+
+.pmDocControls {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.pmDocControls select,
+.pmDocControls input {
+   padding: 8px 10px;
+   font-size: 13px;
+}
+
+.pmDocControls input {
+   width: 200px;
+}
+
+/* Cards (notes, concerns) */
+
+.pmCardList {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+}
+
+.pmCard {
+   border: 1px solid #E3E9E3;
+   border-radius: 12px;
+   padding: 14px 18px;
+   background: #FFFFFF;
+}
+
+.pmCardTop {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+}
+
+.pmCardTitle {
+   display: block;
+   font-size: 14.5px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmCardMeta {
+   display: block;
+   margin-top: 2px;
+   font-size: 12px;
+   color: #94A092;
+}
+
+.pmCardText {
+   margin: 10px 0 0;
+   font-size: 13.5px;
+   line-height: 1.55;
+   color: #4B564F;
+}
+
+.pmCapital {
+   text-transform: capitalize;
+}
+
+.pmReviewNote {
+   margin: 10px 0 0;
+   padding: 10px 12px;
+   border-radius: 8px;
+   background: #EEF5F0;
+   font-size: 13px;
+   color: #275C42;
+}
+
+.pmConcernActions {
+   display: flex;
+   gap: 10px;
+   margin-top: 14px;
+}
+
+.pmConcernActions input {
+   flex: 1;
+   font-size: 13px;
+}
+
+/* Timeline */
+
+.pmTimeline {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+   padding-left: 4px;
+}
+
+.pmTimelineItem {
+   display: flex;
+   align-items: flex-start;
+   gap: 12px;
+}
+
+.pmTimelineDot {
+   width: 10px;
+   height: 10px;
+   margin-top: 5px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+}
+
+.pmTimelineStatus {
+   display: block;
+   font-size: 13.5px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmTimelineMeta {
+   display: block;
+   margin-top: 2px;
+   font-size: 12px;
+   color: #94A092;
+}
+
+.pmTimelineRemarks {
+   display: block;
+   margin-top: 4px;
+   font-size: 13px;
+   color: #4B564F;
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+   .pmStats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+
+   .pmInfoGrid {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 640px) {
+   .pmPage {
+      padding: 20px;
+   }
+
+   .pmHeader {
+      flex-wrap: wrap;
+   }
+
+   .pmToolbar {
+      flex-wrap: wrap;
+   }
+
+   .pmSearchBox {
+      max-width: none;
+      order: 1;
+      flex-basis: 100%;
+   }
+
+   .pmStats,
+   .pmMetrics,
+   .pmFormGrid,
+   .pmInfoGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .pmAttChips {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .pmActionBar,
+   .pmDocRow,
+   .pmDocControls,
+   .pmConcernActions {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .pmDocControls input {
+      width: auto;
+   }
+
+   /* Modal becomes a bottom sheet on phones */
+
+   .pmOverlay {
+      padding: 0;
+      align-items: flex-end;
+   }
+
+   .pmModal {
+      max-width: none;
+      max-height: 94vh;
+      max-height: 94dvh;
+      border-radius: 18px 18px 0 0;
+   }
+
+   .pmModalHeader {
+      padding: 18px 20px 14px;
+   }
+
+   .pmModalBody {
+      padding: 18px 20px 24px;
+   }
+}

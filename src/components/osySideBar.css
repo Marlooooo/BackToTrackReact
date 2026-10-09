@@ -1,4 +1,4 @@
-.sideBarDiv {
+.osySideBarDiv {
    height: 100vh;
    width: 19%;
    background-color: #0f1a3c;
@@ -11,7 +11,7 @@
 }
 
 
-.navBarTitleLogo{
+.osyNavBarTitleLogo{
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -19,12 +19,12 @@
    padding: 0px 0px 20px 0px;
    border-bottom: 1px solid gray;
 }
-.navBarTitleLogo img{
+.osyNavBarTitleLogo img{
    height: 35px;
    padding: 0px 5px 0px 5px;
    border-radius: 20px;
 }
-.navBarTitleLogo h1{
+.osyNavBarTitleLogo h1{
    color: white;
    font-size: 1.2rem;
    font-family: "Urbanist", sans-serif;
@@ -35,7 +35,7 @@
 
 
 
-.linkDiv{
+.osyLinkDiv{
    display: flex;
    flex-direction: column;
    justify-content: start;
@@ -43,7 +43,7 @@
    padding: 0px 0px 20px 0px;
    border-bottom: 1px solid gray;
 }
-.linkDiv h2, .linkDivLogOut h2{
+.osyLinkDiv h2, .osyLinkDivLogOut h2{
    font-family: "Inter", sans-serif;
    font-optical-sizing: auto;
    font-style: bold;
@@ -51,7 +51,7 @@
    color: gray;
    font-size: 0.6rem;
 }
-.linkDiv div{
+.osyLinkDiv div{
    width: 90%;
    margin: 5px 0px 0px 0px;
    padding: 10px 0px 10px 5px;
@@ -61,7 +61,7 @@
    align-items: center;
    justify-content: start;
 }
-.linkDiv span{
+.osyLinkDiv span{
    color: white;
    margin-right: 15px;
    font-size: 16px;
@@ -69,10 +69,10 @@
    transition: transform 0.15s ease;    /* NEW */
 ;
 }
-.linkDiv div:hover span{
+.osyLinkDiv div:hover span{
    transform: scale(1.15);              /* NEW — icon grows a bit on hover, scoped to row hover */
 }
-.linkDiv a{
+.osyLinkDiv a{
    font-family: "Inter", sans-serif;
    font-optical-sizing: auto;
    font-style: normal;
@@ -82,14 +82,14 @@
    display: inline-block;              /* NEW — needed so transform/scale doesn't get ignored */
    transition: font-size 0.15s ease;    /* NEW — smooths the size change */
 }
-.linkDiv a:hover{
+.osyLinkDiv a:hover{
    font-size: 13.5px;                     /* NEW — slightly bigger text on hover */
 }
 
 
 
 
-.linkDivLogOut{
+.osyLinkDivLogOut{
    height: 100%;
    display: flex;
    flex-direction: column;
@@ -98,12 +98,12 @@
    padding: 0px 0px 20px 0px;
    border-bottom: 1px solid gray;
 }
-.linkDivLogOut div{
+.osyLinkDivLogOut div{
    width: 50%;
    height: auto;
    margin: 15px 0px 0px 0px;
 }
-.linkDivLogOut button{
+.osyLinkDivLogOut button{
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -117,10 +117,10 @@
    width: 100%;
    transition: font-size 0.15s ease;   /* NEW */
 }
-.linkDivLogOut button:hover{
+.osyLinkDivLogOut button:hover{
    font-size: 0.9rem;                  /* NEW — grows the button's text on hover */
 }
-.linkDivLogOut .logOutIcon{
+.osyLinkDivLogOut .osyLogOutIcon{
    color: black;
    margin: 0px;
    margin-right: 10px;
@@ -128,14 +128,14 @@
    display: inline-block;               /* NEW */
    transition: transform 0.15s ease;    /* NEW */
 }
-.linkDivLogOut button:hover .logOutIcon{
+.osyLinkDivLogOut button:hover .osyLogOutIcon{
    transform: scale(1.1);              /* NEW — icon grows in step with the text */
 }
-.linkDivLogOut .userInfo{
+.osyLinkDivLogOut .osyUserInfo{
    width: 100%;
    margin: 15px 0px 0px 0px;
 }
-.userName{
+.osyUserName{
    color: white;
    font-family: "Inter", sans-serif;
    font-size: 0.9rem;
@@ -145,15 +145,15 @@
 
 
 
-.linkDiv div:has(a.active) {
+.osyLinkDiv div:has(a.osyActive) {
    background-color: white;
    font-style: normal;
 
 }
-.linkDiv a.active{
+.osyLinkDiv a.osyActive{
    color: #0f1a3c;
 }
-.linkDiv div:has(a.active) span {
+.osyLinkDiv div:has(a.osyActive) span {
    color: #0f1a3c;
 }
 
@@ -173,23 +173,23 @@
 /* Tablet */
 @media (max-width: 1024px) {
 
-   .sideBarDiv {
+   .osySideBarDiv {
       width: 25%;
    }
 
-   .navBarTitleLogo h1 {
+   .osyNavBarTitleLogo h1 {
       font-size: 1rem;
    }
 
-   .linkDiv a {
+   .osyLinkDiv a {
       font-size: 0.75rem;
    }
 
-   .linkDiv span {
+   .osyLinkDiv span {
       margin-right: 10px;
    }
 
-   .linkDivLogOut div {
+   .osyLinkDivLogOut div {
       width: 70%;
    }
 }
@@ -198,37 +198,37 @@
 /* Small Tablet */
 @media (max-width: 768px) {
 
-   .sideBarDiv {
+   .osySideBarDiv {
       width: 30%;
       padding: 10px 15px 10px 15px;
    }
 
-   .navBarTitleLogo {
+   .osyNavBarTitleLogo {
       gap: 7px;
    }
 
-   .navBarTitleLogo img {
+   .osyNavBarTitleLogo img {
       height: 30px;
    }
 
-   .navBarTitleLogo h1 {
+   .osyNavBarTitleLogo h1 {
       font-size: 0.9rem;
    }
 
-   .linkDiv a {
+   .osyLinkDiv a {
       font-size: 0.7rem;
    }
 
-   .linkDiv span {
+   .osyLinkDiv span {
       font-size: 14px;
       margin-right: 8px;
    }
 
-   .linkDivLogOut div {
+   .osyLinkDivLogOut div {
       width: 80%;
    }
 
-   .userName {
+   .osyUserName {
       font-size: 0.8rem;
    }
 }
@@ -237,55 +237,55 @@
 /* Mobile */
 @media (max-width: 480px) {
 
-   .sideBarDiv {
+   .osySideBarDiv {
       width: 38%;
       padding: 10px 10px 10px 10px;
    }
 
-   .navBarTitleLogo {
+   .osyNavBarTitleLogo {
       gap: 5px;
    }
 
-   .navBarTitleLogo img {
+   .osyNavBarTitleLogo img {
       height: 27px;
    }
 
-   .navBarTitleLogo h1 {
+   .osyNavBarTitleLogo h1 {
       font-size: 0.8rem;
    }
 
-   .linkDiv h2,
-   .linkDivLogOut h2 {
+   .osyLinkDiv h2,
+   .osyLinkDivLogOut h2 {
       font-size: 0.5rem;
    }
 
-   .linkDiv div {
+   .osyLinkDiv div {
       padding: 8px 0px 8px 5px;
    }
 
-   .linkDiv span {
+   .osyLinkDiv span {
       font-size: 13px;
       margin-right: 7px;
    }
 
-   .linkDiv a {
+   .osyLinkDiv a {
       font-size: 0.65rem;
    }
 
-   .linkDivLogOut div {
+   .osyLinkDivLogOut div {
       width: 100%;
    }
 
-   .linkDivLogOut button {
+   .osyLinkDivLogOut button {
       font-size: 0.7rem;
    }
 
-   .linkDivLogOut .logOutIcon {
+   .osyLinkDivLogOut .osyLogOutIcon {
       font-size: 17px;
       margin-right: 7px;
    }
 
-   .userName {
+   .osyUserName {
       font-size: 0.7rem;
    }
 }
@@ -294,33 +294,103 @@
 /* Very Small Mobile */
 @media (max-width: 360px) {
 
-   .sideBarDiv {
+   .osySideBarDiv {
       width: 45%;
       padding: 10px 8px 10px 8px;
    }
 
-   .navBarTitleLogo h1 {
+   .osyNavBarTitleLogo h1 {
       font-size: 0.7rem;
    }
 
-   .navBarTitleLogo img {
+   .osyNavBarTitleLogo img {
       height: 24px;
    }
 
-   .linkDiv a {
+   .osyLinkDiv a {
       font-size: 0.6rem;
    }
 
-   .linkDiv span {
+   .osyLinkDiv span {
       font-size: 12px;
       margin-right: 5px;
    }
 
-   .linkDivLogOut button {
+   .osyLinkDivLogOut button {
       font-size: 0.6rem;
    }
 
-   .userName {
+   .osyUserName {
       font-size: 0.65rem;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   BURGER MENU
+   (keep this at the very bottom so it overrides the widths above)
+========================= */
+.osyBurgerBtn,
+.osySideBarOverlay {
+   display: none;
+}
+
+@media (max-width: 768px) {
+
+   .osyBurgerBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 998;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 10px;
+      background-color: #0f1a3c;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+   }
+
+   .osySideBarDiv {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 260px;
+      max-width: 80%;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+   }
+
+   .osySideBarDiv.osyOpen {
+      transform: translateX(0);
+   }
+
+   .osySideBarOverlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+   }
+
+   .osySideBarOverlay.osyShow {
+      opacity: 1;
+      pointer-events: auto;
    }
 }

@@ -1,0 +1,396 @@
+.maximaSideBarDiv {
+   height: 100vh;
+   width: 19%;
+   background-color: #0f1a3c;
+   display: flex;
+   flex-direction: column;
+   padding: 10px 20px 10px 20px;
+   box-sizing: border-box;
+   overflow-y: auto;
+   overflow-x: auto;
+}
+
+
+.maximaNavBarTitleLogo{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 10px;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.maximaNavBarTitleLogo img{
+   height: 35px;
+   padding: 0px 5px 0px 5px;
+   border-radius: 20px;
+}
+.maximaNavBarTitleLogo h1{
+   color: white;
+   font-size: 1.2rem;
+   font-family: "Urbanist", sans-serif;
+   font-optical-sizing: auto;
+   font-weight: 700;
+   font-style: normal;
+}
+
+
+
+.maximaLinkDiv{
+   display: flex;
+   flex-direction: column;
+   justify-content: start;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.maximaLinkDiv h2, .maximaLinkDivLogOut h2{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: bold;
+   margin: 20px 0px 0px 0px;
+   color: gray;
+   font-size: 0.6rem;
+}
+.maximaLinkDiv div{
+   width: 90%;
+   margin: 5px 0px 0px 0px;
+   padding: 10px 0px 10px 5px;
+   border-radius: 10px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: start;
+}
+.maximaLinkDiv span{
+   color: white;
+   margin-right: 15px;
+   font-size: 16px;
+   display: inline-block;               /* NEW — same reason */
+   transition: transform 0.15s ease;    /* NEW */
+;
+}
+.maximaLinkDiv div:hover span{
+   transform: scale(1.15);              /* NEW — icon grows a bit on hover, scoped to row hover */
+}
+.maximaLinkDiv a{
+   font-family: "Inter", sans-serif;
+   font-optical-sizing: auto;
+   font-style: normal;
+   text-decoration: none;
+   font-size: 0.8rem;
+   margin: 0px;
+   display: inline-block;              /* NEW — needed so transform/scale doesn't get ignored */
+   transition: font-size 0.15s ease;    /* NEW — smooths the size change */
+}
+.maximaLinkDiv a:hover{
+   font-size: 13.5px;                     /* NEW — slightly bigger text on hover */
+}
+
+
+
+
+.maximaLinkDivLogOut{
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: end;
+   align-items: start;
+   padding: 0px 0px 20px 0px;
+   border-bottom: 1px solid gray;
+}
+.maximaLinkDivLogOut div{
+   width: 50%;
+   height: auto;
+   margin: 15px 0px 0px 0px;
+}
+.maximaLinkDivLogOut button{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: space-between;
+   border: 0;
+   color: black;
+   cursor: pointer;
+   background-color: rgb(170, 246, 246);   
+   padding: 5px 0px 5px 5px;
+   border-radius: 10px;
+   width: 100%;
+   transition: font-size 0.15s ease;   /* NEW */
+}
+.maximaLinkDivLogOut button:hover{
+   font-size: 0.9rem;                  /* NEW — grows the button's text on hover */
+}
+.maximaLinkDivLogOut .maximaLogOutIcon{
+   color: black;
+   margin: 0px;
+   margin-right: 10px;
+   font-size: 20px;
+   display: inline-block;               /* NEW */
+   transition: transform 0.15s ease;    /* NEW */
+}
+.maximaLinkDivLogOut button:hover .maximaLogOutIcon{
+   transform: scale(1.1);              /* NEW — icon grows in step with the text */
+}
+.maximaLinkDivLogOut .maximaUserInfo{
+   width: 100%;
+   margin: 15px 0px 0px 0px;
+}
+.maximaUserName{
+   color: white;
+   font-family: "Inter", sans-serif;
+   font-size: 0.9rem;
+   font-weight: 600;
+}
+
+
+
+
+.maximaLinkDiv div:has(a.maximaActive) {
+   background-color: white;
+   font-style: normal;
+
+}
+.maximaLinkDiv a.maximaActive{
+   color: #0f1a3c;
+}
+.maximaLinkDiv div:has(a.maximaActive) span {
+   color: #0f1a3c;
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   RESPONSIVE SIDEBAR
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+   .maximaSideBarDiv {
+      width: 25%;
+   }
+
+   .maximaNavBarTitleLogo h1 {
+      font-size: 1rem;
+   }
+
+   .maximaLinkDiv a {
+      font-size: 0.75rem;
+   }
+
+   .maximaLinkDiv span {
+      margin-right: 10px;
+   }
+
+   .maximaLinkDivLogOut div {
+      width: 70%;
+   }
+}
+
+
+/* Small Tablet */
+@media (max-width: 768px) {
+
+   .maximaSideBarDiv {
+      width: 30%;
+      padding: 10px 15px 10px 15px;
+   }
+
+   .maximaNavBarTitleLogo {
+      gap: 7px;
+   }
+
+   .maximaNavBarTitleLogo img {
+      height: 30px;
+   }
+
+   .maximaNavBarTitleLogo h1 {
+      font-size: 0.9rem;
+   }
+
+   .maximaLinkDiv a {
+      font-size: 0.7rem;
+   }
+
+   .maximaLinkDiv span {
+      font-size: 14px;
+      margin-right: 8px;
+   }
+
+   .maximaLinkDivLogOut div {
+      width: 80%;
+   }
+
+   .maximaUserName {
+      font-size: 0.8rem;
+   }
+}
+
+
+/* Mobile */
+@media (max-width: 480px) {
+
+   .maximaSideBarDiv {
+      width: 38%;
+      padding: 10px 10px 10px 10px;
+   }
+
+   .maximaNavBarTitleLogo {
+      gap: 5px;
+   }
+
+   .maximaNavBarTitleLogo img {
+      height: 27px;
+   }
+
+   .maximaNavBarTitleLogo h1 {
+      font-size: 0.8rem;
+   }
+
+   .maximaLinkDiv h2,
+   .maximaLinkDivLogOut h2 {
+      font-size: 0.5rem;
+   }
+
+   .maximaLinkDiv div {
+      padding: 8px 0px 8px 5px;
+   }
+
+   .maximaLinkDiv span {
+      font-size: 13px;
+      margin-right: 7px;
+   }
+
+   .maximaLinkDiv a {
+      font-size: 0.65rem;
+   }
+
+   .maximaLinkDivLogOut div {
+      width: 100%;
+   }
+
+   .maximaLinkDivLogOut button {
+      font-size: 0.7rem;
+   }
+
+   .maximaLinkDivLogOut .maximaLogOutIcon {
+      font-size: 17px;
+      margin-right: 7px;
+   }
+
+   .maximaUserName {
+      font-size: 0.7rem;
+   }
+}
+
+
+/* Very Small Mobile */
+@media (max-width: 360px) {
+
+   .maximaSideBarDiv {
+      width: 45%;
+      padding: 10px 8px 10px 8px;
+   }
+
+   .maximaNavBarTitleLogo h1 {
+      font-size: 0.7rem;
+   }
+
+   .maximaNavBarTitleLogo img {
+      height: 24px;
+   }
+
+   .maximaLinkDiv a {
+      font-size: 0.6rem;
+   }
+
+   .maximaLinkDiv span {
+      font-size: 12px;
+      margin-right: 5px;
+   }
+
+   .maximaLinkDivLogOut button {
+      font-size: 0.6rem;
+   }
+
+   .maximaUserName {
+      font-size: 0.65rem;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================
+   BURGER MENU
+   (keep this at the very bottom so it overrides the widths above)
+========================= */
+.maximaBurgerBtn,
+.maximaSideBarOverlay {
+   display: none;
+}
+
+@media (max-width: 768px) {
+
+   .maximaBurgerBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 998;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 10px;
+      background-color: #0f1a3c;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+   }
+
+   .maximaSideBarDiv {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      width: 260px;
+      max-width: 80%;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+   }
+
+   .maximaSideBarDiv.maximaOpen {
+      transform: translateX(0);
+   }
+
+   .maximaSideBarOverlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+   }
+
+   .maximaSideBarOverlay.maximaShow {
+      opacity: 1;
+      pointer-events: auto;
+   }
+}
