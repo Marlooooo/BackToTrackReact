@@ -1,0 +1,588 @@
+.osyTrainingProgBody {
+   display: flex;
+   flex-direction: row;
+   height: 100vh;
+   overflow: hidden;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyTrainingProgMain {
+   flex: 1;
+   min-width: 0;
+   min-height: 0;
+   background: #F5F7F5;
+   overflow-y: auto;
+   padding: 32px 48px 44px;
+}
+
+.osyTrainingProgHeader {
+   margin-bottom: 20px;
+}
+
+.osyTrainingProgHeader h1 {
+   margin: 0;
+   font-size: 2em;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyTrainingProgHeader p {
+   margin: 4px 0 0;
+   font-size: 13.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opTracker {
+   display: flex;
+   flex-direction: column;
+   gap: 22px;
+}
+
+.opState {
+   padding: 40px 20px;
+   text-align: center;
+   font-size: 13.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opStateError {
+   padding: 12px 16px;
+   border-radius: 8px;
+   text-align: left;
+   font-size: 13.5px;
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+}
+
+.opEmpty {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+   padding: 60px 24px;
+   text-align: center;
+   background: #FFFFFF;
+   border: 1px dashed #DCE6DE;
+   border-radius: 16px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opEmpty i {
+   font-size: 44px;
+   color: #94A092;
+}
+
+.opEmpty h3 {
+   margin: 0;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opEmpty p {
+   margin: 0;
+   font-size: 13px;
+   font-weight: 600;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opCard {
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   padding: 14px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   color: #29332C;
+   font-family: "Nunito", sans-serif;
+}
+
+.opCardHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 4px 4px 0;
+   margin-bottom: 16px;
+}
+
+.opProgram {
+   margin: 0;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opBatch {
+   display: block;
+   margin-top: 2px;
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Badges */
+.opBadge {
+   display: inline-block;
+   padding: 3px 12px;
+   border-radius: 999px;
+   font-size: 11.5px;
+   font-weight: 700;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.opBadgeWaiting { background: #FBF0DD; color: #96701E; }
+.opBadgeOngoing { background: #E3F0E7; color: #2F6E4F; }
+.opBadgeCompleted { background: #E4EDF3; color: #35607A; }
+.opBadgeDropped { background: #FBE3E7; color: #B3455E; }
+
+/* Progress bar */
+.opProgressBlock {
+   padding: 14px 16px;
+   margin-bottom: 16px;
+   background: #F5F7F5;
+   border-radius: 12px;
+}
+
+.opProgressTop {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   margin-bottom: 10px;
+}
+
+.opProgressCaption {
+   font-size: 14px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opProgressPercent {
+   font-size: 14px;
+   font-weight: 700;
+   color: #2F6E4F;
+   font-variant-numeric: tabular-nums;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opBarTrack {
+   height: 8px;
+   border-radius: 999px;
+   background: #E7ECE8;
+   overflow: hidden;
+}
+
+.opBarFill {
+   height: 100%;
+   border-radius: 999px;
+   background: #2F6E4F;
+   transition: width 0.4s ease;
+}
+
+.opBarFillDone {
+   background: #3C8A5E;
+}
+
+.opProgressDates {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 10px;
+   font-size: 12.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Notices */
+.opNotice {
+   display: flex;
+   align-items: flex-start;
+   gap: 12px;
+   padding: 12px 16px;
+   margin-bottom: 16px;
+   border-radius: 12px;
+}
+
+.opNotice i {
+   font-size: 22px;
+   flex-shrink: 0;
+}
+
+.opNotice strong {
+   display: block;
+   font-size: 13px;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opNotice p {
+   margin: 4px 0 0;
+   font-size: 13px;
+   line-height: 1.45;
+   font-family: "Nunito", sans-serif;
+}
+
+.opNoticeGood { background: #E3F0E7; color: #2F6E4F; border: 1px solid #CFE3D5; }
+.opNoticeWarn { background: #FBF0DD; color: #96701E; border: 1px solid #F1DFB8; }
+.opNoticeMuted { background: #F0F1EE; color: #62705F; border: 1px solid #E7ECE8; }
+
+/* Info grid */
+.opInfoGrid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 16px;
+   padding: 14px 16px;
+   background: #F5F7F5;
+   border-radius: 12px;
+}
+
+.opInfoItem {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.opInfoItem i {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   flex-shrink: 0;
+   font-size: 20px;
+   color: #2F6E4F;
+   background: #E3F0E7;
+   border-radius: 50%;
+}
+
+.opInfoItem span {
+   display: block;
+   font-size: 12.5px;
+   font-weight: 700;
+   color: #3D4A3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opInfoItem strong {
+   display: block;
+   margin-top: 2px;
+   font-size: 13px;
+   font-weight: 400;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Blocks */
+.opBlock {
+   margin-top: 22px;
+   padding-top: 18px;
+   border-top: 1px solid #E7ECE8;
+}
+
+.opBlockTitle {
+   display: flex;
+   align-items: baseline;
+   gap: 10px;
+   margin: 0 0 14px;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opBlockTitle small {
+   font-size: 12.5px;
+   font-weight: 400;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opHint {
+   margin: 12px 0 14px;
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Attendance */
+.opChips {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 10px;
+}
+
+.opChipBox {
+   padding: 12px;
+   text-align: center;
+   background: #F5F7F5;
+   border-radius: 12px;
+}
+
+.opChipBoxMain {
+   background: #E3F0E7;
+}
+
+.opChipBox strong {
+   display: block;
+   font-size: 22px;
+   font-weight: 700;
+   line-height: 1.25;
+   color: #14201A;
+   font-variant-numeric: tabular-nums;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opChipBox span {
+   display: block;
+   margin-top: 2px;
+   font-size: 12.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opRecords {
+   border: 1px solid #E7ECE8;
+   border-radius: 12px;
+   overflow: hidden;
+}
+
+.opRecord {
+   display: grid;
+   grid-template-columns: 130px 100px 1fr;
+   align-items: center;
+   gap: 12px;
+   padding: 10px 16px;
+   border-bottom: 1px solid #E7ECE8;
+   font-size: 14px;
+   transition: background 0.15s ease;
+   font-family: "Nunito", sans-serif;
+}
+
+.opRecord:hover {
+   background: #F5F7F5;
+}
+
+.opRecord:last-child {
+   border-bottom: none;
+}
+
+.opRecordDate {
+   font-size: 13px;
+   font-weight: 700;
+   color: #3D4A3F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opRecordNote {
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opChip {
+   display: inline-block;
+   padding: 3px 12px;
+   border-radius: 999px;
+   font-size: 11.5px;
+   font-weight: 700;
+   text-transform: capitalize;
+   text-align: center;
+   font-family: "Nunito", sans-serif;
+}
+
+.opChipGood { background: #E3F0E7; color: #2F6E4F; }
+.opChipWarn { background: #FBF0DD; color: #96701E; }
+.opChipBad { background: #FBE3E7; color: #B3455E; }
+.opChipMuted { background: #F0F1EE; color: #62705F; }
+
+.opLinkBtn {
+   margin-top: 10px;
+   padding: 4px 0;
+   border: none;
+   background: transparent;
+   color: #2F6E4F;
+   font-size: 13px;
+   font-weight: 700;
+   cursor: pointer;
+   font-family: "Nunito", sans-serif;
+}
+
+.opLinkBtn:hover {
+   text-decoration: underline;
+}
+
+/* Documents */
+.opDocList {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.opDoc {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   padding: 12px 16px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 12px;
+}
+
+.opDoc i {
+   font-size: 22px;
+   color: #94A092;
+}
+
+.opDocDone {
+   background: #F5F7F5;
+}
+
+.opDocDone i {
+   color: #2F6E4F;
+}
+
+.opDocText {
+   flex: 1;
+}
+
+.opDocText span {
+   display: block;
+   font-size: 13px;
+   font-weight: 700;
+   color: #3D4A3F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opDocText small {
+   display: block;
+   margin-top: 2px;
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.opDocStatus {
+   padding: 3px 12px;
+   border-radius: 999px;
+   font-size: 11.5px;
+   font-weight: 700;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.opDocStatus-pending { background: #FBF0DD; color: #96701E; }
+.opDocStatus-received { background: #E3F0E7; color: #2F6E4F; }
+.opDocStatus-not_applicable { background: #F0F1EE; color: #62705F; }
+
+/* Timeline */
+.opTimeline {
+   display: flex;
+   flex-direction: column;
+}
+
+.opTimelineItem {
+   position: relative;
+   display: flex;
+   align-items: flex-start;
+   gap: 12px;
+   padding-bottom: 16px;
+}
+
+.opTimelineItem:last-child {
+   padding-bottom: 0;
+}
+
+.opTimelineItem:not(:last-child)::before {
+   content: '';
+   position: absolute;
+   left: 4px;
+   top: 18px;
+   bottom: -2px;
+   width: 2px;
+   background: #E7ECE8;
+}
+
+.opTimelineDot {
+   width: 10px;
+   height: 10px;
+   margin-top: 5px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 4px #E3F0E7;
+}
+
+.opTimelineItem strong {
+   display: block;
+   font-size: 13px;
+   font-weight: 700;
+   color: #3D4A3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.opTimelineItem span {
+   display: block;
+   margin-top: 2px;
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Focus and motion */
+.opLinkBtn:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .opBarFill,
+   .opRecord {
+      transition: none;
+   }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+   .osyTrainingProgBody {
+      flex-direction: column;
+   }
+
+   .osyTrainingProgMain {
+      padding: 20px 20px 32px;
+   }
+
+   .opCardHeader {
+      flex-direction: column;
+   }
+
+   .opInfoGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .opChips {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .opRecord {
+      grid-template-columns: 1fr 90px;
+   }
+
+   .opRecordNote {
+      grid-column: 1 / -1;
+   }
+
+   .opDoc {
+      flex-wrap: wrap;
+   }
+}

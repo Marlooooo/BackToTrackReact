@@ -1,0 +1,16 @@
+.osyRecommendationsBody {
+   display: flex;
+   min-height: 100vh;
+   width: 100%;
+}
+
+.osyRecommendationsContent {
+   flex: 1;
+   padding: 30px;
+   min-width: 0;
+}
+
+.osyRecommendationsContent h1 {
+   margin: 0;
+   font-size: 28px;
+}

@@ -1,0 +1,9 @@
+.barangayTrainingMonitoringBody {
+   display: flex;
+   min-height: 100vh;
+}
+
+.barangayTrainingMonitoringContent {
+   flex: 1;
+   padding: 20px;
+}

@@ -80,14 +80,6 @@ function OsySideBar() {
             <div className="osyLinkDiv">
                <h2>MY WORKSPACE</h2>
 
-               {/* <div>
-                  <span>
-                  <i className="las la-user"></i>
-                  </span>
-                  <NavLink to="/osy/profile" className={({ isActive }) => isActive ? "osyActive" : ""}>
-                     My Profile
-                  </NavLink>
-               </div>  */}
                <div>
                   <span>
                   <i className="las la-graduation-cap"></i>
@@ -96,14 +88,7 @@ function OsySideBar() {
                   Available Courses
                   </NavLink>
                </div>
-               {/* <div>
-                  <span>
-                  <i className="las la-clipboard-list"></i>
-                  </span>
-                  <NavLink to="/osy/applications" className={({ isActive }) => isActive ? "osyActive" : ""}>
-                  Application Details
-                  </NavLink>
-               </div> */}
+
                <div>
                   <span>
                   <i className="las la-chart-line"></i>
@@ -112,14 +97,19 @@ function OsySideBar() {
                   Training Progress
                   </NavLink>
                </div>
-               {/* <div>
+
+               <div>
                   <span>
-                  <i className="las la-briefcase"></i>
+                     <i className="las la-lightbulb"></i>
                   </span>
-                  <NavLink to="/osy/jobs" className={({ isActive }) => isActive ? "osyActive" : ""}>
-                  Job Opportunities
+                  <NavLink
+                     to="/osy/recommendations"
+                     className={({ isActive }) => isActive ? "osyActive" : ""}
+                  >
+                     Recommendations
                   </NavLink>
-               </div> */}
+               </div>
+
             </div>
 
             <div className="osyLinkDiv">

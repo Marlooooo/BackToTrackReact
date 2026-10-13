@@ -68,8 +68,8 @@ function SkOfficialSideBar() {
                <h2>OVERVIEW</h2>
 
                <div>
-                  <span>
-                  <i className="las la-border-all"></i>
+                  <span className="material-symbols-outlined">
+                  dashboard
                   </span>
                   <NavLink to="/barangay/dashboard" className={({ isActive }) => isActive ? "skActive" : ""}>
                   DASHBOARD
@@ -82,7 +82,7 @@ function SkOfficialSideBar() {
 
                <div>
                   <span className="material-symbols-outlined">
-                  folder_copy
+                  groups
                   </span>
                   <NavLink to="/barangay/management" className={({ isActive }) => isActive ? "skActive" : ""}>
                   OSY Management
@@ -90,7 +90,7 @@ function SkOfficialSideBar() {
                </div>
                <div>
                   <span className="material-symbols-outlined">
-                  quick_reference_all
+                  assignment_ind
                   </span>
                   <NavLink to="/barangay/referrals" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Referral Management
@@ -106,25 +106,16 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   monitoring
                   </span>
-                  <NavLink to="/barangay/monitoring/training" className={({ isActive }) => isActive ? "skActive" : ""}>
+                  <NavLink to="/barangay/training" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Training Monitoring
                   </NavLink>
                </div>
 
                <div>
                   <span className="material-symbols-outlined">
-                  monitoring
+                  school
                   </span>
-                  <NavLink to="/barangay/monitoring/employment" className={({ isActive }) => isActive ? "skActive" : ""}>
-                  Employment Tracking
-                  </NavLink>
-               </div>
-
-               <div>
-                  <span className="material-symbols-outlined">
-                  monitoring
-                  </span>
-                  <NavLink to="/barangay/monitoring/recommendation" className={({ isActive }) => isActive ? "skActive" : ""}>
+                  <NavLink to="/barangay/recommendation" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Course Recommendation
                   </NavLink>
                </div>
@@ -136,7 +127,7 @@ function SkOfficialSideBar() {
 
                <div>
                   <span className="material-symbols-outlined">
-                  lab_profile
+                  assessment
                   </span>
                   <NavLink to="/barangay/reports" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Reports
@@ -146,7 +137,7 @@ function SkOfficialSideBar() {
                   <span className="material-symbols-outlined">
                   notifications_active
                   </span>
-                  <NavLink to="/barangay/announcements" className={({ isActive }) => isActive ? "skActive" : ""}>
+                  <NavLink to="/barangay/notifications" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Notifications
                   </NavLink>
                </div>

@@ -1,0 +1,9 @@
+.barangayReportsBody {
+   display: flex;
+   min-height: 100vh;
+}
+
+.barangayReportsContent {
+   flex: 1;
+   padding: 20px;
+}

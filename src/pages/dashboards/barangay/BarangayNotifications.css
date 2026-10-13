@@ -1,0 +1,9 @@
+.barangayNotificationsBody {
+   display: flex;
+   min-height: 100vh;
+}
+
+.barangayNotificationsContent {
+   flex: 1;
+   padding: 20px;
+}

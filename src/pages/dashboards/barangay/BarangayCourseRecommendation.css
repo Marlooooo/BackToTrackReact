@@ -1,0 +1,9 @@
+.barangayCourseRecommendationBody {
+   display: flex;
+   min-height: 100vh;
+}
+
+.barangayCourseRecommendationContent {
+   flex: 1;
+   padding: 20px;
+}

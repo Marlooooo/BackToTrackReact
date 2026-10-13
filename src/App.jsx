@@ -22,6 +22,8 @@ import OsyApplicationDets from './pages/dashboards/osy/OsyApplicationDets';
 import OsyTrainingProg from './pages/dashboards/osy/OsyTrainingProg';
 import OsyNotif from './pages/dashboards/osy/OsyNotif';
 import OsyAnnouncement from './pages/dashboards/osy/OsyAnnouncement';
+import OsyRecommendations from './pages/dashboards/osy/OsyRecommendations';
+
 
 
 
@@ -42,6 +44,10 @@ import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement';
 import BarangayDashboard from "./pages/dashboards/barangay/BarangayDashboard";
 import BarangayOsyManagement from "./pages/dashboards/barangay/BarangayOsyManagement";
 import BarangayReferralManagement from "./pages/dashboards/barangay/BarangayReferralManagement";
+import BarangayTrainingMonitoring from "./pages/dashboards/barangay/BarangayTrainingMonitoring";
+import BarangayCourseRecommendation from "./pages/dashboards/barangay/BarangayCourseRecommendation";
+import BarangayReports from "./pages/dashboards/barangay/BarangayReports";
+import BarangayNotifications from "./pages/dashboards/barangay/BarangayNotifications";
 
 
 
@@ -68,7 +74,7 @@ function App() {
          <Route path="/osy/training" element={<ProtectedRoute> <OsyTrainingProg /> </ProtectedRoute>} />
          <Route path="/osy/notifications" element={<ProtectedRoute> <OsyNotif /> </ProtectedRoute>} />
          <Route path="/osy/announcements" element={<ProtectedRoute> <OsyAnnouncement /> </ProtectedRoute>} />
-
+         <Route path="/osy/recommendations" element={<ProtectedRoute><OsyRecommendations /></ProtectedRoute>} />
 
 
 
@@ -87,6 +93,14 @@ function App() {
          <Route path="/barangay/dashboard" element={<ProtectedRoute> <BarangayDashboard/> </ProtectedRoute>} />
          <Route path="/barangay/management" element={<ProtectedRoute> <BarangayOsyManagement/> </ProtectedRoute>} />
          <Route path="/barangay/referrals" element={<ProtectedRoute> <BarangayReferralManagement/> </ProtectedRoute>} />
+         <Route path="/barangay/training" element={<ProtectedRoute> <BarangayTrainingMonitoring/> </ProtectedRoute>} />
+         <Route path="/barangay/recommendation" element={<ProtectedRoute> <BarangayCourseRecommendation/> </ProtectedRoute>} />
+         <Route path="/barangay/reports" element={<ProtectedRoute> <BarangayReports/> </ProtectedRoute>} />
+         <Route path="/barangay/notifications" element={<ProtectedRoute> <BarangayNotifications/> </ProtectedRoute>} />
+
+
+
+
 
          </Routes>
       </BrowserRouter>

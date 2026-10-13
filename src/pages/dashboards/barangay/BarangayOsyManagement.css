@@ -4,13 +4,11 @@
    display: flex;
    height: 100vh;
    overflow: hidden;
-
    }
 
    .barangayMainContent {
    flex: 1;
    min-width: 0;
-   min-height: 100%;
    padding: 40px 48px;
    box-sizing: border-box;
    background: #F5F7F5;
@@ -130,6 +128,7 @@
    padding: 60px 24px;
    text-align: center;
    color: #62705F;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyEmpty span {
@@ -146,6 +145,7 @@
    padding: 12px 16px;
    border-radius: 8px;
    font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyBannerError {
@@ -160,6 +160,12 @@
    border: 1px solid #DCE6DE;
    }
 
+   .bosyBannerWarn {
+   background: #FBF0DD;
+   color: #8A651A;
+   border: 1px solid #F1DFB8;
+   }
+
    /* ---------- Table ---------- */
 
    .osyTable {
@@ -167,7 +173,7 @@
    border-collapse: collapse;
    font-size: 13.5px;
    }
-   
+
    .osyTable thead th {
    padding: 14px 20px;
    border-bottom: 1px solid #EEF2EE;
@@ -256,14 +262,15 @@
    font-size: 11px;
    font-weight: 600;
    white-space: nowrap;
+   font-family: "Nunito", sans-serif;
    }
 
-   .bosyStatus--Registered      { background: #EAF0EE; color: #55665C; }
-   .bosyStatus--Validated       { background: #E4EBF6; color: #3A5D8F; }
-   .bosyStatus--Referred        { background: #FBF0DD; color: #96701E; }
+   .bosyStatus--Registered       { background: #EAF0EE; color: #55665C; }
+   .bosyStatus--Validated        { background: #E4EBF6; color: #3A5D8F; }
+   .bosyStatus--Referred         { background: #FBF0DD; color: #96701E; }
    .bosyStatus--AcceptedbyMaxima { background: #EEE6F4; color: #71549A; }
-   .bosyStatus--TrainingStarted { background: #FBE9DA; color: #B0621F; }
-   .bosyStatus--Completed       { background: #E3F0E7; color: #2F6E4F; }
+   .bosyStatus--TrainingStarted  { background: #FBE9DA; color: #B0621F; }
+   .bosyStatus--Completed        { background: #E3F0E7; color: #2F6E4F; }
 
    /* ---------- Buttons (inside modals) ---------- */
 
@@ -273,6 +280,7 @@
    border-radius: 8px;
    font-size: 13.5px;
    font-weight: 600;
+   font-family: "Nunito", sans-serif;
    cursor: pointer;
    transition: background 0.15s ease;
    }
@@ -344,6 +352,10 @@
    box-shadow: 0 20px 50px rgba(16, 23, 18, 0.2);
    }
 
+   .bosyModal:focus {
+   outline: none;
+   }
+
    .bosyModalLarge { max-width: 640px; }
    .bosyModalSmall { max-width: 400px; }
 
@@ -353,6 +365,13 @@
    font-weight: 700;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
+   }
+
+   .bosyModal .bosyModalHint {
+   margin: -12px 0 18px;
+   font-size: 12.5px;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyModalSmall p {
@@ -389,6 +408,7 @@
 
    .bosyStepper__item--active { border-top-color: #2F6E4F; }
    .bosyStepper__item--done   { border-top-color: #8DB8A2; }
+   .bosyStepper__item--error  { border-top-color: #C25555; }
 
    .bosyStepper__btn {
    display: flex;
@@ -397,7 +417,7 @@
    padding: 0;
    border: 0;
    background: none;
-   font-family: inherit;
+   font-family: "Nunito", sans-serif;
    font-size: 12.5px;
    font-weight: 600;
    color: #94A092;
@@ -410,6 +430,8 @@
    color: #2F6E4F;
    cursor: pointer;
    }
+
+   .bosyStepper__item--error .bosyStepper__btn { color: #A23E3E; }
 
    .bosyStepper__btn:focus-visible {
    outline: 2px solid #2F6E4F;
@@ -440,12 +462,25 @@
    color: #2F6E4F;
    }
 
+   .bosyStepper__item--error .bosyStepper__dot {
+   background: #FBEBEB;
+   color: #A23E3E;
+   }
+
    /* ---------- Form ---------- */
 
    .bosyForm {
    display: flex;
    flex-direction: column;
    gap: 22px;
+   width: 100%;
+   max-width: none;
+   margin: 0;
+   padding: 0;
+   border: none;
+   border-radius: 0;
+   background: none;
+   box-shadow: none;
    }
 
    .bosyFormSection {
@@ -474,17 +509,32 @@
    margin: -8px 0 0;
    font-size: 12px;
    color: #94A092;
+   font-family: "Nunito", sans-serif;
    }
 
-   .bosyForm label {
+   .bosyField {
    display: flex;
    flex-direction: column;
    gap: 6px;
    min-width: 0;
+   }
+
+   .bosyForm label {
+   display: block;
    font-size: 12.5px;
    font-weight: 600;
    color: #3D4A3F;
    font-family: "Nunito", sans-serif;
+   }
+
+   .bosyForm .bosyCheckboxLabel {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   }
+
+   .bosyReq {
+   color: #A23E3E;
    }
 
    .bosyForm input:not([type='checkbox']),
@@ -495,7 +545,7 @@
    padding: 9px 12px;
    border: 1px solid #DCE6DE;
    border-radius: 8px;
-   font-family: inherit;
+   font-family: "Nunito", sans-serif;
    font-size: 14px;
    font-weight: 400;
    color: #16231C;
@@ -510,20 +560,32 @@
    outline-offset: 1px;
    }
 
+   /* Invalid inputs (declared after the base input rule so it wins) */
+   .bosyForm :is(input, textarea, select)[aria-invalid="true"] {
+   border-color: #C25555;
+   background: #FFFAFA;
+   }
+
+   .bosyForm :is(input, textarea, select)[aria-invalid="true"]:focus {
+   outline-color: #C25555;
+   }
+
    .bosyFormRow {
    display: grid;
    grid-template-columns: 1fr 1fr;
    gap: 14px;
+   align-items: start;
    }
 
    .bosyFormRow--3 {
    grid-template-columns: repeat(3, 1fr);
    }
 
-   .bosyForm .bosyCheckboxLabel {
-   flex-direction: row;
-   align-items: center;
-   gap: 8px;
+   .bosyFieldMeta {
+   display: flex;
+   justify-content: space-between;
+   gap: 12px;
+   min-height: 16px;
    }
 
    .bosyFieldError {
@@ -531,7 +593,52 @@
    font-size: 12px;
    font-weight: 400;
    color: #A23E3E;
+   font-family: "Nunito", sans-serif;
    }
+
+   .bosyHint,
+   .bosyCounter {
+   font-size: 12px;
+   font-weight: 400;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .bosyCounter {
+   margin-left: auto;
+   white-space: nowrap;
+   }
+
+   /* ---------- Password strength ---------- */
+
+   .bosyStrength {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   font-size: 12px;
+   font-weight: 400;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .bosyStrength__bar {
+   display: flex;
+   flex: 1;
+   gap: 4px;
+   max-width: 140px;
+   }
+
+   .bosyStrength__bar span {
+   flex: 1;
+   height: 4px;
+   border-radius: 2px;
+   background: #E3E9E3;
+   }
+
+   .bosyStrength__bar--1 span.on { background: #C25555; }
+   .bosyStrength__bar--2 span.on { background: #D9A441; }
+   .bosyStrength__bar--3 span.on { background: #6FA583; }
+   .bosyStrength__bar--4 span.on { background: #2F6E4F; }
 
    /* ---------- Course suggestions ---------- */
 
@@ -555,6 +662,7 @@
    padding: 10px 12px;
    border: 1px solid #DCE6DE;
    border-radius: 8px;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyRecWhy {
@@ -562,7 +670,7 @@
    color: #66746A;
    }
 
-   /* ---------- View modal ---------- */
+   /* ---------- View modal + review block ---------- */
 
    .bosyViewHeader {
    display: flex;
@@ -579,6 +687,7 @@
    .bosyViewSubline {
    font-size: 13px;
    color: #66746A;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyDetailGrid {
@@ -595,12 +704,22 @@
    letter-spacing: 0.03em;
    text-transform: uppercase;
    color: #8A968A;
+   font-family: "Nunito", sans-serif;
    }
 
    .bosyDetailGrid dd {
    margin: 0;
    font-size: 14px;
    color: #29332C;
+   font-family: "Nunito", sans-serif;
+   }
+
+   .bosyReview {
+   margin: 0;
+   padding: 14px 16px;
+   background: #FBFCFB;
+   border: 1px solid #EEF2EE;
+   border-radius: 10px;
    }
 
    .bosyNotesBlock {
@@ -614,6 +733,7 @@
    letter-spacing: 0.03em;
    text-transform: uppercase;
    color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
    }
 
    .bosyNotesBlock p {
@@ -622,6 +742,7 @@
    line-height: 1.55;
    color: #4B564F;
    white-space: pre-wrap;
+   font-family: "Nunito", sans-serif;
    }
 
    /* ---------- Small screens ---------- */
@@ -661,5 +782,14 @@
 
    .bosyStepper__item--active .bosyStepper__label {
       display: inline;
+   }
+   }
+
+   /* Respect reduced-motion preferences */
+   @media (prefers-reduced-motion: reduce) {
+   .bosyStepper__item,
+   .bosyBtn,
+   .osyAddBtn {
+      transition: none;
    }
    }

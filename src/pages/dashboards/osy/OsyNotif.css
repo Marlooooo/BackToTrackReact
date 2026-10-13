@@ -1,9 +1,10 @@
 .osyNotifBody {
    display: flex;
+   flex-direction: row;
    width: 100%;
-   min-height: 100vh;
-   background: #f4f6fb;
-   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+   height: 100vh;
+   overflow: hidden;
+   font-family: "Nunito", sans-serif;
    text-align: left;
    box-sizing: border-box;
 }
@@ -16,14 +17,16 @@
 .osyNotifBody .osyNotifContent {
    flex: 1;
    min-width: 0;
+   min-height: 0;
    margin: 0;
-   padding: 40px 48px;
+   padding: 32px 48px 44px;
+   background: #F5F7F5;
+   overflow-y: auto;
    text-align: left;
 }
 
 .osyNotifBody .osyNotifInner {
    width: 100%;
-   max-width: 860px;
    margin: 0;
 }
 
@@ -33,46 +36,48 @@
    justify-content: space-between;
    align-items: flex-start;
    gap: 16px;
-   margin-bottom: 24px;
+   margin-bottom: 20px;
 }
 
 .osyNotifBody .osyNotifTitle {
-   font-size: 28px;
+   margin: 0;
+   font-size: 2em;
    font-weight: 700;
    line-height: 1.2;
-   color: #0f172a;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifSubtitle {
-   margin-top: 6px;
-   font-size: 14px;
-   color: #64748b;
+   margin: 4px 0 0;
+   font-size: 13.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifMarkAll {
+   border: 1px solid #DCE6DE;
+   background: #FFFFFF;
+   color: #3D4A3F;
+   border-radius: 8px;
    padding: 10px 18px;
-   border: 1px solid #d5dbe7;
-   border-radius: 10px;
-   background: #ffffff;
-   color: #1e40af;
-   font-family: inherit;
-   font-size: 14px;
+   font-size: 13.5px;
    font-weight: 600;
    cursor: pointer;
    outline: none;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifMarkAll:hover {
-   background: #eff4ff;
-   border-color: #bfd0fb;
+   background: #F1F4F1;
 }
 
 /* Tabs */
 .osyNotifBody .osyNotifTabs {
    display: flex;
-   gap: 8px;
-   margin-bottom: 20px;
-   border-bottom: 1px solid #e2e8f0;
+   gap: 22px;
+   margin-bottom: 16px;
+   border-bottom: 1px solid #E7ECE8;
 }
 
 .osyNotifBody .osyNotifTab {
@@ -80,40 +85,43 @@
    align-items: center;
    gap: 8px;
    margin: 0 0 -1px;
-   padding: 10px 14px;
+   padding: 8px 0 10px;
    border: none;
    border-bottom: 2px solid transparent;
    border-radius: 0;
-   background: transparent;
-   color: #64748b;
-   font-family: inherit;
+   background: none;
+   color: #8A968A;
    font-size: 14px;
    font-weight: 600;
    cursor: pointer;
    outline: none;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifTab:hover {
-   background: transparent;
-   color: #1d4ed8;
+   background: none;
+   color: #1E5B3F;
 }
 
 .osyNotifBody .osyNotifTab.osyNotifTabActive {
-   color: #1d4ed8;
-   border-bottom: 2px solid #1d4ed8;
+   color: #1E5B3F;
+   border-bottom: 2px solid #2F6E4F;
 }
 
 .osyNotifBody .osyNotifBadge {
-   padding: 2px 8px;
+   display: inline-block;
+   padding: 3px 12px;
    border-radius: 999px;
-   background: #e8edf5;
-   color: #475569;
-   font-size: 12px;
+   background: #F0F1EE;
+   color: #62705F;
+   font-size: 11.5px;
+   font-weight: 700;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifTabActive .osyNotifBadge {
-   background: #dbe7ff;
-   color: #1d4ed8;
+   background: #E3F0E7;
+   color: #2F6E4F;
 }
 
 /* List */
@@ -126,24 +134,25 @@
 .osyNotifBody .osyNotifItem {
    display: flex;
    align-items: flex-start;
-   gap: 16px;
-   padding: 18px 20px;
-   background: #ffffff;
-   border: 1px solid #e5e9f2;
-   border-radius: 14px;
-   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+   gap: 14px;
+   padding: 14px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
    cursor: pointer;
-   transition: box-shadow 0.15s ease, transform 0.15s ease;
+   transition: background 0.15s ease, border-color 0.15s ease;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifItem:hover {
-   box-shadow: 0 6px 16px rgba(30, 64, 175, 0.1);
-   transform: translateY(-1px);
+   border-color: #DCE6DE;
+   background: #FAFBF9;
 }
 
 .osyNotifBody .osyNotifItem.osyNotifUnread {
-   border-color: #c7d8fb;
-   background: #fbfcff;
+   border-color: #CFE3D5;
+   background: #F3F8F4;
 }
 
 .osyNotifBody .osyNotifIcon {
@@ -151,16 +160,16 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   width: 44px;
-   height: 44px;
-   border-radius: 12px;
-   background: #e8efff;
-   color: #1d4ed8;
+   width: 40px;
+   height: 40px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
 }
 
 .osyNotifBody .osyNotifRead .osyNotifIcon {
-   background: #eef1f6;
-   color: #94a3b8;
+   background: #F0F1EE;
+   color: #94A092;
 }
 
 .osyNotifBody .osyNotifText {
@@ -170,26 +179,30 @@
 
 .osyNotifBody .osyNotifItemTitle {
    margin-bottom: 4px;
-   font-size: 15px;
-   font-weight: 600;
-   color: #0f172a;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifRead .osyNotifItemTitle {
-   font-weight: 500;
-   color: #475569;
+   font-weight: 600;
+   color: #62705F;
 }
 
 .osyNotifBody .osyNotifItemMessage {
    margin-bottom: 8px;
-   font-size: 14px;
-   line-height: 1.5;
-   color: #475569;
+   font-size: 13px;
+   line-height: 1.45;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifItemTime {
-   font-size: 12px;
-   color: #94a3b8;
+   font-size: 12.5px;
+   color: #94A092;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifDot {
@@ -198,8 +211,8 @@
    height: 10px;
    margin-top: 6px;
    border-radius: 50%;
-   background: #2563eb;
-   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+   background: #2F6E4F;
+   box-shadow: 0 0 0 4px #E3F0E7;
 }
 
 /* Empty / loading / error */
@@ -208,25 +221,28 @@
    flex-direction: column;
    align-items: center;
    gap: 6px;
-   padding: 56px 20px;
-   background: #ffffff;
-   border: 1px dashed #d5dbe7;
-   border-radius: 14px;
-   color: #64748b;
-   font-size: 14px;
+   padding: 60px 24px;
+   background: #FFFFFF;
+   border: 1px dashed #DCE6DE;
+   border-radius: 16px;
+   color: #62705F;
+   font-size: 13px;
    text-align: center;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifStateTitle {
-   color: #0f172a;
+   color: #1E5B3F;
    font-size: 16px;
-   font-weight: 600;
+   font-weight: 700;
+   line-height: 1.3;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifState.osyNotifStateError {
-   color: #b91c1c;
-   background: #fef2f2;
-   border-color: #fecaca;
+   color: #A23E3E;
+   background: #FBEBEB;
+   border: 1px solid #F0CACA;
 }
 
 .osyNotifBody .osyNotifEmptyIcon {
@@ -237,8 +253,8 @@
    height: 56px;
    margin-bottom: 8px;
    border-radius: 50%;
-   background: #eef2fb;
-   color: #1d4ed8;
+   background: #E3F0E7;
+   color: #2F6E4F;
 }
 
 /* Preview modal */
@@ -250,7 +266,7 @@
    align-items: center;
    justify-content: center;
    padding: 20px;
-   background: rgba(15, 23, 42, 0.55);
+   background: rgba(16, 23, 18, 0.5);
 }
 
 .osyNotifBody .osyNotifModal {
@@ -259,47 +275,49 @@
    width: 100%;
    max-width: 560px;
    max-height: 90vh;
-   background: #ffffff;
+   background: #FFFFFF;
    border-radius: 16px;
-   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
+   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
    overflow: hidden;
    text-align: left;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalHeader {
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding: 18px 24px;
-   border-bottom: 1px solid #e5e9f2;
+   padding: 16px 28px;
+   border-bottom: 1px solid #E7ECE8;
 }
 
 .osyNotifBody .osyNotifModalHeading {
    font-size: 16px;
    font-weight: 700;
-   color: #0f172a;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalClose {
-   width: 32px;
-   height: 32px;
+   width: 34px;
+   height: 34px;
    border: none;
-   border-radius: 8px;
+   border-radius: 50%;
    background: transparent;
-   color: #64748b;
+   color: #29332C;
    font-size: 16px;
    cursor: pointer;
    outline: none;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalClose:hover {
-   background: #f1f5f9;
-   color: #0f172a;
+   background: #F1F4F1;
 }
 
 .osyNotifBody .osyNotifModalBody {
    flex: 1;
-   padding: 24px;
+   padding: 22px 28px;
    overflow-y: auto;
 }
 
@@ -307,113 +325,145 @@
    display: block;
    width: 100%;
    max-height: 240px;
-   margin-bottom: 20px;
+   margin-bottom: 18px;
    border-radius: 12px;
    object-fit: cover;
-   background: #eef2fb;
+   background: #E3F0E7;
 }
 
 .osyNotifBody .osyNotifModalName {
    margin-bottom: 8px;
    font-size: 22px;
    font-weight: 700;
-   line-height: 1.3;
-   color: #0f172a;
+   line-height: 1.25;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalDesc {
-   margin-bottom: 20px;
+   margin-bottom: 22px;
    font-size: 14px;
-   line-height: 1.6;
-   color: #475569;
+   line-height: 1.65;
+   color: #29332C;
    white-space: pre-line;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalGrid {
    display: grid;
    grid-template-columns: 1fr 1fr;
-   gap: 12px;
+   gap: 16px;
+   padding: 14px 16px;
+   background: #F5F7F5;
+   border-radius: 12px;
 }
 
 .osyNotifBody .osyNotifModalDetail {
-   padding: 12px 14px;
-   background: #f8fafc;
-   border: 1px solid #e5e9f2;
-   border-radius: 10px;
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
 }
 
 .osyNotifBody .osyNotifModalLabel {
-   margin-bottom: 4px;
-   font-size: 11px;
-   font-weight: 600;
-   letter-spacing: 0.04em;
-   text-transform: uppercase;
-   color: #94a3b8;
+   font-size: 12.5px;
+   font-weight: 700;
+   color: #3D4A3F;
+   font-family: "Open Sans", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalValue {
-   font-size: 14px;
-   font-weight: 600;
-   color: #0f172a;
+   font-size: 13px;
+   font-weight: 400;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalState {
    padding: 40px 0;
-   font-size: 14px;
+   font-size: 13.5px;
    text-align: center;
-   color: #64748b;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifModalStateError {
-   color: #b91c1c;
+   color: #A23E3E;
 }
 
 .osyNotifBody .osyNotifModalFooter {
    display: flex;
    justify-content: flex-end;
    gap: 10px;
-   padding: 16px 24px;
-   border-top: 1px solid #e5e9f2;
-   background: #f8fafc;
+   padding: 16px 28px;
+   border-top: 1px solid #E7ECE8;
+   background: #FFFFFF;
 }
 
 .osyNotifBody .osyNotifBtnSecondary,
 .osyNotifBody .osyNotifBtnPrimary {
-   padding: 10px 18px;
-   border-radius: 10px;
-   font-family: inherit;
-   font-size: 14px;
-   font-weight: 600;
+   border-radius: 8px;
+   font-size: 13.5px;
    cursor: pointer;
    outline: none;
+   font-family: "Nunito", sans-serif;
 }
 
 .osyNotifBody .osyNotifBtnSecondary {
-   border: 1px solid #d5dbe7;
-   background: #ffffff;
-   color: #334155;
+   border: 1px solid #DCE6DE;
+   background: transparent;
+   color: #3D4A3F;
+   padding: 10px 18px;
+   font-weight: 600;
 }
 
 .osyNotifBody .osyNotifBtnSecondary:hover {
-   background: #f1f5f9;
+   background: #F1F4F1;
 }
 
 .osyNotifBody .osyNotifBtnPrimary {
-   border: 1px solid #1d4ed8;
-   background: #1d4ed8;
-   color: #ffffff;
+   border: none;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   padding: 10px 20px;
+   font-weight: 700;
 }
 
 .osyNotifBody .osyNotifBtnPrimary:hover {
-   background: #1e40af;
+   background: #1E5B3F;
+}
+
+/* Focus */
+.osyNotifBody .osyNotifMarkAll:focus-visible,
+.osyNotifBody .osyNotifTab:focus-visible,
+.osyNotifBody .osyNotifItem:focus-visible,
+.osyNotifBody .osyNotifModalClose:focus-visible,
+.osyNotifBody .osyNotifBtnSecondary:focus-visible,
+.osyNotifBody .osyNotifBtnPrimary:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .osyNotifBody .osyNotifItem {
+      transition: none;
+   }
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-   .osyNotifBody .osyNotifContent { padding: 24px 16px; }
-   .osyNotifBody .osyNotifTopRow { flex-direction: column; }
-}
+@media (max-width: 640px) {
+   .osyNotifBody {
+      flex-direction: column;
+   }
 
-@media (max-width: 520px) {
-   .osyNotifBody .osyNotifModalGrid { grid-template-columns: 1fr; }
+   .osyNotifBody .osyNotifContent {
+      padding: 20px 20px 32px;
+   }
+
+   .osyNotifBody .osyNotifTopRow {
+      flex-direction: column;
+   }
+
+   .osyNotifBody .osyNotifModalGrid {
+      grid-template-columns: 1fr;
+   }
 }
