@@ -18,7 +18,6 @@ import Impact from './pages/impact';
 import OsyDashboard from './pages/dashboards/osy/OsyDashboard';
 import OsyMyProfile from './pages/dashboards/osy/OsyMyProfile';
 import OsyAvailCourses from './pages/dashboards/osy/OsyAvailCourses';
-import OsyApplicationDets from './pages/dashboards/osy/OsyApplicationDets';
 import OsyTrainingProg from './pages/dashboards/osy/OsyTrainingProg';
 import OsyNotif from './pages/dashboards/osy/OsyNotif';
 import OsyAnnouncement from './pages/dashboards/osy/OsyAnnouncement';
@@ -70,7 +69,6 @@ function App() {
          <Route path="/osy/dashboard" element={<ProtectedRoute> <OsyDashboard /> </ProtectedRoute>} />
          <Route path="/osy/profile" element={<ProtectedRoute> <OsyMyProfile /> </ProtectedRoute>} />
          <Route path="/osy/courses" element={<ProtectedRoute> <OsyAvailCourses /> </ProtectedRoute>} />
-         <Route path="/osy/applications" element={<ProtectedRoute> <OsyApplicationDets /> </ProtectedRoute>} />
          <Route path="/osy/training" element={<ProtectedRoute> <OsyTrainingProg /> </ProtectedRoute>} />
          <Route path="/osy/notifications" element={<ProtectedRoute> <OsyNotif /> </ProtectedRoute>} />
          <Route path="/osy/announcements" element={<ProtectedRoute> <OsyAnnouncement /> </ProtectedRoute>} />

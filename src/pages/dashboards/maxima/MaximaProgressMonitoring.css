@@ -1,22 +1,37 @@
 /* Page shell */
-.maximaProgMonitoringMainContent{
+.maximaProgMonitoringMainContent {
    width: 81%;
 }
+
 .pmPage {
    flex: 1;
    box-sizing: border-box;
    min-width: 0;
    width: 100%;
-   
    min-height: 100vh;
-   padding: 50px;
-   background: #F5F7F5;
+   padding: 40px 48px;
+   background: #F6F7F6;
    color: #29332C;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
    overflow-y: auto;
 }
 
-/* Form controls do not inherit fonts by default */
+/* Typography: headers = Open Sans, paragraphs = Nunito (page + modal) */
+.pmPage h1,
+.pmPage h2,
+.pmPage h3,
+.pmPage h4,
+.pmOverlay h1,
+.pmOverlay h2,
+.pmOverlay h3,
+.pmOverlay h4 {
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmPage p,
+.pmOverlay p {
+   font-family: "Nunito", sans-serif;
+}
 
 .pmPage button,
 .pmPage input,
@@ -29,24 +44,20 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* Visible keyboard focus */
-
 .pmPage button:focus-visible,
 .pmOverlay button:focus-visible {
    outline: 2px solid #2F6E4F;
    outline-offset: 2px;
 }
 
-/* Header */
+.pmMuted {
+   font-size: 12.5px;
+   color: #8A958C;
+}
 
+/* Header */
 .pmHeader {
-   display: flex;
-   align-items: flex-start;
-   justify-content: space-between;
-   gap: 16px;
-   margin-bottom: 26px;
-   padding-bottom: 20px;
-   border-bottom: 1px solid #E3E9E3;
+   margin-bottom: 22px;
 }
 
 .pmTitle {
@@ -62,75 +73,17 @@
    margin: 0;
    color: #66746A;
    font-size: 13.5px;
-   font-family: "Nunito", sans-serif;
 }
 
-/* Stat cards */
-
-.pmStats {
-   display: grid;
-   grid-template-columns: repeat(5, minmax(0, 1fr));
-   gap: 16px;
-   margin-bottom: 22px;
-}
-
-.pmStatCard {
-   display: flex;
-   align-items: center;
-   gap: 14px;
-   background: #FFFFFF;
-   border: 1px solid #E3E9E3;
-   border-radius: 16px;
-   padding: 18px 20px;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
-}
-
-.pmStatIcon {
-   width: 46px;
-   height: 46px;
-   flex-shrink: 0;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   border-radius: 12px;
-   font-size: 26px;
-}
-
-.pmIconBlue { background: #E4EDF3; color: #35607A; }
-.pmIconGreen { background: #E3F0E7; color: #2F6E4F; }
-.pmIconRed { background: #FBEBEB; color: #A23E3E; }
-.pmIconAmber { background: #FBF0DD; color: #96701E; }
-.pmIconSlate { background: #F0F1EE; color: #7C877E; }
-
-.pmStatValue {
-   display: block;
-   font-size: 24px;
-   font-weight: 700;
-   color: #14201A;
-   line-height: 1.1;
-   letter-spacing: -0.015em;
-   font-family: "Open Sans", sans-serif;
-}
-
-.pmStatLabel {
-   display: block;
-   margin-top: 4px;
-   font-size: 13px;
-   color: #66746A;
-   font-family: "Nunito", sans-serif;
-}
-
-/* Panel and toolbar */
-
+/* Panel + toolbar */
 .pmPanel {
    width: 100%;
    display: flex;
    flex-direction: column;
-   max-height: calc(100vh - 300px);
+   max-height: calc(100vh - 190px);
    background: #FFFFFF;
    border: 1px solid #E3E9E3;
-   border-radius: 16px;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   border-radius: 14px;
    overflow: hidden;
    box-sizing: border-box;
 }
@@ -138,23 +91,79 @@
 .pmToolbar {
    display: flex;
    align-items: center;
+   justify-content: space-between;
    flex-shrink: 0;
-   gap: 12px;
-   padding: 16px 22px;
+   gap: 16px;
+   padding: 14px 20px;
    border-bottom: 1px solid #EEF2EE;
+}
+
+/* Filter pills */
+.pmPills {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+}
+
+.pmPill {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   border: 1px solid #DCE3DD;
+   background: #FFFFFF;
+   color: #4B564F;
+   padding: 7px 14px;
+   border-radius: 999px;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.pmPill:hover {
+   background: #F4F7F4;
+}
+
+.pmPillCount {
+   min-width: 20px;
+   padding: 1px 7px;
+   border-radius: 999px;
+   background: #EEF1EE;
+   color: #5C685F;
+   font-size: 11.5px;
+   text-align: center;
+}
+
+.pmPillActive {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+   color: #FFFFFF;
+}
+
+.pmPillActive:hover {
+   background: #275C42;
+}
+
+.pmPillActive .pmPillCount {
+   background: rgba(255, 255, 255, 0.22);
+   color: #FFFFFF;
+}
+
+.pmPillAlert:not(.pmPillActive) .pmPillCount {
+   background: #FBEBEB;
+   color: #A23E3E;
 }
 
 .pmSearchBox {
    display: flex;
    align-items: center;
    gap: 8px;
-   flex: 1;
-   max-width: 320px;
+   width: 240px;
+   flex-shrink: 0;
    background: #FFFFFF;
-   border: 1px solid #DCE6DE;
+   border: 1px solid #DCE3DD;
    border-radius: 999px;
-   padding: 0 18px;
-   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   padding: 0 14px;
 }
 
 .pmSearchBox:focus-within {
@@ -162,40 +171,22 @@
 }
 
 .pmSearchBox .material-symbols-outlined {
-   font-size: 20px;
+   font-size: 19px;
    color: #94A092;
 }
 
 .pmSearchBox input {
    flex: 1;
+   min-width: 0;
    border: none;
    background: transparent;
    outline: none;
-   padding: 10px 0;
+   padding: 9px 0;
    font-size: 13.5px;
    color: #16231C;
-   font-family: "Nunito", sans-serif;
-}
-
-.pmSelect {
-   border: 1px solid #DCE6DE;
-   background: #FFFFFF;
-   border-radius: 999px;
-   padding: 10px 16px;
-   font-size: 13.5px;
-   color: #3D4A3F;
-   outline: none;
-   cursor: pointer;
-   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
-   font-family: "Nunito", sans-serif;
-}
-
-.pmSelect:focus {
-   border-color: #2F6E4F;
 }
 
 /* Table */
-
 .pmTableWrap {
    flex: 1;
    min-height: 0;
@@ -213,7 +204,7 @@
    top: 0;
    z-index: 1;
    text-align: left;
-   padding: 14px 22px;
+   padding: 12px 20px;
    font-size: 11.5px;
    font-weight: 600;
    text-transform: uppercase;
@@ -226,24 +217,19 @@
 }
 
 .pmTable td {
-   padding: 13px 22px;
+   padding: 14px 20px;
    font-size: 13.5px;
    color: #29332C;
    border-bottom: 1px solid #F1F4F1;
    vertical-align: middle;
-   font-family: "Nunito", sans-serif;
 }
 
 .pmTable tbody tr:hover {
-   background: #FAFBF9;
+   background: #FAFBFA;
 }
 
 .pmTable tbody tr:last-child td {
    border-bottom: none;
-}
-
-.pmRowAlert {
-   background: #FDF6F6;
 }
 
 .pmEmpty {
@@ -252,17 +238,11 @@
    color: #62705F !important;
 }
 
-.pmCellNote {
-   display: block;
-   margin-top: 3px;
-   font-size: 12px;
-   color: #94A092;
-}
-
 .pmRateGood { color: #2F6E4F; font-weight: 600; }
 .pmRateWarn { color: #96701E; font-weight: 600; }
 .pmRateLow { color: #A23E3E; font-weight: 600; }
 
+/* Person cell */
 .pmPerson {
    display: flex;
    align-items: center;
@@ -270,25 +250,24 @@
 }
 
 .pmAvatar {
-   width: 40px;
-   height: 40px;
+   width: 38px;
+   height: 38px;
    flex-shrink: 0;
    display: flex;
    align-items: center;
    justify-content: center;
-   border-radius: 9px;
+   border-radius: 50%;
    background: #EAF1EC;
    color: #2F6E4F;
    font-family: "Open Sans", sans-serif;
-   font-size: 14px;
+   font-size: 13px;
    font-weight: 700;
 }
 
 .pmAvatarLarge {
-   width: 52px;
-   height: 52px;
-   border-radius: 12px;
-   font-size: 17px;
+   width: 50px;
+   height: 50px;
+   font-size: 16px;
 }
 
 .pmPersonName {
@@ -297,11 +276,18 @@
    color: #14201A;
 }
 
+.pmPersonSub {
+   display: block;
+   margin-top: 1px;
+   font-size: 12px;
+   color: #8A958C;
+}
+
 .pmFlag {
    display: inline-flex;
    align-items: center;
    gap: 3px;
-   margin-top: 2px;
+   margin-top: 3px;
    font-size: 12px;
    font-weight: 600;
    color: #A23E3E;
@@ -311,13 +297,86 @@
    font-size: 14px;
 }
 
-/* Badges */
+/* Row action buttons (last column, aligned to the right end) */
+.pmRowActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 8px;
+}
 
+.pmRowActions .pmBtnSmall {
+   display: inline-flex;
+   align-items: center;
+   gap: 5px;
+}
+
+.pmRowActions .material-symbols-outlined {
+   font-size: 17px;
+}
+.pmTable td.pmActionsCell {
+   width: 1%;
+   white-space: nowrap;
+}
+
+/* Status: dot + text */
+.pmStatus {
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3D4A3F;
+   white-space: nowrap;
+}
+
+.pmDot {
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #A9B3AB;
+}
+
+.pmDotAwaiting { background: #D0A03A; }
+.pmDotOngoing { background: #2F6E4F; }
+.pmDotCompleted { background: #35607A; }
+.pmDotDropped { background: #B24545; }
+
+/* Progress bar */
+.pmProgress {
+   min-width: 130px;
+}
+
+.pmProgressTrack {
+   height: 6px;
+   border-radius: 999px;
+   background: #EBEEEB;
+   overflow: hidden;
+}
+
+.pmProgressFill {
+   height: 100%;
+   border-radius: 999px;
+   background: #2F6E4F;
+   transition: width 0.3s ease;
+}
+
+.pmProgressDone {
+   background: #35607A;
+}
+
+.pmProgressLabel {
+   display: block;
+   margin-top: 5px;
+   font-size: 12px;
+   color: #66746A;
+}
+
+/* Badges (attendance, concerns) */
 .pmBadge {
    display: inline-block;
-   padding: 3px 11px;
+   padding: 3px 10px;
    border-radius: 999px;
-   font-size: 11px;
+   font-size: 11.5px;
    font-weight: 600;
    text-transform: capitalize;
    background: #F0F1EE;
@@ -325,80 +384,42 @@
    white-space: nowrap;
 }
 
-.pmBadgeOngoing { background: #E3F0E7; color: #2F6E4F; }
-.pmBadgeCompleted { background: #E4EDF3; color: #35607A; }
-.pmBadgeDropped { background: #FBEBEB; color: #A23E3E; }
-.pmBadgePending { background: #FBF0DD; color: #96701E; }
+.pmBadgeGood { background: #E3F0E7; color: #2F6E4F; }
+.pmBadgeWarn { background: #FBF0DD; color: #96701E; }
+.pmBadgeBad { background: #FBEBEB; color: #A23E3E; }
 
 /* Buttons */
-
 .pmBtnPrimary,
-.pmBtnSuccess,
 .pmBtnDanger {
    display: inline-flex;
    align-items: center;
    gap: 6px;
    border: none;
    color: #FFFFFF;
-   padding: 10px 20px;
-   border-radius: 9px;
+   padding: 9px 18px;
+   border-radius: 8px;
    font-size: 13.5px;
    font-weight: 600;
    cursor: pointer;
    white-space: nowrap;
-   transition: background 0.15s ease, box-shadow 0.15s ease;
+   transition: background 0.15s ease;
 }
 
-.pmBtnPrimary {
-   background: #2F6E4F;
-   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
-}
+.pmBtnPrimary { background: #2F6E4F; }
+.pmBtnPrimary:hover:not(:disabled) { background: #275C42; }
+.pmBtnPrimary:disabled { background: #9DBFAD; cursor: not-allowed; }
+.pmBtnPrimary .material-symbols-outlined { font-size: 18px; }
 
-.pmBtnPrimary:hover:not(:disabled) {
-   background: #275C42;
-   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
-}
-
-.pmBtnPrimary:disabled {
-   background: #9DBFAD;
-   box-shadow: none;
-   cursor: not-allowed;
-}
-
-.pmBtnPrimary .material-symbols-outlined {
-   font-size: 18px;
-}
-
-.pmBtnSuccess {
-   background: #3C8A5E;
-   box-shadow: 0 2px 6px rgba(60, 138, 94, 0.25);
-}
-
-.pmBtnSuccess:hover:not(:disabled) {
-   background: #2F7550;
-}
-
-.pmBtnDanger {
-   background: #B24545;
-   box-shadow: 0 2px 6px rgba(178, 69, 69, 0.25);
-}
-
-.pmBtnDanger:hover:not(:disabled) {
-   background: #973838;
-}
-
-.pmBtnDanger:disabled {
-   background: #DDA5A5;
-   box-shadow: none;
-   cursor: not-allowed;
-}
+.pmBtnDanger { background: #B24545; }
+.pmBtnDanger:hover:not(:disabled) { background: #973838; }
+.pmBtnDanger:disabled { background: #DDA5A5; cursor: not-allowed; }
 
 .pmBtnGhost {
-   border: 1px solid #DCE6DE;
+   border: 1px solid #DCE3DD;
    background: #FFFFFF;
    color: #3D4A3F;
-   padding: 10px 20px;
-   border-radius: 9px;
+   padding: 9px 18px;
+   border-radius: 8px;
    font-size: 13.5px;
    font-weight: 600;
    cursor: pointer;
@@ -407,14 +428,13 @@
 }
 
 .pmBtnGhost:hover:not(:disabled) {
-   background: #F1F4F1;
+   background: #F4F7F4;
    border-color: #C7D4C9;
 }
 
 .pmBtnSmall {
-   padding: 6px 14px;
+   padding: 6px 12px;
    font-size: 12.5px;
-   font-weight: 500;
 }
 
 .pmIconBtn {
@@ -424,7 +444,7 @@
    width: 32px;
    height: 32px;
    flex-shrink: 0;
-   border: 1px solid #DCE6DE;
+   border: 1px solid #DCE3DD;
    background: transparent;
    color: #3D4A3F;
    border-radius: 8px;
@@ -432,55 +452,54 @@
    transition: background 0.15s ease;
 }
 
-.pmIconBtn:hover {
-   background: #F1F4F1;
-}
-
-.pmIconBtn .material-symbols-outlined {
-   font-size: 18px;
-}
-
-.pmIconBtnDanger {
-   color: #A23E3E;
-}
-
-.pmIconBtnDanger:hover {
-   background: #FBEBEB;
-   border-color: #F0CACA;
-}
+.pmIconBtn:hover { background: #F4F7F4; }
+.pmIconBtn .material-symbols-outlined { font-size: 18px; }
+.pmIconBtnDanger { color: #A23E3E; }
+.pmIconBtnDanger:hover { background: #FBEBEB; border-color: #F0CACA; }
 
 /* Alerts */
-
 .pmAlert {
+   display: flex;
+   align-items: center;
+   gap: 8px;
    margin: 16px;
-   padding: 12px 16px;
+   padding: 10px 14px;
    border-radius: 8px;
-   background: #FBEBEB;
-   color: #A23E3E;
-   border: 1px solid #F0CACA;
    font-size: 13.5px;
 }
 
+.pmAlert .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.pmAlertError {
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+}
+
 .pmAlertWarn {
-   background: #FBF0DD;
-   color: #96701E;
-   border-color: #F1DFB8;
+   background: #FBF4E6;
+   color: #8A6A1F;
+   border: 1px solid #F1E3C2;
 }
 
 .pmAlertList {
    display: flex;
    flex-direction: column;
    gap: 8px;
-   margin-bottom: 16px;
+   margin-bottom: 18px;
 }
 
 .pmAlertList .pmAlert {
    margin: 0;
 }
 
-/* Modal shell
-   Layout: overlay > modal (flex column) > header (fixed) + body (scrolls) */
+.pmModalBody .pmAlertError {
+   margin: 0 0 16px;
+}
 
+/* Modal shell */
 .pmOverlay {
    position: fixed;
    top: 0;
@@ -492,24 +511,24 @@
    justify-content: center;
    box-sizing: border-box;
    padding: 20px;
-   background: rgba(16, 23, 18, 0.55);
-   backdrop-filter: blur(3px);
+   background: rgba(16, 23, 18, 0.5);
    overscroll-behavior: contain;
    z-index: 1000;
-   font-family: "Nunito", sans-serif;
    animation: pmFadeIn 0.18s ease;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   color: #29332C;
 }
 
 .pmModal {
    display: flex;
    flex-direction: column;
    width: 100%;
-   max-width: 880px;
+   max-width: 860px;
    max-height: 92vh;
    max-height: 92dvh;
    background: #FFFFFF;
-   border-radius: 18px;
-   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
+   border-radius: 16px;
+   box-shadow: 0 20px 50px rgba(16, 23, 18, 0.25);
    overflow: hidden;
    animation: pmSlideUp 0.22s ease;
 }
@@ -520,8 +539,8 @@
 }
 
 @keyframes pmSlideUp {
-   from { opacity: 0; transform: translateY(14px) scale(0.98); }
-   to { opacity: 1; transform: translateY(0) scale(1); }
+   from { opacity: 0; transform: translateY(12px); }
+   to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -537,15 +556,13 @@
    color: #66746A;
 }
 
-/* Header */
-
 .pmModalHeader {
    display: flex;
    flex-shrink: 0;
-   align-items: flex-start;
+   align-items: center;
    justify-content: space-between;
    gap: 16px;
-   padding: 24px 28px 18px;
+   padding: 20px 26px;
    border-bottom: 1px solid #EEF2EE;
 }
 
@@ -559,16 +576,44 @@
 }
 
 .pmModalProgram {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 6px;
    margin: 0;
    font-size: 13px;
    color: #66746A;
-   font-family: "Nunito", sans-serif;
 }
 
 .pmModalHeaderRight {
    display: flex;
    align-items: center;
    gap: 12px;
+}
+
+/* Monitor | Manage switch */
+.pmSwitch {
+   display: inline-flex;
+   padding: 3px;
+   border-radius: 9px;
+   background: #EFF2EF;
+}
+
+.pmSwitchBtn {
+   border: none;
+   background: transparent;
+   padding: 6px 14px;
+   border-radius: 7px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #66746A;
+   cursor: pointer;
+}
+
+.pmSwitchActive {
+   background: #FFFFFF;
+   color: #2F6E4F;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.1);
 }
 
 .pmCloseBtn {
@@ -582,49 +627,36 @@
    border-radius: 8px;
    background: transparent;
    color: #7C877E;
-   font-size: 14px;
    cursor: pointer;
    transition: background 0.15s ease, color 0.15s ease;
 }
 
-.pmCloseBtn:hover:not(:disabled) {
+.pmCloseBtn:hover {
    background: #F1F4F1;
    color: #14201A;
 }
 
-.pmCloseBtn:disabled {
-   opacity: 0.5;
-   cursor: not-allowed;
-}
-
-/* Body */
-
 .pmModalBody {
    flex: 1;
    min-height: 0;
-   padding: 22px 28px;
+   padding: 22px 26px 28px;
    overflow-y: auto;
    overscroll-behavior: contain;
 }
 
-.pmModalBody .pmAlert {
-   margin: 0 0 16px;
-}
-
-/* Metrics */
-
+/* Metrics (monitor mode) */
 .pmMetrics {
    display: grid;
    grid-template-columns: repeat(4, 1fr);
-   gap: 14px;
+   gap: 12px;
    margin-bottom: 22px;
 }
 
 .pmMetric {
-   background: #FAFBF9;
-   border: 1px solid #E3E9E3;
-   border-radius: 12px;
-   padding: 14px 16px;
+   background: #FAFBFA;
+   border: 1px solid #E8EDE8;
+   border-radius: 10px;
+   padding: 12px 14px;
 }
 
 .pmMetricLabel {
@@ -646,8 +678,12 @@
    font-family: "Open Sans", sans-serif;
 }
 
-/* Tabs */
+.pmMetricSmall {
+   font-size: 15px;
+   line-height: 1.5;
+}
 
+/* Tabs */
 .pmTabs {
    display: flex;
    gap: 6px;
@@ -673,14 +709,8 @@
    transition: color 0.15s ease;
 }
 
-.pmTab:hover {
-   color: #14201A;
-}
-
-.pmTabActive {
-   color: #2F6E4F;
-   border-bottom-color: #2F6E4F;
-}
+.pmTab:hover { color: #14201A; }
+.pmTabActive { color: #2F6E4F; border-bottom-color: #2F6E4F; }
 
 .pmTabDot {
    min-width: 20px;
@@ -694,12 +724,25 @@
 }
 
 /* Sections and shared blocks */
-
 .pmSectionBar {
    display: flex;
    align-items: center;
    justify-content: space-between;
-   margin: 4px 0 14px;
+   margin: 26px 0 12px;
+}
+
+.pmSectionBar:first-child,
+.pmAlertList + .pmSectionBar,
+.pmForm + .pmSectionBar {
+   margin-top: 4px;
+}
+
+.pmMetrics + .pmSectionBar {
+   margin-top: 4px;
+}
+
+.pmSectionGap {
+   margin-top: 26px;
 }
 
 .pmSectionTitle {
@@ -711,28 +754,19 @@
    font-family: "Open Sans", sans-serif;
 }
 
-.pmSubHeading {
-   margin: 22px 0 10px;
-   font-size: 15px;
-   font-weight: 700;
-   color: #14201A;
-   font-family: "Open Sans", sans-serif;
-}
-
 .pmHint {
    margin: 10px 0 14px;
    font-size: 12px;
    color: #94A092;
-   font-family: "Nunito", sans-serif;
 }
 
 .pmEmptyBlock {
-   padding: 28px 16px;
+   padding: 26px 16px;
    text-align: center;
    color: #94A092;
-   background: #FAFBF9;
-   border: 1.5px dashed #C7D4C9;
-   border-radius: 12px;
+   background: #FAFBFA;
+   border: 1.5px dashed #D3DDD5;
+   border-radius: 10px;
 }
 
 .pmActionBar {
@@ -741,16 +775,16 @@
    justify-content: space-between;
    gap: 16px;
    padding: 14px 16px;
-   margin-bottom: 18px;
-   background: #FAFBF9;
-   border: 1px solid #E3E9E3;
+   margin-bottom: 20px;
+   background: #F4F8F5;
+   border: 1px solid #DDE9E0;
    border-radius: 10px;
 }
 
 .pmActionBar p {
    margin: 0;
    font-size: 13.5px;
-   color: #4B564F;
+   color: #3D4A3F;
 }
 
 .pmActionButtons {
@@ -762,14 +796,14 @@
 .pmInfoGrid {
    display: grid;
    grid-template-columns: repeat(4, 1fr);
-   gap: 12px;
+   gap: 10px;
 }
 
 .pmInfoItem {
-   background: #FAFBF9;
-   border: 1px solid #F1F4F1;
+   background: #FAFBFA;
+   border: 1px solid #EEF2EE;
    border-radius: 10px;
-   padding: 12px 14px;
+   padding: 11px 14px;
 }
 
 .pmInfoItem span {
@@ -786,14 +820,46 @@
    color: #14201A;
 }
 
-/* Forms */
+/* Read-only checklist (monitor mode) */
+.pmCheckList {
+   border: 1px solid #E8EDE8;
+   border-radius: 10px;
+   overflow: hidden;
+}
 
+.pmCheckItem {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   padding: 11px 14px;
+   border-bottom: 1px solid #F1F4F1;
+}
+
+.pmCheckItem:last-child {
+   border-bottom: none;
+}
+
+.pmCheckName {
+   flex: 1;
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.pmCheckItem .material-symbols-outlined {
+   font-size: 20px;
+}
+
+.pmCheckDone { color: #2F6E4F; }
+.pmCheckOpen { color: #B5BEB7; }
+
+/* Forms */
 .pmForm {
-   background: #FAFBF9;
+   background: #FAFBFA;
    border: 1px solid #E3E9E3;
    border-radius: 12px;
    padding: 20px;
-   margin-bottom: 18px;
+   margin-bottom: 20px;
 }
 
 .pmFormTitle {
@@ -801,7 +867,6 @@
    font-size: 16px;
    font-weight: 700;
    color: #14201A;
-   letter-spacing: -0.01em;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -833,12 +898,11 @@
 .pmConcernActions input,
 .pmDocControls select,
 .pmDocControls input {
-   font-family: "Nunito", sans-serif;
    font-size: 14px;
    font-weight: 400;
    padding: 10px 12px;
-   border: 1px solid #DCE6DE;
-   border-radius: 9px;
+   border: 1px solid #DCE3DD;
+   border-radius: 8px;
    color: #16231C;
    background: #FFFFFF;
    outline: none;
@@ -861,12 +925,10 @@
 .pmDocControls select:focus,
 .pmDocControls input:focus {
    border-color: #2F6E4F;
-   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.14);
 }
 
-.pmField textarea {
-   resize: vertical;
-}
+.pmField textarea { resize: vertical; }
 
 .pmFormActions {
    display: flex;
@@ -881,12 +943,9 @@
    margin-top: 16px;
 }
 
-.pmInlineForm input {
-   flex: 1;
-}
+.pmInlineForm input { flex: 1; }
 
-/* Attendance */
-
+/* Attendance (manage mode) */
 .pmAttChips {
    display: grid;
    grid-template-columns: repeat(5, 1fr);
@@ -895,8 +954,8 @@
 }
 
 .pmAttChip {
-   background: #FAFBF9;
-   border: 1px solid #E3E9E3;
+   background: #FAFBFA;
+   border: 1px solid #E8EDE8;
    border-radius: 10px;
    padding: 12px;
    text-align: center;
@@ -918,8 +977,8 @@
 }
 
 .pmMiniWrap {
-   border: 1px solid #E3E9E3;
-   border-radius: 12px;
+   border: 1px solid #E8EDE8;
+   border-radius: 10px;
    overflow: hidden;
 }
 
@@ -928,8 +987,7 @@
    padding: 10px 16px;
 }
 
-/* Documents */
-
+/* Documents (manage mode) */
 .pmDocList {
    display: flex;
    flex-direction: column;
@@ -942,14 +1000,14 @@
    justify-content: space-between;
    gap: 16px;
    border: 1px solid #E3E9E3;
-   border-radius: 12px;
+   border-radius: 10px;
    padding: 12px 16px;
    background: #FFFFFF;
 }
 
 .pmDocRowDone {
-   background: #F3F8F4;
-   border-color: #CFE3D5;
+   background: #F4F8F5;
+   border-color: #D5E5DA;
 }
 
 .pmDocName span {
@@ -978,12 +1036,9 @@
    font-size: 13px;
 }
 
-.pmDocControls input {
-   width: 200px;
-}
+.pmDocControls input { width: 200px; }
 
 /* Cards (notes, concerns) */
-
 .pmCardList {
    display: flex;
    flex-direction: column;
@@ -992,7 +1047,7 @@
 
 .pmCard {
    border: 1px solid #E3E9E3;
-   border-radius: 12px;
+   border-radius: 10px;
    padding: 14px 18px;
    background: #FFFFFF;
 }
@@ -1026,9 +1081,7 @@
    color: #4B564F;
 }
 
-.pmCapital {
-   text-transform: capitalize;
-}
+.pmCapital { text-transform: capitalize; }
 
 .pmReviewNote {
    margin: 10px 0 0;
@@ -1051,7 +1104,6 @@
 }
 
 /* Timeline */
-
 .pmTimeline {
    display: flex;
    flex-direction: column;
@@ -1066,9 +1118,9 @@
 }
 
 .pmTimelineDot {
-   width: 10px;
-   height: 10px;
-   margin-top: 5px;
+   width: 9px;
+   height: 9px;
+   margin-top: 6px;
    flex-shrink: 0;
    border-radius: 50%;
    background: #2F6E4F;
@@ -1097,14 +1149,13 @@
 }
 
 /* Responsive */
-
 @media (max-width: 1200px) {
-   .pmStats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-   }
-
    .pmInfoGrid {
       grid-template-columns: repeat(2, 1fr);
+   }
+
+   .pmToolbar {
+      flex-wrap: wrap;
    }
 }
 
@@ -1113,21 +1164,15 @@
       padding: 20px;
    }
 
-   .pmHeader {
-      flex-wrap: wrap;
-   }
-
    .pmToolbar {
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: stretch;
    }
 
    .pmSearchBox {
-      max-width: none;
-      order: 1;
-      flex-basis: 100%;
+      width: auto;
    }
 
-   .pmStats,
    .pmMetrics,
    .pmFormGrid,
    .pmInfoGrid {
@@ -1150,8 +1195,16 @@
       width: auto;
    }
 
-   /* Modal becomes a bottom sheet on phones */
+   .pmModalHeader {
+      flex-wrap: wrap;
+      padding: 16px 20px;
+   }
 
+   .pmModalBody {
+      padding: 18px 20px 24px;
+   }
+
+   /* Modal becomes a bottom sheet on phones */
    .pmOverlay {
       padding: 0;
       align-items: flex-end;
@@ -1161,14 +1214,6 @@
       max-width: none;
       max-height: 94vh;
       max-height: 94dvh;
-      border-radius: 18px 18px 0 0;
-   }
-
-   .pmModalHeader {
-      padding: 18px 20px 14px;
-   }
-
-   .pmModalBody {
-      padding: 18px 20px 24px;
+      border-radius: 16px 16px 0 0;
    }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import MaximaSideBar from '../../../components/maximaSideBar';
 import './MaximaProgressMonitoring.css';
 
@@ -47,31 +47,31 @@ async function apiSend(url, method, body) {
 /* ------------------------------------------------------------------ */
 /* Constants + formatting                                              */
 /* ------------------------------------------------------------------ */
-const STATUS_CLASS = {
-   'Accepted by Maxima': 'pmBadgePending',
-   'Training Started': 'pmBadgeOngoing',
-   Completed: 'pmBadgeCompleted',
-   Dropped: 'pmBadgeDropped',
+const STATUS_DOT = {
+   'Accepted by Maxima': 'pmDotAwaiting',
+   'Training Started': 'pmDotOngoing',
+   Completed: 'pmDotCompleted',
+   Dropped: 'pmDotDropped',
 };
 
 const STATUS_LABEL = {
-   'Accepted by Maxima': 'Awaiting Start',
+   'Accepted by Maxima': 'Awaiting start',
    'Training Started': 'Ongoing',
    Completed: 'Completed',
    Dropped: 'Dropped',
 };
 
 const ATTENDANCE_CLASS = {
-   present: 'pmBadgeCompleted',
-   late: 'pmBadgePending',
-   absent: 'pmBadgeDropped',
+   present: 'pmBadgeGood',
+   late: 'pmBadgeWarn',
+   absent: 'pmBadgeBad',
    excused: '',
 };
 
 const CONCERN_CLASS = {
-   pending: 'pmBadgePending',
-   reviewed: 'pmBadgeOngoing',
-   resolved: 'pmBadgeCompleted',
+   pending: 'pmBadgeWarn',
+   reviewed: 'pmBadgeGood',
+   resolved: '',
 };
 
 const DROP_REASONS = [
@@ -90,6 +90,17 @@ const AFTER_TRAINING = [
    ['looking_for_work', 'Looking for work'],
    ['other', 'Other'],
 ];
+
+const FILTERS = [
+   ['', 'All'],
+   ['Accepted by Maxima', 'Awaiting start'],
+   ['Training Started', 'Ongoing'],
+   ['attention', 'Needs follow-up'],
+   ['Completed', 'Completed'],
+   ['Dropped', 'Dropped'],
+];
+
+const EMPTY_COUNTS = { accepted: 0, ongoing: 0, completed: 0, dropped: 0, needs_attention: 0 };
 
 function labelOf(list, value) {
    return list.find(([key]) => key === value)?.[1] ?? '—';
@@ -142,7 +153,7 @@ function initials(profile) {
 }
 
 function rateClass(rate) {
-   if (rate === null || rate === undefined) return '';
+   if (rate === null || rate === undefined) return 'pmMuted';
    if (rate >= 90) return 'pmRateGood';
    if (rate >= 75) return 'pmRateWarn';
    return 'pmRateLow';
@@ -160,8 +171,16 @@ function trainingDayLabel(row) {
    return '—';
 }
 
+function progressPercent(row) {
+   if (row.status === 'Completed') return 100;
+   if (row.status === 'Training Started' && row.summary.training_day && row.summary.training_length) {
+      return Math.min(100, Math.round((row.summary.training_day / row.summary.training_length) * 100));
+   }
+   return 0;
+}
+
 /* ------------------------------------------------------------------ */
-/* Small form helpers                                                  */
+/* Small shared pieces                                                 */
 /* ------------------------------------------------------------------ */
 function useForm(initial) {
    const [values, setValues] = useState(initial);
@@ -209,8 +228,223 @@ function FormShell({ title, submitLabel, onSubmit, onCancel, danger, children })
    );
 }
 
+function StatusTag({ status }) {
+   return (
+      <span className="pmStatus">
+         <i className={`pmDot ${STATUS_DOT[status] ?? ''}`} />
+         {STATUS_LABEL[status] ?? status}
+      </span>
+   );
+}
+
+function ProgressBar({ row }) {
+   if (row.status === 'Dropped') {
+      return <span className="pmMuted">Dropped {formatDate(row.training_end_date)}</span>;
+   }
+   const pct = progressPercent(row);
+   return (
+      <div className="pmProgress">
+         <div className="pmProgressTrack">
+            <div
+               className={`pmProgressFill ${row.status === 'Completed' ? 'pmProgressDone' : ''}`}
+               style={{ width: `${pct}%` }}
+            />
+         </div>
+         <span className="pmProgressLabel">{trainingDayLabel(row)}</span>
+      </div>
+   );
+}
+
+function AlertList({ alerts }) {
+   if (!alerts?.length) return null;
+   return (
+      <div className="pmAlertList">
+         {alerts.map((alert) => (
+            <div className="pmAlert pmAlertWarn" key={alert}>
+               <span className="material-symbols-outlined">flag</span>
+               {alert}
+            </div>
+         ))}
+      </div>
+   );
+}
+
+function DetailsGrid({ detail }) {
+   return (
+      <div className="pmInfoGrid">
+         <div className="pmInfoItem"><span>Program</span><strong>{detail.training_program?.name ?? '—'}</strong></div>
+         <div className="pmInfoItem"><span>Batch / class</span><strong>{detail.batch_name || '—'}</strong></div>
+         <div className="pmInfoItem"><span>Venue</span><strong>{detail.venue || '—'}</strong></div>
+         <div className="pmInfoItem"><span>Trainer</span><strong>{detail.trainer_name || '—'}</strong></div>
+         <div className="pmInfoItem"><span>Start date</span><strong>{formatDate(detail.started_on)}</strong></div>
+         <div className="pmInfoItem"><span>Expected end</span><strong>{formatDate(detail.expected_end_date)}</strong></div>
+         <div className="pmInfoItem"><span>Referred by</span><strong>{detail.referrer?.name ?? '—'}</strong></div>
+         <div className="pmInfoItem"><span>Last update</span><strong>{formatDate(detail.summary.last_activity)}</strong></div>
+      </div>
+   );
+}
+
+function OutcomeBlock({ detail }) {
+   if (detail.status === 'Completed') {
+      return (
+         <>
+            <div className="pmSectionBar"><span className="pmSectionTitle">Outcome</span></div>
+            <div className="pmInfoGrid">
+               <div className="pmInfoItem"><span>Date completed</span><strong>{formatDate(detail.training_end_date)}</strong></div>
+               <div className="pmInfoItem">
+                  <span>After training</span>
+                  <strong>
+                     {detail.after_training_status ? labelOf(AFTER_TRAINING, detail.after_training_status) : '—'}
+                     {detail.after_training_note ? ` · ${detail.after_training_note}` : ''}
+                  </strong>
+               </div>
+            </div>
+            {detail.outcome_remarks && <p className="pmCardText">{detail.outcome_remarks}</p>}
+         </>
+      );
+   }
+   if (detail.status === 'Dropped') {
+      return (
+         <>
+            <div className="pmSectionBar"><span className="pmSectionTitle">Outcome</span></div>
+            <div className="pmInfoGrid">
+               <div className="pmInfoItem"><span>Date dropped</span><strong>{formatDate(detail.training_end_date)}</strong></div>
+               <div className="pmInfoItem"><span>Reason</span><strong>{labelOf(DROP_REASONS, detail.drop_reason)}</strong></div>
+            </div>
+            {detail.outcome_remarks && <p className="pmCardText">{detail.outcome_remarks}</p>}
+         </>
+      );
+   }
+   return null;
+}
+
+function HistoryBlock({ detail }) {
+   return (
+      <>
+         <div className="pmSectionBar"><span className="pmSectionTitle">Status history</span></div>
+         {detail.history?.length ? (
+            <div className="pmTimeline">
+               {[...detail.history].reverse().map((item, index) => (
+                  <div className="pmTimelineItem" key={`${item.status}-${index}`}>
+                     <span className="pmTimelineDot" />
+                     <div>
+                        <span className="pmTimelineStatus">{item.status}</span>
+                        <span className="pmTimelineMeta">
+                           {formatDateTime(item.created_at)}{item.changed_by ? ` · ${item.changed_by}` : ''}
+                        </span>
+                        {item.remarks && <span className="pmTimelineRemarks">{item.remarks}</span>}
+                     </div>
+                  </div>
+               ))}
+            </div>
+         ) : (
+            <div className="pmEmptyBlock">No status history yet.</div>
+         )}
+      </>
+   );
+}
+
 /* ------------------------------------------------------------------ */
-/* Overview forms                                                      */
+/* MONITOR mode (read-only)                                            */
+/* ------------------------------------------------------------------ */
+function MonitorView({ detail }) {
+   const s = detail.summary;
+   const records = (detail.attendance ?? []).slice(0, 10);
+   const documents = detail.documents ?? [];
+
+   return (
+      <div>
+         <AlertList alerts={s.alerts} />
+
+         <div className="pmMetrics">
+            <div className="pmMetric">
+               <span className="pmMetricLabel">Training day</span>
+               <span className="pmMetricValue pmMetricSmall">{trainingDayLabel(detail)}</span>
+            </div>
+            <div className="pmMetric">
+               <span className="pmMetricLabel">Attendance rate</span>
+               <span className="pmMetricValue">{formatPercent(s.attendance_rate)}</span>
+            </div>
+            <div className="pmMetric">
+               <span className="pmMetricLabel">Absences</span>
+               <span className="pmMetricValue">{s.absent}</span>
+            </div>
+            <div className="pmMetric">
+               <span className="pmMetricLabel">Documents</span>
+               <span className="pmMetricValue">{s.docs_received}/{s.docs_required}</span>
+            </div>
+         </div>
+
+         <div className="pmSectionBar"><span className="pmSectionTitle">Training details</span></div>
+         <DetailsGrid detail={detail} />
+
+         <OutcomeBlock detail={detail} />
+
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Recent attendance</span>
+            <span className="pmMuted">
+               {s.present} present · {s.late} late · {s.absent} absent · {s.excused} excused
+            </span>
+         </div>
+         {records.length === 0 ? (
+            <div className="pmEmptyBlock">No attendance recorded yet.</div>
+         ) : (
+            <div className="pmTableWrap pmMiniWrap">
+               <table className="pmTable pmMiniTable">
+                  <thead>
+                     <tr><th>Date</th><th>Status</th><th>Remarks</th></tr>
+                  </thead>
+                  <tbody>
+                     {records.map((record) => (
+                        <tr key={record.id}>
+                           <td>{formatDate(record.attendance_date)}</td>
+                           <td><span className={`pmBadge ${ATTENDANCE_CLASS[record.status]}`}>{record.status}</span></td>
+                           <td>{record.remarks || '—'}</td>
+                        </tr>
+                     ))}
+                  </tbody>
+               </table>
+            </div>
+         )}
+
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Requirements</span>
+            <span className="pmMuted">{s.docs_received} of {s.docs_required} received</span>
+         </div>
+         <div className="pmCheckList">
+            {documents.map((doc) => (
+               <div className="pmCheckItem" key={doc.id}>
+                  <span
+                     className={`material-symbols-outlined ${
+                        doc.status === 'received' ? 'pmCheckDone' : 'pmCheckOpen'
+                     }`}
+                  >
+                     {doc.status === 'received'
+                        ? 'check_circle'
+                        : doc.status === 'not_applicable'
+                        ? 'do_not_disturb_on'
+                        : 'radio_button_unchecked'}
+                  </span>
+                  <span className="pmCheckName">{doc.name}</span>
+                  <span className="pmMuted">
+                     {doc.status === 'received'
+                        ? `Received ${formatDate(doc.received_at)}`
+                        : doc.status === 'not_applicable'
+                        ? 'Not applicable'
+                        : 'Pending'}
+                  </span>
+               </div>
+            ))}
+         </div>
+
+         <div className="pmSectionGap" />
+         <HistoryBlock detail={detail} />
+      </div>
+   );
+}
+
+/* ------------------------------------------------------------------ */
+/* MANAGE mode: forms                                                  */
 /* ------------------------------------------------------------------ */
 function DetailsForm({ detail, title, submitLabel, defaultStart, onSave, onCancel }) {
    const [values, bind] = useForm({
@@ -239,8 +473,6 @@ function DetailsForm({ detail, title, submitLabel, defaultStart, onSave, onCance
 function CompleteForm({ detail, title, submitLabel, onSave, onCancel }) {
    const [values, bind] = useForm({
       training_end_date: detail.training_end_date ?? todayLocal(),
-      certificate_number: detail.certificate_number ?? '',
-      certificate_date: detail.certificate_date ?? '',
       after_training_status: detail.after_training_status ?? '',
       after_training_note: detail.after_training_note ?? '',
       outcome_remarks: detail.outcome_remarks ?? '',
@@ -250,8 +482,6 @@ function CompleteForm({ detail, title, submitLabel, onSave, onCancel }) {
       <FormShell title={title} submitLabel={submitLabel} onSubmit={() => onSave(clean(values))} onCancel={onCancel}>
          <div className="pmFormGrid">
             <Field label="Date completed"><input type="date" {...bind('training_end_date')} /></Field>
-            <Field label="Certificate no. (optional)"><input type="text" {...bind('certificate_number')} /></Field>
-            <Field label="Certificate date (optional)"><input type="date" {...bind('certificate_date')} /></Field>
             <Field label="After training (optional)">
                <select {...bind('after_training_status')}>
                   <option value="">Not yet known</option>
@@ -295,11 +525,10 @@ function DropForm({ detail, title, submitLabel, onSave, onCancel }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Overview tab                                                        */
+/* MANAGE mode: Overview tab                                           */
 /* ------------------------------------------------------------------ */
 function OverviewTab({ detail, run }) {
    const [mode, setMode] = useState(null);
-   const summary = detail.summary;
    const base = `/api/maxima/progress/${detail.id}`;
    const finished = detail.status === 'Completed' || detail.status === 'Dropped';
 
@@ -313,18 +542,12 @@ function OverviewTab({ detail, run }) {
 
    return (
       <div>
-         {summary.alerts.length > 0 && (
-            <div className="pmAlertList">
-               {summary.alerts.map((alert) => (
-                  <div className="pmAlert pmAlertWarn" key={alert}>{alert}</div>
-               ))}
-            </div>
-         )}
+         <AlertList alerts={detail.summary.alerts} />
 
          <div className="pmActionBar">
             <p>
                {detail.status === 'Accepted by Maxima' &&
-                  'This OSY has been accepted. Start the training once the batch begins.'}
+                  'Accepted. Start the training once the batch begins.'}
                {detail.status === 'Training Started' &&
                   'Training is ongoing. Record attendance and notes as it goes.'}
                {detail.status === 'Completed' && 'This OSY completed the training.'}
@@ -339,8 +562,8 @@ function OverviewTab({ detail, run }) {
                )}
                {detail.status === 'Training Started' && (
                   <>
-                     <button className="pmBtnSuccess" onClick={() => setMode('complete')}>Mark Completed</button>
-                     <button className="pmBtnGhost" onClick={() => setMode('drop')}>Drop OSY</button>
+                     <button className="pmBtnPrimary" onClick={() => setMode('complete')}>Mark Completed</button>
+                     <button className="pmBtnGhost" onClick={() => setMode('drop')}>Drop</button>
                   </>
                )}
                {finished && (
@@ -408,81 +631,21 @@ function OverviewTab({ detail, run }) {
          <div className="pmSectionBar">
             <span className="pmSectionTitle">Training details</span>
             {mode !== 'details' && (
-               <button className="pmBtnGhost pmBtnSmall" onClick={() => setMode('details')}>Edit Details</button>
+               <button className="pmBtnGhost pmBtnSmall" onClick={() => setMode('details')}>Edit details</button>
             )}
          </div>
-         <div className="pmInfoGrid">
-            <div className="pmInfoItem"><span>Program</span><strong>{detail.training_program?.name ?? '—'}</strong></div>
-            <div className="pmInfoItem"><span>Batch / class</span><strong>{detail.batch_name || '—'}</strong></div>
-            <div className="pmInfoItem"><span>Venue</span><strong>{detail.venue || '—'}</strong></div>
-            <div className="pmInfoItem"><span>Trainer</span><strong>{detail.trainer_name || '—'}</strong></div>
-            <div className="pmInfoItem"><span>Start date</span><strong>{formatDate(detail.started_on)}</strong></div>
-            <div className="pmInfoItem"><span>Expected end</span><strong>{formatDate(detail.expected_end_date)}</strong></div>
-            <div className="pmInfoItem"><span>Schedule</span><strong>{detail.training_program?.schedule || '—'}</strong></div>
-            <div className="pmInfoItem"><span>Referred by</span><strong>{detail.referrer?.name ?? '—'}</strong></div>
-         </div>
+         <DetailsGrid detail={detail} />
 
-         {detail.status === 'Completed' && (
-            <>
-               <h3 className="pmSubHeading">Outcome</h3>
-               <div className="pmInfoGrid">
-                  <div className="pmInfoItem"><span>Date completed</span><strong>{formatDate(detail.training_end_date)}</strong></div>
-                  <div className="pmInfoItem">
-                     <span>Certificate</span>
-                     <strong>
-                        {detail.certificate_number
-                           ? `${detail.certificate_number}${detail.certificate_date ? ` (${formatDate(detail.certificate_date)})` : ''}`
-                           : '—'}
-                     </strong>
-                  </div>
-                  <div className="pmInfoItem">
-                     <span>After training</span>
-                     <strong>
-                        {detail.after_training_status ? labelOf(AFTER_TRAINING, detail.after_training_status) : '—'}
-                        {detail.after_training_note ? ` · ${detail.after_training_note}` : ''}
-                     </strong>
-                  </div>
-               </div>
-               {detail.outcome_remarks && <p className="pmCardText">{detail.outcome_remarks}</p>}
-            </>
-         )}
+         <OutcomeBlock detail={detail} />
 
-         {detail.status === 'Dropped' && (
-            <>
-               <h3 className="pmSubHeading">Outcome</h3>
-               <div className="pmInfoGrid">
-                  <div className="pmInfoItem"><span>Date dropped</span><strong>{formatDate(detail.training_end_date)}</strong></div>
-                  <div className="pmInfoItem"><span>Reason</span><strong>{labelOf(DROP_REASONS, detail.drop_reason)}</strong></div>
-               </div>
-               {detail.outcome_remarks && <p className="pmCardText">{detail.outcome_remarks}</p>}
-            </>
-         )}
-
-         <h3 className="pmSubHeading">Status history</h3>
-         {detail.history?.length ? (
-            <div className="pmTimeline">
-               {[...detail.history].reverse().map((item, index) => (
-                  <div className="pmTimelineItem" key={`${item.status}-${index}`}>
-                     <span className="pmTimelineDot" />
-                     <div>
-                        <span className="pmTimelineStatus">{item.status}</span>
-                        <span className="pmTimelineMeta">
-                           {formatDateTime(item.created_at)}{item.changed_by ? ` · ${item.changed_by}` : ''}
-                        </span>
-                        {item.remarks && <span className="pmTimelineRemarks">{item.remarks}</span>}
-                     </div>
-                  </div>
-               ))}
-            </div>
-         ) : (
-            <div className="pmEmptyBlock">No status history yet.</div>
-         )}
+         <div className="pmSectionGap" />
+         <HistoryBlock detail={detail} />
       </div>
    );
 }
 
 /* ------------------------------------------------------------------ */
-/* Attendance tab                                                      */
+/* MANAGE mode: Attendance tab                                         */
 /* ------------------------------------------------------------------ */
 function AttendanceTab({ detail, run }) {
    const [values, bind] = useForm({ attendance_date: todayLocal(), status: 'present', remarks: '' });
@@ -581,7 +744,7 @@ function AttendanceTab({ detail, run }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Documents tab                                                       */
+/* MANAGE mode: Documents tab                                          */
 /* ------------------------------------------------------------------ */
 function DocRow({ doc, run }) {
    const [remarks, setRemarks] = useState(doc.remarks ?? '');
@@ -678,7 +841,7 @@ function DocumentsTab({ detail, run }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Notes tab                                                           */
+/* MANAGE mode: Notes tab                                              */
 /* ------------------------------------------------------------------ */
 function NotesTab({ detail, run }) {
    const [text, setText] = useState('');
@@ -742,7 +905,7 @@ function NotesTab({ detail, run }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Concerns tab                                                        */
+/* MANAGE mode: Concerns tab (only shown when a concern exists)        */
 /* ------------------------------------------------------------------ */
 function ConcernsTab({ detail, run }) {
    const [remarksById, setRemarksById] = useState({});
@@ -756,10 +919,6 @@ function ConcernsTab({ detail, run }) {
          })
       );
       if (ok) setRemarksById((prev) => ({ ...prev, [concern.id]: '' }));
-   }
-
-   if (concerns.length === 0) {
-      return <div className="pmEmptyBlock">No absences or concerns have been reported for this OSY.</div>;
    }
 
    return (
@@ -808,31 +967,24 @@ function ConcernsTab({ detail, run }) {
 /* ------------------------------------------------------------------ */
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
-const TABS = [
-   ['overview', 'Overview'],
-   ['attendance', 'Attendance'],
-   ['documents', 'Documents'],
-   ['notes', 'Notes'],
-   ['concerns', 'Concerns'],
-];
-
 function MaximaProgressMonitoring() {
    const [enrollees, setEnrollees] = useState([]);
-   const [counts, setCounts] = useState({ accepted: 0, ongoing: 0, completed: 0, dropped: 0, needs_attention: 0 });
+   const [counts, setCounts] = useState(EMPTY_COUNTS);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
 
    const [search, setSearch] = useState('');
-   const [statusFilter, setStatusFilter] = useState('');
+   const [filter, setFilter] = useState('');
 
    const [selected, setSelected] = useState(null);
+   const [mode, setMode] = useState('monitor'); // 'monitor' | 'manage'
    const [detailLoading, setDetailLoading] = useState(false);
    const [tab, setTab] = useState('overview');
    const [modalError, setModalError] = useState(null);
 
    useEffect(() => {
       fetchList();
-   }, [search, statusFilter]);
+   }, [search]);
 
    // Close the modal with the Escape key (never by clicking outside)
    useEffect(() => {
@@ -849,11 +1001,10 @@ function MaximaProgressMonitoring() {
       try {
          const params = new URLSearchParams();
          if (search.trim()) params.append('search', search.trim());
-         if (statusFilter) params.append('status', statusFilter);
 
          const data = await apiGet(`/api/maxima/progress?${params.toString()}`);
          setEnrollees(data.enrollees ?? []);
-         setCounts(data.counts ?? { accepted: 0, ongoing: 0, completed: 0, dropped: 0, needs_attention: 0 });
+         setCounts(data.counts ?? EMPTY_COUNTS);
       } catch (err) {
          setError(err.message);
       } finally {
@@ -861,9 +1012,10 @@ function MaximaProgressMonitoring() {
       }
    }
 
-   async function openDetail(id) {
+   async function openDetail(id, nextMode) {
       setDetailLoading(true);
       setModalError(null);
+      setMode(nextMode);
       setTab('overview');
       try {
          setSelected(await apiGet(`/api/maxima/progress/${id}`));
@@ -877,6 +1029,12 @@ function MaximaProgressMonitoring() {
    function closeDetail() {
       setSelected(null);
       setDetailLoading(false);
+      setModalError(null);
+   }
+
+   function switchMode(next) {
+      setMode(next);
+      setTab('overview');
       setModalError(null);
    }
 
@@ -894,7 +1052,41 @@ function MaximaProgressMonitoring() {
       }
    }
 
-   const pendingConcerns = (selected?.concerns ?? []).filter((c) => c.status === 'pending').length;
+   const total = counts.accepted + counts.ongoing + counts.completed + counts.dropped;
+
+   function countFor(key) {
+      switch (key) {
+         case '': return total;
+         case 'Accepted by Maxima': return counts.accepted;
+         case 'Training Started': return counts.ongoing;
+         case 'Completed': return counts.completed;
+         case 'Dropped': return counts.dropped;
+         case 'attention': return counts.needs_attention;
+         default: return 0;
+      }
+   }
+
+   // Filter on the client, then put people who need follow-up at the top
+   const rows = useMemo(() => {
+      let list = enrollees;
+      if (filter === 'attention') list = list.filter((r) => r.summary.needs_attention);
+      else if (filter) list = list.filter((r) => r.status === filter);
+
+      return [...list].sort(
+         (a, b) => Number(b.summary.needs_attention) - Number(a.summary.needs_attention)
+      );
+   }, [enrollees, filter]);
+
+   const concerns = selected?.concerns ?? [];
+   const pendingConcerns = concerns.filter((c) => c.status === 'pending').length;
+
+   const manageTabs = [
+      ['overview', 'Overview'],
+      ['attendance', 'Attendance'],
+      ['documents', 'Documents'],
+      ['notes', 'Notes'],
+      ...(concerns.length > 0 ? [['concerns', 'Concerns']] : []),
+   ];
 
    return (
       <>
@@ -907,110 +1099,79 @@ function MaximaProgressMonitoring() {
                      <div>
                         <h1 className="pmTitle">Progress Management</h1>
                         <p className="pmSubtitle">
-                           Manage each enrolled OSY's training records and keep an eye on who needs follow-up.
+                           Monitor enrolled OSY at a glance, and open a record to manage their training.
                         </p>
-                     </div>
-                  </div>
-
-                  <div className="pmStats">
-                     <div className="pmStatCard">
-                        <span className="material-symbols-outlined pmStatIcon pmIconAmber">hourglass_top</span>
-                        <div>
-                           <span className="pmStatValue">{counts.accepted}</span>
-                           <span className="pmStatLabel">Awaiting Start</span>
-                        </div>
-                     </div>
-                     <div className="pmStatCard">
-                        <span className="material-symbols-outlined pmStatIcon pmIconBlue">play_circle</span>
-                        <div>
-                           <span className="pmStatValue">{counts.ongoing}</span>
-                           <span className="pmStatLabel">Ongoing</span>
-                        </div>
-                     </div>
-                     <div className="pmStatCard">
-                        <span className="material-symbols-outlined pmStatIcon pmIconGreen">task_alt</span>
-                        <div>
-                           <span className="pmStatValue">{counts.completed}</span>
-                           <span className="pmStatLabel">Completed</span>
-                        </div>
-                     </div>
-                     <div className="pmStatCard">
-                        <span className="material-symbols-outlined pmStatIcon pmIconSlate">person_off</span>
-                        <div>
-                           <span className="pmStatValue">{counts.dropped}</span>
-                           <span className="pmStatLabel">Dropped</span>
-                        </div>
-                     </div>
-                     <div className="pmStatCard">
-                        <span className="material-symbols-outlined pmStatIcon pmIconRed">warning</span>
-                        <div>
-                           <span className="pmStatValue">{counts.needs_attention}</span>
-                           <span className="pmStatLabel">Needs Attention</span>
-                        </div>
                      </div>
                   </div>
 
                   <div className="pmPanel">
                      <div className="pmToolbar">
+                        <div className="pmPills">
+                           {FILTERS.map(([key, label]) => (
+                              <button
+                                 key={key || 'all'}
+                                 className={`pmPill ${filter === key ? 'pmPillActive' : ''} ${
+                                    key === 'attention' && counts.needs_attention > 0 ? 'pmPillAlert' : ''
+                                 }`}
+                                 onClick={() => setFilter(key)}
+                              >
+                                 {label}
+                                 <span className="pmPillCount">{countFor(key)}</span>
+                              </button>
+                           ))}
+                        </div>
                         <div className="pmSearchBox">
                            <span className="material-symbols-outlined">search</span>
                            <input
                               type="text"
-                              placeholder="Search OSY by name..."
+                              placeholder="Search by name..."
                               value={search}
                               onChange={(e) => setSearch(e.target.value)}
                            />
                         </div>
-                        <select
-                           className="pmSelect"
-                           value={statusFilter}
-                           onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                           <option value="">All statuses</option>
-                           <option value="Accepted by Maxima">Awaiting Start</option>
-                           <option value="Training Started">Ongoing</option>
-                           <option value="Completed">Completed</option>
-                           <option value="Dropped">Dropped</option>
-                        </select>
                      </div>
 
-                     {error && <div className="pmAlert">{error}</div>}
+                     {error && <div className="pmAlert pmAlertError">{error}</div>}
 
                      <div className="pmTableWrap">
                         <table className="pmTable">
                            <thead>
                               <tr>
                                  <th>OSY</th>
-                                 <th>Program</th>
                                  <th>Status</th>
-                                 <th>Training Day</th>
+                                 <th>Progress</th>
                                  <th>Attendance</th>
                                  <th>Documents</th>
-                                 <th>Last Update</th>
                                  <th></th>
                               </tr>
                            </thead>
                            <tbody>
                               {loading && (
-                                 <tr><td colSpan="8" className="pmEmpty">Loading...</td></tr>
+                                 <tr><td colSpan="6" className="pmEmpty">Loading...</td></tr>
                               )}
-                              {!loading && enrollees.length === 0 && (
+                              {!loading && rows.length === 0 && (
                                  <tr>
-                                    <td colSpan="8" className="pmEmpty">
-                                       No enrolled OSY yet. They appear here once Maxima accepts a referral.
+                                    <td colSpan="6" className="pmEmpty">
+                                       {enrollees.length === 0
+                                          ? 'No enrolled OSY yet. They appear here once Maxima accepts a referral.'
+                                          : 'No OSY match this filter.'}
                                     </td>
                                  </tr>
                               )}
-                              {enrollees.map((row) => (
-                                 <tr key={row.id} className={row.summary.needs_attention ? 'pmRowAlert' : ''}>
+                              {rows.map((row) => (
+                                 <tr key={row.id}>
                                     <td>
                                        <div className="pmPerson">
                                           <span className="pmAvatar">{initials(row.osy_profile)}</span>
                                           <div>
                                              <span className="pmPersonName">{fullName(row.osy_profile)}</span>
+                                             <span className="pmPersonSub">
+                                                {row.training_program?.name ?? '—'}
+                                                {row.batch_name ? ` · ${row.batch_name}` : ''}
+                                             </span>
                                              {row.summary.needs_attention && (
                                                 <span className="pmFlag">
-                                                   <span className="material-symbols-outlined">warning</span>
+                                                   <span className="material-symbols-outlined">flag</span>
                                                    {row.summary.alerts[0]}
                                                    {row.summary.alerts.length > 1 && ` +${row.summary.alerts.length - 1} more`}
                                                 </span>
@@ -1018,27 +1179,31 @@ function MaximaProgressMonitoring() {
                                           </div>
                                        </div>
                                     </td>
-                                    <td>
-                                       {row.training_program?.name ?? '—'}
-                                       {row.batch_name && <span className="pmCellNote">{row.batch_name}</span>}
-                                    </td>
-                                    <td>
-                                       <span className={`pmBadge ${STATUS_CLASS[row.status] ?? ''}`}>
-                                          {STATUS_LABEL[row.status] ?? row.status}
-                                       </span>
-                                    </td>
-                                    <td>{trainingDayLabel(row)}</td>
+                                    <td><StatusTag status={row.status} /></td>
+                                    <td><ProgressBar row={row} /></td>
                                     <td>
                                        <span className={rateClass(row.summary.attendance_rate)}>
                                           {formatPercent(row.summary.attendance_rate)}
                                        </span>
                                     </td>
                                     <td>{row.summary.docs_received}/{row.summary.docs_required}</td>
-                                    <td>{formatDate(row.summary.last_activity)}</td>
-                                    <td>
-                                       <button className="pmBtnPrimary" onClick={() => openDetail(row.id)}>
-                                          Manage
-                                       </button>
+                                    <td className="pmActionsCell">
+                                       <div className="pmRowActions">
+                                          <button
+                                             className="pmBtnGhost pmBtnSmall"
+                                             onClick={() => openDetail(row.id, 'monitor')}
+                                          >
+                                             <span className="material-symbols-outlined">monitoring</span>
+                                             Monitor
+                                          </button>
+                                          <button
+                                             className="pmBtnPrimary pmBtnSmall"
+                                             onClick={() => openDetail(row.id, 'manage')}
+                                          >
+                                             <span className="material-symbols-outlined">edit_note</span>
+                                             Manage
+                                          </button>
+                                       </div>
                                     </td>
                                  </tr>
                               ))}
@@ -1062,13 +1227,26 @@ function MaximaProgressMonitoring() {
                               <span className="pmAvatar pmAvatarLarge">{initials(selected.osy_profile)}</span>
                               <div>
                                  <h2 className="pmModalName">{fullName(selected.osy_profile)}</h2>
-                                 <p className="pmModalProgram">{selected.training_program?.name ?? '—'}</p>
+                                 <p className="pmModalProgram">
+                                    {selected.training_program?.name ?? '—'} · <StatusTag status={selected.status} />
+                                 </p>
                               </div>
                            </div>
                            <div className="pmModalHeaderRight">
-                              <span className={`pmBadge ${STATUS_CLASS[selected.status] ?? ''}`}>
-                                 {STATUS_LABEL[selected.status] ?? selected.status}
-                              </span>
+                              <div className="pmSwitch" role="tablist" aria-label="View mode">
+                                 <button
+                                    className={`pmSwitchBtn ${mode === 'monitor' ? 'pmSwitchActive' : ''}`}
+                                    onClick={() => switchMode('monitor')}
+                                 >
+                                    Monitor
+                                 </button>
+                                 <button
+                                    className={`pmSwitchBtn ${mode === 'manage' ? 'pmSwitchActive' : ''}`}
+                                    onClick={() => switchMode('manage')}
+                                 >
+                                    Manage
+                                 </button>
+                              </div>
                               <button className="pmCloseBtn" onClick={closeDetail} aria-label="Close">
                                  <span className="material-symbols-outlined">close</span>
                               </button>
@@ -1076,49 +1254,34 @@ function MaximaProgressMonitoring() {
                         </div>
 
                         <div className="pmModalBody">
-                           <div className="pmMetrics">
-                              <div className="pmMetric">
-                                 <span className="pmMetricLabel">Attendance rate</span>
-                                 <span className="pmMetricValue">{formatPercent(selected.summary.attendance_rate)}</span>
-                              </div>
-                              <div className="pmMetric">
-                                 <span className="pmMetricLabel">Training day</span>
-                                 <span className="pmMetricValue">{trainingDayLabel(selected)}</span>
-                              </div>
-                              <div className="pmMetric">
-                                 <span className="pmMetricLabel">Documents</span>
-                                 <span className="pmMetricValue">
-                                    {selected.summary.docs_received}/{selected.summary.docs_required}
-                                 </span>
-                              </div>
-                              <div className="pmMetric">
-                                 <span className="pmMetricLabel">Absences</span>
-                                 <span className="pmMetricValue">{selected.summary.absent}</span>
-                              </div>
-                           </div>
+                           {modalError && <div className="pmAlert pmAlertError">{modalError}</div>}
 
-                           <div className="pmTabs">
-                              {TABS.map(([key, label]) => (
-                                 <button
-                                    key={key}
-                                    className={`pmTab ${tab === key ? 'pmTabActive' : ''}`}
-                                    onClick={() => setTab(key)}
-                                 >
-                                    {label}
-                                    {key === 'concerns' && pendingConcerns > 0 && (
-                                       <span className="pmTabDot">{pendingConcerns}</span>
-                                    )}
-                                 </button>
-                              ))}
-                           </div>
+                           {mode === 'monitor' && <MonitorView detail={selected} />}
 
-                           {modalError && <div className="pmAlert">{modalError}</div>}
+                           {mode === 'manage' && (
+                              <>
+                                 <div className="pmTabs">
+                                    {manageTabs.map(([key, label]) => (
+                                       <button
+                                          key={key}
+                                          className={`pmTab ${tab === key ? 'pmTabActive' : ''}`}
+                                          onClick={() => setTab(key)}
+                                       >
+                                          {label}
+                                          {key === 'concerns' && pendingConcerns > 0 && (
+                                             <span className="pmTabDot">{pendingConcerns}</span>
+                                          )}
+                                       </button>
+                                    ))}
+                                 </div>
 
-                           {tab === 'overview' && <OverviewTab detail={selected} run={run} />}
-                           {tab === 'attendance' && <AttendanceTab detail={selected} run={run} />}
-                           {tab === 'documents' && <DocumentsTab detail={selected} run={run} />}
-                           {tab === 'notes' && <NotesTab detail={selected} run={run} />}
-                           {tab === 'concerns' && <ConcernsTab detail={selected} run={run} />}
+                                 {tab === 'overview' && <OverviewTab detail={selected} run={run} />}
+                                 {tab === 'attendance' && <AttendanceTab detail={selected} run={run} />}
+                                 {tab === 'documents' && <DocumentsTab detail={selected} run={run} />}
+                                 {tab === 'notes' && <NotesTab detail={selected} run={run} />}
+                                 {tab === 'concerns' && <ConcernsTab detail={selected} run={run} />}
+                              </>
+                           )}
                         </div>
                      </>
                   )}

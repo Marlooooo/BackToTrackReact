@@ -1,16 +1,685 @@
-.osyRecommendationsBody {
+/* ---------- Layout: sidebar | content ---------- */
+.oRec-layout {
    display: flex;
-   min-height: 100vh;
+   flex-direction: row;
+   align-items: flex-start;
+   justify-content: flex-start;
    width: 100%;
-}
-
-.osyRecommendationsContent {
-   flex: 1;
-   padding: 30px;
-   min-width: 0;
-}
-
-.osyRecommendationsContent h1 {
+   max-width: none;
+   height: 100vh;
+   overflow: hidden;
    margin: 0;
-   font-size: 28px;
+   padding: 0;
+   text-align: left;
+   font-family: "Nunito", sans-serif;
+}
+
+/* keeps the sidebar in the row even if its own CSS makes it fixed */
+.oRec-layout .osySideBarDiv {
+   position: sticky;
+   top: 0;
+   height: 100vh;
+   flex-shrink: 0;
+   overflow-y: auto;
+}
+
+.oRec-main {
+   display: flex;
+   flex-direction: column;
+   align-items: stretch;
+   justify-content: flex-start;
+   place-items: normal;
+   flex: 1 1 0;
+   width: auto;
+   min-width: 0;
+   min-height: 0;
+   max-width: none;
+   height: 100vh;
+   overflow-y: auto;
+   margin: 0;
+   padding: 32px 48px 44px;
+   box-sizing: border-box;
+   text-align: left;
+   background: #F5F7F5;
+   font-family: "Nunito", sans-serif;
+   font-size: 14px;
+   color: #29332C;
+   -webkit-font-smoothing: antialiased;
+}
+
+.oRec-main > * {
+   width: 100%;
+   max-width: none;
+   box-sizing: border-box;
+   flex-shrink: 0;
+}
+
+/* ---------- Header (also resets any global <header> styles) ---------- */
+.oRec-main .oRec-header {
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   gap: 16px;
+   position: static;
+   width: 100%;
+   height: auto;
+   margin: 0 0 20px;
+   padding: 0;
+   background: transparent;
+   border: none;
+   box-shadow: none;
+   color: #14201A;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-main .oRec-header h1 {
+   margin: 0;
+   font-size: 32px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-main .oRec-header .oRec-sub {
+   margin: 4px 0 0;
+   font-size: 13.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Stats ---------- */
+.oRec-stats {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 22px;
+   margin-bottom: 22px;
+}
+
+.oRec-stat {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   padding: 14px 16px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-statIcon {
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 50%;
+   font-size: 22px;
+}
+
+.oRec-statIcon.total { background: #E3F0E7; color: #2F6E4F; }
+.oRec-statIcon.updated { background: #E4EDF3; color: #35607A; }
+.oRec-statIcon.source { background: #FBF0DD; color: #96701E; }
+
+.oRec-stat strong {
+   display: block;
+   font-size: 22px;
+   font-weight: 700;
+   line-height: 1.25;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-stat span {
+   display: block;
+   margin-top: 2px;
+   font-size: 12.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Note + error ---------- */
+.oRec-note {
+   display: flex;
+   align-items: flex-start;
+   gap: 12px;
+   margin-bottom: 22px;
+   padding: 14px 16px;
+   background: #E4EDF3;
+   border: 1px solid #CFDDE7;
+   border-radius: 16px;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-note i {
+   flex-shrink: 0;
+   font-size: 22px;
+   color: #35607A;
+}
+
+.oRec-note strong {
+   display: block;
+   margin-bottom: 2px;
+   font-size: 13.5px;
+   font-weight: 700;
+   color: #35607A;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-note p {
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.55;
+   color: #3D4A3F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-error {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   flex-wrap: wrap;
+   background: #FBEBEB;
+   border: 1px solid #F0CACA;
+   color: #A23E3E;
+   padding: 12px 16px;
+   border-radius: 8px;
+   margin-bottom: 16px;
+   font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-retry {
+   padding: 7px 16px;
+   border: 1px solid #A23E3E;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #A23E3E;
+   font-family: "Nunito", sans-serif;
+   font-size: 12.5px;
+   font-weight: 700;
+   cursor: pointer;
+   transition: background 0.15s ease;
+}
+
+.oRec-retry:hover { background: #FBEBEB; }
+
+/* ---------- Featured (top match) ---------- */
+.oRec-featured {
+   display: grid;
+   grid-template-columns: minmax(260px, 38%) minmax(0, 1fr);
+   margin-bottom: 22px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-featuredMedia {
+   position: relative;
+   min-height: 280px;
+}
+
+.oRec-featuredImg {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.oRec-badge {
+   position: absolute;
+   top: 16px;
+   left: 16px;
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 6px 14px;
+   border-radius: 999px;
+   background: rgba(20, 32, 26, 0.78);
+   color: #FFFFFF;
+   font-size: 12.5px;
+   font-weight: 700;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-badge i { color: #E8B84A; }
+
+.oRec-featuredBody {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+   min-width: 0;
+   padding: 26px 28px;
+}
+
+.oRec-eyebrow {
+   font-size: 11.5px;
+   font-weight: 700;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: #2F6E4F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-featuredBody h2 {
+   margin: 0;
+   font-size: 26px;
+   font-weight: 700;
+   line-height: 1.25;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-desc {
+   margin: 0;
+   max-width: 820px;
+   font-size: 14px;
+   line-height: 1.65;
+   color: #29332C;
+   overflow-wrap: anywhere;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-label {
+   display: block;
+   margin-bottom: 8px;
+   font-size: 11.5px;
+   font-weight: 700;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-requirements p {
+   margin: 0;
+   font-size: 13.5px;
+   line-height: 1.6;
+   color: #3D4A3F;
+   white-space: pre-wrap;
+   overflow-wrap: anywhere;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-actions {
+   margin-top: auto;
+   padding-top: 4px;
+}
+
+/* ---------- Facts + matched words ---------- */
+.oRec-facts {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.oRec-facts li {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 5px 12px;
+   border-radius: 999px;
+   background: #F0F1EE;
+   color: #3D4A3F;
+   font-size: 12.5px;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-facts i {
+   font-size: 16px;
+   color: #2F6E4F;
+}
+
+.oRec-chips {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 6px;
+}
+
+.oRec-chip {
+   display: inline-block;
+   padding: 3px 12px;
+   border-radius: 999px;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 11.5px;
+   font-weight: 700;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Buttons ---------- */
+.oRec-btn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   padding: 10px 20px;
+   border: 1px solid #2F6E4F;
+   border-radius: 999px;
+   font-family: "Nunito", sans-serif;
+   font-size: 13px;
+   font-weight: 700;
+   text-decoration: none;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.oRec-btn.primary { background: #2F6E4F; color: #FFFFFF; }
+.oRec-btn.primary:hover { background: #1E5B3F; border-color: #1E5B3F; }
+
+.oRec-btn.ghost { background: #FFFFFF; color: #2F6E4F; border-color: #DCE6DE; }
+.oRec-btn.ghost:hover { background: #F1F4F1; }
+
+.oRec-btn:focus-visible,
+.oRec-retry:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+/* ---------- Sections ---------- */
+.oRec-section { margin-bottom: 22px; }
+
+.oRec-sectionHead {
+   display: flex;
+   align-items: baseline;
+   justify-content: space-between;
+   gap: 12px;
+   margin-bottom: 14px;
+}
+
+.oRec-sectionHead h2 {
+   margin: 0;
+   font-size: 20px;
+   font-weight: 700;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-sectionHead span {
+   font-size: 12.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Cards ---------- */
+.oRec-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+   gap: 22px;
+}
+
+.oRec-card {
+   display: flex;
+   flex-direction: column;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+   transition: box-shadow 0.15s ease, border-color 0.15s ease;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-card:hover {
+   border-color: #CFDDD3;
+   box-shadow: 0 4px 14px rgba(20, 32, 26, 0.08);
+}
+
+.oRec-cardMedia {
+   position: relative;
+   height: 160px;
+}
+
+.oRec-cardImg {
+   display: block;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.oRec-rankPill {
+   position: absolute;
+   top: 12px;
+   left: 12px;
+   padding: 3px 12px;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #2F6E4F;
+   font-size: 12px;
+   font-weight: 700;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.18);
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-cardBody {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 12px;
+   padding: 18px 20px 20px;
+}
+
+.oRec-card h3 {
+   margin: 0;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyRec-clamp {
+   display: -webkit-box;
+   -webkit-line-clamp: 3;
+   line-clamp: 3;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
+
+.oRec-cardBody .oRec-btn { margin-top: auto; }
+
+/* ---------- Fit bar ---------- */
+.oRec-fitHead {
+   margin-bottom: 6px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-fitTrack {
+   height: 6px;
+   border-radius: 999px;
+   background: #E7ECE8;
+   overflow: hidden;
+}
+
+.oRec-fitBar {
+   height: 100%;
+   border-radius: 999px;
+   background: #2F6E4F;
+   transition: width 0.6s ease;
+}
+
+/* ---------- Image fallback ---------- */
+.oRec-imgFallback {
+   display: grid;
+   place-items: center;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 56px;
+}
+
+.oRec-featuredMedia .oRec-imgFallback {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+}
+
+.oRec-cardMedia .oRec-imgFallback {
+   width: 100%;
+   height: 100%;
+}
+
+/* ---------- Next steps ---------- */
+.oRec-steps {
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 22px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.oRec-step {
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+   padding: 18px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-stepIcon {
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 22px;
+}
+
+.oRec-stepNum {
+   font-size: 11px;
+   font-weight: 700;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: #94A092;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-step h3 {
+   margin: 2px 0 4px;
+   font-size: 15px;
+   font-weight: 700;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-step p {
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.55;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Panel / empty / loading ---------- */
+.oRec-panel {
+   display: flex;
+   flex-direction: column;
+   flex: none;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-empty {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+   text-align: center;
+   padding: 60px 24px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-emptyIcon {
+   width: 56px;
+   height: 56px;
+   display: grid;
+   place-items: center;
+   margin-bottom: 8px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 30px;
+}
+
+.oRec-empty strong {
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #1E5B3F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-empty p {
+   max-width: 420px;
+   margin: 0 0 12px;
+   font-size: 13px;
+   font-weight: 600;
+   line-height: 1.55;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-skeleton {
+   margin-bottom: 22px;
+   border-radius: 16px;
+   background: linear-gradient(90deg, #EEF2EE 25%, #F7F9F7 50%, #EEF2EE 75%);
+   background-size: 200% 100%;
+   animation: oRec-shimmer 1.4s infinite;
+}
+
+.oRec-skeleton.featured { height: 290px; }
+.oRec-skeleton.card { height: 120px; }
+
+@keyframes oRec-shimmer { to { background-position: -200% 0; } }
+
+/* ---------- Focus and motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+   .oRec-skeleton { animation: none; }
+   .oRec-card,
+   .oRec-btn,
+   .oRec-retry,
+   .oRec-fitBar { transition: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+   .oRec-stats,
+   .oRec-steps { grid-template-columns: 1fr; }
+   .oRec-featured { grid-template-columns: 1fr; }
+   .oRec-featuredMedia { min-height: 200px; }
+}
+
+@media (max-width: 640px) {
+   .oRec-layout { flex-direction: column; }
+   .oRec-main { padding: 20px 20px 32px; }
+   .oRec-main .oRec-header h1 { font-size: 26px; }
+   .oRec-featuredBody { padding: 20px; }
+   .oRec-grid { grid-template-columns: 1fr; }
 }

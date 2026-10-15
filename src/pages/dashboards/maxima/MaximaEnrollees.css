@@ -3,7 +3,7 @@
    display: flex;
    flex-direction: column;
    box-sizing: border-box;
-   padding: 50px;
+   padding: 40px 48px;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -20,7 +20,7 @@
 
 .enrolleesTitle {
    margin: 0 0 4px;
-   font-size: 28px;
+   font-size: 24px;
    font-weight: 700;
    color: #111827;
    font-family: "Open Sans", sans-serif;
@@ -28,7 +28,7 @@
 
 .enrolleesSubtitle {
    margin: 0;
-   font-size: 14px;
+   font-size: 13.5px;
    color: #6b7280;
    font-family: "Nunito", sans-serif;
 }
@@ -145,6 +145,8 @@
 /* Table */
 .enrolleesTableWrap {
    overflow-x: auto;
+   overflow-y: auto;
+   max-height: 55vh;   /* adjust to taste, e.g. 480px */
 }
 
 .enrolleesTable {
@@ -153,6 +155,9 @@
 }
 
 .enrolleesTable th {
+   position: sticky;
+   top: 0;
+   z-index: 1;
    padding: 12px 20px;
    text-align: left;
    font-size: 12px;

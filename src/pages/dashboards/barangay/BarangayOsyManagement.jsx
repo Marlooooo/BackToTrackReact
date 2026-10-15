@@ -27,9 +27,14 @@
    await fetch("/sanctum/csrf-cookie", { credentials: "include" });
    }
 
-   /** JSON request with Sanctum cookie auth. Throws ApiError on failure (status 0 = network). */
+   /**
+    * Request with Sanctum cookie auth. Accepts a plain object (sent as JSON) or a
+    * FormData (sent as multipart, so files can be uploaded).
+    * Throws ApiError on failure (status 0 = network).
+    */
    async function apiFetch(url, { method = "GET", body } = {}) {
    const isWrite = method !== "GET";
+   const isForm = body instanceof FormData;
    let res;
 
    try {
@@ -39,10 +44,11 @@
          credentials: "include",
          headers: {
          Accept: "application/json",
-         ...(body !== undefined && { "Content-Type": "application/json" }),
+         // For FormData the browser sets Content-Type (with the boundary) itself
+         ...(body !== undefined && !isForm && { "Content-Type": "application/json" }),
          ...(isWrite && { "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") }),
          },
-         body: body !== undefined ? JSON.stringify(body) : undefined,
+         body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
       });
    } catch {
       throw new ApiError(NETWORK_MESSAGE, 0, null);
@@ -72,6 +78,8 @@
          return "You do not have permission to do this.";
       case 404:
          return "This record no longer exists. Refresh the list and try again.";
+      case 413:
+         return "The file is too large for the server. Try a smaller photo.";
       case 429:
          return "Too many requests. Wait a moment and try again.";
       default:
@@ -125,6 +133,7 @@
       "sex",
       "address",
       "contact_number",
+      "profile_photo", // kept last so page 1 still opens focused on first_name
    ],
    [
       "educational_attainment",
@@ -179,6 +188,9 @@
    const MIN_AGE = 15;
    const MAX_AGE = 30;
    const MAX_NOTES = 1000;
+
+   const PHOTO_MAX_BYTES = 2 * 1024 * 1024; // must match Laravel's max:2048
+   const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
    const NAME_RE = /^\p{L}[\p{L}\p{M}\s.'’-]*$/u;
    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -483,6 +495,35 @@
    );
    }
 
+   /** Round profile photo, falling back to initials when there is no photo or it fails to load. */
+   function OsyAvatar({ name, src, size = "md" }) {
+   const [failed, setFailed] = useState(false);
+
+   // If the image URL changes, try loading again
+   useEffect(() => {
+      setFailed(false);
+   }, [src]);
+
+   const initials =
+      String(name ?? "")
+         .split(/\s+/)
+         .filter(Boolean)
+         .slice(0, 2)
+         .map((w) => w[0])
+         .join("")
+         .toUpperCase() || "?";
+
+   return (
+      <span className={`bosyAvatar bosyAvatar--${size}`}>
+         {src && !failed ? (
+         <img src={src} alt={`${name} profile`} onError={() => setFailed(true)} />
+         ) : (
+         <span aria-hidden="true">{initials}</span>
+         )}
+      </span>
+   );
+   }
+
    function Modal({ titleId, size = "Large", onClose, children }) {
    const dialogRef = useRef(null);
 
@@ -670,6 +711,13 @@
    const initialSnapshot = useRef("");
    const formRef = useRef(null);
 
+   // Profile photo (kept outside `form` because it's a File, not text)
+   const [photoFile, setPhotoFile] = useState(null);
+   const [photoPreview, setPhotoPreview] = useState(null);
+   const [existingPhotoUrl, setExistingPhotoUrl] = useState(null);
+   const [removePhoto, setRemovePhoto] = useState(false);
+   const [photoError, setPhotoError] = useState(null);
+
    // View / Delete
    const [viewTarget, setViewTarget] = useState(null);
    const [deleteTarget, setDeleteTarget] = useState(null);
@@ -707,6 +755,17 @@
       return () => clearTimeout(timer);
    }, [notice]);
 
+   // Local preview of a newly picked photo (also frees the memory when it changes)
+   useEffect(() => {
+      if (!photoFile) {
+         setPhotoPreview(null);
+         return undefined;
+      }
+      const url = URL.createObjectURL(photoFile);
+      setPhotoPreview(url);
+      return () => URL.revokeObjectURL(url);
+   }, [photoFile]);
+
    const visibleRecords = useMemo(() => {
       const term = search.trim().toLowerCase();
       return osyRecords.filter((osy) => {
@@ -741,9 +800,13 @@
    const valueOf = (field) =>
       field.startsWith("account.") ? account[field.slice(8)] : form[field];
 
-   // Server errors always show; client errors show once the field has been visited
+   // Server errors always show; client errors show once the field has been visited.
+   // The photo has its own error state because it is a file, not form text.
    const errorFor = (field) =>
-      serverErrors[field] ?? (touched[field] ? clientErrors[field] : undefined);
+      field === "profile_photo"
+         ? (photoError ?? serverErrors.profile_photo)
+         : (serverErrors[field] ??
+         (touched[field] ? clientErrors[field] : undefined));
 
    const isRequired = (field) =>
       field.startsWith("account.")
@@ -826,6 +889,40 @@
       touch(field);
    }
 
+   /* ---- photo handlers ---- */
+
+   function handlePhotoPick(e) {
+      const file = e.target.files?.[0];
+      e.target.value = ""; // lets the same file be picked again later
+      if (!file) return;
+
+      if (!PHOTO_TYPES.includes(file.type)) {
+         setPhotoError("Photo must be a JPG, PNG or WEBP file.");
+         return;
+      }
+      if (file.size > PHOTO_MAX_BYTES) {
+         setPhotoError("Photo must not be larger than 2 MB.");
+         return;
+      }
+
+      setPhotoError(null);
+      setServerErrors((prev) => {
+         if (!prev.profile_photo) return prev;
+         const rest = { ...prev };
+         delete rest.profile_photo;
+         return rest;
+      });
+      setFormError(null);
+      setRemovePhoto(false);
+      setPhotoFile(file);
+   }
+
+   function handlePhotoRemove() {
+      setPhotoError(null);
+      if (photoFile) setPhotoFile(null); // undo a newly picked photo
+      else if (existingPhotoUrl) setRemovePhoto(true); // delete the saved photo on save
+   }
+
    // Shorthand for inputs: <input {...bind('first_name')} />
    const bind = (field) => {
       const err = errorFor(field);
@@ -851,6 +948,10 @@
       setDiscardPrompt(false);
       setAccount(EMPTY_ACCOUNT);
       setExistingAccountEmail(null);
+      setPhotoFile(null);
+      setPhotoError(null);
+      setRemovePhoto(false);
+      setExistingPhotoUrl(null);
    }
 
    function openAddModal() {
@@ -876,13 +977,17 @@
       });
       // Assumes the API returns the linked user as `osy.user`
       setExistingAccountEmail(osy.user?.email ?? null);
+      setExistingPhotoUrl(osy.profile_photo_url ?? null);
       setIsModalOpen(true);
       setFocusTarget({ name: "first_name" });
    }
 
+   // Picking or removing a photo also counts as an unsaved change
    const isDirty =
       isModalOpen &&
-      JSON.stringify({ form, account }) !== initialSnapshot.current;
+      (JSON.stringify({ form, account }) !== initialSnapshot.current ||
+         photoFile !== null ||
+         removePhoto);
 
    function requestClose() {
       if (saving) return;
@@ -948,7 +1053,7 @@
          ...Object.fromEntries(fields.map((f) => [f, true])),
       }));
 
-      const bad = fields.filter((f) => clientErrors[f]);
+      const bad = fields.filter((f) => clientErrors[f] || errorFor(f));
       if (bad.length) {
          setFormError(`Please fix ${countLabel(bad.length)} before continuing.`);
          setFocusTarget({ name: bad[0] });
@@ -1002,22 +1107,37 @@
       setServerErrors({});
 
       const url = editingId ? `${OSY_ENDPOINT}/${editingId}` : OSY_ENDPOINT;
-      const method = editingId ? "PUT" : "POST";
 
-      const payload = Object.fromEntries(
-         Object.entries(form).map(([key, value]) => [key, tidyValue(key, value)]),
-      );
+      // Multipart body so the photo file can travel with the text fields
+      const payload = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+         const tidy = tidyValue(key, value);
+         // Laravel's `boolean` rule accepts 1/0, not "true"/"false"
+         payload.append(
+         key,
+         typeof tidy === "boolean" ? (tidy ? "1" : "0") : (tidy ?? ""),
+         );
+      });
+
       // Only send account details when an account is being created
       if (accountRequired) {
-         payload.account = {
-         email: tidyValue("account.email", account.email),
-         password: account.password,
-         password_confirmation: account.password_confirmation,
-         };
+         payload.append("account[email]", tidyValue("account.email", account.email));
+         payload.append("account[password]", account.password);
+         payload.append(
+         "account[password_confirmation]",
+         account.password_confirmation,
+         );
       }
 
+      if (photoFile) payload.append("profile_photo", photoFile);
+      else if (removePhoto && editingId) payload.append("remove_profile_photo", "1");
+
+      // Laravel doesn't read multipart bodies on a real PUT, so edits are sent
+      // as a POST with _method=PUT.
+      if (editingId) payload.append("_method", "PUT");
+
       try {
-         await apiFetch(url, { method, body: payload });
+         await apiFetch(url, { method: "POST", body: payload });
          setIsModalOpen(false);
          setNotice(editingId ? "OSY record updated." : "OSY record registered.");
          await fetchOsyRecords();
@@ -1154,7 +1274,16 @@
                      <tbody>
                         {visibleRecords.map((osy) => (
                            <tr key={osy.id}>
-                           <td className="osyTable__name">{fullName(osy)}</td>
+                           <td className="osyTable__name">
+                              <div className="bosyNameCell">
+                                 <OsyAvatar
+                                 name={fullName(osy)}
+                                 src={osy.profile_photo_url}
+                                 size="sm"
+                                 />
+                                 <span>{fullName(osy)}</span>
+                              </div>
+                           </td>
                            <td>
                               {calculateAge(osy.birthdate) ?? "—"} /{" "}
                               {sexLabel(osy.sex)}
@@ -1199,7 +1328,7 @@
          </div>
 
          {/* Add / Edit modal (3 pages). Clicking outside does not close it, so a
-               misclick can't discard a half-filled form. */}
+            misclick can't discard a half-filled form. */}
          {isModalOpen && (
          <Modal titleId="osyFormTitle">
             <h2 id="osyFormTitle">
@@ -1243,6 +1372,72 @@
                {step === 0 && (
                <div className="bosyFormSection">
                   <h3>Personal Information</h3>
+
+                  {/* Profile photo */}
+                  {(() => {
+                     const hasPhoto = Boolean(photoFile || (existingPhotoUrl && !removePhoto));
+                     const photoErr = errorFor("profile_photo");
+                     return (
+                        <div className="bosyPhotoPicker">
+                           <OsyAvatar
+                              name={fullName(form) || "OSY"}
+                              src={photoPreview ?? (removePhoto ? null : existingPhotoUrl)}
+                              size="lg"
+                           />
+                           <div className="bosyPhotoPicker__body">
+                              <span className="bosyPhotoPicker__title">Profile photo</span>
+                              <span className="bosyHint">
+                                 Optional · JPG, PNG or WEBP · up to 2 MB
+                              </span>
+
+                              <div className="bosyPhotoPicker__actions">
+                                 <input
+                                    id={fieldId("profile_photo")}
+                                    className="bosyPhotoPicker__input"
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    onChange={handlePhotoPick}
+                                    aria-invalid={photoErr ? "true" : undefined}
+                                    aria-describedby={
+                                       photoErr ? `${fieldId("profile_photo")}-error` : undefined
+                                    }
+                                 />
+                                 <label
+                                    htmlFor={fieldId("profile_photo")}
+                                    className="bosyBtn bosyBtnGhost bosyPhotoPicker__btn"
+                                 >
+                                    {hasPhoto ? "Change photo" : "Upload photo"}
+                                 </label>
+
+                                 {hasPhoto && (
+                                    <button
+                                       type="button"
+                                       className="bosyBtn bosyBtnGhost bosyPhotoPicker__remove"
+                                       onClick={handlePhotoRemove}
+                                    >
+                                       {photoFile ? "Undo" : "Remove"}
+                                    </button>
+                                 )}
+                              </div>
+
+                              {removePhoto && (
+                                 <span className="bosyHint">
+                                    The photo will be removed when you save.
+                                 </span>
+                              )}
+                              {photoErr && (
+                                 <span
+                                    id={`${fieldId("profile_photo")}-error`}
+                                    className="bosyFieldError"
+                                    role="alert"
+                                 >
+                                    {photoErr}
+                                 </span>
+                              )}
+                           </div>
+                        </div>
+                     );
+                  })()}
 
                   <div className="bosyFormRow bosyFormRow--3">
                      <Field label="First name" {...fieldProps("first_name")}>
@@ -1474,6 +1669,18 @@
                         label="Educational attainment"
                         value={form.educational_attainment}
                      />
+                     <DetailItem
+                        label="Profile photo"
+                        value={
+                           photoFile
+                           ? photoFile.name
+                           : removePhoto
+                              ? "Will be removed"
+                              : existingPhotoUrl
+                                 ? "Current photo kept"
+                                 : "None"
+                        }
+                     />
                      </dl>
                   </div>
 
@@ -1639,12 +1846,19 @@
          {viewTarget && (
          <Modal titleId="osyViewTitle" onClose={() => setViewTarget(null)}>
             <div className="bosyViewHeader">
+               <div className="bosyViewHeader__who">
+               <OsyAvatar
+                  name={fullName(viewTarget)}
+                  src={viewTarget.profile_photo_url}
+                  size="lg"
+               />
                <div>
-               <h2 id="osyViewTitle">{fullName(viewTarget)}</h2>
-               <span className="bosyViewSubline">
-                  {calculateAge(viewTarget.birthdate) ?? "—"} years old ·{" "}
-                  {sexLabel(viewTarget.sex)}
-               </span>
+                  <h2 id="osyViewTitle">{fullName(viewTarget)}</h2>
+                  <span className="bosyViewSubline">
+                     {calculateAge(viewTarget.birthdate) ?? "—"} years old ·{" "}
+                     {sexLabel(viewTarget.sex)}
+                  </span>
+               </div>
                </div>
                <StatusBadge status={viewTarget.current_status} />
             </div>

@@ -16,13 +16,12 @@
 }
 
 .osyTrainingProgHeader {
-   margin-bottom: 20px;
+   margin-bottom: 24px;
 }
 
 .osyTrainingProgHeader h1 {
    margin: 0;
    font-size: 2em;
-   font-weight: 700;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
 }
@@ -80,7 +79,7 @@
 .opEmpty h3 {
    margin: 0;
    font-size: 16px;
-   font-weight: 700;
+   font-weight: 600;
    line-height: 1.3;
    color: #1E5B3F;
    font-family: "Open Sans", sans-serif;
@@ -89,17 +88,17 @@
 .opEmpty p {
    margin: 0;
    font-size: 13px;
-   font-weight: 600;
+   font-weight: 400;
    color: #62705F;
    font-family: "Nunito", sans-serif;
 }
 
+/* Card: no shadow, more breathing room */
 .opCard {
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
-   padding: 14px;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   padding: 24px;
    color: #29332C;
    font-family: "Nunito", sans-serif;
 }
@@ -109,14 +108,13 @@
    align-items: flex-start;
    justify-content: space-between;
    gap: 16px;
-   padding: 4px 4px 0;
-   margin-bottom: 16px;
+   margin-bottom: 20px;
 }
 
 .opProgram {
    margin: 0;
    font-size: 16px;
-   font-weight: 700;
+   font-weight: 600;
    line-height: 1.3;
    color: #1E5B3F;
    font-family: "Open Sans", sans-serif;
@@ -136,7 +134,7 @@
    padding: 3px 12px;
    border-radius: 999px;
    font-size: 11.5px;
-   font-weight: 700;
+   font-weight: 600;
    white-space: nowrap;
    font-family: "Nunito", sans-serif;
 }
@@ -146,38 +144,35 @@
 .opBadgeCompleted { background: #E4EDF3; color: #35607A; }
 .opBadgeDropped { background: #FBE3E7; color: #B3455E; }
 
-/* Progress bar */
+/* Progress: plain, no grey box */
 .opProgressBlock {
-   padding: 14px 16px;
-   margin-bottom: 16px;
-   background: #F5F7F5;
-   border-radius: 12px;
+   margin-bottom: 20px;
 }
 
 .opProgressTop {
    display: flex;
    align-items: baseline;
    justify-content: space-between;
-   margin-bottom: 10px;
+   margin-bottom: 8px;
 }
 
 .opProgressCaption {
    font-size: 14px;
-   font-weight: 700;
+   font-weight: 600;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
 }
 
 .opProgressPercent {
    font-size: 14px;
-   font-weight: 700;
+   font-weight: 600;
    color: #2F6E4F;
    font-variant-numeric: tabular-nums;
    font-family: "Open Sans", sans-serif;
 }
 
 .opBarTrack {
-   height: 8px;
+   height: 6px;
    border-radius: 999px;
    background: #E7ECE8;
    overflow: hidden;
@@ -197,7 +192,7 @@
 .opProgressDates {
    display: flex;
    justify-content: space-between;
-   margin-top: 10px;
+   margin-top: 8px;
    font-size: 12.5px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
@@ -209,19 +204,19 @@
    align-items: flex-start;
    gap: 12px;
    padding: 12px 16px;
-   margin-bottom: 16px;
+   margin-bottom: 20px;
    border-radius: 12px;
 }
 
 .opNotice i {
-   font-size: 22px;
+   font-size: 20px;
    flex-shrink: 0;
 }
 
 .opNotice strong {
    display: block;
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -230,45 +225,39 @@
    font-size: 13px;
    line-height: 1.45;
    font-family: "Nunito", sans-serif;
+   color: #96701E;
 }
 
-.opNoticeGood { background: #E3F0E7; color: #2F6E4F; border: 1px solid #CFE3D5; }
-.opNoticeWarn { background: #FBF0DD; color: #96701E; border: 1px solid #F1DFB8; }
-.opNoticeMuted { background: #F0F1EE; color: #62705F; border: 1px solid #E7ECE8; }
+.opNoticeGood { background: #E3F0E7; color: #2F6E4F; }
+.opNoticeWarn { background: #FBF0DD; color: #96701E; }
+.opNoticeMuted { background: #F0F1EE; color: #62705F; }
 
-/* Info grid */
+/* Info: one light row, no icon circles */
 .opInfoGrid {
    display: grid;
    grid-template-columns: repeat(3, 1fr);
    gap: 16px;
-   padding: 14px 16px;
-   background: #F5F7F5;
-   border-radius: 12px;
+   padding: 16px 0;
+   border-top: 1px solid #E7ECE8;
+   border-bottom: 1px solid #E7ECE8;
 }
 
 .opInfoItem {
    display: flex;
    align-items: center;
-   gap: 12px;
+   gap: 10px;
 }
 
 .opInfoItem i {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 36px;
-   height: 36px;
    flex-shrink: 0;
-   font-size: 20px;
+   font-size: 22px;
    color: #2F6E4F;
-   background: #E3F0E7;
-   border-radius: 50%;
 }
 
 .opInfoItem span {
    display: block;
    font-size: 12.5px;
-   font-weight: 700;
+   font-weight: 600;
    color: #3D4A3F;
    font-family: "Open Sans", sans-serif;
 }
@@ -284,9 +273,7 @@
 
 /* Blocks */
 .opBlock {
-   margin-top: 22px;
-   padding-top: 18px;
-   border-top: 1px solid #E7ECE8;
+   margin-top: 28px;
 }
 
 .opBlockTitle {
@@ -295,7 +282,7 @@
    gap: 10px;
    margin: 0 0 14px;
    font-size: 16px;
-   font-weight: 700;
+   font-weight: 600;
    line-height: 1.3;
    color: #1E5B3F;
    font-family: "Open Sans", sans-serif;
@@ -309,34 +296,40 @@
 }
 
 .opHint {
-   margin: 12px 0 14px;
+   margin: 12px 0 16px;
    font-size: 13px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
 }
 
-/* Attendance */
+/* Attendance: one row with dividers instead of five boxes */
 .opChips {
    display: grid;
    grid-template-columns: repeat(5, 1fr);
-   gap: 10px;
+   border: 1px solid #E7ECE8;
+   border-radius: 12px;
+   overflow: hidden;
 }
 
 .opChipBox {
    padding: 12px;
    text-align: center;
-   background: #F5F7F5;
-   border-radius: 12px;
+   background: #FFFFFF;
+   border-right: 1px solid #E7ECE8;
+}
+
+.opChipBox:last-child {
+   border-right: none;
 }
 
 .opChipBoxMain {
-   background: #E3F0E7;
+   background: #F5F9F6;
 }
 
 .opChipBox strong {
    display: block;
-   font-size: 22px;
-   font-weight: 700;
+   font-size: 20px;
+   font-weight: 600;
    line-height: 1.25;
    color: #14201A;
    font-variant-numeric: tabular-nums;
@@ -363,14 +356,14 @@
    align-items: center;
    gap: 12px;
    padding: 10px 16px;
-   border-bottom: 1px solid #E7ECE8;
+   border-bottom: 1px solid #EEF2EE;
    font-size: 14px;
    transition: background 0.15s ease;
    font-family: "Nunito", sans-serif;
 }
 
 .opRecord:hover {
-   background: #F5F7F5;
+   background: #FAFBFA;
 }
 
 .opRecord:last-child {
@@ -379,7 +372,7 @@
 
 .opRecordDate {
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    color: #3D4A3F;
    font-family: "Nunito", sans-serif;
 }
@@ -395,7 +388,7 @@
    padding: 3px 12px;
    border-radius: 999px;
    font-size: 11.5px;
-   font-weight: 700;
+   font-weight: 600;
    text-transform: capitalize;
    text-align: center;
    font-family: "Nunito", sans-serif;
@@ -413,7 +406,7 @@
    background: transparent;
    color: #2F6E4F;
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    cursor: pointer;
    font-family: "Nunito", sans-serif;
 }
@@ -426,7 +419,7 @@
 .opDocList {
    display: flex;
    flex-direction: column;
-   gap: 10px;
+   gap: 8px;
 }
 
 .opDoc {
@@ -444,10 +437,6 @@
    color: #94A092;
 }
 
-.opDocDone {
-   background: #F5F7F5;
-}
-
 .opDocDone i {
    color: #2F6E4F;
 }
@@ -459,7 +448,7 @@
 .opDocText span {
    display: block;
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    color: #3D4A3F;
    font-family: "Nunito", sans-serif;
 }
@@ -467,7 +456,7 @@
 .opDocText small {
    display: block;
    margin-top: 2px;
-   font-size: 13px;
+   font-size: 12.5px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
 }
@@ -476,7 +465,7 @@
    padding: 3px 12px;
    border-radius: 999px;
    font-size: 11.5px;
-   font-weight: 700;
+   font-weight: 600;
    white-space: nowrap;
    font-family: "Nunito", sans-serif;
 }
@@ -485,7 +474,7 @@
 .opDocStatus-received { background: #E3F0E7; color: #2F6E4F; }
 .opDocStatus-not_applicable { background: #F0F1EE; color: #62705F; }
 
-/* Timeline */
+/* Timeline: no glow around dots */
 .opTimeline {
    display: flex;
    flex-direction: column;
@@ -520,13 +509,12 @@
    flex-shrink: 0;
    border-radius: 50%;
    background: #2F6E4F;
-   box-shadow: 0 0 0 4px #E3F0E7;
 }
 
 .opTimelineItem strong {
    display: block;
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    color: #3D4A3F;
    font-family: "Open Sans", sans-serif;
 }
@@ -562,6 +550,10 @@
       padding: 20px 20px 32px;
    }
 
+   .opCard {
+      padding: 18px;
+   }
+
    .opCardHeader {
       flex-direction: column;
    }
@@ -572,6 +564,10 @@
 
    .opChips {
       grid-template-columns: repeat(2, 1fr);
+   }
+
+   .opChipBox {
+      border-bottom: 1px solid #E7ECE8;
    }
 
    .opRecord {

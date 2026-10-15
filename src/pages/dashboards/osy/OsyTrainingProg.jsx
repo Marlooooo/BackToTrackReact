@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import OsySideBar from '../../../components/osySideBar';
 import "./OsyTrainingProg.css"
 
+const RECORDS_PREVIEW = 5;
+
 const STATUS_LABEL = {
    'Accepted by Maxima': 'Waiting to start',
    'Training Started': 'Ongoing',
@@ -60,7 +62,7 @@ function TrainingCard({ training }) {
 
    const { status, attendance, documents } = training;
    const pendingDocs = documents.filter((doc) => doc.status === 'pending');
-   const records = showAllRecords ? attendance.records : attendance.records.slice(0, 7);
+   const records = showAllRecords ? attendance.records : attendance.records.slice(0, RECORDS_PREVIEW);
 
    // Time-based progress through the training period
    let percent = null;
@@ -185,7 +187,7 @@ function TrainingCard({ training }) {
                            </div>
                         ))}
                      </div>
-                     {attendance.records.length > 7 && (
+                     {attendance.records.length > RECORDS_PREVIEW && (
                         <button className="opLinkBtn" onClick={() => setShowAllRecords((prev) => !prev)}>
                            {showAllRecords ? 'Show less' : `Show all ${attendance.records.length} records`}
                         </button>

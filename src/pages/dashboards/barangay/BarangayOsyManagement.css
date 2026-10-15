@@ -745,6 +745,180 @@
    font-family: "Nunito", sans-serif;
    }
 
+
+
+
+   /* ---------- Avatar ---------- */
+
+.bosyAvatar {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+overflow: hidden;
+border-radius: 50%;
+background: #EAF0EE;
+color: #2F6E4F;
+font-family: "Open Sans", sans-serif;
+font-weight: 700;
+line-height: 1;
+user-select: none;
+}
+
+.bosyAvatar img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+.bosyAvatar--sm { width: 34px; height: 34px; font-size: 12px; }
+.bosyAvatar--md { width: 44px; height: 44px; font-size: 14px; }
+.bosyAvatar--lg {
+width: 72px;
+height: 72px;
+font-size: 22px;
+border: 3px solid #FFFFFF;
+box-shadow: 0 0 0 1px #DCE6DE;
+}
+
+/* Name + avatar in the table */
+.bosyNameCell {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+/* View modal header */
+.bosyViewHeader__who {
+display: flex;
+align-items: center;
+gap: 14px;
+min-width: 0;
+}
+
+/* ---------- Photo picker (Add / Edit form) ---------- */
+
+.bosyPhotoPicker {
+display: flex;
+align-items: center;
+gap: 18px;
+padding: 16px 18px;
+background: #FBFCFB;
+border: 1px solid #EEF2EE;
+border-radius: 12px;
+}
+
+.bosyPhotoPicker__body {
+display: flex;
+flex-direction: column;
+gap: 4px;
+min-width: 0;
+}
+
+.bosyPhotoPicker__title {
+font-size: 13.5px;
+font-weight: 700;
+color: #14201A;
+font-family: "Nunito", sans-serif;
+}
+
+.bosyPhotoPicker__actions {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 8px;
+margin-top: 8px;
+}
+
+/* Hide the native file input; the label below acts as the button */
+.bosyForm input.bosyPhotoPicker__input {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border: 0;
+}
+
+.bosyForm .bosyPhotoPicker__btn,
+.bosyPhotoPicker__remove {
+display: inline-block;
+padding: 7px 14px;
+font-size: 12.5px;
+color: #2F6E4F;
+background: #FFFFFF;
+border: 1px solid #DCE6DE;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.bosyForm .bosyPhotoPicker__btn:hover {
+background: #EAF0EE;
+border-color: #BFD3C6;
+}
+
+.bosyPhotoPicker__remove {
+color: #A23E3E;
+}
+
+.bosyPhotoPicker__remove:hover {
+background: #FBEBEB;
+border-color: #F0CACA;
+}
+
+/* Keyboard focus lands on the hidden input, so ring the label instead */
+.bosyForm input.bosyPhotoPicker__input:focus-visible + .bosyPhotoPicker__btn {
+outline: 2px solid #2F6E4F;
+outline-offset: 2px;
+}
+
+/* ---------- Course suggestion rows ---------- */
+
+.bosyRecItem {
+flex-direction: row;
+align-items: center;
+gap: 12px;
+background: #FFFFFF;
+}
+
+.bosyRecInfo {
+display: flex;
+flex-direction: column;
+gap: 2px;
+min-width: 0;
+font-size: 13.5px;
+color: #14201A;
+}
+
+.bosyRecBest,
+.bosyRecRank {
+flex-shrink: 0;
+padding: 3px 10px;
+border-radius: 999px;
+font-size: 11px;
+font-weight: 700;
+font-family: "Nunito", sans-serif;
+}
+
+.bosyRecBest { background: #E3F0E7; color: #2F6E4F; }
+.bosyRecRank { background: #EAF0EE; color: #55665C; }
+
+
+
+
+
+
+
+
+
+
+
+
+
    /* ---------- Small screens ---------- */
 
    @media (max-width: 768px) {
