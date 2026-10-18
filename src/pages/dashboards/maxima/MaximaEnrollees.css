@@ -1,9 +1,13 @@
 .maximaEnrolleesMainContent{
-   width: 81%;
+   flex: 1;
+   min-width: 0;
    display: flex;
    flex-direction: column;
    box-sizing: border-box;
    padding: 40px 48px;
+   background: #F5F7F5;
+   min-height: 100vh;
+   overflow-y: auto;
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -15,30 +19,33 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
-   margin-bottom: 24px;
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
 }
 
 .enrolleesTitle {
    margin: 0 0 4px;
    font-size: 24px;
    font-weight: 700;
-   color: #111827;
+   color: #14201A;
+   letter-spacing: -0.015em;
    font-family: "Open Sans", sans-serif;
 }
 
 .enrolleesSubtitle {
    margin: 0;
    font-size: 13.5px;
-   color: #6b7280;
+   color: #66746A;
    font-family: "Nunito", sans-serif;
 }
 
 /* Summary cards */
 .enrolleesSummary {
    display: grid;
-   grid-template-columns: repeat(4, 1fr);
-   gap: 16px;
-   margin-bottom: 24px;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 22px;
+   margin-bottom: 22px;
 }
 
 .enrolleesSummaryCard {
@@ -46,50 +53,51 @@
    flex-direction: column;
    gap: 6px;
    padding: 18px 20px;
-   background: #ffffff;
-   border: 1px solid #e5e7eb;
-   border-left: 4px solid #6b7280;
-   border-radius: 10px;
-   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-left: 4px solid #7C877E;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
 }
 
 .enrolleesSummaryTotal {
-   border-left-color: #1d4ed8;
+   border-left-color: #2F6E4F;
 }
 
 .enrolleesSummaryAccepted {
-   border-left-color: #0891b2;
+   border-left-color: #2F5F8F;
 }
 
 .enrolleesSummaryOngoing {
-   border-left-color: #d97706;
+   border-left-color: #96701E;
 }
 
 .enrolleesSummaryCompleted {
-   border-left-color: #059669;
+   border-left-color: #5FA37F;
 }
 
 .enrolleesSummaryLabel {
    font-size: 13px;
-   font-weight: 500;
-   color: #6b7280;
+   font-weight: 600;
+   color: #66746A;
    font-family: "Nunito", sans-serif;
 }
 
 .enrolleesSummaryValue {
    font-size: 30px;
    font-weight: 700;
-   color: #111827;
+   color: #14201A;
    line-height: 1;
+   letter-spacing: -0.015em;
    font-family: "Open Sans", sans-serif;
 }
 
 /* Main panel */
 .enrolleesPanel {
-   background: #ffffff;
-   border: 1px solid #e5e7eb;
-   border-radius: 12px;
-   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
    overflow: hidden;
 }
 
@@ -97,48 +105,66 @@
    display: flex;
    gap: 12px;
    padding: 16px 20px;
-   border-bottom: 1px solid #e5e7eb;
-   background: #f9fafb;
+   border-bottom: 1px solid #EEF2EE;
+   background: #FBFCFB;
 }
 
 .enrolleesSearch,
 .enrolleesFilter {
-   padding: 10px 14px;
-   border: 1px solid #d1d5db;
-   border-radius: 8px;
+   padding: 10px 18px;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
    font-family: "Nunito", sans-serif;
-   font-size: 14px;
-   color: #111827;
-   background: #ffffff;
+   font-size: 13.5px;
+   color: #16231C;
+   background: #FFFFFF;
    outline: none;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.enrolleesFilter {
+   cursor: pointer;
+   color: #3D4A3F;
 }
 
 .enrolleesSearch {
    flex: 1;
    min-width: 0;
+   max-width: 320px;
+}
+
+.enrolleesSearch::placeholder {
+   color: #A9B3AB;
 }
 
 .enrolleesSearch:focus,
 .enrolleesFilter:focus {
-   border-color: #2563eb;
-   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+.enrolleesSearch:disabled {
+   background: #F5F7F5;
+   cursor: not-allowed;
 }
 
 .enrolleesError {
    margin: 16px 20px 0;
-   padding: 10px 14px;
-   background: #fee2e2;
-   color: #991b1b;
+   padding: 12px 16px;
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
    border-radius: 8px;
-   font-size: 14px;
+   font-size: 13.5px;
    font-family: "Nunito", sans-serif;
 }
 
 .enrolleesEmpty {
-   padding: 48px 20px;
+   padding: 60px 20px;
    text-align: center;
-   color: #6b7280;
-   font-size: 14px;
+   color: #62705F;
+   font-size: 13.5px;
    font-family: "Nunito", sans-serif;
 }
 
@@ -158,38 +184,38 @@
    position: sticky;
    top: 0;
    z-index: 1;
-   padding: 12px 20px;
+   padding: 14px 22px;
    text-align: left;
-   font-size: 12px;
+   font-size: 11.5px;
    font-weight: 600;
    letter-spacing: 0.04em;
    text-transform: uppercase;
-   color: #6b7280;
-   background: #f9fafb;
-   border-bottom: 1px solid #e5e7eb;
+   color: #7C877E;
+   background: #FBFCFB;
+   border-bottom: 1px solid #EEF2EE;
    white-space: nowrap;
    font-family: "Open Sans", sans-serif;
 }
 
 .enrolleesTable td {
-   padding: 14px 20px;
-   font-size: 14px;
-   color: #374151;
-   border-bottom: 1px solid #f3f4f6;
+   padding: 13px 22px;
+   font-size: 13.5px;
+   color: #29332C;
+   border-bottom: 1px solid #F1F4F1;
    vertical-align: middle;
    font-family: "Nunito", sans-serif;
 }
 
 .enrolleesTable tbody tr:hover {
-   background: #f9fafb;
+   background: #FAFBF9;
 }
 
 .enrolleesTable tbody tr:last-child td {
    border-bottom: none;
 }
 
-.enrolleesActionsHead {
-   text-align: right !important;
+.enrolleesTable th.enrolleesActionsHead {
+   text-align: right;
 }
 
 .enrolleesPerson {
@@ -200,7 +226,7 @@
 
 .enrolleesPersonName {
    font-weight: 600;
-   color: #111827;
+   color: #14201A;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -212,8 +238,8 @@
    height: 36px;
    flex-shrink: 0;
    border-radius: 50%;
-   background: #dbeafe;
-   color: #1d4ed8;
+   background: #EAF1EC;
+   color: #2F6E4F;
    font-size: 13px;
    font-weight: 700;
    font-family: "Open Sans", sans-serif;
@@ -228,29 +254,29 @@
 /* Status badges */
 .enrolleesBadge {
    display: inline-block;
-   padding: 4px 12px;
+   padding: 3px 11px;
    border-radius: 999px;
-   background: #f3f4f6;
-   color: #374151;
-   font-size: 12px;
+   background: #F0F1EE;
+   color: #7C877E;
+   font-size: 11px;
    font-weight: 600;
    white-space: nowrap;
    font-family: "Nunito", sans-serif;
 }
 
 .enrolleesBadgeAccepted {
-   background: #cffafe;
-   color: #155e75;
+   background: #E6EEF7;
+   color: #2F5F8F;
 }
 
 .enrolleesBadgeOngoing {
-   background: #fef3c7;
-   color: #92400e;
+   background: #FBF0DD;
+   color: #96701E;
 }
 
 .enrolleesBadgeCompleted {
-   background: #d1fae5;
-   color: #065f46;
+   background: #E3F0E7;
+   color: #2F6E4F;
 }
 
 /* Buttons */
@@ -261,57 +287,74 @@
 }
 
 .enrolleesViewBtn {
-   padding: 7px 14px;
-   border: 1px solid #d1d5db;
-   border-radius: 6px;
-   background: #ffffff;
-   color: #374151;
+   padding: 6px 13px;
+   border: 1px solid #DCE6DE;
+   border-radius: 7px;
+   background: transparent;
+   color: #3D4A3F;
    font-family: inherit;
-   font-size: 13px;
+   font-size: 12.5px;
    font-weight: 500;
    cursor: pointer;
    white-space: nowrap;
+   transition: background 0.15s ease;
 }
 
-.enrolleesViewBtn:hover {
-   background: #f3f4f6;
+.enrolleesViewBtn:hover:not(:disabled) {
+   background: #F1F4F1;
 }
 
-.enrolleesActionBtn {
-   padding: 7px 14px;
-   border: none;
-   border-radius: 6px;
-   background: #2563eb;
-   color: #ffffff;
-   font-family: inherit;
-   font-size: 13px;
-   font-weight: 500;
-   cursor: pointer;
-   white-space: nowrap;
-}
-
-.enrolleesActionBtn:hover {
-   background: #1d4ed8;
-}
-
-.enrolleesActionBtn:disabled {
-   background: #93c5fd;
+.enrolleesViewBtn:disabled {
+   opacity: 0.6;
    cursor: not-allowed;
 }
 
-/* Details modal */
+.enrolleesActionBtn {
+   padding: 6px 14px;
+   border: none;
+   border-radius: 7px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font-family: inherit;
+   font-size: 12.5px;
+   font-weight: 600;
+   cursor: pointer;
+   white-space: nowrap;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
+   transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.enrolleesActionBtn:hover:not(:disabled) {
+   background: #275C42;
+   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
+}
+
+.enrolleesActionBtn:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+.enrolleesActionBtn:focus-visible,
+.enrolleesViewBtn:focus-visible,
+.enrolleesModalClose:focus-visible,
+.enrolleesDocSelect:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+
+/* ---------- Modal shell ---------- */
 .enrolleesModalOverlay {
    position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
+   inset: 0;
    z-index: 1000;
    display: flex;
    align-items: center;
    justify-content: center;
    padding: 24px;
-   background: rgba(17, 24, 39, 0.55);
+   background: rgba(16, 23, 18, 0.55);
+   backdrop-filter: blur(3px);
+   animation: enrolleesFadeIn 0.18s ease;
    /* the modal is rendered outside the main content, so set the base font here */
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -322,84 +365,152 @@
    width: 100%;
    max-width: 760px;
    max-height: 90vh;
-   background: #ffffff;
-   border-radius: 14px;
-   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+   background: #FFFFFF;
+   border-radius: 18px;
+   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
    overflow: hidden;
+   animation: enrolleesSlideUp 0.22s ease;
 }
 
+@keyframes enrolleesFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
+@keyframes enrolleesSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* ---------- Modal header ---------- */
 .enrolleesModalHeader {
    display: flex;
+   flex-shrink: 0;
    align-items: flex-start;
    justify-content: space-between;
-   padding: 24px 28px;
-   border-bottom: 1px solid #e5e7eb;
-   background: #f9fafb;
+   gap: 16px;
+   padding: 24px 28px 20px;
+   border-bottom: 1px solid #EEF2EE;
+   background: #FFFFFF;
 }
 
 .enrolleesModalIdentity {
    display: flex;
    align-items: center;
    gap: 16px;
+   min-width: 0;
 }
 
 .enrolleesModalName {
    margin: 0 0 6px;
-   font-size: 22px;
+   font-size: 20px;
    font-weight: 700;
-   color: #111827;
+   color: #14201A;
+   letter-spacing: -0.01em;
+   line-height: 1.25;
    font-family: "Open Sans", sans-serif;
 }
 
+.enrolleesModalHeader .enrolleesMuted {
+   margin-top: 2px;
+}
+
 .enrolleesModalClose {
+   flex-shrink: 0;
+   width: 32px;
+   height: 32px;
    border: none;
+   border-radius: 8px;
    background: transparent;
    font-family: inherit;
-   font-size: 28px;
+   font-size: 22px;
    line-height: 1;
-   color: #6b7280;
+   color: #7C877E;
    cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .enrolleesModalClose:hover {
-   color: #111827;
+   background: #F1F4F1;
+   color: #14201A;
 }
 
+
+/* ---------- Modal body ---------- */
 .enrolleesModalBody {
    flex: 1;
-   padding: 8px 28px 20px;
+   min-height: 0;
+   padding: 4px 28px 24px;
    overflow-y: auto;
 }
 
+.enrolleesModalBody::-webkit-scrollbar {
+   width: 6px;
+}
+
+.enrolleesModalBody::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.enrolleesModalBody::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+/* Errors inside a modal line up with the modal content, not the table panel */
+.enrolleesModalBody .enrolleesError {
+   margin: 16px 0 0;
+}
+
+/* Inputs inside a modal stretch to fill the row */
+.enrolleesModalBody .enrolleesSearch {
+   max-width: none;
+}
+
 .enrolleesSection {
-   padding: 20px 0;
-   border-bottom: 1px solid #f3f4f6;
+   padding: 22px 0;
+   border-bottom: 1px solid #EEF2EE;
 }
 
 .enrolleesSection:last-child {
    border-bottom: none;
+   padding-bottom: 4px;
 }
 
 .enrolleesSectionTitle {
-   margin: 0 0 14px;
-   font-size: 13px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 0 0 16px;
+   font-size: 11.5px;
    font-weight: 700;
-   letter-spacing: 0.05em;
+   letter-spacing: 0.06em;
    text-transform: uppercase;
-   color: #1d4ed8;
+   color: #2F6E4F;
    font-family: "Open Sans", sans-serif;
 }
 
+.enrolleesSectionTitle::before {
+   content: '';
+   width: 3px;
+   height: 12px;
+   border-radius: 2px;
+   background: #2F6E4F;
+}
+
+
+/* ---------- Detail grid ---------- */
 .enrolleesDetailGrid {
    display: grid;
-   grid-template-columns: repeat(2, 1fr);
-   gap: 16px 24px;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 18px 28px;
 }
 
 .enrolleesDetailItem {
    display: flex;
    flex-direction: column;
-   gap: 3px;
+   gap: 4px;
    min-width: 0;
 }
 
@@ -408,15 +519,18 @@
 }
 
 .enrolleesDetailLabel {
-   font-size: 12px;
-   font-weight: 500;
-   color: #6b7280;
-   font-family: "Open Sans", sans-serif;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
 }
 
 .enrolleesDetailValue {
    font-size: 14px;
-   color: #111827;
+   line-height: 1.45;
+   color: #16231C;
    word-break: break-word;
    white-space: pre-line;
    font-family: "Nunito", sans-serif;
@@ -424,12 +538,91 @@
 
 .enrolleesMuted {
    margin: 0;
-   font-size: 14px;
-   color: #6b7280;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #66746A;
    font-family: "Nunito", sans-serif;
 }
 
-/* Timeline */
+/* Consistent spacing for helper text */
+.enrolleesDocList + .enrolleesMuted,
+.enrolleesDocAdd + .enrolleesMuted,
+.enrolleesActions + .enrolleesMuted {
+   margin-top: 10px;
+}
+
+.enrolleesMuted + .enrolleesMuted {
+   margin-top: 8px;
+}
+
+
+/* ---------- Requirements ---------- */
+.enrolleesDocList {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.enrolleesDocItem {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 10px 14px;
+   background: #FBFCFB;
+   border: 1px solid #EEF2EE;
+   border-radius: 10px;
+   transition: border-color 0.15s ease;
+}
+
+.enrolleesDocItem:hover {
+   border-color: #DCE6DE;
+}
+
+.enrolleesDocItem > .enrolleesDetailValue {
+   flex: 1;
+   min-width: 0;
+   font-weight: 600;
+}
+
+.enrolleesDocControls {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   gap: 8px;
+}
+
+.enrolleesDocSelect {
+   padding: 6px 12px;
+   border: 1px solid #DCE6DE;
+   border-radius: 7px;
+   font-family: "Nunito", sans-serif;
+   font-size: 12.5px;
+   color: #3D4A3F;
+   background: #FFFFFF;
+   cursor: pointer;
+}
+
+.enrolleesDocSelect:disabled {
+   background: #F5F7F5;
+   color: #94A092;
+   opacity: 0.8;
+   cursor: not-allowed;
+}
+
+.enrolleesDocAdd {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-top: 14px;
+}
+
+.enrolleesDocAdd .enrolleesSearch {
+   max-width: none;
+}
+
+
+/* ---------- Timeline ---------- */
 .enrolleesTimeline {
    margin: 0;
    padding: 0;
@@ -446,11 +639,11 @@
 .enrolleesTimelineItem:not(:last-child)::before {
    content: '';
    position: absolute;
-   top: 16px;
+   top: 18px;
    left: 5px;
-   bottom: 0;
+   bottom: -2px;
    width: 2px;
-   background: #e5e7eb;
+   background: #E3E9E3;
 }
 
 .enrolleesTimelineItem:last-child {
@@ -458,57 +651,70 @@
 }
 
 .enrolleesTimelineDot {
+   position: relative;
    width: 12px;
    height: 12px;
    margin-top: 4px;
    flex-shrink: 0;
    border-radius: 50%;
-   background: #2563eb;
-   box-shadow: 0 0 0 3px #dbeafe;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 3px #E3F0E7;
 }
 
 .enrolleesTimelineContent {
    display: flex;
    flex-direction: column;
    gap: 2px;
+   min-width: 0;
 }
 
 .enrolleesTimelineStatus {
    font-size: 14px;
    font-weight: 600;
-   color: #111827;
+   color: #14201A;
    font-family: "Open Sans", sans-serif;
 }
 
 .enrolleesTimelineMeta {
    font-size: 12px;
-   color: #6b7280;
+   color: #7C877E;
    font-family: "Nunito", sans-serif;
 }
 
 .enrolleesTimelineRemarks {
+   margin-top: 2px;
    font-size: 13px;
-   color: #374151;
+   line-height: 1.45;
+   color: #4B564F;
+   word-break: break-word;
    font-family: "Nunito", sans-serif;
 }
 
+
+/* ---------- Modal footer ---------- */
 .enrolleesModalFooter {
    display: flex;
+   flex-shrink: 0;
    justify-content: flex-end;
    gap: 10px;
    padding: 16px 28px;
-   border-top: 1px solid #e5e7eb;
-   background: #f9fafb;
+   border-top: 1px solid #EEF2EE;
+   background: #FBFCFB;
 }
 
-/* Responsive */
+
+/* ---------- Responsive ---------- */
 @media (max-width: 900px) {
    .enrolleesSummary {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
    }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+   .maximaEnrolleesMainContent {
+      padding: 20px;
+   }
+
    .enrolleesSummary {
       grid-template-columns: 1fr;
    }
@@ -517,7 +723,51 @@
       flex-direction: column;
    }
 
+   .enrolleesSearch {
+      max-width: none;
+   }
+
+   .enrolleesModalOverlay {
+      padding: 12px;
+   }
+
    .enrolleesDetailGrid {
       grid-template-columns: 1fr;
+   }
+
+   .enrolleesModalHeader,
+   .enrolleesModalBody,
+   .enrolleesModalFooter {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+
+   .enrolleesDocItem {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .enrolleesDocControls {
+      justify-content: space-between;
+   }
+
+   .enrolleesDocControls .enrolleesDocSelect {
+      flex: 1;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .enrolleesModalOverlay,
+   .enrolleesModal {
+      animation: none;
+   }
+
+   .enrolleesSearch,
+   .enrolleesFilter,
+   .enrolleesViewBtn,
+   .enrolleesActionBtn,
+   .enrolleesModalClose,
+   .enrolleesDocItem {
+      transition: none;
    }
 }

@@ -16,10 +16,10 @@
    gap: 24px;
    min-width: 0;
    padding: 32px 40px 48px;
-   height: 100vh;          
-   box-sizing: border-box; 
-   overflow-y: auto;      
-   overflow-x: hidden;    
+   height: 100vh;
+   box-sizing: border-box;
+   overflow-y: auto;
+   overflow-x: hidden;
 }
 
 
@@ -305,7 +305,6 @@
    font-size: 0.8rem;
    vertical-align: middle;
    font-family: "Nunito", sans-serif;
-
 }
 
 .referralTable tbody tr:hover {
@@ -350,7 +349,7 @@
 
 
 /* --------------------------------------------------------------------------
-   Status badge
+   Status badge (same colors as the Maxima pages)
    -------------------------------------------------------------------------- */
 .referralStatusBadge {
    display: inline-flex;
@@ -371,19 +370,44 @@
    background: currentColor;
 }
 
-.referralStatusBadge.approved {
-   background: #e7f6ec;
-   color: #15803d;
+.referralStatusBadge.badgeRegistered {
+   background: #EAF0EE;
+   color: #55665C;
 }
 
-.referralStatusBadge.pending {
-   background: #fdf3dc;
-   color: #b45309;
+.referralStatusBadge.badgeValidated {
+   background: #E4EBF6;
+   color: #3A5D8F;
 }
 
-.referralStatusBadge.rejected {
-   background: #fdeaea;
-   color: #b91c1c;
+/* Referred */
+.referralStatusBadge.badgeReferred {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+/* Accepted */
+.referralStatusBadge.badgeAccepted {
+   background: #E6EEF7;
+   color: #2F5F8F;
+}
+
+/* Enrolled */
+.referralStatusBadge.badgeEnrolled {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+/* Completed */
+.referralStatusBadge.badgeCompleted {
+   background: #E3F0E7;
+   color: #2F6E4F;
+}
+
+/* Rejected and Dropped */
+.referralStatusBadge.badgeRejected {
+   background: #FBEBEB;
+   color: #A23E3E;
 }
 
 

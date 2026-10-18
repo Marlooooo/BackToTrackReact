@@ -1,9 +1,1082 @@
+/* =========================================================
+   PAGE LAYOUT
+   The page is pinned to the window. Only the list scrolls.
+========================================================= */
 .barangayCourseRecommendationBody {
+   position: fixed;
+   inset: 0;
    display: flex;
-   min-height: 100vh;
+   overflow: hidden;
+   color: #1b2536;
 }
 
 .barangayCourseRecommendationContent {
    flex: 1;
-   padding: 20px;
+   min-width: 0;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
+   height: 100%;
+   padding: 28px 40px 24px;
+   background: #F5F7F5;
+   overflow: hidden;
+}
+
+.barangayRecoPage {
+   flex: 1;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   max-width: 100%;
+}
+
+
+/* ---------- Header ---------- */
+.barangayRecoHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 18px;
+   padding-bottom: 16px;
+   border-bottom: 1px solid #E3E9E3;
+}
+
+.barangayRecoTitle {
+   margin: 0;
+   font-size: 1.5rem;
+   font-weight: 700;
+   letter-spacing: -0.01em;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoSubtitle {
+   margin: 6px 0 0;
+   font-size: 0.8rem;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoHeaderActions {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+
+/* ---------- Buttons ---------- */
+.barangayRecoGhostBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 16px;
+   border: 1px solid #DCE6DE;
+   border-radius: 10px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.barangayRecoGhostBtn:hover:not(:disabled) {
+   background: #F1F4F1;
+   border-color: #CBD5CD;
+}
+
+.barangayRecoGhostBtn:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+}
+
+.barangayRecoPrimaryBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #2F6E4F;
+   border-radius: 10px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.barangayRecoPrimaryBtn:hover:not(:disabled) {
+   border-color: #275C42;
+   background: #275C42;
+}
+
+.barangayRecoEmptyBtn {
+   margin-top: 16px;
+}
+
+.barangayRecoGhostBtn:focus-visible,
+.barangayRecoPrimaryBtn:focus-visible,
+.barangayRecoTab:focus-visible,
+.barangayRecoModalClose:focus-visible,
+.barangayRecoItem:focus-visible,
+.barangayRecoFilter:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+
+/* ---------- Summary cards ---------- */
+.barangayRecoSummary {
+   display: grid;
+   flex-shrink: 0;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 16px;
+   margin-bottom: 18px;
+}
+
+.barangayRecoSummaryCard {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 16px 24px;
+   background: #FFFFFF;
+   border: 1px solid #e3e7ee;
+   border-left: 4px solid #7C877E;
+   border-radius: 12px;
+}
+
+.barangayRecoSummaryWith {
+   border-left-color: #2F6E4F;
+}
+
+.barangayRecoSummaryAvailable {
+   border-left-color: #2F5F8F;
+}
+
+.barangayRecoSummaryNone {
+   border-left-color: #96701E;
+}
+
+.barangayRecoSummaryLabel {
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoSummaryValue {
+   font-size: 2.25rem;
+   font-weight: 700;
+   line-height: 1.1;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+
+/* ---------- Main panel (fills the leftover height) ---------- */
+.barangayRecoPanel {
+   flex: 1;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   background: #FFFFFF;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   overflow: hidden;
+}
+
+.barangayRecoToolbar {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 12px 20px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayRecoTabs {
+   display: flex;
+   gap: 8px;
+}
+
+.barangayRecoTab {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #c9d1de;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.barangayRecoTab:hover {
+   background: #f4f6fa;
+}
+
+.barangayRecoTabActive {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+   color: #FFFFFF;
+}
+
+.barangayRecoTabActive:hover {
+   background: #275C42;
+}
+
+.barangayRecoTabCount {
+   display: inline-block;
+   min-width: 20px;
+   padding: 1px 7px;
+   border-radius: 999px;
+   background: rgba(20, 32, 26, 0.08);
+   font-size: 0.75rem;
+   font-weight: 700;
+   text-align: center;
+}
+
+.barangayRecoTabActive .barangayRecoTabCount {
+   background: rgba(255, 255, 255, 0.22);
+}
+
+.barangayRecoToolbarRight {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-width: 0;
+}
+
+.barangayRecoSearchWrap {
+   position: relative;
+   min-width: 0;
+}
+
+.barangayRecoSearchIcon {
+   position: absolute;
+   top: 50%;
+   left: 14px;
+   display: flex;
+   color: #667085;
+   transform: translateY(-50%);
+   pointer-events: none;
+}
+
+.barangayRecoSearch,
+.barangayRecoFilter {
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #c9d1de;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+   outline: none;
+   box-sizing: border-box;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.barangayRecoSearch {
+   width: 280px;
+   padding-left: 38px;
+}
+
+.barangayRecoFilter {
+   cursor: pointer;
+}
+
+.barangayRecoSearch::placeholder {
+   color: #667085;
+   opacity: 0.7;
+}
+
+.barangayRecoSearch:focus,
+.barangayRecoFilter:focus {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+
+/* ---------- States ---------- */
+.barangayRecoError {
+   flex-shrink: 0;
+   margin: 16px 20px 0;
+   padding: 10px 14px;
+   background: #fdeaea;
+   color: #b91c1c;
+   border-radius: 8px;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoEmpty {
+   padding: 56px 24px;
+   text-align: center;
+   color: #667085;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoEmptyIcon {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 56px;
+   height: 56px;
+   margin-bottom: 14px;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+}
+
+.barangayRecoEmptyTitle {
+   margin-bottom: 4px;
+   font-size: 1rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+
+/* ---------- Loading skeleton ---------- */
+.barangayRecoSkeletonList {
+   display: flex;
+   flex: 1;
+   min-height: 0;
+   flex-direction: column;
+   overflow: hidden;
+}
+
+.barangayRecoSkeletonRow {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 20px 22px;
+   border-bottom: 1px solid #e3e7ee;
+}
+
+.barangayRecoSkeletonCircle {
+   width: 44px;
+   height: 44px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #EEF2EE;
+   animation: barangayRecoPulse 1.4s ease-in-out infinite;
+}
+
+.barangayRecoSkeletonLines {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.barangayRecoSkeletonLine {
+   display: block;
+   height: 11px;
+   border-radius: 6px;
+   background: #EEF2EE;
+   animation: barangayRecoPulse 1.4s ease-in-out infinite;
+}
+
+.barangayRecoSkeletonShort {
+   width: 35%;
+}
+
+@keyframes barangayRecoPulse {
+   0%, 100% { opacity: 1; }
+   50% { opacity: 0.5; }
+}
+
+
+/* ---------- OSY list (the only part that scrolls) ---------- */
+.barangayRecoListWrap {
+   flex: 1;
+   min-height: 0;
+   overflow-y: auto;
+}
+
+.barangayRecoListWrap::-webkit-scrollbar {
+   width: 6px;
+}
+
+.barangayRecoListWrap::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.barangayRecoListWrap::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+.barangayRecoList {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.barangayRecoItem {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   width: 100%;
+   padding: 16px 22px;
+   border: none;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+   color: inherit;
+   font: inherit;
+   text-align: left;
+   cursor: pointer;
+   transition: background 0.15s ease;
+}
+
+.barangayRecoItem:hover {
+   background: #fafbfd;
+}
+
+.barangayRecoText {
+   flex: 1;
+   min-width: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.barangayRecoItemTop {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.barangayRecoItemName {
+   font-size: 0.95rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoItemMeta {
+   font-size: 0.85rem;
+   line-height: 1.5;
+   color: #667085;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoPills {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 6px;
+}
+
+.barangayRecoPill {
+   display: inline-flex;
+   align-items: center;
+   padding: 3px 10px;
+   border-radius: 999px;
+   background: #F0F1EE;
+   color: #667085;
+   font-size: 0.75rem;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoPillAvailable {
+   background: #E3F0E7;
+   color: #2F6E4F;
+}
+
+.barangayRecoPillUnavailable {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+.barangayRecoPillMore {
+   background: #F0F1EE;
+   color: #667085;
+}
+
+.barangayRecoCount {
+   flex-shrink: 0;
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #667085;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoChevron {
+   display: flex;
+   flex-shrink: 0;
+   color: #B5BFB7;
+   transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.barangayRecoItem:hover .barangayRecoChevron {
+   color: #2F6E4F;
+   transform: translateX(3px);
+}
+
+
+/* ---------- Avatar ---------- */
+.barangayRecoAvatar {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 44px;
+   height: 44px;
+   flex-shrink: 0;
+   overflow: hidden;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+   font-size: 0.9rem;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoAvatar img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.barangayRecoAvatarLarge {
+   width: 56px;
+   height: 56px;
+   font-size: 1.1rem;
+}
+
+
+/* ---------- Status badge ---------- */
+.barangayRecoBadge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 4px 10px;
+   border-radius: 999px;
+   background: #F0F1EE;
+   color: #667085;
+   font-size: 0.8rem;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoBadge::before {
+   content: '';
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
+}
+
+.barangayRecoBadgeAccepted {
+   background: #E6EEF7;
+   color: #2F5F8F;
+}
+
+.barangayRecoBadgeOngoing {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+.barangayRecoBadgeCompleted {
+   background: #E3F0E7;
+   color: #2F6E4F;
+}
+
+.barangayRecoBadgeRejected {
+   background: #FBEBEB;
+   color: #A23E3E;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+.barangayRecoOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 16px;
+   background: rgba(16, 24, 40, 0.6);
+   animation: barangayRecoFadeIn 0.15s ease;
+}
+
+.barangayRecoModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 700px;
+   max-height: 90vh;
+   background: #FFFFFF;
+   color: #1b2536;
+   border-radius: 16px;
+   box-shadow: 0 24px 48px rgba(16, 24, 40, 0.24);
+   overflow: hidden;
+   animation: barangayRecoSlideUp 0.22s ease;
+}
+
+@keyframes barangayRecoFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
+@keyframes barangayRecoSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* ---------- Modal header ---------- */
+.barangayRecoModalHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 20px 24px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayRecoModalIdentity {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   min-width: 0;
+}
+
+.barangayRecoModalName {
+   margin: 0 0 8px;
+   font-size: 1.25rem;
+   font-weight: 700;
+   color: #1b2536;
+   line-height: 1.25;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoModalMeta {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 10px;
+}
+
+.barangayRecoMuted {
+   margin: 0;
+   font-size: 0.875rem;
+   line-height: 1.5;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoModalClose {
+   flex-shrink: 0;
+   width: 36px;
+   height: 36px;
+   border: none;
+   border-radius: 8px;
+   background: transparent;
+   font-family: inherit;
+   font-size: 24px;
+   line-height: 1;
+   color: #667085;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.barangayRecoModalClose:hover {
+   background: #f4f6fa;
+   color: #1b2536;
+}
+
+
+/* ---------- Modal body ---------- */
+.barangayRecoModalBody {
+   flex: 1;
+   min-height: 0;
+   padding: 4px 24px 20px;
+   overflow-y: auto;
+}
+
+.barangayRecoModalBody::-webkit-scrollbar {
+   width: 6px;
+}
+
+.barangayRecoModalBody::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.barangayRecoModalBody::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+.barangayRecoSection {
+   padding: 20px 0;
+   border-bottom: 1px solid #e3e7ee;
+}
+
+.barangayRecoSection:last-child {
+   border-bottom: none;
+   padding-bottom: 4px;
+}
+
+.barangayRecoSectionTitle {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 0 0 16px;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoSectionTitle::before {
+   content: '';
+   width: 3px;
+   height: 14px;
+   border-radius: 2px;
+   background: #2F6E4F;
+}
+
+.barangayRecoGenerated {
+   margin-bottom: 14px;
+}
+
+
+/* ---------- Detail grid ---------- */
+.barangayRecoDetailGrid {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 18px 28px;
+}
+
+.barangayRecoDetailItem {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   min-width: 0;
+}
+
+.barangayRecoDetailWide {
+   grid-column: 1 / -1;
+}
+
+.barangayRecoDetailLabel {
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoDetailValue {
+   font-size: 0.875rem;
+   line-height: 1.45;
+   color: #1b2536;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+
+/* ---------- Recommended course cards ---------- */
+.barangayRecoCourseList {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.barangayRecoCourseCard {
+   display: flex;
+   gap: 14px;
+   padding: 16px 18px;
+   background: #F6FAF7;
+   border: 1px solid #E3EDE6;
+   border-left: 4px solid #2F6E4F;
+   border-radius: 10px;
+}
+
+.barangayRecoCourseUnavailable {
+   background: #FDF8EE;
+   border-color: #F4E6C8;
+   border-left-color: #96701E;
+}
+
+.barangayRecoCourseRank {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 28px;
+   height: 28px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font-size: 0.8rem;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoCourseUnavailable .barangayRecoCourseRank {
+   background: #96701E;
+}
+
+.barangayRecoCourseBody {
+   display: flex;
+   flex: 1;
+   min-width: 0;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.barangayRecoCourseHead {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   flex-wrap: wrap;
+   gap: 8px 12px;
+}
+
+.barangayRecoCourseTitle {
+   font-size: 0.95rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayRecoCoursePath {
+   font-size: 0.85rem;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoCourseImg {
+   width: 100%;
+   max-height: 160px;
+   border-radius: 8px;
+   object-fit: cover;
+}
+
+.barangayRecoKeywords {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 6px;
+}
+
+.barangayRecoKeyword {
+   padding: 2px 9px;
+   border-radius: 999px;
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
+   color: #1b2536;
+   font-size: 0.75rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayRecoCourseNote {
+   font-size: 0.8rem;
+   line-height: 1.45;
+   color: #96701E;
+   font-family: "Nunito", sans-serif;
+}
+
+
+/* ---------- Modal footer ---------- */
+.barangayRecoModalFooter {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+   padding: 16px 24px;
+   border-top: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayRecoModalNav {
+   display: flex;
+   gap: 8px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1100px) {
+   .barangayRecoToolbar {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .barangayRecoTabs {
+      overflow-x: auto;
+   }
+
+   .barangayRecoToolbarRight {
+      width: 100%;
+   }
+
+   .barangayRecoSearchWrap {
+      flex: 1;
+   }
+
+   .barangayRecoSearch {
+      width: 100%;
+   }
+}
+
+@media (max-width: 1024px) {
+   .barangayCourseRecommendationContent {
+      padding: 24px;
+   }
+}
+
+@media (max-width: 900px) {
+   .barangayRecoSummary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .barangayRecoCount {
+      display: none;
+   }
+}
+
+@media (max-width: 640px) {
+   .barangayRecoHeader {
+      flex-direction: column;
+      align-items: flex-start;
+   }
+
+   .barangayRecoSummary {
+      grid-template-columns: 1fr;
+   }
+
+   .barangayRecoToolbarRight {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .barangayRecoItem {
+      padding: 16px;
+   }
+
+   .barangayRecoChevron {
+      display: none;
+   }
+
+   .barangayRecoOverlay {
+      padding: 12px;
+   }
+
+   .barangayRecoDetailGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .barangayRecoModalFooter {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .barangayRecoModalNav {
+      justify-content: space-between;
+   }
+
+   .barangayRecoModalHeader,
+   .barangayRecoModalBody,
+   .barangayRecoModalFooter {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+}
+
+
+/* ---------- Mobile: sidebar becomes a burger menu, page scrolls normally ---------- */
+@media (max-width: 768px) {
+   .barangayCourseRecommendationBody {
+      position: static;
+      display: block;
+      min-height: 100vh;
+      overflow: visible;
+   }
+
+   .barangayCourseRecommendationContent {
+      height: auto;
+      min-height: 100vh;
+      padding: 64px 20px 20px;
+      overflow: visible;
+   }
+
+   .barangayRecoPage {
+      display: block;
+   }
+
+   .barangayRecoPanel {
+      display: block;
+   }
+
+   .barangayRecoListWrap {
+      max-height: 60vh;
+   }
+
+   .barangayRecoSkeletonList {
+      display: block;
+   }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+   .barangayRecoOverlay,
+   .barangayRecoModal,
+   .barangayRecoSkeletonCircle,
+   .barangayRecoSkeletonLine {
+      animation: none;
+   }
+
+   .barangayRecoTab,
+   .barangayRecoGhostBtn,
+   .barangayRecoPrimaryBtn,
+   .barangayRecoItem,
+   .barangayRecoChevron,
+   .barangayRecoSearch,
+   .barangayRecoFilter {
+      transition: none;
+   }
 }

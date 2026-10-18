@@ -1,6 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import SkOfficialSideBar from '../../../components/skOfficialSideBar';
 import './BarangayReferralManagement.css';
+
+
+/* -------------------------------------------------------------------------- */
+/* API helpers                                                                */
+/* -------------------------------------------------------------------------- */
 
 const API = '/api';
 
@@ -10,9 +15,7 @@ function getCookie(name) {
 }
 
 async function ensureCsrfCookie() {
-   await fetch('/sanctum/csrf-cookie', {
-      credentials: 'include',
-   });
+   await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
 }
 
 async function apiFetch(url, { method = 'GET', body } = {}) {
@@ -27,14 +30,8 @@ async function apiFetch(url, { method = 'GET', body } = {}) {
       credentials: 'include',
       headers: {
          Accept: 'application/json',
-
-         ...(body !== undefined && {
-            'Content-Type': 'application/json',
-         }),
-
-         ...(isWrite && {
-            'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
-         }),
+         ...(body !== undefined && { 'Content-Type': 'application/json' }),
+         ...(isWrite && { 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN') }),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
    });
@@ -42,29 +39,82 @@ async function apiFetch(url, { method = 'GET', body } = {}) {
    const data = await res.json().catch(() => null);
 
    if (!res.ok) {
-      throw new Error(
-         data?.message || `Request failed (${res.status})`
-      );
+      throw new Error(data?.message || `Request failed (${res.status})`);
    }
 
    return data;
 }
 
-const fullName = (p) => (p ? `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() : 'Unknown');
 
-const initials = (p) =>
-   p ? `${(p.first_name ?? '').charAt(0)}${(p.last_name ?? '').charAt(0)}`.toUpperCase() || '?' : '?';
+/* -------------------------------------------------------------------------- */
+/* Constants                                                                  */
+/* -------------------------------------------------------------------------- */
+
+const REMARKS_LIMIT = 500;
+const DEBOUNCE_MS = 300;
+
+// Same colors as the Maxima pages
+const BADGE_CLASS = {
+   'Registered': 'badgeRegistered',
+   'Validated': 'badgeValidated',
+   'Referred': 'badgeReferred',
+   'Accepted by Maxima': 'badgeAccepted',
+   'Training Started': 'badgeEnrolled',
+   'Completed': 'badgeCompleted',
+   'Rejected': 'badgeRejected',
+   'Dropped': 'badgeRejected',
+};
+
+// Same wording as the Maxima pages
+const STATUS_LABEL = {
+   'Accepted by Maxima': 'Accepted',
+   'Training Started': 'Enrolled',
+};
+
+const BOXES = [
+   { key: 'approved', label: 'Approved' },
+   { key: 'pending', label: 'Pending' },
+   { key: 'rejected', label: 'Rejected' },
+];
+
+
+/* -------------------------------------------------------------------------- */
+/* Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function fullName(p) {
+   if (!p) return 'Unknown';
+
+   return [p.first_name, p.middle_name, p.last_name].filter(Boolean).join(' ') || 'Unknown';
+}
+
+function initials(p) {
+   if (!p) return '?';
+
+   const letters = `${p.first_name?.[0] ?? ''}${p.last_name?.[0] ?? ''}`;
+   return letters.toUpperCase() || '?';
+}
 
 const programName = (p) => p?.name ?? `Program #${p?.id ?? '?'}`;
 
-// Maps the referrals.status enum to the three summary boxes.
-const APPROVED = ['Accepted by Maxima', 'Training Started', 'Completed'];
-const REJECTED = ['Rejected'];
-const groupOf = (status) => (APPROVED.includes(status) ? 'approved' : REJECTED.includes(status) ? 'rejected' : 'pending');
+function formatDate(value) {
+   const date = value ? new Date(value) : null;
+   if (!date || Number.isNaN(date.getTime())) return '—';
 
-const REMARKS_LIMIT = 500;
+   return date.toLocaleDateString('en-PH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+   });
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Page                                                                       */
+/* -------------------------------------------------------------------------- */
 
 function BarangayReferralManagement() {
+   // List
    const [referrals, setReferrals] = useState([]);
    const [counts, setCounts] = useState({ approved: 0, pending: 0, rejected: 0 });
    const [search, setSearch] = useState('');
@@ -72,7 +122,7 @@ function BarangayReferralManagement() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState('');
 
-   // create-referral modal
+   // Create-referral modal
    const [showModal, setShowModal] = useState(false);
    const [osySearch, setOsySearch] = useState('');
    const [osyOptions, setOsyOptions] = useState([]);
@@ -83,134 +133,156 @@ function BarangayReferralManagement() {
    const [formError, setFormError] = useState('');
    const [saving, setSaving] = useState(false);
 
+   // Only the newest list request may update the page
+   const latestRequest = useRef(0);
+
+   /* ---- data loading ---- */
+
    const loadReferrals = useCallback(async () => {
+      const requestId = ++latestRequest.current;
+
       try {
          const params = new URLSearchParams();
-         if (search) params.set('search', search);
+         const term = search.trim();
+         if (term) params.set('search', term);
          if (statusFilter) params.set('status', statusFilter);
 
          const data = await apiFetch(`${API}/referrals?${params}`);
+         if (requestId !== latestRequest.current) return;
 
          setReferrals(data.referrals);
          setCounts(data.counts);
          setError('');
       } catch (e) {
+         if (requestId !== latestRequest.current) return;
          setError(e.message);
       } finally {
-         setLoading(false);
+         if (requestId === latestRequest.current) setLoading(false);
       }
    }, [search, statusFilter]);
 
-   // debounce the search box
+   // Reload when the filter changes, and (debounced) while typing in search
    useEffect(() => {
-      const t = setTimeout(loadReferrals, 300);
-      return () => clearTimeout(t);
+      const timer = setTimeout(loadReferrals, DEBOUNCE_MS);
+      return () => clearTimeout(timer);
    }, [loadReferrals]);
 
-   // load OSY options while the modal is open
+   // OSY options while the modal is open (older responses are ignored)
    useEffect(() => {
-      if (!showModal) return;
-      const t = setTimeout(async () => {
+      if (!showModal) return undefined;
+
+      let cancelled = false;
+
+      const timer = setTimeout(async () => {
          try {
             const data = await apiFetch(
-               `${API}/referrals/osy-options?search=${encodeURIComponent(osySearch)}`
+               `${API}/referrals/osy-options?search=${encodeURIComponent(osySearch.trim())}`
             );
-
-            setOsyOptions(data);
+            if (!cancelled) setOsyOptions(data);
          } catch (err) {
-            setFormError(err.message);
+            if (!cancelled) setFormError(err.message);
          }
-      }, 300);
-      return () => clearTimeout(t);
+      }, DEBOUNCE_MS);
+
+      return () => {
+         cancelled = true;
+         clearTimeout(timer);
+      };
    }, [osySearch, showModal]);
 
-   // load training programs once when the modal opens
+   // Training programs, loaded once each time the modal opens
    useEffect(() => {
-      if (!showModal) return;
+      if (!showModal) return undefined;
+
+      let cancelled = false;
+
       (async () => {
          try {
             const data = await apiFetch(`${API}/referrals/program-options`);
-
-            setPrograms(data);
+            if (!cancelled) setPrograms(data);
          } catch (err) {
-            setFormError(err.message);
+            if (!cancelled) setFormError(err.message);
          }
       })();
+
+      return () => {
+         cancelled = true;
+      };
    }, [showModal]);
+
+   /* ---- modal ---- */
 
    const closeModal = useCallback(() => {
       setShowModal(false);
       setOsySearch('');
+      setOsyOptions([]);
       setSelectedOsy(null);
       setProgramId('');
       setRemarks('');
       setFormError('');
    }, []);
 
-   // lock the page behind the modal while it is open
+   // While the modal is open: lock the page behind it, and let Escape close it
+   // (but never while a save is running)
    useEffect(() => {
-      if (!showModal) return;
+      if (!showModal) return undefined;
+
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
-      return () => {
-         document.body.style.overflow = previousOverflow;
-      };
-   }, [showModal]);
 
-   // Escape closes the modal (but never while a save is running)
-   useEffect(() => {
-      if (!showModal) return;
       const onKeyDown = (e) => {
          if (e.key === 'Escape' && !saving) closeModal();
       };
       document.addEventListener('keydown', onKeyDown);
-      return () => document.removeEventListener('keydown', onKeyDown);
+
+      return () => {
+         document.body.style.overflow = previousOverflow;
+         document.removeEventListener('keydown', onKeyDown);
+      };
    }, [showModal, saving, closeModal]);
 
-   const submitReferral = async (e) => {
+   async function submitReferral(e) {
       e.preventDefault();
+      if (saving) return;
 
       if (!selectedOsy) {
-         return setFormError('Select an OSY to refer.');
+         setFormError('Select an OSY to refer.');
+         return;
       }
 
       if (!programId) {
-         return setFormError('Select a training program.');
+         setFormError('Select a training program.');
+         return;
       }
 
       setSaving(true);
       setFormError('');
 
       try {
-         const data = await apiFetch(`${API}/referrals`, {
+         await apiFetch(`${API}/referrals`, {
             method: 'POST',
             body: {
                osy_profile_id: selectedOsy.id,
                training_program_id: programId,
-               remarks,
+               remarks: remarks.trim(),
             },
          });
 
          closeModal();
          loadReferrals();
-
       } catch (err) {
          setFormError(err.message);
-
       } finally {
          setSaving(false);
       }
-   };
+   }
 
-   const toggleFilter = (status) => setStatusFilter((cur) => (cur === status ? '' : status));
+   /* ---- derived values ---- */
 
-   const boxes = [
-      { key: 'approved', label: 'Approved' },
-      { key: 'pending', label: 'Pending' },
-      { key: 'rejected', label: 'Rejected' },
-   ];
+   const toggleFilter = (key) => setStatusFilter((cur) => (cur === key ? '' : key));
+   const hasFilters = Boolean(search.trim() || statusFilter);
 
-   const hasFilters = Boolean(search || statusFilter);
+   /* ---- render ---- */
 
    return (
       <>
@@ -220,12 +292,13 @@ function BarangayReferralManagement() {
             <div className='barangayMainContent'>
 
                <div className='referralManagementTopPart'>
-                  <h1>REFERRAL MANAGEMENT</h1>
+                  <h1>Referral Management</h1>
                   <p>Manage referrals to MAXIMA</p>
                </div>
 
+               {/* Summary cards (also act as filters) */}
                <div className='referralManagementMidPart'>
-                  {boxes.map((b) => (
+                  {BOXES.map((b) => (
                      <button
                         key={b.key}
                         type='button'
@@ -270,7 +343,7 @@ function BarangayReferralManagement() {
                         </h2>
                      </div>
 
-                     {error && <p className='referralErrorBox'>{error}</p>}
+                     {error && <p className='referralErrorBox' role='alert'>{error}</p>}
 
                      {loading && (
                         <div className='referralEmptyState'>
@@ -316,9 +389,11 @@ function BarangayReferralManagement() {
                                              {r.remarks || '-'}
                                           </div>
                                        </td>
-                                       <td className='referralDate'>{new Date(r.created_at).toLocaleDateString()}</td>
+                                       <td className='referralDate'>{formatDate(r.created_at)}</td>
                                        <td>
-                                          <span className={`referralStatusBadge ${groupOf(r.status)}`}>{r.status}</span>
+                                          <span className={`referralStatusBadge ${BADGE_CLASS[r.status] ?? ''}`}>
+                                             {STATUS_LABEL[r.status] ?? r.status}
+                                          </span>
                                        </td>
                                     </tr>
                                  ))}
@@ -332,6 +407,7 @@ function BarangayReferralManagement() {
             </div>
          </div>
 
+         {/* Create referral modal (clicking outside does not close it) */}
          {showModal && (
             <div className='referralModalOverlay'>
                <form
@@ -393,6 +469,10 @@ function BarangayReferralManagement() {
                                  placeholder='Search OSY by name'
                                  value={osySearch}
                                  onChange={(e) => setOsySearch(e.target.value)}
+                                 onKeyDown={(e) => {
+                                    // Enter here must not submit the form
+                                    if (e.key === 'Enter') e.preventDefault();
+                                 }}
                                  autoFocus
                               />
                               <ul className='referralOptionList'>
@@ -401,7 +481,11 @@ function BarangayReferralManagement() {
                                  )}
                                  {osyOptions.map((o) => (
                                     <li key={o.id}>
-                                       <button type='button' className='referralOption' onClick={() => setSelectedOsy(o)}>
+                                       <button
+                                          type='button'
+                                          className='referralOption'
+                                          onClick={() => setSelectedOsy(o)}
+                                       >
                                           <span className='referralOptionName'>{fullName(o)}</span>
                                        </button>
                                     </li>

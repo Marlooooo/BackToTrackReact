@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import MaximaSideBar from '../../../components/maximaSideBar';
 import './MaximaReferrals.css';
 
@@ -60,29 +60,25 @@ async function apiFetch(url, { method = 'GET', body } = {}) {
 /* Constants                                                                  */
 /* -------------------------------------------------------------------------- */
 
-// current status => statuses Maxima can move it to
+// current status => decisions Maxima can make on this page.
+// Everything after acceptance happens in Progress Monitoring.
 const NEXT = {
    'Referred': ['Accepted by Maxima', 'Rejected'],
-   'Accepted by Maxima': ['Training Started'],
-   'Training Started': ['Completed'],
 };
 
-// the path a referral follows once it is accepted
-const STEPS = [
-   'Referred',
-   'Accepted by Maxima',
-   'Training Started',
-   'Completed',
-];
-
 const BADGE_CLASS = {
-   'Registered': 'referralBadgePending',
-   'Validated': 'referralBadgePending',
    'Referred': 'referralBadgePending',
    'Accepted by Maxima': 'referralBadgeAccepted',
    'Training Started': 'referralBadgeTraining',
    'Completed': 'referralBadgeCompleted',
    'Rejected': 'referralBadgeRejected',
+   'Dropped': 'referralBadgeRejected',
+};
+
+// Same wording as the Enrollees page
+const STATUS_LABEL = {
+   'Accepted by Maxima': 'Accepted',
+   'Training Started': 'Enrolled',
 };
 
 const FILTERS = [
@@ -91,6 +87,8 @@ const FILTERS = [
    { value: 'approved', label: 'Approved' },
    { value: 'rejected', label: 'Rejected' },
 ];
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 
 /* -------------------------------------------------------------------------- */
@@ -116,8 +114,11 @@ function programName(program) {
    return program?.title ?? program?.name ?? '—';
 }
 
-function formatDate(date) {
-   return new Date(date).toLocaleDateString(undefined, {
+function formatDate(value) {
+   const date = value ? new Date(value) : null;
+   if (!date || Number.isNaN(date.getTime())) return '—';
+
+   return date.toLocaleDateString(undefined, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -142,7 +143,7 @@ function StatCard({ variant, number, label, note }) {
 function StatusBadge({ status }) {
    return (
       <span className={`referralBadge ${BADGE_CLASS[status] ?? ''}`}>
-         {status}
+         {STATUS_LABEL[status] ?? status}
       </span>
    );
 }
@@ -218,11 +219,9 @@ function ReferralModal({
    const actions = [...(NEXT[referral.status] ?? [])].sort(
       (a, b) => (b === 'Rejected' ? 1 : 0) - (a === 'Rejected' ? 1 : 0)
    );
-   const stepIndex = STEPS.indexOf(referral.status);
    const osy = referral.osy_profile;
 
-   // Escape closes the modal (onClose is ignored while saving).
-   // Remove this effect if you don't want Escape to close it either.
+   // Escape closes the modal (onClose ignores it while saving).
    useEffect(() => {
       function handleKeyDown(e) {
          if (e.key === 'Escape') onClose();
@@ -231,6 +230,16 @@ function ReferralModal({
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
    }, [onClose]);
+
+   // Lock the page behind the modal while it is open
+   useEffect(() => {
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+         document.body.style.overflow = previousOverflow;
+      };
+   }, []);
 
    return (
       <div className='referralModalOverlay'>
@@ -275,37 +284,6 @@ function ReferralModal({
 
             {/* Body */}
             <div className='referralModalBody'>
-
-               {/* Progress */}
-               <div className='referralSection'>
-                  <span className='referralSectionTitle'>Referral progress</span>
-
-                  {referral.status === 'Rejected' ? (
-                     <div className='referralRejectedNote'>
-                        This referral was rejected.
-                     </div>
-                  ) : (
-                     <ol className='referralSteps' aria-label='Referral progress'>
-                        {STEPS.map((step, index) => {
-                           let state = 'Todo';
-                           if (index < stepIndex) state = 'Done';
-                           if (index === stepIndex) state = 'Active';
-
-                           return (
-                              <li
-                                 key={step}
-                                 className={`referralStep referralStep${state}`}
-                              >
-                                 <span className='referralStepDot'>
-                                    {index < stepIndex ? '✓' : index + 1}
-                                 </span>
-                                 <span className='referralStepLabel'>{step}</span>
-                              </li>
-                           );
-                        })}
-                     </ol>
-                  )}
-               </div>
 
                {/* Details */}
                <div className='referralSection'>
@@ -358,17 +336,14 @@ function ReferralModal({
                      <div className='referralField'>
                         <label className='referralLabel' htmlFor='referralRemarks'>
                            Remarks{' '}
-                           {actions.includes('Rejected') ? (
-                              <span className='referralHint'>(required if rejecting)</span>
-                           ) : (
-                              <span className='referralHint'>(optional)</span>
-                           )}
+                           <span className='referralHint'>(required if rejecting)</span>
                         </label>
 
                         <textarea
                            id='referralRemarks'
                            className='referralTextarea'
                            rows={3}
+                           maxLength={1000}
                            placeholder='Add a note about your decision'
                            value={remarks}
                            onChange={(e) => onRemarksChange(e.target.value)}
@@ -409,7 +384,7 @@ function ReferralModal({
                         ? 'Saving…'
                         : status === 'Rejected'
                            ? 'Reject'
-                           : `Mark as ${status}`}
+                           : 'Accept'}
                   </button>
                ))}
             </div>
@@ -440,38 +415,45 @@ function MaximaReferrals() {
    const [pendingStatus, setPendingStatus] = useState(null);
    const [actionError, setActionError] = useState('');
 
+   // Only the newest request may update the page (older responses are ignored)
+   const latestRequest = useRef(0);
+
    const total = counts.pending + counts.approved + counts.rejected;
    const filterCounts = { '': total, ...counts };
 
    /* ---- data loading ---- */
 
    async function loadReferrals() {
-      try {
-         setLoading(true);
+      const requestId = ++latestRequest.current;
 
+      try {
          const params = new URLSearchParams();
+         const term = search.trim();
          if (filter) params.append('status', filter);
-         if (search) params.append('search', search);
+         if (term) params.append('search', term);
 
          const data = await apiFetch(`/api/maxima/referrals?${params}`);
+         if (requestId !== latestRequest.current) return;
 
          setReferrals(data.referrals);
          setCounts(data.counts);
          setError('');
       } catch (err) {
+         if (requestId !== latestRequest.current) return;
+
          setError(
             err.status === 403
                ? 'You do not have permission to view referrals.'
                : 'Could not load referrals.'
          );
       } finally {
-         setLoading(false);
+         if (requestId === latestRequest.current) setLoading(false);
       }
    }
 
    // Reload when the filter changes, and (debounced) while typing in search
    useEffect(() => {
-      const timer = setTimeout(loadReferrals, 300);
+      const timer = setTimeout(loadReferrals, SEARCH_DEBOUNCE_MS);
       return () => clearTimeout(timer);
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [filter, search]);
@@ -485,14 +467,14 @@ function MaximaReferrals() {
       setPendingStatus(null);
    }
 
-   function closeReferral() {
+   const closeReferral = useCallback(() => {
       if (saving) return;
 
       setSelected(null);
       setRemarks('');
       setActionError('');
       setPendingStatus(null);
-   }
+   }, [saving]);
 
    async function updateStatus(status) {
       if (status === 'Rejected' && !remarks.trim()) {
@@ -507,7 +489,7 @@ function MaximaReferrals() {
 
          await apiFetch(`/api/maxima/referrals/${selected.id}/status`, {
             method: 'PATCH',
-            body: { status, remarks },
+            body: { status, remarks: remarks.trim() },
          });
 
          setSelected(null);
@@ -533,7 +515,7 @@ function MaximaReferrals() {
 
                <div className='maximaReferralMainDivTop'>
                   <h1>REFERRAL REQUEST</h1>
-                  <p>Review and manage OSY referral requests from barangay.</p>
+                  <p>Accept or reject OSY referral requests. Accepted referrals move to Progress Monitoring.</p>
                </div>
 
                <div className='maximaReferralMainDivBot'>
@@ -551,13 +533,13 @@ function MaximaReferrals() {
                            variant='Approved'
                            number={counts.approved}
                            label='Approved'
-                           note='Accepted, in training, or done'
+                           note='Accepted and moved to Progress Monitoring'
                         />
                         <StatCard
                            variant='Rejected'
                            number={counts.rejected}
                            label='Rejected'
-                           note='Declined referrals'
+                           note='Declined or dropped referrals'
                         />
                      </div>
 
@@ -621,7 +603,9 @@ function MaximaReferrals() {
                            </div>
                         </div>
 
-                        {loading && (
+                        {/* Full-page loading only on the first load, so the table
+                            does not disappear while the user is typing */}
+                        {loading && referrals.length === 0 && (
                            <div className='referralState'>Loading referrals…</div>
                         )}
 
@@ -638,7 +622,7 @@ function MaximaReferrals() {
                            </div>
                         )}
 
-                        {!loading && referrals.length > 0 && (
+                        {referrals.length > 0 && (
                            <div className='referralTableWrap'>
                               <table className='referralTable'>
                                  <thead>

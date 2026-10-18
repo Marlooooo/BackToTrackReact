@@ -102,6 +102,11 @@
    "Completed",
    ];
 
+   const FILTER_STATUSES = [...STATUS_STEPS, "Rejected", "Dropped"];
+
+   // Only these can be set by hand. Once a referral exists, the status comes from it.
+   const MANUAL_STATUSES = ["Registered", "Validated"];
+
    const EDUCATIONAL_ATTAINMENTS = [
    "No Grade Completed",
    "Elementary Undergraduate",
@@ -592,6 +597,20 @@
    /* Course suggestions (keyword matching, runs on your own server)             */
    /* -------------------------------------------------------------------------- */
 
+   const BASIS_LABELS = {
+      preferred_career: 'Preferred career',
+      background_circumstances: 'Background circumstances',
+      personal_observations: 'Personal observations',
+      expressed_goals: 'Expressed goals',
+      interview_notes: 'Interview notes',
+   };
+
+   function recReason(c) {
+      if (c.relation === 'related') return 'Related field of the preferred career';
+      const words = c.matched.join(', ');
+      return `Based on ${BASIS_LABELS[c.basis] ?? 'the interview'}${words ? `: ${words}` : ''}`;
+   }
+
    function RecommendedCourses({ osyId, draft }) {
    const [items, setItems] = useState([]);
    const [loading, setLoading] = useState(false);
@@ -603,29 +622,23 @@
    useEffect(() => {
       let cancelled = false;
 
-      const timer = setTimeout(
-         async () => {
+      const timer = setTimeout(async () => {
          setLoading(true);
          setError(null);
          try {
-            const body = osyId
-               ? await apiFetch(`${OSY_ENDPOINT}/${osyId}/recommendations`)
-               : await apiFetch("/api/osy-recommendations/preview", {
-                  method: "POST",
-                  body: draft,
-               });
-            if (!cancelled) setItems(body.data ?? []);
+         const body = osyId
+            ? await apiFetch(`${OSY_ENDPOINT}/${osyId}/recommendations`)
+            : await apiFetch('/api/osy-recommendations/preview', { method: 'POST', body: draft });
+         if (!cancelled) setItems(body.data ?? []);
          } catch (err) {
-            if (!cancelled) {
-               setItems([]);
-               setError(describeError(err, "Could not load course suggestions."));
-            }
-         } finally {
-            if (!cancelled) setLoading(false);
+         if (!cancelled) {
+            setItems([]);
+            setError(err.message);
          }
-         },
-         osyId ? 0 : 700,
-      );
+         } finally {
+         if (!cancelled) setLoading(false);
+         }
+      }, osyId ? 0 : 700);
 
       return () => {
          cancelled = true;
@@ -634,13 +647,15 @@
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [key]);
 
-   const basedOn = items[0]?.based_on;
+   const mode = items[0]?.mode;
    const note =
-      basedOn === "preferred_career"
-         ? "Best match for the preferred career entered. This is a suggestion for the SK official to review, not a final placement."
-         : basedOn === "interview_notes"
-         ? "Matched from the interview notes (goals, observations, background). These are suggestions for the SK official to review, not a final placement."
-         : "Matched from the interview answers. These are suggestions for the SK official to review, not a final placement.";
+      mode === 'career_available'
+         ? 'A Maxima course matches the preferred career. The details come from the Maxima course list.'
+         : mode === 'career_alternatives'
+         ? 'Maxima has no course for the preferred career. These are related courses and career paths. Courses marked Not Available at Maxima are suggestions only and cannot be referred.'
+         : mode === 'notes'
+         ? 'No preferred career was entered, so these come from the interview notes. Courses marked Not Available at Maxima are suggestions only and cannot be referred.'
+         : 'Suggestions are based on the preferred career, or on the interview notes if there is none. They are for the SK official to review, not a final placement.';
 
    return (
       <div className="bosyFormSection bosyRecs">
@@ -650,32 +665,49 @@
          {loading ? (
          <div className="bosyEmpty">Finding matches…</div>
          ) : error ? (
-         <div className="bosyBanner bosyBannerError" role="alert">
-            {error}
-         </div>
+         <div className="bosyBanner bosyBannerError" role="alert">{error}</div>
          ) : items.length === 0 ? (
          <div className="bosyEmpty">
-            No related course found. Add a preferred career, or fill in the goals
-            and observations, to see suggestions.
+            No related course or career path found. Add a preferred career, or more detail to the interview notes, to see suggestions.
          </div>
          ) : (
-         <ul className="bosyRecList">
-            {items.map((c) => (
-               <li key={c.id} className="bosyRecItem">
-               {c.based_on === "preferred_career" ? (
-                  <span className="bosyRecBest">Best match</span>
-               ) : (
-                  <span className="bosyRecRank">#{c.rank}</span>
-               )}
-               <div className="bosyRecInfo">
-                  <strong>{c.title}</strong>
-                  <span className="bosyRecWhy">
-                     Matched: {c.matched.join(", ")}
-                  </span>
-               </div>
-               </li>
-            ))}
-         </ul>
+         <>
+            <ul className="bosyRecList">
+               {items.map((c) => (
+                  <li key={c.rank} className="bosyRecItem">
+                  <div className={`bosyRecCard ${c.available ? 'bosyRecCardAvailable' : 'bosyRecCardUnavailable'}`}>
+                     <div className="bosyRecHead">
+                        <strong>{c.title}</strong>
+                        <span className={`bosyRecTag ${c.available ? 'bosyRecTagAvailable' : 'bosyRecTagUnavailable'}`}>
+                        {c.available ? 'Available at Maxima' : 'Not Available at Maxima'}
+                        </span>
+                     </div>
+
+                     {c.career_path && <span className="bosyRecPath">Career path: {c.career_path}</span>}
+                     <span className="bosyRecWhy">{recReason(c)}</span>
+
+                     {c.available && c.program?.image_url && (
+                        <img className="bosyRecImg" src={c.program.image_url} alt="" />
+                     )}
+                     {c.available && c.program?.description && (
+                        <p className="bosyRecDesc">{c.program.description}</p>
+                     )}
+                     {!c.available && (
+                        <span className="bosyRecNote">
+                        Suggestion only. Maxima does not offer this course, and the OSY is not enrolled in it.
+                        </span>
+                     )}
+                  </div>
+                  </li>
+               ))}
+            </ul>
+
+            {(mode === 'notes' || mode === 'career_alternatives') && items.length < 3 && (
+               <p className="bosyFormSectionNote">
+                  Only {items.length} {items.length === 1 ? 'suggestion' : 'suggestions'} could be made. There is not enough detail to suggest three without guessing.
+               </p>
+            )}
+         </>
          )}
       </div>
    );
@@ -775,7 +807,8 @@
          osy.address?.toLowerCase().includes(term) ||
          osy.educational_attainment?.toLowerCase().includes(term);
          const matchesStatus =
-         statusFilter === "all" || osy.current_status === statusFilter;
+            statusFilter === "all" ||
+            (osy.display_status ?? osy.current_status) === statusFilter;
          return matchesSearch && matchesStatus;
       });
    }, [osyRecords, search, statusFilter]);
@@ -1216,7 +1249,7 @@
                   onChange={(e) => setStatusFilter(e.target.value)}
                >
                   <option value="all">All Statuses</option>
-                  {STATUS_STEPS.map((s) => (
+                  {FILTER_STATUSES.map((s) => (
                      <option key={s} value={s}>
                      {s}
                      </option>
@@ -1291,7 +1324,7 @@
                            <td className="osyTable__address">{osy.address}</td>
                            <td>{osy.educational_attainment || "—"}</td>
                            <td>
-                              <StatusBadge status={osy.current_status} />
+                              <StatusBadge status={osy.display_status ?? osy.current_status} />
                            </td>
                            <td className="osyTable__actions">
                               <button
@@ -1631,7 +1664,11 @@
 
                   <div className="bosyFormSection">
                      <h3>Status</h3>
-                     <Field label="Current status" id={fieldId("current_status")}>
+                     <Field
+                        label="Current status"
+                        id={fieldId("current_status")}
+                        hint="Once this OSY is referred, the status follows the referral."
+                     >
                      <select
                         id={fieldId("current_status")}
                         value={form.current_status}
@@ -1639,7 +1676,13 @@
                            handleChange("current_status", e.target.value)
                         }
                      >
-                        {STATUS_STEPS.map((s) => (
+                        {/* Keeps an older value visible when editing existing records */}
+                        {!MANUAL_STATUSES.includes(form.current_status) && (
+                           <option value={form.current_status}>
+                           {form.current_status}
+                           </option>
+                        )}
+                        {MANUAL_STATUSES.map((s) => (
                            <option key={s} value={s}>
                            {s}
                            </option>
@@ -1860,7 +1903,7 @@
                   </span>
                </div>
                </div>
-               <StatusBadge status={viewTarget.current_status} />
+               <StatusBadge status={viewTarget.display_status ?? viewTarget.current_status} />
             </div>
 
             <dl className="bosyDetailGrid">

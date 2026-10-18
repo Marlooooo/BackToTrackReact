@@ -311,29 +311,34 @@
    border-radius: 999px;
 }
 
+/* Referred */
 .referralBadgePending {
-   color: #96701E;
    background: #FBF0DD;
+   color: #96701E;
 }
 
+/* Accepted */
 .referralBadgeAccepted {
-   color: #1D4F91;
-   background: #E6EEFA;
+   background: #E6EEF7;
+   color: #2F5F8F;
 }
 
+/* Enrolled */
 .referralBadgeTraining {
-   color: #0E7490;
-   background: #DFF3F7;
+   background: #FBF0DD;
+   color: #96701E;
 }
 
+/* Completed */
 .referralBadgeCompleted {
-   color: #2F6E4F;
    background: #E3F0E7;
+   color: #2F6E4F;
 }
 
+/* Rejected and Dropped */
 .referralBadgeRejected {
-   color: #A23E3E;
    background: #FBEBEB;
+   color: #A23E3E;
 }
 
 /* Empty, loading, and error states */

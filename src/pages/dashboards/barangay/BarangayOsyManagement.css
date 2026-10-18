@@ -256,21 +256,26 @@
    /* ---------- Status pills (one per stage) ---------- */
 
    .bosyStatus {
-   display: inline-block;
-   padding: 3px 11px;
-   border-radius: 999px;
-   font-size: 11px;
-   font-weight: 600;
-   white-space: nowrap;
-   font-family: "Nunito", sans-serif;
+      display: inline-block;
+      padding: 3px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      font-family: "Nunito", sans-serif;
    }
 
+   /* Before a referral exists (not shown on the Maxima pages) */
    .bosyStatus--Registered       { background: #EAF0EE; color: #55665C; }
    .bosyStatus--Validated        { background: #E4EBF6; color: #3A5D8F; }
+
+   /* From the referral onward: same colors as Maxima */
    .bosyStatus--Referred         { background: #FBF0DD; color: #96701E; }
-   .bosyStatus--AcceptedbyMaxima { background: #EEE6F4; color: #71549A; }
-   .bosyStatus--TrainingStarted  { background: #FBE9DA; color: #B0621F; }
+   .bosyStatus--AcceptedbyMaxima { background: #E6EEF7; color: #2F5F8F; }
+   .bosyStatus--TrainingStarted  { background: #FBF0DD; color: #96701E; }
    .bosyStatus--Completed        { background: #E3F0E7; color: #2F6E4F; }
+   .bosyStatus--Rejected         { background: #FBEBEB; color: #A23E3E; }
+   .bosyStatus--Dropped          { background: #FBEBEB; color: #A23E3E; }
 
    /* ---------- Buttons (inside modals) ---------- */
 
@@ -910,7 +915,75 @@ font-family: "Nunito", sans-serif;
 
 
 
+.bosyRecCard {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   padding: 12px 14px;
+   border: 1px solid #e5e7eb;
+   border-radius: 8px;
+   background-color: #ffffff;
+}
 
+.bosyRecCardAvailable {
+   border-left: 4px solid #16a34a;
+}
+
+.bosyRecCardUnavailable {
+   border-left: 4px solid #d97706;
+}
+
+.bosyRecHead {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.bosyRecTag {
+   padding: 4px 10px;
+   border-radius: 999px;
+   font-size: 12px;
+   font-weight: 700;
+   white-space: nowrap;
+}
+
+.bosyRecTagAvailable {
+   background-color: #dcfce7;
+   color: #15803d;
+}
+
+.bosyRecTagUnavailable {
+   background-color: #fef3c7;
+   color: #b45309;
+}
+
+.bosyRecPath {
+   font-size: 13px;
+   color: #374151;
+}
+
+.bosyRecImg {
+   width: 100%;
+   max-height: 140px;
+   object-fit: cover;
+   border-radius: 6px;
+}
+
+.bosyRecDesc {
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #4b5563;
+}
+
+.bosyRecNote {
+   font-size: 12px;
+   font-style: italic;
+   color: #b45309;
+}
 
 
 

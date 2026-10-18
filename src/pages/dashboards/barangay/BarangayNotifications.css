@@ -1,9 +1,1098 @@
+/* =========================================================
+   PAGE LAYOUT
+   The page is pinned to the window. Only the list scrolls.
+========================================================= */
 .barangayNotificationsBody {
+   position: fixed;
+   inset: 0;
    display: flex;
-   min-height: 100vh;
+   overflow: hidden;
+   color: #1b2536;
 }
 
 .barangayNotificationsContent {
    flex: 1;
-   padding: 20px;
+   min-width: 0;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
+   height: 100%;
+   padding: 28px 40px 24px;
+   background: #F5F7F5;
+   overflow: hidden;
+}
+
+.barangayNotifPage {
+   flex: 1;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   max-width: 100%;
+}
+
+
+/* ---------- Header ---------- */
+.barangayNotifHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 18px;
+   padding-bottom: 16px;
+   border-bottom: 1px solid #E3E9E3;
+}
+
+.barangayNotifTitle {
+   margin: 0;
+   font-size: 1.5rem;
+   font-weight: 700;
+   letter-spacing: -0.01em;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifSubtitle {
+   margin: 6px 0 0;
+   font-size: 0.8rem;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifHeaderActions {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+
+/* ---------- Buttons ---------- */
+.barangayNotifGhostBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 16px;
+   border: 1px solid #DCE6DE;
+   border-radius: 10px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.barangayNotifGhostBtn:hover:not(:disabled) {
+   background: #F1F4F1;
+   border-color: #CBD5CD;
+}
+
+.barangayNotifGhostBtn:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+}
+
+.barangayNotifPrimaryBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #2F6E4F;
+   border-radius: 10px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.barangayNotifPrimaryBtn:hover:not(:disabled) {
+   border-color: #275C42;
+   background: #275C42;
+}
+
+.barangayNotifEmptyBtn {
+   margin-top: 16px;
+}
+
+.barangayNotifGhostBtn:focus-visible,
+.barangayNotifPrimaryBtn:focus-visible,
+.barangayNotifTab:focus-visible,
+.barangayNotifModalClose:focus-visible,
+.barangayNotifItem:focus-visible,
+.barangayNotifFilter:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+
+/* ---------- Summary cards ---------- */
+.barangayNotifSummary {
+   display: grid;
+   flex-shrink: 0;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 16px;
+   margin-bottom: 18px;
+}
+
+.barangayNotifSummaryCard {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 16px 24px;
+   background: #FFFFFF;
+   border: 1px solid #e3e7ee;
+   border-left: 4px solid #7C877E;
+   border-radius: 12px;
+}
+
+.barangayNotifSummaryUnread {
+   border-left-color: #2F6E4F;
+}
+
+.barangayNotifSummaryAccepted {
+   border-left-color: #2F5F8F;
+}
+
+.barangayNotifSummaryOngoing {
+   border-left-color: #96701E;
+}
+
+.barangayNotifSummaryCompleted {
+   border-left-color: #5FA37F;
+}
+
+.barangayNotifSummaryLabel {
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifSummaryValue {
+   font-size: 2.25rem;
+   font-weight: 700;
+   line-height: 1.1;
+   color: #1b2536;
+}
+
+
+/* ---------- Main panel (fills the leftover height) ---------- */
+.barangayNotifPanel {
+   flex: 1;
+   min-height: 0;
+   display: flex;
+   flex-direction: column;
+   background: #FFFFFF;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   overflow: hidden;
+}
+
+.barangayNotifToolbar {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 12px 20px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayNotifTabs {
+   display: flex;
+   gap: 8px;
+}
+
+.barangayNotifTab {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #c9d1de;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.barangayNotifTab:hover {
+   background: #f4f6fa;
+}
+
+.barangayNotifTabActive {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+   color: #FFFFFF;
+}
+
+.barangayNotifTabActive:hover {
+   background: #275C42;
+}
+
+.barangayNotifTabCount {
+   display: inline-block;
+   min-width: 20px;
+   padding: 1px 7px;
+   border-radius: 999px;
+   background: rgba(20, 32, 26, 0.08);
+   font-size: 0.75rem;
+   font-weight: 700;
+   text-align: center;
+}
+
+.barangayNotifTabActive .barangayNotifTabCount {
+   background: rgba(255, 255, 255, 0.22);
+}
+
+.barangayNotifToolbarRight {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-width: 0;
+}
+
+.barangayNotifSearchWrap {
+   position: relative;
+   min-width: 0;
+}
+
+.barangayNotifSearchIcon {
+   position: absolute;
+   top: 50%;
+   left: 14px;
+   display: flex;
+   color: #667085;
+   transform: translateY(-50%);
+   pointer-events: none;
+}
+
+.barangayNotifSearch,
+.barangayNotifFilter {
+   height: 40px;
+   padding: 0 18px;
+   border: 1px solid #c9d1de;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #1b2536;
+   font: inherit;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+   outline: none;
+   box-sizing: border-box;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.barangayNotifSearch {
+   width: 240px;
+   padding-left: 38px;
+}
+
+.barangayNotifFilter {
+   cursor: pointer;
+}
+
+.barangayNotifSearch::placeholder {
+   color: #667085;
+   opacity: 0.7;
+}
+
+.barangayNotifSearch:focus,
+.barangayNotifFilter:focus {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+
+/* ---------- States ---------- */
+.barangayNotifError {
+   flex-shrink: 0;
+   margin: 16px 20px 0;
+   padding: 10px 14px;
+   background: #fdeaea;
+   color: #b91c1c;
+   border-radius: 8px;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifEmpty {
+   padding: 56px 24px;
+   text-align: center;
+   color: #667085;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifEmptyIcon {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 56px;
+   height: 56px;
+   margin-bottom: 14px;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+}
+
+.barangayNotifEmptyTitle {
+   margin-bottom: 4px;
+   font-size: 1rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+
+/* ---------- Loading skeleton ---------- */
+.barangayNotifSkeletonList {
+   display: flex;
+   flex: 1;
+   min-height: 0;
+   flex-direction: column;
+   overflow: hidden;
+}
+
+.barangayNotifSkeletonRow {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 20px 22px;
+   border-bottom: 1px solid #e3e7ee;
+}
+
+.barangayNotifSkeletonCircle {
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #EEF2EE;
+   animation: barangayNotifPulse 1.4s ease-in-out infinite;
+}
+
+.barangayNotifSkeletonLines {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.barangayNotifSkeletonLine {
+   display: block;
+   height: 11px;
+   border-radius: 6px;
+   background: #EEF2EE;
+   animation: barangayNotifPulse 1.4s ease-in-out infinite;
+}
+
+.barangayNotifSkeletonShort {
+   width: 35%;
+}
+
+@keyframes barangayNotifPulse {
+   0%, 100% { opacity: 1; }
+   50% { opacity: 0.5; }
+}
+
+
+/* ---------- Notification list (the only part that scrolls) ---------- */
+.barangayNotifListWrap {
+   flex: 1;
+   min-height: 0;
+   overflow-y: auto;
+}
+
+.barangayNotifListWrap::-webkit-scrollbar {
+   width: 6px;
+}
+
+.barangayNotifListWrap::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.barangayNotifListWrap::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+.barangayNotifGroupLabel {
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   padding: 10px 22px;
+   background: #f4f6fa;
+   border-bottom: 1px solid #e3e7ee;
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #667085;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifList {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.barangayNotifItem {
+   position: relative;
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 16px 22px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+   cursor: pointer;
+   transition: background 0.15s ease;
+}
+
+.barangayNotifItem:hover {
+   background: #fafbfd;
+}
+
+.barangayNotifUnread {
+   background: #F6FAF7;
+}
+
+.barangayNotifUnread::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   width: 3px;
+   background: #2F6E4F;
+}
+
+.barangayNotifUnread:hover {
+   background: #EFF6F1;
+}
+
+.barangayNotifIcon {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #F0F1EE;
+   color: #667085;
+}
+
+.barangayNotifIconLarge {
+   width: 52px;
+   height: 52px;
+}
+
+.barangayNotifText {
+   flex: 1;
+   min-width: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+
+.barangayNotifItemTop {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.barangayNotifItemTitle {
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifItemMessage {
+   font-size: 0.875rem;
+   line-height: 1.5;
+   color: #1b2536;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifItemTime {
+   font-size: 0.8rem;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifDot {
+   width: 10px;
+   height: 10px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 3px #E3F0E7;
+}
+
+.barangayNotifChevron {
+   display: flex;
+   flex-shrink: 0;
+   color: #B5BFB7;
+   transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.barangayNotifItem:hover .barangayNotifChevron {
+   color: #2F6E4F;
+   transform: translateX(3px);
+}
+
+.barangayNotifLoadMore {
+   display: flex;
+   justify-content: center;
+   padding: 18px;
+   border-top: 1px solid #e3e7ee;
+}
+
+
+/* ---------- Status badge (same style as the referral status badge) ---------- */
+.barangayNotifBadge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 4px 10px;
+   border-radius: 999px;
+   background: #F0F1EE;
+   color: #667085;
+   font-size: 0.8rem;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifBadge::before {
+   content: '';
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
+}
+
+
+/* ---------- Status colors (icon + badge) ---------- */
+.barangayNotifAccepted .barangayNotifIcon,
+.barangayNotifAccepted .barangayNotifBadge {
+   background: #E6EEF7;
+   color: #2F5F8F;
+}
+
+.barangayNotifOngoing .barangayNotifIcon,
+.barangayNotifOngoing .barangayNotifBadge {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+.barangayNotifCompleted .barangayNotifIcon,
+.barangayNotifCompleted .barangayNotifBadge {
+   background: #E3F0E7;
+   color: #2F6E4F;
+}
+
+.barangayNotifRejected .barangayNotifIcon,
+.barangayNotifRejected .barangayNotifBadge {
+   background: #FBEBEB;
+   color: #A23E3E;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+.barangayNotifOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 16px;
+   background: rgba(16, 24, 40, 0.6);
+   animation: barangayNotifFadeIn 0.15s ease;
+}
+
+.barangayNotifModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 700px;
+   max-height: 90vh;
+   background: #FFFFFF;
+   color: #1b2536;
+   border-radius: 16px;
+   box-shadow: 0 24px 48px rgba(16, 24, 40, 0.24);
+   overflow: hidden;
+   animation: barangayNotifSlideUp 0.22s ease;
+}
+
+@keyframes barangayNotifFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
+@keyframes barangayNotifSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+/* ---------- Modal header ---------- */
+.barangayNotifModalHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 20px 24px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayNotifModalIdentity {
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   min-width: 0;
+}
+
+.barangayNotifModalName {
+   margin: 0 0 8px;
+   font-size: 1.25rem;
+   font-weight: 700;
+   color: #1b2536;
+   line-height: 1.25;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifModalMeta {
+   display: flex;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 10px;
+}
+
+.barangayNotifMuted {
+   font-size: 0.875rem;
+   line-height: 1.5;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifModalClose {
+   flex-shrink: 0;
+   width: 36px;
+   height: 36px;
+   border: none;
+   border-radius: 8px;
+   background: transparent;
+   font-family: inherit;
+   font-size: 24px;
+   line-height: 1;
+   color: #667085;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.barangayNotifModalClose:hover {
+   background: #f4f6fa;
+   color: #1b2536;
+}
+
+
+/* ---------- Modal body ---------- */
+.barangayNotifModalBody {
+   flex: 1;
+   min-height: 0;
+   padding: 4px 24px 20px;
+   overflow-y: auto;
+}
+
+.barangayNotifModalBody::-webkit-scrollbar {
+   width: 6px;
+}
+
+.barangayNotifModalBody::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.barangayNotifModalBody::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+.barangayNotifModalError {
+   margin: 16px 0 0;
+}
+
+.barangayNotifModalState {
+   padding: 36px 0;
+   text-align: center;
+   color: #667085;
+   font-size: 0.875rem;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifSection {
+   padding: 20px 0;
+   border-bottom: 1px solid #e3e7ee;
+}
+
+.barangayNotifSection:last-child {
+   border-bottom: none;
+   padding-bottom: 4px;
+}
+
+.barangayNotifSectionTitle {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 0 0 16px;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifSectionTitle::before {
+   content: '';
+   width: 3px;
+   height: 14px;
+   border-radius: 2px;
+   background: #2F6E4F;
+}
+
+.barangayNotifMessageBox {
+   padding: 16px 18px;
+   background: #F6FAF7;
+   border: 1px solid #E3EDE6;
+   border-left: 4px solid #2F6E4F;
+   border-radius: 10px;
+   font-size: 0.875rem;
+   line-height: 1.6;
+   color: #1b2536;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifAccepted .barangayNotifMessageBox {
+   background: #F3F7FB;
+   border-color: #DCE7F3;
+   border-left-color: #2F5F8F;
+}
+
+.barangayNotifOngoing .barangayNotifMessageBox {
+   background: #FDF8EE;
+   border-color: #F4E6C8;
+   border-left-color: #96701E;
+}
+
+.barangayNotifRejected .barangayNotifMessageBox {
+   background: #FDF4F4;
+   border-color: #F4DCDC;
+   border-left-color: #A23E3E;
+}
+
+
+/* ---------- Person ---------- */
+.barangayNotifPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   margin-bottom: 20px;
+}
+
+.barangayNotifPersonName {
+   font-size: 1rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifAvatar {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 44px;
+   height: 44px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+   font-size: 0.9rem;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+
+/* ---------- Detail grid ---------- */
+.barangayNotifDetailGrid {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 18px 28px;
+}
+
+.barangayNotifDetailItem {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   min-width: 0;
+}
+
+.barangayNotifDetailWide {
+   grid-column: 1 / -1;
+}
+
+.barangayNotifDetailLabel {
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifDetailValue {
+   font-size: 0.875rem;
+   line-height: 1.45;
+   color: #1b2536;
+   word-break: break-word;
+   white-space: pre-line;
+   font-family: "Nunito", sans-serif;
+}
+
+
+/* ---------- Timeline ---------- */
+.barangayNotifTimeline {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.barangayNotifTimelineItem {
+   position: relative;
+   display: flex;
+   gap: 14px;
+   padding-bottom: 18px;
+}
+
+.barangayNotifTimelineItem:not(:last-child)::before {
+   content: '';
+   position: absolute;
+   top: 18px;
+   left: 5px;
+   bottom: -2px;
+   width: 2px;
+   background: #e3e7ee;
+}
+
+.barangayNotifTimelineItem:last-child {
+   padding-bottom: 0;
+}
+
+.barangayNotifTimelineDot {
+   position: relative;
+   width: 12px;
+   height: 12px;
+   margin-top: 4px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 3px #E3F0E7;
+}
+
+.barangayNotifTimelineContent {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   min-width: 0;
+}
+
+.barangayNotifTimelineStatus {
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-family: "Open Sans", sans-serif;
+}
+
+.barangayNotifTimelineMeta {
+   font-size: 0.8rem;
+   color: #667085;
+   font-family: "Nunito", sans-serif;
+}
+
+.barangayNotifTimelineRemarks {
+   margin-top: 2px;
+   font-size: 0.8rem;
+   line-height: 1.45;
+   color: #1b2536;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+
+/* ---------- Modal footer ---------- */
+.barangayNotifModalFooter {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+   padding: 16px 24px;
+   border-top: 1px solid #e3e7ee;
+   background: #FFFFFF;
+}
+
+.barangayNotifModalNav {
+   display: flex;
+   gap: 8px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1100px) {
+   .barangayNotifToolbar {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .barangayNotifToolbarRight {
+      width: 100%;
+   }
+
+   .barangayNotifSearchWrap {
+      flex: 1;
+   }
+
+   .barangayNotifSearch {
+      width: 100%;
+   }
+}
+
+@media (max-width: 1024px) {
+   .barangayNotificationsContent {
+      padding: 24px;
+   }
+}
+
+@media (max-width: 900px) {
+   .barangayNotifSummary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (max-width: 640px) {
+   .barangayNotifHeader {
+      flex-direction: column;
+      align-items: flex-start;
+   }
+
+   .barangayNotifSummary {
+      grid-template-columns: 1fr;
+   }
+
+   .barangayNotifToolbarRight {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .barangayNotifItem {
+      padding: 16px;
+   }
+
+   .barangayNotifChevron {
+      display: none;
+   }
+
+   .barangayNotifOverlay {
+      padding: 12px;
+   }
+
+   .barangayNotifDetailGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .barangayNotifModalHeader,
+   .barangayNotifModalBody,
+   .barangayNotifModalFooter {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+}
+
+
+/* ---------- Mobile: sidebar becomes a burger menu, page scrolls normally ---------- */
+@media (max-width: 768px) {
+   .barangayNotificationsBody {
+      position: static;
+      display: block;
+      min-height: 100vh;
+      overflow: visible;
+   }
+
+   .barangayNotificationsContent {
+      height: auto;
+      min-height: 100vh;
+      padding: 64px 20px 20px;
+      overflow: visible;
+   }
+
+   .barangayNotifPage {
+      display: block;
+   }
+
+   .barangayNotifPanel {
+      display: block;
+   }
+
+   .barangayNotifListWrap {
+      max-height: 60vh;
+   }
+
+   .barangayNotifSkeletonList {
+      display: block;
+   }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+   .barangayNotifOverlay,
+   .barangayNotifModal,
+   .barangayNotifSkeletonCircle,
+   .barangayNotifSkeletonLine {
+      animation: none;
+   }
+
+   .barangayNotifTab,
+   .barangayNotifGhostBtn,
+   .barangayNotifPrimaryBtn,
+   .barangayNotifItem,
+   .barangayNotifChevron,
+   .barangayNotifSearch,
+   .barangayNotifFilter {
+      transition: none;
+   }
 }
