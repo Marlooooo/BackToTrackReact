@@ -52,6 +52,8 @@ async function apiFetch(url, { method = 'GET', body } = {}) {
 
 const REMARKS_LIMIT = 500;
 const DEBOUNCE_MS = 300;
+const PAGE_SIZE = 10;
+const NOTICE_MS = 4000;
 
 // Same colors as the Maxima pages
 const BADGE_CLASS = {
@@ -97,14 +99,17 @@ function initials(p) {
 
 const programName = (p) => p?.name ?? `Program #${p?.id ?? '?'}`;
 
-function formatDate(value) {
-   const date = value ? new Date(value) : null;
-   if (!date || Number.isNaN(date.getTime())) return '—';
+const statusLabel = (status) => STATUS_LABEL[status] ?? status;
 
-   return date.toLocaleDateString('en-PH', {
+function formatDate(value, withTime = false) {
+   const date = value ? new Date(value) : null;
+   if (!date || Number.isNaN(date.getTime())) return '-';
+
+   return date.toLocaleString('en-PH', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
+      ...(withTime && { hour: 'numeric', minute: '2-digit' }),
    });
 }
 
@@ -119,8 +124,10 @@ function BarangayReferralManagement() {
    const [counts, setCounts] = useState({ approved: 0, pending: 0, rejected: 0 });
    const [search, setSearch] = useState('');
    const [statusFilter, setStatusFilter] = useState('');
+   const [page, setPage] = useState(1);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState('');
+   const [notice, setNotice] = useState('');
 
    // Create-referral modal
    const [showModal, setShowModal] = useState(false);
@@ -133,8 +140,20 @@ function BarangayReferralManagement() {
    const [formError, setFormError] = useState('');
    const [saving, setSaving] = useState(false);
 
+   // Delete-referral modal
+   const [deleteTarget, setDeleteTarget] = useState(null);
+   const [deleting, setDeleting] = useState(false);
+   const [deleteError, setDeleteError] = useState('');
+
+   // Referral-details modal
+   const [detailTarget, setDetailTarget] = useState(null);
+   const [detail, setDetail] = useState(null);
+   const [detailLoading, setDetailLoading] = useState(false);
+   const [detailError, setDetailError] = useState('');
+
    // Only the newest list request may update the page
    const latestRequest = useRef(0);
+   const noticeTimer = useRef(null);
 
    /* ---- data loading ---- */
 
@@ -167,7 +186,7 @@ function BarangayReferralManagement() {
       return () => clearTimeout(timer);
    }, [loadReferrals]);
 
-   // OSY options while the modal is open (older responses are ignored)
+   // OSY options while the create modal is open (older responses are ignored)
    useEffect(() => {
       if (!showModal) return undefined;
 
@@ -190,7 +209,7 @@ function BarangayReferralManagement() {
       };
    }, [osySearch, showModal]);
 
-   // Training programs, loaded once each time the modal opens
+   // Training programs, loaded once each time the create modal opens
    useEffect(() => {
       if (!showModal) return undefined;
 
@@ -210,7 +229,40 @@ function BarangayReferralManagement() {
       };
    }, [showModal]);
 
-   /* ---- modal ---- */
+   // Status history for the details modal
+   useEffect(() => {
+      if (!detailTarget) return undefined;
+
+      let cancelled = false;
+
+      (async () => {
+         try {
+            const data = await apiFetch(`${API}/notifications/referrals/${detailTarget.id}`);
+            if (!cancelled) setDetail(data);
+         } catch (err) {
+            if (!cancelled) setDetailError(err.message);
+         } finally {
+            if (!cancelled) setDetailLoading(false);
+         }
+      })();
+
+      return () => {
+         cancelled = true;
+      };
+   }, [detailTarget]);
+
+   // Clear the success message timer when leaving the page
+   useEffect(() => () => clearTimeout(noticeTimer.current), []);
+
+   /* ---- notice ---- */
+
+   const showNotice = useCallback((text) => {
+      setNotice(text);
+      clearTimeout(noticeTimer.current);
+      noticeTimer.current = setTimeout(() => setNotice(''), NOTICE_MS);
+   }, []);
+
+   /* ---- modals ---- */
 
    const closeModal = useCallback(() => {
       setShowModal(false);
@@ -222,16 +274,48 @@ function BarangayReferralManagement() {
       setFormError('');
    }, []);
 
-   // While the modal is open: lock the page behind it, and let Escape close it
-   // (but never while a save is running)
+   const closeDeleteModal = useCallback(() => {
+      setDeleteTarget(null);
+      setDeleteError('');
+   }, []);
+
+   const closeDetailModal = useCallback(() => {
+      setDetailTarget(null);
+      setDetail(null);
+      setDetailError('');
+      setDetailLoading(false);
+   }, []);
+
+   const openDetail = (referral) => {
+      setDetail(null);
+      setDetailError('');
+      setDetailLoading(true);
+      setDetailTarget(referral);
+   };
+
+   const openDeleteFromDetail = () => {
+      const target = detailTarget;
+      closeDetailModal();
+      setDeleteTarget(target);
+   };
+
+   // While any modal is open: lock the page behind it, and let Escape close it
+   // (but never while a save or delete is running)
+   const anyModalOpen = showModal || Boolean(deleteTarget) || Boolean(detailTarget);
+   const busy = saving || deleting;
+
    useEffect(() => {
-      if (!showModal) return undefined;
+      if (!anyModalOpen) return undefined;
 
       const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
 
       const onKeyDown = (e) => {
-         if (e.key === 'Escape' && !saving) closeModal();
+         if (e.key !== 'Escape' || busy) return;
+
+         if (deleteTarget) closeDeleteModal();
+         else if (detailTarget) closeDetailModal();
+         else closeModal();
       };
       document.addEventListener('keydown', onKeyDown);
 
@@ -239,7 +323,9 @@ function BarangayReferralManagement() {
          document.body.style.overflow = previousOverflow;
          document.removeEventListener('keydown', onKeyDown);
       };
-   }, [showModal, saving, closeModal]);
+   }, [anyModalOpen, busy, deleteTarget, detailTarget, closeDeleteModal, closeDetailModal, closeModal]);
+
+   /* ---- actions ---- */
 
    async function submitReferral(e) {
       e.preventDefault();
@@ -268,8 +354,12 @@ function BarangayReferralManagement() {
             },
          });
 
+         const name = fullName(selectedOsy);
+
          closeModal();
+         setPage(1);
          loadReferrals();
+         showNotice(`Referral for ${name} was created.`);
       } catch (err) {
          setFormError(err.message);
       } finally {
@@ -277,10 +367,67 @@ function BarangayReferralManagement() {
       }
    }
 
-   /* ---- derived values ---- */
+   async function confirmDelete() {
+      if (!deleteTarget || deleting) return;
 
-   const toggleFilter = (key) => setStatusFilter((cur) => (cur === key ? '' : key));
+      setDeleting(true);
+      setDeleteError('');
+
+      try {
+         await apiFetch(`${API}/referrals/${deleteTarget.id}`, { method: 'DELETE' });
+
+         const name = fullName(deleteTarget.osy_profile);
+
+         closeDeleteModal();
+         loadReferrals();
+         showNotice(`Referral for ${name} was deleted.`);
+      } catch (err) {
+         setDeleteError(err.message);
+         loadReferrals(); // the status may have changed, so refresh the list
+      } finally {
+         setDeleting(false);
+      }
+   }
+
+   /* ---- filters and paging ---- */
+
+   const changeSearch = (value) => {
+      setSearch(value);
+      setPage(1);
+   };
+
+   const toggleFilter = (key) => {
+      setStatusFilter((cur) => (cur === key ? '' : key));
+      setPage(1);
+   };
+
+   const clearFilters = () => {
+      setSearch('');
+      setStatusFilter('');
+      setPage(1);
+   };
+
    const hasFilters = Boolean(search.trim() || statusFilter);
+
+   const totalPages = Math.max(1, Math.ceil(referrals.length / PAGE_SIZE));
+   const currentPage = Math.min(page, totalPages);
+   const pageStart = (currentPage - 1) * PAGE_SIZE;
+   const visibleReferrals = referrals.slice(pageStart, pageStart + PAGE_SIZE);
+
+   /* ---- details modal values ---- */
+
+   const history = detail?.history ? [...detail.history].reverse() : [];
+   const detailProfile = detail?.referral?.osy_profile ?? detailTarget?.osy_profile;
+
+   const detailFields = detailTarget
+      ? [
+           ['Training program', detailTarget.training_program ? programName(detailTarget.training_program) : '-'],
+           ['Date referred', formatDate(detailTarget.created_at, true)],
+           ['Reviewed by', detail?.referral?.reviewer?.name ?? (detailLoading ? 'Loading...' : '-')],
+           ['Address', detailProfile?.address],
+           ['Preferred career', detailProfile?.preferred_career],
+        ].filter(([, value]) => value)
+      : [];
 
    /* ---- render ---- */
 
@@ -293,8 +440,10 @@ function BarangayReferralManagement() {
 
                <div className='referralManagementTopPart'>
                   <h1>Referral Management</h1>
-                  <p>Manage referrals to MAXIMA</p>
+                  <p>Refer out-of-school youth to MAXIMA training programs and follow each referral.</p>
                </div>
+
+               {notice && <p className='referralNotice' role='status'>{notice}</p>}
 
                {/* Summary cards (also act as filters) */}
                <div className='referralManagementMidPart'>
@@ -317,19 +466,28 @@ function BarangayReferralManagement() {
 
                <div className='referralManagementBotPart'>
                   <div className='referralSearchAndAddReferral'>
-                     <div className='referralSearchBox'>
-                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' aria-hidden='true'>
-                           <circle cx='11' cy='11' r='7' />
-                           <line x1='21' y1='21' x2='16.65' y2='16.65' />
-                        </svg>
-                        <input
-                           type='search'
-                           placeholder='Search referrals by OSY name'
-                           value={search}
-                           onChange={(e) => setSearch(e.target.value)}
-                           aria-label='Search referrals by OSY name'
-                        />
+                     <div className='referralToolbarLeft'>
+                        <div className='referralSearchBox'>
+                           <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' aria-hidden='true'>
+                              <circle cx='11' cy='11' r='7' />
+                              <line x1='21' y1='21' x2='16.65' y2='16.65' />
+                           </svg>
+                           <input
+                              type='search'
+                              placeholder='Search referrals by OSY name'
+                              value={search}
+                              onChange={(e) => changeSearch(e.target.value)}
+                              aria-label='Search referrals by OSY name'
+                           />
+                        </div>
+
+                        {hasFilters && (
+                           <button type='button' className='referralLinkBtn' onClick={clearFilters}>
+                              Clear filters
+                           </button>
+                        )}
                      </div>
+
                      <button type='button' className='referralPrimaryBtn' onClick={() => setShowModal(true)}>
                         Create referral
                      </button>
@@ -356,50 +514,100 @@ function BarangayReferralManagement() {
                            <strong>{hasFilters ? 'No matching referrals' : 'No referrals yet'}</strong>
                            <p>
                               {hasFilters
-                                 ? 'No referrals match your filters.'
+                                 ? 'No referrals match your search or filter.'
                                  : 'Select "Create referral" to refer an OSY to MAXIMA.'}
                            </p>
                         </div>
                      )}
 
                      {referrals.length > 0 && (
-                        <div className='referralTableWrap'>
-                           <table className='referralTable'>
-                              <thead>
-                                 <tr>
-                                    <th>OSY</th>
-                                    <th>Program</th>
-                                    <th>Remarks</th>
-                                    <th>Date referred</th>
-                                    <th>Status</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 {referrals.map((r) => (
-                                    <tr key={r.id}>
-                                       <td>
-                                          <div className='referralPerson'>
-                                             <span className='referralAvatar'>{initials(r.osy_profile)}</span>
-                                             <span className='referralPersonName'>{fullName(r.osy_profile)}</span>
-                                          </div>
-                                       </td>
-                                       <td>{r.training_program ? programName(r.training_program) : '-'}</td>
-                                       <td>
-                                          <div className='referralRemarks' title={r.remarks || ''}>
-                                             {r.remarks || '-'}
-                                          </div>
-                                       </td>
-                                       <td className='referralDate'>{formatDate(r.created_at)}</td>
-                                       <td>
-                                          <span className={`referralStatusBadge ${BADGE_CLASS[r.status] ?? ''}`}>
-                                             {STATUS_LABEL[r.status] ?? r.status}
-                                          </span>
-                                       </td>
+                        <>
+                           <div className='referralTableWrap'>
+                              <table className='referralTable'>
+                                 <thead>
+                                    <tr>
+                                       <th>OSY</th>
+                                       <th>Program</th>
+                                       <th>Remarks</th>
+                                       <th>Date referred</th>
+                                       <th>Status</th>
+                                       <th>Actions</th>
                                     </tr>
-                                 ))}
-                              </tbody>
-                           </table>
-                        </div>
+                                 </thead>
+                                 <tbody>
+                                    {visibleReferrals.map((r) => (
+                                       <tr key={r.id}>
+                                          <td>
+                                             <div className='referralPerson'>
+                                                <span className='referralAvatar'>{initials(r.osy_profile)}</span>
+                                                <span className='referralPersonName'>{fullName(r.osy_profile)}</span>
+                                             </div>
+                                          </td>
+                                          <td>{r.training_program ? programName(r.training_program) : '-'}</td>
+                                          <td>
+                                             <div className='referralRemarks' title={r.remarks || ''}>
+                                                {r.remarks || '-'}
+                                             </div>
+                                          </td>
+                                          <td className='referralDate'>{formatDate(r.created_at)}</td>
+                                          <td>
+                                             <span className={`referralStatusBadge ${BADGE_CLASS[r.status] ?? ''}`}>
+                                                {statusLabel(r.status)}
+                                             </span>
+                                          </td>
+                                          <td>
+                                             <div className='referralActions'>
+                                                <button
+                                                   type='button'
+                                                   className='referralRowBtn'
+                                                   onClick={() => openDetail(r)}
+                                                >
+                                                   View
+                                                </button>
+                                                {r.status === 'Referred' && (
+                                                   <button
+                                                      type='button'
+                                                      className='referralRowDeleteBtn'
+                                                      onClick={() => setDeleteTarget(r)}
+                                                   >
+                                                      Delete
+                                                   </button>
+                                                )}
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    ))}
+                                 </tbody>
+                              </table>
+                           </div>
+
+                           {referrals.length > PAGE_SIZE && (
+                              <div className='referralPager'>
+                                 <span className='referralPagerInfo'>
+                                    Showing {pageStart + 1}-{pageStart + visibleReferrals.length} of {referrals.length}
+                                 </span>
+                                 <div className='referralPagerBtns'>
+                                    <button
+                                       type='button'
+                                       className='referralSecondaryBtn referralPagerBtn'
+                                       onClick={() => setPage(currentPage - 1)}
+                                       disabled={currentPage === 1}
+                                    >
+                                       Previous
+                                    </button>
+                                    <span className='referralPagerInfo'>Page {currentPage} of {totalPages}</span>
+                                    <button
+                                       type='button'
+                                       className='referralSecondaryBtn referralPagerBtn'
+                                       onClick={() => setPage(currentPage + 1)}
+                                       disabled={currentPage === totalPages}
+                                    >
+                                       Next
+                                    </button>
+                                 </div>
+                              </div>
+                           )}
+                        </>
                      )}
                   </div>
                </div>
@@ -446,7 +654,14 @@ function BarangayReferralManagement() {
                               </span>
                               <div className='referralSelectedOsy'>
                                  <span className='referralAvatar'>{initials(selectedOsy)}</span>
-                                 <span className='referralPersonName'>{fullName(selectedOsy)}</span>
+                                 <div className='referralSelectedText'>
+                                    <span className='referralPersonName'>{fullName(selectedOsy)}</span>
+                                    {(selectedOsy.address || selectedOsy.preferred_career) && (
+                                       <span className='referralOptionMeta'>
+                                          {[selectedOsy.address, selectedOsy.preferred_career].filter(Boolean).join(' · ')}
+                                       </span>
+                                    )}
+                                 </div>
                                  <button
                                     type='button'
                                     className='referralLinkBtn'
@@ -487,6 +702,11 @@ function BarangayReferralManagement() {
                                           onClick={() => setSelectedOsy(o)}
                                        >
                                           <span className='referralOptionName'>{fullName(o)}</span>
+                                          {(o.address || o.preferred_career) && (
+                                             <span className='referralOptionMeta'>
+                                                {[o.address, o.preferred_career].filter(Boolean).join(' · ')}
+                                             </span>
+                                          )}
                                        </button>
                                     </li>
                                  ))}
@@ -548,6 +768,157 @@ function BarangayReferralManagement() {
                      </button>
                   </div>
                </form>
+            </div>
+         )}
+
+         {/* Referral details modal (clicking outside does not close it) */}
+         {detailTarget && (
+            <div className='referralModalOverlay'>
+               <div
+                  className='referralModal referralDetailModal'
+                  role='dialog'
+                  aria-modal='true'
+                  aria-labelledby='referralDetailTitle'
+               >
+                  <div className='referralModalHeader'>
+                     <div>
+                        <h2 id='referralDetailTitle'>Referral details</h2>
+                        <p>Review this referral and its status history.</p>
+                     </div>
+                     <button
+                        type='button'
+                        className='referralIconBtn'
+                        onClick={closeDetailModal}
+                        aria-label='Close'
+                     >
+                        <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' aria-hidden='true'>
+                           <line x1='18' y1='6' x2='6' y2='18' />
+                           <line x1='6' y1='6' x2='18' y2='18' />
+                        </svg>
+                     </button>
+                  </div>
+
+                  <div className='referralModalBody'>
+                     <div className='referralDetailTop'>
+                        <span className='referralAvatar referralAvatarLg'>{initials(detailTarget.osy_profile)}</span>
+                        <div className='referralDetailTopText'>
+                           <div className='referralDetailName'>{fullName(detailTarget.osy_profile)}</div>
+                           <span className={`referralStatusBadge ${BADGE_CLASS[detailTarget.status] ?? ''}`}>
+                              {statusLabel(detailTarget.status)}
+                           </span>
+                        </div>
+                     </div>
+
+                     <div className='referralDetailGrid'>
+                        {detailFields.map(([label, value]) => (
+                           <div key={label} className='referralDetailItem'>
+                              <div className='referralDetailLabel'>{label}</div>
+                              <div className='referralDetailValue'>{value}</div>
+                           </div>
+                        ))}
+                     </div>
+
+                     <div className='referralDetailItem'>
+                        <div className='referralDetailLabel'>
+                           {detailTarget.status === 'Rejected' ? 'Reason for rejection' : 'Remarks'}
+                        </div>
+                        <div className='referralDetailValue referralDetailRemarks'>
+                           {detailTarget.remarks || '-'}
+                        </div>
+                     </div>
+
+                     <div className='referralHistory'>
+                        <div className='referralHistoryTitle'>Status history</div>
+
+                        {detailLoading && <p className='referralOptionEmpty'>Loading history...</p>}
+
+                        {detailError && <p className='referralFormError' role='alert'>{detailError}</p>}
+
+                        {!detailLoading && !detailError && history.length === 0 && (
+                           <p className='referralOptionEmpty'>No history recorded yet.</p>
+                        )}
+
+                        {history.length > 0 && (
+                           <ol className='referralTimeline'>
+                              {history.map((h, i) => (
+                                 <li key={`${h.status}-${h.created_at}-${i}`} className='referralTimelineItem'>
+                                    <span className='referralTimelineDot' />
+                                    <div className='referralTimelineBody'>
+                                       <div className='referralTimelineStatus'>{statusLabel(h.status)}</div>
+                                       <div className='referralTimelineMeta'>
+                                          {formatDate(h.created_at, true)}
+                                          {h.changed_by ? ` · ${h.changed_by}` : ''}
+                                       </div>
+                                       {h.remarks && <div className='referralTimelineRemarks'>{h.remarks}</div>}
+                                    </div>
+                                 </li>
+                              ))}
+                           </ol>
+                        )}
+                     </div>
+                  </div>
+
+                  <div className='referralModalFooter'>
+                     <button type='button' className='referralSecondaryBtn' onClick={closeDetailModal}>
+                        Close
+                     </button>
+                     {detailTarget.status === 'Referred' && (
+                        <button type='button' className='referralDangerBtn' onClick={openDeleteFromDetail}>
+                           Delete referral
+                        </button>
+                     )}
+                  </div>
+               </div>
+            </div>
+         )}
+
+         {/* Delete referral modal (clicking outside does not close it) */}
+         {deleteTarget && (
+            <div className='referralModalOverlay'>
+               <div
+                  className='referralModal referralConfirmModal'
+                  role='alertdialog'
+                  aria-modal='true'
+                  aria-labelledby='referralDeleteTitle'
+               >
+                  <div className='referralModalHeader'>
+                     <div>
+                        <h2 id='referralDeleteTitle'>Delete referral</h2>
+                        <p>This cannot be undone.</p>
+                     </div>
+                     <button
+                        type='button'
+                        className='referralIconBtn'
+                        onClick={closeDeleteModal}
+                        disabled={deleting}
+                        aria-label='Close'
+                     >
+                        <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' aria-hidden='true'>
+                           <line x1='18' y1='6' x2='6' y2='18' />
+                           <line x1='6' y1='6' x2='18' y2='18' />
+                        </svg>
+                     </button>
+                  </div>
+
+                  <div className='referralModalBody'>
+                     <p className='referralConfirmText'>
+                        Delete the referral of <strong>{fullName(deleteTarget.osy_profile)}</strong> to{' '}
+                        <strong>{programName(deleteTarget.training_program)}</strong>? The OSY will be
+                        notified if they have an account.
+                     </p>
+
+                     {deleteError && <p className='referralFormError' role='alert'>{deleteError}</p>}
+                  </div>
+
+                  <div className='referralModalFooter'>
+                     <button type='button' className='referralSecondaryBtn' onClick={closeDeleteModal} disabled={deleting}>
+                        Cancel
+                     </button>
+                     <button type='button' className='referralDangerBtn' onClick={confirmDelete} disabled={deleting}>
+                        {deleting ? 'Deleting...' : 'Delete referral'}
+                     </button>
+                  </div>
+               </div>
             </div>
          )}
       </>

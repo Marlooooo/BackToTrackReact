@@ -20,19 +20,87 @@ function timeAgo(dateStr) {
    });
 }
 
-function NotifIcon({ type }) {
+const STATUS_ICON = {
+   'Referred': (
+      <>
+         <line x1="22" y1="2" x2="11" y2="13" />
+         <polygon points="22 2 15 22 11 13 2 9 22 2" />
+      </>
+   ),
+   'Withdrawn': (
+      <>
+         <polyline points="9 14 4 9 9 4" />
+         <path d="M20 20v-7a4 4 0 0 0-4-4H4" />
+      </>
+   ),
+   'Accepted by Maxima': (
+      <>
+         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+         <polyline points="22 4 12 14.01 9 11.01" />
+      </>
+   ),
+   'Rejected': (
+      <>
+         <circle cx="12" cy="12" r="10" />
+         <line x1="15" y1="9" x2="9" y2="15" />
+         <line x1="9" y1="9" x2="15" y2="15" />
+      </>
+   ),
+   'Training Started': (
+      <>
+         <circle cx="12" cy="12" r="10" />
+         <polygon points="10 8 16 12 10 16 10 8" />
+      </>
+   ),
+   'Completed': (
+      <>
+         <circle cx="12" cy="8" r="7" />
+         <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+      </>
+   ),
+   'Dropped': (
+      <>
+         <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+         <line x1="12" y1="9" x2="12" y2="13" />
+         <line x1="12" y1="17" x2="12.01" y2="17" />
+      </>
+   ),
+};
+
+const LEVEL_CLASS = {
+   info: 'osyNotifIconInfo',
+   success: 'osyNotifIconSuccess',
+   warning: 'osyNotifIconWarning',
+   danger: 'osyNotifIconDanger',
+};
+
+const CATEGORY_LABEL = {
+   referral: 'Referral',
+   training: 'Training',
+};
+
+function NotifIcon({ type, status }) {
+   let shape;
+
    if (type === 'new_announcement') {
-      return (
-         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      shape = (
+         <>
             <path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z" />
             <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-         </svg>
+         </>
+      );
+   } else {
+      shape = STATUS_ICON[status] || (
+         <>
+            <path d="M22 10 12 5 2 10l10 5 10-5z" />
+            <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+         </>
       );
    }
+
    return (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-         <path d="M22 10 12 5 2 10l10 5 10-5z" />
-         <path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+         {shape}
       </svg>
    );
 }
@@ -91,6 +159,12 @@ function OsyNotif() {
    const openNotif = async (n) => {
       if (!n.read_at) markRead(n.id);
 
+      // referral and training updates open My Referrals instead of the program preview
+      if (n.data?.type === 'training_status') {
+         navigate('/osy/referrals');
+         return;
+      }
+
       setSelected(n);
       setProgram(null);
       setProgramError('');
@@ -122,8 +196,11 @@ function OsyNotif() {
    };
 
    const unreadCount = items.filter((n) => !n.read_at).length;
-   const visible = filter === 'unread' ? items.filter((n) => !n.read_at) : items;
-
+   const visible = items.filter((n) => {
+      if (filter === 'unread') return !n.read_at;
+      if (filter === 'all') return true;
+      return n.data?.category === filter;
+   });
    // details shown in the preview; only the ones that exist on your program are displayed
    const programName = program ? (program.title ?? program.name) : '';
    const details = program
@@ -177,6 +254,18 @@ function OsyNotif() {
                      >
                         Unread <span className='osyNotifBadge'>{unreadCount}</span>
                      </button>
+                     <button
+                        className={`osyNotifTab ${filter === 'referral' ? 'osyNotifTabActive' : ''}`}
+                        onClick={() => setFilter('referral')}
+                     >
+                        Referrals <span className='osyNotifBadge'>{items.filter((n) => n.data?.category === 'referral').length}</span>
+                     </button>
+                     <button
+                        className={`osyNotifTab ${filter === 'training' ? 'osyNotifTabActive' : ''}`}
+                        onClick={() => setFilter('training')}
+                     >
+                        Training <span className='osyNotifBadge'>{items.filter((n) => n.data?.category === 'training').length}</span>
+                     </button>
                   </div>
 
                   {loading && <div className='osyNotifState'>Loading notifications...</div>}
@@ -204,14 +293,19 @@ function OsyNotif() {
                            className={`osyNotifItem ${n.read_at ? 'osyNotifRead' : 'osyNotifUnread'}`}
                            onClick={() => openNotif(n)}
                         >
-                           <div className='osyNotifIcon'>
-                              <NotifIcon type={n.data?.type} />
+                           <div className={`osyNotifIcon ${LEVEL_CLASS[n.data?.level] || ''}`}>
+                              <NotifIcon type={n.data?.type} status={n.data?.status} />
                            </div>
 
                            <div className='osyNotifText'>
                               <div className='osyNotifItemTitle'>{n.data?.title}</div>
                               <div className='osyNotifItemMessage'>{n.data?.message}</div>
-                              <div className='osyNotifItemTime'>{timeAgo(n.created_at)}</div>
+                              <div className='osyNotifItemMeta'>
+                                 {n.data?.category && (
+                                    <span className='osyNotifItemTag'>{CATEGORY_LABEL[n.data.category]}</span>
+                                 )}
+                                 <span className='osyNotifItemTime'>{timeAgo(n.created_at)}</span>
+                              </div>
                            </div>
 
                            {!n.read_at && <span className='osyNotifDot' />}

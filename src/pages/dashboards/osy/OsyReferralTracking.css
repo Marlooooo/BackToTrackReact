@@ -1,0 +1,359 @@
+/* Uses your existing op* styles. This file only adds the stepper,
+   the rejection notice and the link button. Colors match OsyTrainingProg.css */
+
+/* Stepper */
+.orStepper {
+   display: flex;
+   list-style: none;
+   margin: 4px 0 24px;
+   padding: 0;
+}
+
+.orStep {
+   flex: 1;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+   color: #94A092;
+   font-family: "Nunito", sans-serif;
+}
+
+.orStep::before {
+   content: '';
+   position: absolute;
+   top: 8px;
+   left: -50%;
+   width: 100%;
+   height: 2px;
+   background: #E7ECE8;
+}
+
+.orStep:first-child::before {
+   display: none;
+}
+
+.orStepDot {
+   position: relative;
+   z-index: 1;
+   width: 18px;
+   height: 18px;
+   box-sizing: border-box;
+   border-radius: 50%;
+   background: #FFFFFF;
+   border: 2px solid #E7ECE8;
+}
+
+.orStep strong {
+   margin-top: 8px;
+   font-size: 13px;
+   font-weight: 600;
+   font-family: "Open Sans", sans-serif;
+}
+
+.orStep small {
+   min-height: 1.2em;
+   margin-top: 2px;
+   font-size: 12px;
+}
+
+.orStepDone,
+.orStepCurrent {
+   color: #3D4A3F;
+}
+
+.orStepDone::before,
+.orStepCurrent::before {
+   background: #2F6E4F;
+}
+
+.orStepDone .orStepDot {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+}
+
+.orStepCurrent .orStepDot {
+   border-color: #2F6E4F;
+   border-width: 5px;
+}
+
+.orStepBad {
+   color: #B3455E;
+}
+
+.orStepBad::before {
+   background: #B3455E;
+}
+
+.orStepBad .orStepDot {
+   background: #B3455E;
+   border-color: #B3455E;
+}
+
+/* Notices: scoped to this page so the existing page is not touched */
+.orPage .opNoticeBad {
+   background: #FBE3E7;
+   color: #B3455E;
+}
+
+.orPage .opNoticeBad p,
+.orPage .opNoticeMuted p {
+   color: #62705F;
+}
+
+.orPage .opNoticeBad p {
+   color: #8A3347;
+}
+
+/* Link styled like opLinkBtn */
+.orLink {
+   display: inline-block;
+   margin-top: 20px;
+   color: #2F6E4F;
+   font-size: 13px;
+   font-weight: 600;
+   text-decoration: none;
+   font-family: "Nunito", sans-serif;
+}
+
+.orLink:hover {
+   text-decoration: underline;
+}
+
+.orLink:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+/* Summary: who referred, the decision, how long ago */
+.orSummary {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 12px;
+   margin-bottom: 20px;
+}
+
+.orSummaryItem {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   padding: 14px 16px;
+   background: #F6F8F6;
+   border: 1px solid #E7ECE8;
+   border-radius: 10px;
+   font-family: "Nunito", sans-serif;
+}
+
+.orSummaryLabel {
+   color: #94A092;
+   font-size: 12px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.4px;
+}
+
+.orSummaryValue {
+   color: #3D4A3F;
+   font-size: 15px;
+   font-weight: 700;
+}
+
+.orSummaryItem small {
+   color: #62705F;
+   font-size: 12px;
+}
+
+/* What happens next */
+.orNext {
+   margin-bottom: 20px;
+   padding: 18px 20px;
+   background: #F1F7F3;
+   border: 1px solid #D7E6DC;
+   border-radius: 10px;
+   font-family: "Nunito", sans-serif;
+}
+
+.orNextBad {
+   background: #FDF3F5;
+   border-color: #F3CDD4;
+}
+
+.orNextTitle {
+   margin: 0 0 8px;
+   color: #62705F;
+   font-size: 12px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.4px;
+}
+
+.orNextHeading {
+   display: block;
+   color: #3D4A3F;
+   font-size: 16px;
+}
+
+.orNextText {
+   margin: 4px 0 12px;
+   color: #62705F;
+   font-size: 13.5px;
+   line-height: 1.5;
+}
+
+.orNextSteps {
+   margin: 0;
+   padding-left: 20px;
+   color: #3D4A3F;
+   font-size: 13.5px;
+   line-height: 1.6;
+}
+
+.orNextSteps li {
+   margin-bottom: 4px;
+}
+
+.orReason {
+   margin: 0 0 12px;
+   padding: 10px 14px;
+   background: #FBE3E7;
+   border-left: 3px solid #B3455E;
+   border-radius: 6px;
+}
+
+.orReason span {
+   display: block;
+   color: #B3455E;
+   font-size: 12px;
+   font-weight: 700;
+   text-transform: uppercase;
+   letter-spacing: 0.4px;
+}
+
+.orReason p {
+   margin: 4px 0 0;
+   color: #8A3347;
+   font-size: 13.5px;
+   line-height: 1.5;
+}
+
+.orPrepare {
+   margin-top: 14px;
+   padding-top: 14px;
+   border-top: 1px solid #D7E6DC;
+}
+
+.orPrepareLabel {
+   display: block;
+   margin-bottom: 8px;
+   color: #62705F;
+   font-size: 12px;
+   font-weight: 600;
+}
+
+.orChips {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+}
+
+.orChip {
+   padding: 4px 12px;
+   background: #FFFFFF;
+   border: 1px solid #D7E6DC;
+   border-radius: 999px;
+   color: #3D4A3F;
+   font-size: 12.5px;
+}
+
+/* One-line documents summary */
+.orDocLine {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 8px;
+   padding: 14px 18px;
+   border: 1px solid #E7ECE8;
+   border-radius: 10px;
+   font-family: "Nunito", sans-serif;
+}
+
+.orDocLineText {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+}
+
+.orDocLineText strong {
+   color: #3D4A3F;
+   font-size: 14px;
+}
+
+.orDocLineText span {
+   color: #62705F;
+   font-size: 13px;
+}
+
+.orMeter {
+   height: 6px;
+   margin-top: 4px;
+   background: #E7ECE8;
+   border-radius: 999px;
+   overflow: hidden;
+}
+
+.orMeterFill {
+   height: 100%;
+   background: #2F6E4F;
+   border-radius: 999px;
+}
+
+.orLinkInline {
+   margin-top: 0;
+   white-space: nowrap;
+}
+
+/* History details */
+.orHistoryText strong {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.orLatest {
+   padding: 1px 8px;
+   background: #E3F0E8;
+   border-radius: 999px;
+   color: #2F6E4F;
+   font-size: 11px;
+   font-style: normal;
+   font-weight: 600;
+}
+
+.orHistoryRemarks {
+   margin: 4px 0 0;
+   color: #62705F;
+   font-size: 13px;
+   line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+   .orStep strong {
+      font-size: 11.5px;
+   }
+
+   .orStep small {
+      display: none;
+   }
+
+   .orSummary {
+      grid-template-columns: 1fr;
+   }
+
+   .orDocLine {
+      flex-direction: column;
+      align-items: flex-start;
+   }
+}

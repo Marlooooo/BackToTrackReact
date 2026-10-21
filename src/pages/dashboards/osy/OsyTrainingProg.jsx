@@ -18,13 +18,6 @@ const STATUS_CLASS = {
    Dropped: 'opBadgeDropped',
 };
 
-const MILESTONE_LABEL = {
-   'Accepted by Maxima': 'Accepted by Maxima',
-   'Training Started': 'Training started',
-   Completed: 'Training completed',
-   Dropped: 'Dropped from training',
-};
-
 const ATTENDANCE_CLASS = {
    present: 'opChipGood',
    late: 'opChipWarn',
@@ -43,6 +36,18 @@ function formatDate(value) {
    const date = new Date(value);
    if (Number.isNaN(date.getTime())) return '—';
    return date.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+function formatDateTime(value) {
+   if (!value) return '—';
+   const date = new Date(value);
+   if (Number.isNaN(date.getTime())) return '—';
+   return date.toLocaleString('en-PH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+   });
 }
 
 function formatPercent(value) {
@@ -133,13 +138,13 @@ function TrainingCard({ training }) {
                   <p>
                      {training.outcome.certificate_number
                         ? `Certificate no. ${training.outcome.certificate_number}${
-                             training.outcome.certificate_date ? ` (${formatDate(training.outcome.certificate_date)})` : ''
-                          }. `
-                        : ''}
-                     {training.outcome.after_training
-                        ? `After training: ${training.outcome.after_training}${
-                             training.outcome.after_training_note ? ` · ${training.outcome.after_training_note}` : ''
-                          }.`
+                              training.outcome.certificate_date ? ` (${formatDate(training.outcome.certificate_date)})` : ''
+                           }. `
+                           : ''}
+                        {training.outcome.after_training
+                           ? `After training: ${training.outcome.after_training}${
+                              training.outcome.after_training_note ? ` · ${training.outcome.after_training_note}` : ''
+                           }.`
                         : ''}
                   </p>
                </div>
@@ -230,16 +235,16 @@ function TrainingCard({ training }) {
             </div>
          )}
 
-         {training.milestones.length > 0 && (
+         {training.history?.length > 0 && (
             <div className="opBlock">
                <h3 className="opBlockTitle">My journey</h3>
                <div className="opTimeline">
-                  {training.milestones.map((item, index) => (
+                  {training.history.map((item, index) => (
                      <div className="opTimelineItem" key={`${item.status}-${index}`}>
                         <span className="opTimelineDot" />
                         <div>
-                           <strong>{MILESTONE_LABEL[item.status]}</strong>
-                           <span>{formatDate(item.date)}</span>
+                           <strong>{item.status}</strong>
+                           <span>{formatDateTime(item.created_at)}</span>
                         </div>
                      </div>
                   ))}

@@ -1,9 +1,1249 @@
-.barangayTrainingMonitoringBody {
-   display: flex;
-   min-height: 100vh;
+/* ==================================================================
+   Barangay / SK: Training Monitoring
+   Every class starts with "brgy".
+   Headings = Open Sans, everything else = Nunito (page AND modal).
+   Weights: 400 / 500 / 600. Icons keep the Material Symbols font.
+   ================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fonts: one rule per family, applied everywhere including the modal
+   -------------------------------------------------------------------------- */
+.brgyMonitorPage,
+.brgyMonitorPage *:not(.material-symbols-outlined),
+.brgyOverlay,
+.brgyOverlay *:not(.material-symbols-outlined) {
+   font-family: "Nunito", sans-serif;
 }
 
-.barangayTrainingMonitoringContent {
+.brgyMonitorPage h1,
+.brgyMonitorPage h2,
+.brgyMonitorPage h3,
+.brgyOverlay h1,
+.brgyOverlay h2,
+.brgyOverlay h3,
+.brgyMonitorPage th,
+.brgyOverlay th,
+.brgyStatValue,
+.brgyAvatar,
+.brgyMetricValue,
+.brgyChip strong,
+.brgyCardTitle,
+.brgyTimelineStatus {
+   font-family: "Open Sans", sans-serif;
+}
+
+.brgyMonitorPage .brgyStatValue,
+.brgyMonitorPage .brgyAvatar,
+.brgyOverlay .brgyAvatar,
+.brgyOverlay .brgyMetricValue,
+.brgyOverlay .brgyChip strong,
+.brgyOverlay .brgyCardTitle,
+.brgyOverlay .brgyTimelineStatus,
+.brgyMonitorPage th,
+.brgyOverlay th {
+   font-family: "Open Sans", sans-serif;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page layout
+   -------------------------------------------------------------------------- */
+.brgyMonitorShell {
+   display: flex;
+   flex-direction: row;
+   min-height: 100vh;
+   background: #f4f6fa;
+   color: #1b2536;
+}
+
+.brgyMonitorMain {
    flex: 1;
-   padding: 20px;
+   min-width: 0;
+}
+
+.brgyMonitorPage {
+   display: flex;
+   flex-direction: column;
+   gap: 24px;
+   box-sizing: border-box;
+   width: 100%;
+   max-width: 1440px;
+   min-height: 100vh;
+   margin: 0 auto;
+   padding: 32px 40px 48px;
+   background: #f4f6fa;
+   color: #1b2536;
+   -webkit-font-smoothing: antialiased;
+}
+
+.brgyMuted {
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+
+/* --------------------------------------------------------------------------
+   Page heading
+   -------------------------------------------------------------------------- */
+.brgyMonitorPage .brgyPageHead {
+   display: block;
+   margin: 0;
+   padding: 0 0 4px;
+   background: none;
+   border: none;
+   box-shadow: none;
+}
+
+.brgyMonitorPage .brgyPageTitle {
+   margin: 0;
+   font-size: 1.5rem;
+   font-weight: 600;
+   letter-spacing: -0.01em;
+   color: #1b2536;
+}
+
+.brgyMonitorPage .brgyPageSubtitle {
+   margin: 6px 0 0;
+   font-size: 0.875rem;
+   font-weight: 400;
+   line-height: 1.5;
+   color: #667085;
+}
+
+
+/* --------------------------------------------------------------------------
+   Summary cards (they double as filters)
+   -------------------------------------------------------------------------- */
+.brgyStatGrid {
+   display: grid;
+   grid-template-columns: repeat(5, minmax(0, 1fr));
+   gap: 16px;
+}
+
+.brgyStatCard {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 20px 24px;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #ffffff;
+   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+   font: inherit;
+   color: inherit;
+   text-align: left;
+   cursor: pointer;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.brgyStatCard::before {
+   content: '';
+   position: absolute;
+   top: 18px;
+   bottom: 18px;
+   left: 0;
+   width: 4px;
+   border-radius: 0 4px 4px 0;
+   background: #475467;
+}
+
+.brgyStatCard:nth-child(2)::before { background: #1d4ed8; }
+.brgyStatCard:nth-child(3)::before { background: #b45309; }
+.brgyStatCard:nth-child(4)::before { background: #15803d; }
+.brgyStatCard:nth-child(5)::before { background: #b91c1c; }
+
+.brgyStatCard:hover {
+   border-color: #c9d1de;
+   box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+   transform: translateY(-1px);
+}
+
+.brgyStatCardActive,
+.brgyStatCardActive:hover {
+   border-color: #1d4ed8;
+   box-shadow: 0 0 0 1px #1d4ed8;
+   transform: none;
+}
+
+.brgyStatLabel {
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #667085;
+}
+
+.brgyStatValue {
+   font-size: 2.25rem;
+   font-weight: 600;
+   line-height: 1.1;
+   color: #1b2536;
+   font-variant-numeric: tabular-nums;
+}
+
+.brgyStatCardAlert .brgyStatValue {
+   color: #b91c1c;
+}
+
+
+/* --------------------------------------------------------------------------
+   Panel + toolbar
+   -------------------------------------------------------------------------- */
+.brgyPanel {
+   display: flex;
+   flex-direction: column;
+   min-height: 0;
+   overflow: hidden;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #ffffff;
+   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.brgyToolbar {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   min-height: 64px;
+   padding: 12px 20px;
+   border-bottom: 1px solid #e3e7ee;
+}
+
+.brgyResultCount {
+   margin: 0;
+   font-size: 0.875rem;
+   color: #667085;
+}
+
+.brgyResultCount strong {
+   font-weight: 600;
+   color: #1b2536;
+}
+
+.brgyToolbarRight {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.brgySelect {
+   max-width: 220px;
+   height: 42px;
+   padding: 0 12px;
+   border: 1px solid #c9d1de;
+   border-radius: 10px;
+   background: #ffffff;
+   font: inherit;
+   font-size: 0.875rem;
+   color: #1b2536;
+   cursor: pointer;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.brgySearch {
+   position: relative;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   width: 280px;
+   height: 42px;
+   padding: 0 12px;
+   box-sizing: border-box;
+   border: 1px solid #c9d1de;
+   border-radius: 10px;
+   background: #ffffff;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.brgySearch .material-symbols-outlined {
+   font-size: 20px;
+   color: #667085;
+   pointer-events: none;
+}
+
+.brgySearch input {
+   flex: 1;
+   min-width: 0;
+   height: 100%;
+   padding: 0;
+   border: none;
+   outline: none;
+   background: transparent;
+   font: inherit;
+   font-size: 0.875rem;
+   color: #1b2536;
+}
+
+.brgySearch input::placeholder {
+   color: #98a2b3;
+}
+
+.brgySelect:focus,
+.brgySearch:focus-within {
+   border-color: #1d4ed8;
+   outline: none;
+   box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+
+/* --------------------------------------------------------------------------
+   Table
+   -------------------------------------------------------------------------- */
+.brgyTableWrap {
+   flex: 1;
+   min-height: 0;
+   overflow: auto;
+}
+
+.brgyTable {
+   width: 100%;
+   min-width: 720px;
+   border-collapse: collapse;
+}
+
+.brgyTable th {
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   padding: 12px 20px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #f4f6fa;
+   font-size: 0.75rem;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #667085;
+   text-align: left;
+   white-space: nowrap;
+}
+
+.brgyTable td {
+   padding: 14px 20px;
+   border-top: 1px solid #e3e7ee;
+   font-size: 0.85rem;
+   color: #1b2536;
+   vertical-align: middle;
+}
+
+.brgyTable tbody tr:first-child td {
+   border-top: none;
+}
+
+.brgyTable tbody tr {
+   transition: background 0.15s ease;
+}
+
+.brgyTable tbody tr:hover {
+   background: #fafbfd;
+}
+
+.brgyTable td.brgyActionCell {
+   width: 1%;
+   text-align: right;
+   white-space: nowrap;
+}
+
+.brgyTable td.brgyEmptyCell {
+   padding: 56px 24px;
+   text-align: center;
+   color: #667085;
+}
+
+.brgyRateGood,
+.brgyRateWarn,
+.brgyRateLow {
+   font-weight: 600;
+   font-variant-numeric: tabular-nums;
+}
+
+.brgyRateGood { color: #15803d; }
+.brgyRateWarn { color: #b45309; }
+.brgyRateLow  { color: #b91c1c; }
+
+
+/* --------------------------------------------------------------------------
+   Person cell
+   -------------------------------------------------------------------------- */
+.brgyPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.brgyAvatar {
+   display: grid;
+   flex-shrink: 0;
+   place-items: center;
+   width: 38px;
+   height: 38px;
+   border-radius: 50%;
+   background: #e8eefc;
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #1d4ed8;
+}
+
+.brgyAvatarLg {
+   width: 52px;
+   height: 52px;
+   font-size: 1.05rem;
+}
+
+.brgyPersonName {
+   display: block;
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: #1b2536;
+}
+
+.brgyPersonSub {
+   display: block;
+   margin-top: 1px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+.brgyFlag {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   margin-top: 6px;
+   padding: 2px 8px 2px 6px;
+   border-radius: 999px;
+   background: #fdeaea;
+   font-size: 0.75rem;
+   font-weight: 600;
+   color: #b91c1c;
+}
+
+.brgyFlag .material-symbols-outlined {
+   font-size: 14px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Status
+   -------------------------------------------------------------------------- */
+.brgyStatusTag {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   font-size: 0.85rem;
+   font-weight: 600;
+   color: #1b2536;
+   white-space: nowrap;
+}
+
+.brgyStatusDot {
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #98a2b3;
+}
+
+.brgyDotOngoing   { background: #1d4ed8; }
+.brgyDotCompleted { background: #15803d; }
+.brgyDotDropped   { background: #b91c1c; }
+
+
+/* --------------------------------------------------------------------------
+   Progress bar
+   -------------------------------------------------------------------------- */
+.brgyProgress {
+   min-width: 160px;
+}
+
+.brgyProgressTrack {
+   height: 6px;
+   overflow: hidden;
+   border-radius: 999px;
+   background: #e3e7ee;
+}
+
+.brgyProgressFill {
+   height: 100%;
+   border-radius: 999px;
+   background: #1d4ed8;
+   transition: width 0.3s ease;
+}
+
+.brgyProgressFillDone {
+   background: #15803d;
+}
+
+.brgyProgressLabel {
+   display: block;
+   margin-top: 6px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+
+/* --------------------------------------------------------------------------
+   Badges
+   -------------------------------------------------------------------------- */
+.brgyBadge {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 4px 10px;
+   border-radius: 999px;
+   background: #EAF0EE;
+   font-size: 0.78rem;
+   font-weight: 600;
+   text-transform: capitalize;
+   color: #55665C;
+   white-space: nowrap;
+}
+
+.brgyBadge::before {
+   content: '';
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
+}
+
+.brgyBadgeGood { background: #E3F0E7; color: #2F6E4F; }
+.brgyBadgeWarn { background: #FBF0DD; color: #96701E; }
+.brgyBadgeBad  { background: #FBEBEB; color: #A23E3E; }
+
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.brgyBtn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   height: 42px;
+   padding: 0 18px;
+   border: 1px solid #c9d1de;
+   border-radius: 10px;
+   background: #ffffff;
+   font: inherit;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+   white-space: nowrap;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.brgyBtn:hover {
+   border-color: #98a2b3;
+   background: #f4f6fa;
+}
+
+.brgyBtnSm {
+   height: 34px;
+   padding: 0 14px;
+   border-radius: 8px;
+   font-size: 0.8rem;
+}
+
+.brgyBtn .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.brgyModalClose {
+   display: grid;
+   flex-shrink: 0;
+   place-items: center;
+   width: 36px;
+   height: 36px;
+   border: 0;
+   border-radius: 8px;
+   background: none;
+   color: #667085;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.brgyModalClose:hover {
+   background: #f4f6fa;
+   color: #1b2536;
+}
+
+
+/* --------------------------------------------------------------------------
+   Notices
+   -------------------------------------------------------------------------- */
+.brgyNotice {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 10px 14px;
+   border-radius: 8px;
+   font-size: 0.875rem;
+}
+
+.brgyNotice .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.brgyNoticeError {
+   margin: 16px 20px;
+   background: #fdeaea;
+   color: #b91c1c;
+}
+
+.brgyNoticeWarn {
+   background: #FBF0DD;
+   color: #96701E;
+}
+
+.brgyNoticeList {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin-bottom: 20px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Record modal (one scrolling view)
+   -------------------------------------------------------------------------- */
+.brgyOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-sizing: border-box;
+   padding: 16px;
+   background: rgba(16, 24, 40, 0.6);
+   color: #1b2536;
+   overscroll-behavior: contain;
+   animation: brgyFadeIn 0.15s ease;
+}
+
+.brgyModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 900px;
+   height: 760px;
+   max-height: calc(100vh - 32px);
+   max-height: calc(100dvh - 32px);
+   overflow: hidden;
+   border-radius: 16px;
+   background: #ffffff;
+   color: #1b2536;
+   box-shadow: 0 24px 48px rgba(16, 24, 40, 0.24);
+   animation: brgyRise 0.2s ease;
+}
+
+.brgyModalLoading {
+   padding: 60px;
+   text-align: center;
+   color: #667085;
+}
+
+.brgyModalHead {
+   display: flex;
+   flex-shrink: 0;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 20px 28px;
+   border-bottom: 1px solid #e3e7ee;
+   background: #ffffff;
+}
+
+.brgyModalName {
+   margin: 0;
+   font-size: 1.25rem;
+   font-weight: 600;
+   letter-spacing: -0.01em;
+}
+
+.brgyModalSub {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 4px 14px;
+   margin: 4px 0 0;
+   font-size: 0.875rem;
+   color: #667085;
+}
+
+.brgyModalBody {
+   flex: 1;
+   min-height: 0;
+   padding: 24px 28px 28px;
+   overflow-y: auto;
+   overscroll-behavior: contain;
+   background: #fafbfd;
+}
+
+.brgyModalFoot {
+   display: flex;
+   flex-shrink: 0;
+   justify-content: flex-end;
+   padding: 14px 28px;
+   border-top: 1px solid #e3e7ee;
+   background: #ffffff;
+}
+
+
+/* --------------------------------------------------------------------------
+   Detail sections
+   -------------------------------------------------------------------------- */
+.brgyDetailSection {
+   margin-top: 28px;
+   padding: 20px 22px;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #ffffff;
+}
+
+.brgyDetailHead {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   margin-bottom: 16px;
+}
+
+.brgyDetailIcon {
+   font-size: 20px;
+   color: #1d4ed8;
+}
+
+.brgySectionTitle {
+   margin: 0;
+   font-size: 1rem;
+   font-weight: 600;
+   color: #1b2536;
+}
+
+.brgySubHead {
+   margin: 22px 0 10px;
+   font-size: 0.8rem;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #667085;
+}
+
+.brgySpaced {
+   margin-top: 16px;
+}
+
+.brgyTabCount {
+   min-width: 20px;
+   padding: 1px 7px;
+   border-radius: 999px;
+   background: #f4f6fa;
+   font-size: 0.75rem;
+   font-weight: 600;
+   text-align: center;
+   color: #667085;
+}
+
+.brgyTabCountAlert {
+   background: #b91c1c;
+   color: #ffffff;
+}
+
+
+/* --------------------------------------------------------------------------
+   Metrics + info grid
+   -------------------------------------------------------------------------- */
+.brgyMetricGrid {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 12px;
+}
+
+.brgyMetric {
+   padding: 14px 16px;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #ffffff;
+}
+
+.brgyMetricLabel {
+   display: block;
+   font-size: 0.8rem;
+   font-weight: 600;
+   color: #667085;
+}
+
+.brgyMetricValue {
+   display: block;
+   margin-top: 6px;
+   font-size: 1.35rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-variant-numeric: tabular-nums;
+}
+
+.brgyMetricSmall {
+   font-size: 0.95rem;
+   line-height: 1.6;
+}
+
+.brgyInfoGrid {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 12px;
+}
+
+.brgyInfoGridTwo {
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.brgyInfoItem {
+   padding: 10px 12px;
+   border-radius: 10px;
+   background: #f4f6fa;
+}
+
+.brgyInfoItem span {
+   display: block;
+   font-size: 0.78rem;
+   color: #667085;
+}
+
+.brgyInfoItem strong {
+   display: block;
+   margin-top: 2px;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+   overflow-wrap: anywhere;
+}
+
+
+/* --------------------------------------------------------------------------
+   Attendance
+   -------------------------------------------------------------------------- */
+.brgyChipRow {
+   display: grid;
+   grid-template-columns: repeat(5, minmax(0, 1fr));
+   gap: 12px;
+}
+
+.brgyChip {
+   padding: 14px 12px;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #f4f6fa;
+   text-align: center;
+}
+
+.brgyChip strong {
+   display: block;
+   font-size: 1.25rem;
+   font-weight: 600;
+   color: #1b2536;
+   font-variant-numeric: tabular-nums;
+}
+
+.brgyChip span {
+   display: block;
+   margin-top: 2px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+.brgyDayStrip {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 5px;
+}
+
+.brgyDay {
+   display: inline-block;
+   width: 20px;
+   height: 20px;
+   border-radius: 5px;
+}
+
+.brgyDay-present { background: #15803d; }
+.brgyDay-late    { background: #d9a53a; }
+.brgyDay-absent  { background: #b91c1c; }
+.brgyDay-excused { background: #c9d1de; }
+
+.brgyLegend {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 16px;
+   margin-top: 12px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+.brgyLegend span {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+}
+
+.brgyLegend .brgyDay {
+   width: 10px;
+   height: 10px;
+   border-radius: 3px;
+}
+
+.brgyMiniWrap {
+   max-height: 280px;
+   overflow: auto;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+}
+
+.brgyMiniTable {
+   min-width: 0;
+}
+
+.brgyMiniTable th,
+.brgyMiniTable td {
+   padding: 11px 16px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Attendance (simple label + table)
+   -------------------------------------------------------------------------- */
+.brgyAttendance {
+   margin-top: 28px;
+}
+
+.brgyAttendanceHead {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   gap: 4px 16px;
+   margin-bottom: 12px;
+}
+
+.brgyOverlay .brgyAttendanceTitle {
+   margin: 0;
+   font-size: 0.75rem;
+   font-weight: 600;
+   letter-spacing: 0.12em;
+   text-transform: uppercase;
+   color: #2F6E4F;
+}
+
+.brgyAttendanceSummary {
+   font-size: 0.875rem;
+   color: #667085;
+}
+
+.brgyAttendanceWrap {
+   max-height: 320px;
+   overflow: auto;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #ffffff;
+}
+
+.brgyAttendanceTable {
+   min-width: 0;
+}
+
+.brgyAttendanceTable th {
+   padding: 14px 20px;
+   background: #fafafa;
+   font-size: 0.75rem;
+   letter-spacing: 0.06em;
+}
+
+.brgyAttendanceTable td {
+   padding: 16px 20px;
+   font-size: 0.9rem;
+}
+
+.brgyAttendanceTable tbody tr:hover {
+   background: transparent;
+}
+
+.brgyAttendanceTable .brgyBadge::before {
+   display: none;
+}
+
+.brgyAttendanceTable .brgyBadge {
+   padding: 4px 12px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Cards (concerns, notes)
+   -------------------------------------------------------------------------- */
+.brgyCardList {
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+}
+
+.brgyCard {
+   padding: 16px 18px;
+   border: 1px solid #e3e7ee;
+   border-radius: 12px;
+   background: #fafbfd;
+}
+
+.brgyCardTop {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 12px;
+}
+
+.brgyCardTitle {
+   display: block;
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: #1b2536;
+}
+
+.brgyCardMeta {
+   display: block;
+   margin-top: 2px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+.brgyCardMetaTop {
+   margin-top: 0;
+}
+
+.brgyCardText {
+   margin: 10px 0 0;
+   font-size: 0.875rem;
+   line-height: 1.6;
+   color: #1b2536;
+}
+
+.brgyCardMetaTop + .brgyCardText {
+   margin-top: 6px;
+}
+
+.brgyCapital {
+   text-transform: capitalize;
+}
+
+.brgyReview {
+   margin: 12px 0 0;
+   padding: 10px 14px;
+   border-radius: 8px;
+   background: #e8eefc;
+   font-size: 0.85rem;
+   line-height: 1.55;
+   color: #1e40af;
+}
+
+.brgyReview strong {
+   font-weight: 600;
+}
+
+
+/* --------------------------------------------------------------------------
+   Timeline
+   -------------------------------------------------------------------------- */
+.brgyTimeline {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 18px;
+   padding-left: 4px;
+}
+
+.brgyTimeline::before {
+   content: '';
+   position: absolute;
+   top: 10px;
+   bottom: 10px;
+   left: 8px;
+   width: 2px;
+   background: #e3e7ee;
+}
+
+.brgyTimelineItem {
+   position: relative;
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+}
+
+.brgyTimelineDot {
+   position: relative;
+   flex-shrink: 0;
+   width: 9px;
+   height: 9px;
+   margin: 6px 0 0 0;
+   border-radius: 50%;
+   background: #1d4ed8;
+   box-shadow: 0 0 0 3px #ffffff;
+}
+
+.brgyTimelineStatus {
+   display: block;
+   font-size: 0.875rem;
+   font-weight: 600;
+   color: #1b2536;
+}
+
+.brgyTimelineMeta {
+   display: block;
+   margin-top: 2px;
+   font-size: 0.8rem;
+   color: #667085;
+}
+
+.brgyTimelineRemarks {
+   display: block;
+   margin-top: 4px;
+   font-size: 0.85rem;
+   color: #1b2536;
+}
+
+.brgyEmptyBlock {
+   padding: 32px 16px;
+   border: 1.5px dashed #c9d1de;
+   border-radius: 12px;
+   background: #fafbfd;
+   text-align: center;
+   font-size: 0.875rem;
+   color: #667085;
+}
+
+
+/* --------------------------------------------------------------------------
+   Focus states (keyboard)
+   -------------------------------------------------------------------------- */
+.brgyStatCard:focus-visible,
+.brgyBtn:focus-visible,
+.brgyModalClose:focus-visible {
+   outline: 2px solid #1d4ed8;
+   outline-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   Animation
+   -------------------------------------------------------------------------- */
+@keyframes brgyFadeIn {
+   from { opacity: 0; }
+   to   { opacity: 1; }
+}
+
+@keyframes brgyRise {
+   from { opacity: 0; transform: translateY(8px); }
+   to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .brgyOverlay,
+   .brgyModal {
+      animation: none;
+   }
+
+   .brgyStatCard,
+   .brgyBtn,
+   .brgyProgressFill {
+      transition: none;
+   }
+
+   .brgyStatCard:hover {
+      transform: none;
+   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+   .brgyStatGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+
+   .brgyInfoGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .brgyToolbar {
+      flex-wrap: wrap;
+   }
+}
+
+@media (max-width: 1024px) {
+   .brgyMonitorPage {
+      padding: 24px;
+   }
+
+   .brgyMetricGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (max-width: 640px) {
+   .brgyMonitorPage {
+      padding: 20px;
+   }
+
+   .brgyStatGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .brgyToolbar,
+   .brgyToolbarRight {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .brgySearch {
+      width: auto;
+   }
+
+   .brgySelect {
+      max-width: none;
+   }
+
+   .brgyMetricGrid,
+   .brgyInfoGrid,
+   .brgyInfoGridTwo {
+      grid-template-columns: 1fr;
+   }
+
+   .brgyChipRow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .brgyModalHead {
+      padding: 16px 20px;
+   }
+
+   .brgyModalBody {
+      padding: 18px 16px 24px;
+   }
+
+   .brgyModalFoot {
+      padding: 12px 20px;
+   }
+
+   .brgyDetailSection {
+      padding: 16px;
+   }
+
+   /* Modal becomes a bottom sheet on phones */
+   .brgyOverlay {
+      padding: 0;
+      align-items: flex-end;
+   }
+
+   .brgyModal {
+      max-width: none;
+      height: 94vh;
+      height: 94dvh;
+      border-radius: 16px 16px 0 0;
+   }
 }

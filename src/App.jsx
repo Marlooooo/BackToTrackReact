@@ -22,7 +22,7 @@ import OsyTrainingProg from './pages/dashboards/osy/OsyTrainingProg';
 import OsyNotif from './pages/dashboards/osy/OsyNotif';
 import OsyAnnouncement from './pages/dashboards/osy/OsyAnnouncement';
 import OsyRecommendations from './pages/dashboards/osy/OsyRecommendations';
-
+import OsyReferralTracking from './pages/dashboards/osy/OsyReferralTracking';
 
 
 
@@ -73,6 +73,8 @@ function App() {
          <Route path="/osy/notifications" element={<ProtectedRoute> <OsyNotif /> </ProtectedRoute>} />
          <Route path="/osy/announcements" element={<ProtectedRoute> <OsyAnnouncement /> </ProtectedRoute>} />
          <Route path="/osy/recommendations" element={<ProtectedRoute><OsyRecommendations /></ProtectedRoute>} />
+         <Route path="/osy/referrals" element={<ProtectedRoute> <OsyReferralTracking /> </ProtectedRoute>} />
+
 
 
 

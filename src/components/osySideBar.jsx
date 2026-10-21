@@ -119,6 +119,15 @@ function OsySideBar() {
                   </NavLink>
                </div>
 
+               <div>
+                  <span>
+                     <i className="las la-paper-plane"></i>
+                  </span>
+                  <NavLink to="/osy/referrals" className={({ isActive }) => isActive ? "osyActive" : ""}>
+                     My Referrals
+                  </NavLink>
+               </div>
+
             </div>
 
             <div className="osyLinkDiv">
