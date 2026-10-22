@@ -20,6 +20,9 @@ const STATUS_DOT = { 'Training Started': 'brgyDotOngoing', Completed: 'brgyDotCo
 const ATTENDANCE_BADGE = { present: 'brgyBadgeGood', late: 'brgyBadgeWarn', absent: 'brgyBadgeBad', excused: '' };
 const CONCERN_BADGE = { pending: 'brgyBadgeWarn', reviewed: 'brgyBadgeGood', resolved: '' };
 
+const CONDUCT_LABEL = { excellent: 'Excellent', good: 'Good', fair: 'Fair', needs_improvement: 'Needs improvement' };
+const CONDUCT_BADGE = { excellent: 'brgyBadgeGood', good: 'brgyBadgeGood', fair: 'brgyBadgeWarn', needs_improvement: 'brgyBadgeBad' };
+
 const DROP_REASONS = {
    transport: 'Transportation problem',
    work: 'Needs to work',
@@ -257,6 +260,62 @@ function AttendanceSection({ detail }) {
             </div>
          )}
       </section>
+   );
+}
+
+function AssessmentsSection({ detail }) {
+   const items = detail.assessments ?? [];
+   const s = detail.summary;
+
+   return (
+      <Section icon="grading" title="Assessments" count={items.length || null}>
+         {items.length === 0 ? (
+            <EmptyBlock>No assessments have been recorded yet.</EmptyBlock>
+         ) : (
+            <>
+               <p className="brgyAttendanceSummary">Average score: {formatPercent(s.assessment_average)}</p>
+               <div className="brgyAttendanceWrap">
+                  <table className="brgyTable brgyAttendanceTable">
+                     <thead><tr><th>Date</th><th>Assessment</th><th>Score</th><th>Remarks</th></tr></thead>
+                     <tbody>
+                        {items.map((a) => (
+                           <tr key={a.id}>
+                              <td>{formatDate(a.assessed_on)}</td>
+                              <td>{a.title}</td>
+                              <td>{a.score}/{a.max_score} ({formatPercent((a.score / a.max_score) * 100)})</td>
+                              <td>{a.remarks || '—'}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
+            </>
+         )}
+      </Section>
+   );
+}
+
+function ConductSection({ detail }) {
+   const items = detail.conduct ?? [];
+
+   return (
+      <Section icon="military_tech" title="Conduct" count={items.length || null}>
+         {items.length === 0 ? (
+            <EmptyBlock>No conduct remarks have been recorded yet.</EmptyBlock>
+         ) : (
+            <div className="brgyCardList">
+               {items.map((c) => (
+                  <div className="brgyCard" key={c.id}>
+                     <div className="brgyCardTop">
+                        <span className={`brgyBadge ${CONDUCT_BADGE[c.rating] ?? ''}`}>{CONDUCT_LABEL[c.rating]}</span>
+                        <span className="brgyCardMeta">{formatDate(c.recorded_on)}</span>
+                     </div>
+                     {c.remarks && <p className="brgyCardText">{c.remarks}</p>}
+                  </div>
+               ))}
+            </div>
+         )}
+      </Section>
    );
 }
 
@@ -573,6 +632,8 @@ function BarangayTrainingMonitoring() {
                         <div className="brgyModalBody">
                            <OverviewSection detail={selected} />
                            <AttendanceSection detail={selected} />
+                           <AssessmentsSection detail={selected} />
+                           <ConductSection detail={selected} />
                            <ConcernsSection detail={selected} />
                            <NotesSection detail={selected} />
                            <HistorySection detail={selected} />

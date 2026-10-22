@@ -53,6 +53,10 @@ const STATUS_DOT = {
    Completed: 'pmDotCompleted',
    Dropped: 'pmDotDropped',
 };
+const CONCERN_TYPES = [
+   ['absence', 'Absence'],
+   ['concern', 'Concern'],
+];
 
 const STATUS_LABEL = {
    'Accepted by Maxima': 'Awaiting start',
@@ -73,6 +77,24 @@ const CONCERN_CLASS = {
    reviewed: 'pmBadgeGood',
    resolved: '',
 };
+
+const CONDUCT = [
+   ['excellent', 'Excellent'],
+   ['good', 'Good'],
+   ['fair', 'Fair'],
+   ['needs_improvement', 'Needs improvement'],
+];
+
+const CONDUCT_CLASS = {
+   excellent: 'pmBadgeGood',
+   good: 'pmBadgeGood',
+   fair: 'pmBadgeWarn',
+   needs_improvement: 'pmBadgeBad',
+};
+
+function scorePercent(a) {
+   return a.max_score > 0 ? Math.round((a.score / a.max_score) * 1000) / 10 : null;
+}
 
 const DROP_REASONS = [
    ['transport', 'Transportation problem'],
@@ -188,7 +210,7 @@ function useForm(initial) {
       value: values[key] ?? '',
       onChange: (e) => setValues((prev) => ({ ...prev, [key]: e.target.value })),
    });
-   return [values, bind];
+   return [values, bind, setValues];
 }
 
 function clean(values) {
@@ -345,12 +367,116 @@ function HistoryBlock({ detail }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* MONITOR mode (read-only)                                            */
+/* Shared read-only lists (used by Monitor mode and Manage tabs)       */
+/* ------------------------------------------------------------------ */
+function AssessmentTable({ items, onDelete }) {
+   if (!items.length) return <div className="pmEmptyBlock">No assessments recorded yet.</div>;
+   return (
+      <div className="pmTableWrap pmMiniWrap">
+         <table className="pmTable pmMiniTable">
+            <thead>
+               <tr><th>Date</th><th>Assessment</th><th>Score</th><th>Remarks</th>{onDelete && <th></th>}</tr>
+            </thead>
+            <tbody>
+               {items.map((a) => (
+                  <tr key={a.id}>
+                     <td>{formatDate(a.assessed_on)}</td>
+                     <td>{a.title}</td>
+                     <td>{a.score}/{a.max_score} ({formatPercent(scorePercent(a))})</td>
+                     <td>{a.remarks || '—'}</td>
+                     {onDelete && (
+                        <td>
+                           <button className="pmIconBtn pmIconBtnDanger" onClick={() => onDelete(a)} aria-label="Delete assessment">
+                              <span className="material-symbols-outlined">delete</span>
+                           </button>
+                        </td>
+                     )}
+                  </tr>
+               ))}
+            </tbody>
+         </table>
+      </div>
+   );
+}
+
+function ConductList({ items, onDelete }) {
+   if (!items.length) return <div className="pmEmptyBlock">No conduct remarks recorded yet.</div>;
+   return (
+      <div className="pmCardList">
+         {items.map((c) => (
+            <div className="pmCard" key={c.id}>
+               <div className="pmCardTop">
+                  <div>
+                     <span className={`pmBadge ${CONDUCT_CLASS[c.rating]}`}>{labelOf(CONDUCT, c.rating)}</span>
+                     <span className="pmCardMeta">{formatDate(c.recorded_on)}</span>
+                  </div>
+                  {onDelete && (
+                     <button className="pmIconBtn pmIconBtnDanger" onClick={() => onDelete(c)} aria-label="Delete conduct remark">
+                        <span className="material-symbols-outlined">delete</span>
+                     </button>
+                  )}
+               </div>
+               {c.remarks && <p className="pmCardText">{c.remarks}</p>}
+            </div>
+         ))}
+      </div>
+   );
+}
+
+function ConcernList({ items }) {
+   if (!items.length) return <div className="pmEmptyBlock">No concerns raised for this OSY.</div>;
+   return (
+      <div className="pmCardList">
+         {items.map((concern) => (
+            <div className="pmCard" key={concern.id}>
+               <div className="pmCardTop">
+                  <div>
+                     <span className="pmCardTitle pmCapital">{concern.type}</span>
+                     <span className="pmCardMeta">
+                        by {concern.submitter?.name ?? 'Unknown'} · {formatDate(concern.created_at)}
+                     </span>
+                  </div>
+                  <span className={`pmBadge ${CONCERN_CLASS[concern.status] ?? ''}`}>{concern.status}</span>
+               </div>
+               <p className="pmCardText">{concern.description}</p>
+               {concern.review_remarks && (
+                  <p className="pmReviewNote">
+                     <strong>Review{concern.reviewer?.name ? ` (${concern.reviewer.name})` : ''}:</strong>{' '}
+                     {concern.review_remarks}
+                  </p>
+               )}
+            </div>
+         ))}
+      </div>
+   );
+}
+
+function NoteList({ items }) {
+   if (!items.length) return <div className="pmEmptyBlock">No notes yet.</div>;
+   return (
+      <div className="pmCardList">
+         {items.map((note) => (
+            <div className="pmCard" key={note.id}>
+               <span className="pmCardMeta">
+                  {note.user?.name ?? 'Unknown'} · {formatDateTime(note.created_at)}
+               </span>
+               <p className="pmCardText">{note.note}</p>
+            </div>
+         ))}
+      </div>
+   );
+}
+
+/* ------------------------------------------------------------------ */
+/* MONITOR mode (read-only, same sections and order as the SK view)    */
 /* ------------------------------------------------------------------ */
 function MonitorView({ detail }) {
    const s = detail.summary;
-   const records = (detail.attendance ?? []).slice(0, 10);
+   const records = detail.attendance ?? [];
    const documents = detail.documents ?? [];
+   const concerns = detail.concerns ?? [];
+   const notes = detail.notes ?? [];
+   const pendingConcerns = concerns.filter((c) => c.status === 'pending').length;
 
    return (
       <div>
@@ -370,8 +496,8 @@ function MonitorView({ detail }) {
                <span className="pmMetricValue">{s.absent}</span>
             </div>
             <div className="pmMetric">
-               <span className="pmMetricLabel">Documents</span>
-               <span className="pmMetricValue">{s.docs_received}/{s.docs_required}</span>
+               <span className="pmMetricLabel">Days recorded</span>
+               <span className="pmMetricValue">{s.attendance_days}</span>
             </div>
          </div>
 
@@ -381,7 +507,7 @@ function MonitorView({ detail }) {
          <OutcomeBlock detail={detail} />
 
          <div className="pmSectionBar pmSectionGap">
-            <span className="pmSectionTitle">Recent attendance</span>
+            <span className="pmSectionTitle">Attendance</span>
             <span className="pmMuted">
                {s.present} present · {s.late} late · {s.absent} absent · {s.excused} excused
             </span>
@@ -407,6 +533,35 @@ function MonitorView({ detail }) {
             </div>
          )}
 
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Assessments</span>
+            <span className="pmMuted">
+               {s.assessment_count ? `Average ${formatPercent(s.assessment_average)}` : 'None yet'}
+            </span>
+         </div>
+         <AssessmentTable items={detail.assessments ?? []} />
+
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Conduct</span>
+            <span className="pmMuted">{s.conduct_rating ? `Latest: ${labelOf(CONDUCT, s.conduct_rating)}` : 'None yet'}</span>
+         </div>
+         <ConductList items={detail.conduct ?? []} />
+
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Concerns</span>
+            <span className="pmMuted">
+               {pendingConcerns > 0 ? `${pendingConcerns} pending` : concerns.length ? `${concerns.length} total` : 'None'}
+            </span>
+         </div>
+         <ConcernList items={concerns} />
+
+         <div className="pmSectionBar pmSectionGap">
+            <span className="pmSectionTitle">Notes</span>
+            <span className="pmMuted">{notes.length || 'None'}</span>
+         </div>
+         <NoteList items={notes} />
+
+         {/* Maxima-only: its own requirements checklist (SK does not see this) */}
          <div className="pmSectionBar pmSectionGap">
             <span className="pmSectionTitle">Requirements</span>
             <span className="pmMuted">{s.docs_received} of {s.docs_required} received</span>
@@ -744,6 +899,127 @@ function AttendanceTab({ detail, run }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* MANAGE mode: Assessments + Conduct tabs                             */
+/* ------------------------------------------------------------------ */
+function AssessmentsTab({ detail, run }) {
+   const blank = { title: '', score: '', max_score: '100', assessed_on: todayLocal(), remarks: '' };
+   const [values, bind, setValues] = useForm(blank);
+   const [busy, setBusy] = useState(false);
+   const canEdit = detail.status !== 'Accepted by Maxima';
+   const s = detail.summary;
+
+   async function submit(e) {
+      e.preventDefault();
+      setBusy(true);
+      const ok = await run(() =>
+         apiSend(`/api/maxima/progress/${detail.id}/assessments`, 'POST', {
+            title: values.title.trim(),
+            score: values.score,
+            max_score: values.max_score,
+            assessed_on: values.assessed_on,
+            remarks: nz(values.remarks),
+         })
+      );
+      setBusy(false);
+      if (ok) setValues({ ...blank, max_score: values.max_score });
+   }
+
+   async function remove(a) {
+      if (!window.confirm(`Delete "${a.title}"?`)) return;
+      await run(() => apiSend(`/api/maxima/progress/assessments/${a.id}`, 'DELETE'));
+   }
+
+   return (
+      <div>
+         <div className="pmAttChips">
+            <div className="pmAttChip"><strong>{formatPercent(s.assessment_average)}</strong><span>Average</span></div>
+            <div className="pmAttChip"><strong>{s.assessment_count}</strong><span>Assessments</span></div>
+         </div>
+
+         {canEdit ? (
+            <form className="pmForm" onSubmit={submit}>
+               <h3 className="pmFormTitle">Record an assessment</h3>
+               <div className="pmFormGrid">
+                  <Field label="Assessment">
+                     <input type="text" required placeholder="e.g. Written exam, Practical demo" {...bind('title')} />
+                  </Field>
+                  <Field label="Score"><input type="number" required min="0" step="0.01" {...bind('score')} /></Field>
+                  <Field label="Out of"><input type="number" required min="1" step="0.01" {...bind('max_score')} /></Field>
+                  <Field label="Date"><input type="date" required max={todayLocal()} {...bind('assessed_on')} /></Field>
+                  <Field label="Remarks (optional)"><input type="text" {...bind('remarks')} /></Field>
+               </div>
+               <div className="pmFormActions">
+                  <button type="submit" className="pmBtnPrimary" disabled={busy}>
+                     {busy ? 'Saving...' : 'Save Assessment'}
+                  </button>
+               </div>
+            </form>
+         ) : (
+            <div className="pmHint">Start the training first to record assessments.</div>
+         )}
+
+         <AssessmentTable items={detail.assessments ?? []} onDelete={canEdit ? remove : null} />
+      </div>
+   );
+}
+
+function ConductTab({ detail, run }) {
+   const blank = { rating: 'good', remarks: '', recorded_on: todayLocal() };
+   const [values, bind, setValues] = useForm(blank);
+   const [busy, setBusy] = useState(false);
+   const canEdit = detail.status !== 'Accepted by Maxima';
+
+   async function submit(e) {
+      e.preventDefault();
+      setBusy(true);
+      const ok = await run(() =>
+         apiSend(`/api/maxima/progress/${detail.id}/conduct`, 'POST', {
+            rating: values.rating,
+            remarks: nz(values.remarks),
+            recorded_on: values.recorded_on,
+         })
+      );
+      setBusy(false);
+      if (ok) setValues(blank);
+   }
+
+   async function remove(c) {
+      if (!window.confirm('Delete this conduct remark?')) return;
+      await run(() => apiSend(`/api/maxima/progress/conduct/${c.id}`, 'DELETE'));
+   }
+
+   return (
+      <div>
+         {canEdit ? (
+            <form className="pmForm" onSubmit={submit}>
+               <h3 className="pmFormTitle">Record conduct</h3>
+               <div className="pmFormGrid">
+                  <Field label="Rating">
+                     <select {...bind('rating')}>
+                        {CONDUCT.map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+                     </select>
+                  </Field>
+                  <Field label="Date"><input type="date" required max={todayLocal()} {...bind('recorded_on')} /></Field>
+               </div>
+               <Field label={values.rating === 'needs_improvement' ? 'Remarks (required)' : 'Remarks (optional)'}>
+                  <textarea rows="2" required={values.rating === 'needs_improvement'} {...bind('remarks')} />
+               </Field>
+               <div className="pmFormActions">
+                  <button type="submit" className="pmBtnPrimary" disabled={busy}>
+                     {busy ? 'Saving...' : 'Save Conduct'}
+                  </button>
+               </div>
+            </form>
+         ) : (
+            <div className="pmHint">Start the training first to record conduct.</div>
+         )}
+
+         <ConductList items={detail.conduct ?? []} onDelete={canEdit ? remove : null} />
+      </div>
+   );
+}
+
+/* ------------------------------------------------------------------ */
 /* MANAGE mode: Documents tab                                          */
 /* ------------------------------------------------------------------ */
 function DocRow({ doc, run }) {
@@ -905,11 +1181,28 @@ function NotesTab({ detail, run }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* MANAGE mode: Concerns tab (only shown when a concern exists)        */
+/* MANAGE mode: Concerns tab (always shown, like the SK view)          */
 /* ------------------------------------------------------------------ */
 function ConcernsTab({ detail, run }) {
+   const blank = { type: 'absence', description: '' };
+   const [values, bind, setValues] = useForm(blank);
+   const [busy, setBusy] = useState(false);
    const [remarksById, setRemarksById] = useState({});
    const concerns = detail.concerns ?? [];
+   const canEdit = detail.status !== 'Accepted by Maxima';
+
+   async function add(e) {
+      e.preventDefault();
+      setBusy(true);
+      const ok = await run(() =>
+         apiSend(`/api/maxima/progress/${detail.id}/concerns`, 'POST', {
+            type: values.type,
+            description: values.description.trim(),
+         })
+      );
+      setBusy(false);
+      if (ok) setValues(blank);
+   }
 
    async function review(concern, status) {
       const ok = await run(() =>
@@ -922,44 +1215,78 @@ function ConcernsTab({ detail, run }) {
    }
 
    return (
-      <div className="pmCardList">
-         {concerns.map((concern) => (
-            <div className="pmCard" key={concern.id}>
-               <div className="pmCardTop">
-                  <div>
-                     <span className="pmCardTitle pmCapital">{concern.type}</span>
-                     <span className="pmCardMeta">
-                        by {concern.submitter?.name ?? 'Unknown'} · {formatDate(concern.created_at)}
-                     </span>
-                  </div>
-                  <span className={`pmBadge ${CONCERN_CLASS[concern.status] ?? ''}`}>{concern.status}</span>
+      <div>
+         {canEdit ? (
+            <form className="pmForm" onSubmit={add}>
+               <h3 className="pmFormTitle">Add a concern</h3>
+               <div className="pmFormGrid">
+                  <Field label="Type">
+                     <select {...bind('type')}>
+                        {CONCERN_TYPES.map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+                     </select>
+                  </Field>
                </div>
+               <Field label="Description">
+                  <textarea
+                     rows="3"
+                     required
+                     placeholder="e.g. Absent for three days in a row, guardian could not be reached."
+                     {...bind('description')}
+                  />
+               </Field>
+               <div className="pmFormActions">
+                  <button type="submit" className="pmBtnPrimary" disabled={busy || !values.description.trim()}>
+                     {busy ? 'Saving...' : 'Add Concern'}
+                  </button>
+               </div>
+            </form>
+         ) : (
+            <div className="pmHint">Start the training first to record concerns.</div>
+         )}
 
-               <p className="pmCardText">{concern.description}</p>
+         {concerns.length === 0 ? (
+            <div className="pmEmptyBlock">No concerns raised for this OSY.</div>
+         ) : (
+            <div className="pmCardList">
+               {concerns.map((concern) => (
+                  <div className="pmCard" key={concern.id}>
+                     <div className="pmCardTop">
+                        <div>
+                           <span className="pmCardTitle pmCapital">{concern.type}</span>
+                           <span className="pmCardMeta">
+                              by {concern.submitter?.name ?? 'Unknown'} · {formatDate(concern.created_at)}
+                           </span>
+                        </div>
+                        <span className={`pmBadge ${CONCERN_CLASS[concern.status] ?? ''}`}>{concern.status}</span>
+                     </div>
 
-               {concern.review_remarks && (
-                  <p className="pmReviewNote">
-                     <strong>Review{concern.reviewer?.name ? ` (${concern.reviewer.name})` : ''}:</strong>{' '}
-                     {concern.review_remarks}
-                  </p>
-               )}
+                     <p className="pmCardText">{concern.description}</p>
 
-               {concern.status !== 'resolved' && (
-                  <div className="pmConcernActions">
-                     <input
-                        type="text"
-                        placeholder="Review remarks (optional)"
-                        value={remarksById[concern.id] ?? ''}
-                        onChange={(e) => setRemarksById((prev) => ({ ...prev, [concern.id]: e.target.value }))}
-                     />
-                     {concern.status === 'pending' && (
-                        <button className="pmBtnGhost" onClick={() => review(concern, 'reviewed')}>Mark Reviewed</button>
+                     {concern.review_remarks && (
+                        <p className="pmReviewNote">
+                           <strong>Review{concern.reviewer?.name ? ` (${concern.reviewer.name})` : ''}:</strong>{' '}
+                           {concern.review_remarks}
+                        </p>
                      )}
-                     <button className="pmBtnPrimary" onClick={() => review(concern, 'resolved')}>Mark Resolved</button>
+
+                     {concern.status !== 'resolved' && (
+                        <div className="pmConcernActions">
+                           <input
+                              type="text"
+                              placeholder="Review remarks (optional)"
+                              value={remarksById[concern.id] ?? ''}
+                              onChange={(e) => setRemarksById((prev) => ({ ...prev, [concern.id]: e.target.value }))}
+                           />
+                           {concern.status === 'pending' && (
+                              <button className="pmBtnGhost" onClick={() => review(concern, 'reviewed')}>Mark Reviewed</button>
+                           )}
+                           <button className="pmBtnPrimary" onClick={() => review(concern, 'resolved')}>Mark Resolved</button>
+                        </div>
+                     )}
                   </div>
-               )}
+               ))}
             </div>
-         ))}
+         )}
       </div>
    );
 }
@@ -1083,9 +1410,11 @@ function MaximaProgressMonitoring() {
    const manageTabs = [
       ['overview', 'Overview'],
       ['attendance', 'Attendance'],
-      ['documents', 'Documents'],
+      ['assessments', 'Assessments'],
+      ['conduct', 'Conduct'],
+      ['concerns', 'Concerns'],
       ['notes', 'Notes'],
-      ...(concerns.length > 0 ? [['concerns', 'Concerns']] : []),
+      ['documents', 'Documents'],
    ];
 
    return (
@@ -1277,9 +1606,11 @@ function MaximaProgressMonitoring() {
 
                                  {tab === 'overview' && <OverviewTab detail={selected} run={run} />}
                                  {tab === 'attendance' && <AttendanceTab detail={selected} run={run} />}
-                                 {tab === 'documents' && <DocumentsTab detail={selected} run={run} />}
-                                 {tab === 'notes' && <NotesTab detail={selected} run={run} />}
+                                 {tab === 'assessments' && <AssessmentsTab detail={selected} run={run} />}
+                                 {tab === 'conduct' && <ConductTab detail={selected} run={run} />}
                                  {tab === 'concerns' && <ConcernsTab detail={selected} run={run} />}
+                                 {tab === 'notes' && <NotesTab detail={selected} run={run} />}
+                                 {tab === 'documents' && <DocumentsTab detail={selected} run={run} />}
                               </>
                            )}
                         </div>
