@@ -715,6 +715,7 @@
    border-bottom: 1px solid #E3E9E3;
    margin-bottom: 20px;
    overflow-x: auto;
+   overflow-y: hidden;
 }
 
 .pmTab {
@@ -1081,9 +1082,21 @@
 
 .pmCardTop {
    display: flex;
-   align-items: flex-start;
+   align-items: center;
    justify-content: space-between;
    gap: 12px;
+   min-height: 32px;
+}
+
+.pmCardTop > .pmCardMeta {
+   margin-top: 0;
+}
+
+.pmCardActions {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   flex-shrink: 0;
 }
 
 .pmCardTitle {
@@ -1243,4 +1256,24 @@
       max-height: 94dvh;
       border-radius: 18px 18px 0 0;
    }
+}
+
+.pmNotice {
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   margin: 0 0 18px;
+   padding: 12px 14px;
+   border-radius: 10px;
+   background: #F4F8F5;
+   border: 1px solid #DDE9E0;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #3D4A3F;
+}
+
+.pmNotice .material-symbols-outlined {
+   font-size: 18px;
+   margin-top: 1px;
+   color: #2F6E4F;
 }

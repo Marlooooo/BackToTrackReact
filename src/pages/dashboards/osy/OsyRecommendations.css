@@ -533,6 +533,96 @@
    height: 100%;
 }
 
+/* ---------- Suggestions Maxima does not offer ---------- */
+.oRec-otherNote {
+   margin: -4px 0 14px;
+   font-size: 13px;
+   line-height: 1.55;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-otherList {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.oRec-other {
+   display: flex;
+   align-items: flex-start;
+   gap: 14px;
+   padding: 16px 18px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-left: 4px solid #C99A3A;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-otherRank {
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   min-width: 36px;
+   height: 36px;
+   padding: 0 8px;
+   border-radius: 999px;
+   background: #FBF0DD;
+   color: #96701E;
+   font-size: 13px;
+   font-weight: 700;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-otherBody {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 4px;
+   min-width: 0;
+}
+
+.oRec-otherHead {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 10px;
+   flex-wrap: wrap;
+}
+
+.oRec-other h3 {
+   margin: 0;
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 1.3;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.oRec-otherTag {
+   padding: 4px 12px;
+   border-radius: 999px;
+   background: #FBF0DD;
+   color: #96701E;
+   font-size: 11.5px;
+   font-weight: 700;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.oRec-otherMeta {
+   margin: 0;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
 /* ---------- Next steps ---------- */
 .oRec-steps {
    display: grid;

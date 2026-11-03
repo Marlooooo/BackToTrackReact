@@ -1,8 +1,8 @@
 .osyAvailCoursesBody {
    display: flex;
    flex-direction: row;
-   height: 100vh;        
-   overflow: hidden;  
+   height: 100vh;
+   overflow: hidden;
    font-family: "Nunito", sans-serif;
 }
 
@@ -12,33 +12,189 @@
    flex-direction: column;
    min-width: 0;
    background: #F5F7F5;
-   overflow-y: auto;   
+   overflow-y: auto;
 }
 
+/* ---------- hero ---------- */
+
 .osyAvailCoursesTop {
-   padding: 32px 48px 20px;
+   padding: 28px 48px 0;
    font-family: "Nunito", sans-serif;
 }
-.osyAvailCoursesTop h1{
+
+.osyCoursesHero {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   gap: 28px;
+   background: #123524;
+   border-radius: 20px;
+   padding: 32px 36px;
+}
+
+.osyAvailCoursesTop h1 {
    margin: 0;
+   font-size: 28px;
+   font-weight: 600;
+   color: #FFFFFF;
    font-family: "Open Sans", sans-serif;
 }
 
 .osyCoursesSubtitle {
-   margin: 4px 0 0;
+   margin: 6px 0 0;
    font-size: 13.5px;
+   color: #A9C7B6;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyCoursesHeroNote {
+   margin: 14px 0 0;
+   max-width: 48ch;
+   font-size: 13.5px;
+   line-height: 1.65;
+   color: #D3E4D9;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyCoursesStats {
+   display: flex;
+   align-items: stretch;
+}
+
+.osyCoursesStat {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 4px 28px;
+   border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.osyCoursesStat:last-child {
+   padding-right: 0;
+}
+
+.osyCoursesStat strong {
+   font-size: 30px;
+   font-weight: 500;
+   line-height: 1.1;
+   color: #FFFFFF;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyCoursesStat span {
+   font-size: 12.5px;
+   color: #A9C7B6;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- referral path ---------- */
+
+.osyCoursesPath {
+   margin-top: 16px;
+   background: #FFFFFF;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   padding: 18px 24px 20px;
+}
+
+.osyCoursesPath__head {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.osyCoursesPath__head h2 {
+   margin: 0;
+   font-size: 14.5px;
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyCoursesPath__toggle {
+   border: none;
+   background: none;
+   color: #2F6E4F;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyCoursesPath__toggle:hover {
+   text-decoration: underline;
+}
+
+.osyCoursesPath__steps {
+   list-style: none;
+   margin: 18px 0 0;
+   padding: 0;
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 28px;
+}
+
+.osyCoursesPath__steps li {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 12px;
+}
+
+.osyCoursesPath__steps li:not(:last-child)::after {
+   content: "";
+   position: absolute;
+   top: 14px;
+   left: 42px;
+   right: -18px;
+   height: 1px;
+   background: #CFE0D4;
+}
+
+.osyCoursesPath__num {
+   width: 28px;
+   height: 28px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #1E5B3F;
+   font-size: 13px;
+   font-weight: 600;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyCoursesPath__steps strong {
+   display: block;
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyCoursesPath__steps p {
+   margin: 3px 0 0;
+   font-size: 12.5px;
+   line-height: 1.55;
    color: #62705F;
    font-family: "Nunito", sans-serif;
 }
 
-
+/* ---------- toolbar ---------- */
 
 .osyCoursesToolbar {
+   position: sticky;
+   top: 0;
+   z-index: 5;
    display: flex;
    flex-wrap: wrap;
    align-items: center;
    gap: 12px;
-   margin-top: 18px;
+   padding: 18px 48px 14px;
+   margin-top: 6px;
+   background: #F5F7F5;
 }
 
 .osyCoursesSearchWrap {
@@ -49,10 +205,9 @@
    border: 1px solid #DCE6DE;
    border-radius: 999px;
    padding: 11px 20px;
-   width: 320px;
+   width: 300px;
    max-width: 100%;
    color: #8A968A;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
 }
 
 .osyCoursesSearchWrap:focus-within {
@@ -93,8 +248,8 @@
 
 .osyCoursesChipOn,
 .osyCoursesChipOn:hover {
-   background: #2F6E4F;
-   border-color: #2F6E4F;
+   background: #123524;
+   border-color: #123524;
    color: #FFFFFF;
 }
 
@@ -110,12 +265,39 @@
    font-family: "Nunito", sans-serif;
 }
 
-.osyAvailCoursesBot {
-   flex: 1;
-   padding: 10px 48px 44px;
-   font-family: "Nunito", sans-serif;
+.osyCoursesViewToggle {
+   display: inline-flex;
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   padding: 3px;
 }
 
+.osyCoursesViewToggle button {
+   width: 34px;
+   height: 30px;
+   border: none;
+   background: transparent;
+   color: #62705F;
+   border-radius: 999px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+}
+
+.osyCoursesViewToggle button.on {
+   background: #E3F0E7;
+   color: #1E5B3F;
+}
+
+/* ---------- list area ---------- */
+
+.osyAvailCoursesBot {
+   flex: 1;
+   padding: 8px 48px 48px;
+   font-family: "Nunito", sans-serif;
+}
 
 .osyCoursesBanner {
    padding: 12px 16px;
@@ -131,12 +313,18 @@
    border: 1px solid #F0CACA;
 }
 
+.osyCoursesBannerInfo {
+   background: #E4EDF3;
+   color: #35607A;
+   border: 1px solid #CFDDE7;
+}
+
 .osyCoursesRetry {
    margin-left: 8px;
    background: none;
    border: none;
    color: inherit;
-   font-weight: 700;
+   font-weight: 600;
    text-decoration: underline;
    cursor: pointer;
    font-family: "Nunito", sans-serif;
@@ -169,22 +357,50 @@
    font-family: "Nunito", sans-serif;
 }
 
-
 .osyCoursesGrid {
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
    gap: 22px;
 }
+
+.osyCoursesGrid--list {
+   grid-template-columns: 1fr;
+   gap: 16px;
+}
+
+/* ---------- card ---------- */
 
 .osyCourseCard {
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
-   padding: 14px;
+   overflow: hidden;
    display: flex;
    flex-direction: column;
-   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   scroll-margin-top: 90px;
    font-family: "Nunito", sans-serif;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.osyCourseCard:hover {
+   border-color: #BFD4C6;
+   box-shadow: 0 10px 28px rgba(18, 53, 36, 0.08);
+}
+
+/* the course opened from a recommendation link */
+.osyCourseCard--target {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.28);
+   animation: osyTargetPulse 1.6s ease-out 2;
+}
+
+@keyframes osyTargetPulse {
+   0% {
+      box-shadow: 0 0 0 0 rgba(47, 110, 79, 0.5);
+   }
+   100% {
+      box-shadow: 0 0 0 16px rgba(47, 110, 79, 0);
+   }
 }
 
 .osyCourseSkeleton {
@@ -203,10 +419,9 @@
 .osyCourseCard__imageWrap {
    position: relative;
    width: 100%;
-   height: 120px;
-   border-radius: 12px;
+   height: 150px;
+   flex-shrink: 0;
    overflow: hidden;
-   margin-bottom: 16px;
 }
 
 .osyCourseCard__imageWrap img {
@@ -215,17 +430,42 @@
    object-fit: cover;
 }
 
+.osyCourseCard--closed .osyCourseCard__imageWrap img {
+   filter: grayscale(0.7);
+}
+
 .osyCourseCard__badge {
    position: absolute;
-   left: 8px;
-   top: 8px;
+   left: 10px;
+   top: 10px;
    background: #FBF0DD;
    color: #96701E;
-   font-size: 10.5px;
-   font-weight: 700;
+   font-size: 11px;
+   font-weight: 600;
    padding: 4px 10px;
    border-radius: 999px;
    font-family: "Nunito", sans-serif;
+}
+
+.osyCourseCard__save {
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   border: none;
+   background: rgba(255, 255, 255, 0.94);
+   color: #2F6E4F;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+}
+
+.osyCourseCard__save[aria-pressed="true"] {
+   background: #123524;
+   color: #FFFFFF;
 }
 
 .osyCourseCard__imagePlaceholder {
@@ -234,12 +474,12 @@
    display: flex;
    align-items: center;
    justify-content: center;
-   background: linear-gradient(135deg, #DCEBE1, #C3DDCC);
+   background: #DCEBE1;
 }
 
 .osyCourseCard__imagePlaceholder span {
-   font-size: 15px;
-   font-weight: 800;
+   font-size: 14px;
+   font-weight: 600;
    letter-spacing: 0.08em;
    color: #2F6E4F;
    font-family: "Open Sans", sans-serif;
@@ -249,17 +489,31 @@
    display: flex;
    flex-direction: column;
    gap: 12px;
-   padding: 0 4px 4px;
+   padding: 16px 18px 18px;
    flex: 1;
 }
 
 .osyCourseCard__body h3 {
    margin: 0;
    font-size: 16px;
-   font-weight: 700;
-   color: #1E5B3F;
-   line-height: 1.3;
+   font-weight: 600;
+   color: #123524;
+   line-height: 1.35;
    font-family: "Open Sans", sans-serif;
+}
+
+.osyCourseMeta {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   font-size: 13px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyCourseMeta svg {
+   flex-shrink: 0;
+   color: #2F6E4F;
 }
 
 .osyCourseField {
@@ -270,7 +524,7 @@
 
 .osyCourseFieldLabel {
    font-size: 12.5px;
-   font-weight: 700;
+   font-weight: 600;
    color: #3D4A3F;
    font-family: "Open Sans", sans-serif;
 }
@@ -283,12 +537,22 @@
 
 .osyCourseSlots {
    align-self: flex-start;
-   display: inline-block;
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
    padding: 3px 12px;
    border-radius: 999px;
    font-size: 11.5px;
-   font-weight: 700;
+   font-weight: 600;
    font-family: "Nunito", sans-serif;
+}
+
+.osyCourseSlots::before {
+   content: "";
+   width: 6px;
+   height: 6px;
+   border-radius: 50%;
+   background: currentColor;
 }
 
 .osyCourseSlots--ok {
@@ -306,26 +570,77 @@
    color: #B3455E;
 }
 
-.osyCourseViewBtn {
+.osyCourseCard__foot {
    margin-top: auto;
-   border: 1.5px solid #2F6E4F;
-   background: transparent;
-   color: #2F6E4F;
+   padding-top: 14px;
+   border-top: 1px solid #EEF2EE;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+}
+
+.osyCourseReady {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+   min-width: 0;
+   flex: 1;
+}
+
+.osyCourseReady__bar {
+   height: 4px;
    border-radius: 999px;
-   padding: 9px 14px;
+   background: #E3F0E7;
+   overflow: hidden;
+}
+
+.osyCourseReady__bar span {
+   display: block;
+   height: 100%;
+   background: #2F6E4F;
+   border-radius: 999px;
+}
+
+.osyCourseReady small {
+   font-size: 11.5px;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyCourseViewBtn {
+   flex-shrink: 0;
+   border: 1px solid #CFE0D4;
+   background: transparent;
+   color: #1E5B3F;
+   border-radius: 8px;
+   padding: 8px 14px;
    font-size: 13px;
-   font-weight: 700;
+   font-weight: 600;
    cursor: pointer;
-   width: 100%;
-   transition: background 0.15s ease, color 0.15s ease;
+   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
    font-family: "Nunito", sans-serif;
 }
 
 .osyCourseViewBtn:hover {
-   background: #2F6E4F;
+   background: #123524;
+   border-color: #123524;
    color: #FFFFFF;
 }
 
+/* list layout */
+
+.osyCoursesGrid--list .osyCourseCard {
+   flex-direction: row;
+}
+
+.osyCoursesGrid--list .osyCourseCard__imageWrap {
+   width: 230px;
+   height: auto;
+   min-height: 150px;
+}
+
+/* ---------- drawer ---------- */
 
 .osyDrawerOverlay {
    position: fixed;
@@ -340,7 +655,7 @@
 .osyDrawer {
    background: #FFFFFF;
    width: 100%;
-   max-width: 480px;
+   max-width: 500px;
    height: 100%;
    display: flex;
    flex-direction: column;
@@ -382,7 +697,7 @@
    height: 34px;
    border-radius: 50%;
    border: none;
-   background: rgba(255, 255, 255, 0.92);
+   background: rgba(255, 255, 255, 0.94);
    font-size: 22px;
    line-height: 1;
    cursor: pointer;
@@ -406,8 +721,9 @@
 .osyDrawer__head h2 {
    margin: 0 0 18px;
    font-size: 22px;
+   font-weight: 600;
    line-height: 1.25;
-   color: #14201A;
+   color: #123524;
    font-family: "Open Sans", sans-serif;
 }
 
@@ -416,7 +732,7 @@
    padding: 3px 12px;
    border-radius: 999px;
    font-size: 11.5px;
-   font-weight: 700;
+   font-weight: 600;
    background: #FBF0DD;
    color: #96701E;
    font-family: "Nunito", sans-serif;
@@ -425,9 +741,10 @@
 .osyDrawer__facts {
    display: grid;
    grid-template-columns: 1fr 1fr;
-   gap: 16px;
-   padding: 14px 16px;
+   gap: 16px 20px;
+   padding: 16px 18px;
    background: #F5F7F5;
+   border: 1px solid #E7ECE8;
    border-radius: 12px;
    margin-bottom: 22px;
 }
@@ -442,7 +759,7 @@
    display: flex;
    gap: 22px;
    border-bottom: 1px solid #E7ECE8;
-   margin-bottom: 16px;
+   margin-bottom: 18px;
 }
 
 .osyDrawer__tabs button {
@@ -459,7 +776,7 @@
 }
 
 .osyDrawer__tabs button.on {
-   color: #1E5B3F;
+   color: #123524;
    border-bottom-color: #2F6E4F;
 }
 
@@ -474,9 +791,50 @@
 }
 
 .osyDrawer__hint {
-   margin: 0 0 12px;
+   margin: 0 0 14px;
    font-size: 13px;
    color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyDrawer__notice {
+   margin-bottom: 14px;
+   padding: 10px 14px;
+   border-radius: 10px;
+   background: #FBF0DD;
+   color: #7A5A17;
+   font-size: 13px;
+   line-height: 1.5;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyDrawer__progress {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   margin-bottom: 12px;
+}
+
+.osyDrawer__progressBar {
+   flex: 1;
+   height: 6px;
+   border-radius: 999px;
+   background: #E3F0E7;
+   overflow: hidden;
+}
+
+.osyDrawer__progressBar span {
+   display: block;
+   height: 100%;
+   background: #2F6E4F;
+   border-radius: 999px;
+   transition: width 0.2s ease;
+}
+
+.osyDrawer__progress small {
+   font-size: 12.5px;
+   color: #62705F;
+   white-space: nowrap;
    font-family: "Nunito", sans-serif;
 }
 
@@ -486,30 +844,129 @@
    padding: 0;
    display: flex;
    flex-direction: column;
-   gap: 10px;
+   gap: 8px;
 }
 
-.osyDrawer__checklist li {
+.osyDrawer__check {
+   position: relative;
    display: flex;
-   gap: 10px;
+   gap: 12px;
    align-items: flex-start;
+   padding: 12px 14px;
+   border: 1px solid #E7ECE8;
+   border-radius: 12px;
    font-size: 14px;
    color: #29332C;
    line-height: 1.45;
+   cursor: pointer;
    font-family: "Nunito", sans-serif;
+   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.osyDrawer__tick {
+.osyDrawer__check:hover {
+   background: #F8FAF8;
+}
+
+.osyDrawer__check input {
+   position: absolute;
+   opacity: 0;
+   pointer-events: none;
+}
+
+.osyDrawer__box {
    flex-shrink: 0;
    width: 20px;
    height: 20px;
-   border-radius: 50%;
-   background: #E3F0E7;
-   color: #2F6E4F;
+   border-radius: 6px;
+   border: 1.5px solid #BFD0C4;
+   background: #FFFFFF;
+   color: #FFFFFF;
    display: inline-flex;
    align-items: center;
    justify-content: center;
    margin-top: 1px;
+}
+
+.osyDrawer__box svg {
+   opacity: 0;
+}
+
+.osyDrawer__check input:checked + .osyDrawer__box {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+}
+
+.osyDrawer__check input:checked + .osyDrawer__box svg {
+   opacity: 1;
+}
+
+.osyDrawer__check input:focus-visible + .osyDrawer__box {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+.osyDrawer__check--done {
+   background: #F5F9F6;
+   border-color: #D5E5DA;
+   color: #62705F;
+}
+
+.osyDrawer__steps {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.osyDrawer__steps li {
+   position: relative;
+   display: flex;
+   gap: 14px;
+   align-items: flex-start;
+   font-family: "Nunito", sans-serif;
+}
+
+.osyDrawer__steps li:not(:last-child)::before {
+   content: "";
+   position: absolute;
+   left: 13px;
+   top: 32px;
+   bottom: -20px;
+   width: 1px;
+   background: #CFE0D4;
+}
+
+.osyDrawer__stepNum {
+   position: relative;
+   flex-shrink: 0;
+   width: 26px;
+   height: 26px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #1E5B3F;
+   font-size: 13px;
+   font-weight: 600;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyDrawer__steps strong {
+   display: block;
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.osyDrawer__steps p {
+   margin: 2px 0 0;
+   font-size: 13.5px;
+   line-height: 1.55;
+   color: #62705F;
 }
 
 .osyDrawer__actions {
@@ -519,7 +976,6 @@
    padding: 16px 28px;
    border-top: 1px solid #E7ECE8;
 }
-
 
 .osyCoursesBtnGhost {
    border: 1px solid #DCE6DE;
@@ -539,30 +995,29 @@
 
 .osyCoursesBtnPrimary {
    border: none;
-   background: #2F6E4F;
+   background: #123524;
    color: #FFFFFF;
    border-radius: 8px;
    padding: 10px 20px;
    font-size: 13.5px;
-   font-weight: 700;
+   font-weight: 600;
    cursor: pointer;
    font-family: "Nunito", sans-serif;
 }
 
-.osyCoursesBtnPrimary:hover:not(:disabled) {
+.osyCoursesBtnPrimary:hover {
    background: #1E5B3F;
 }
 
-.osyCoursesBtnPrimary:disabled {
-   background: #C9D3CB;
-   cursor: not-allowed;
-}
-
+/* ---------- focus, motion, responsive ---------- */
 
 .osyCoursesChip:focus-visible,
 .osyCourseViewBtn:focus-visible,
+.osyCourseCard__save:focus-visible,
 .osyCoursesBtnGhost:focus-visible,
 .osyCoursesBtnPrimary:focus-visible,
+.osyCoursesPath__toggle:focus-visible,
+.osyCoursesViewToggle button:focus-visible,
 .osyDrawer__tabs button:focus-visible,
 .osyDrawer__close:focus-visible {
    outline: 2px solid #2F6E4F;
@@ -572,8 +1027,24 @@
 @media (prefers-reduced-motion: reduce) {
    .osyDrawerOverlay,
    .osyDrawer,
-   .osyCourseSkeleton {
+   .osyCourseSkeleton,
+   .osyCourseCard--target {
       animation: none;
+   }
+
+   .osyCourseCard,
+   .osyDrawer__progressBar span {
+      transition: none;
+   }
+}
+
+@media (max-width: 960px) {
+   .osyCoursesPath__steps {
+      grid-template-columns: 1fr 1fr;
+   }
+
+   .osyCoursesPath__steps li:not(:last-child)::after {
+      display: none;
    }
 }
 
@@ -583,7 +1054,34 @@
    }
 
    .osyAvailCoursesTop {
-      padding: 20px 20px 12px;
+      padding: 20px 20px 0;
+   }
+
+   .osyCoursesHero {
+      padding: 24px 22px;
+   }
+
+   .osyCoursesStats {
+      width: 100%;
+   }
+
+   .osyCoursesStat {
+      flex: 1;
+      padding: 4px 14px;
+   }
+
+   .osyCoursesStat:first-child {
+      padding-left: 0;
+      border-left: none;
+   }
+
+   .osyCoursesPath__steps {
+      grid-template-columns: 1fr;
+      gap: 18px;
+   }
+
+   .osyCoursesToolbar {
+      padding: 14px 20px 10px;
    }
 
    .osyCoursesSearchWrap {
@@ -595,11 +1093,21 @@
    }
 
    .osyAvailCoursesBot {
-      padding: 10px 20px 32px;
+      padding: 8px 20px 32px;
    }
 
    .osyCoursesGrid {
       grid-template-columns: 1fr;
+   }
+
+   .osyCoursesGrid--list .osyCourseCard {
+      flex-direction: column;
+   }
+
+   .osyCoursesGrid--list .osyCourseCard__imageWrap {
+      width: 100%;
+      height: 150px;
+      min-height: 0;
    }
 
    .osyDrawer {
@@ -608,5 +1116,9 @@
 
    .osyDrawer__hero {
       height: 150px;
+   }
+
+   .osyDrawer__facts {
+      grid-template-columns: 1fr;
    }
 }

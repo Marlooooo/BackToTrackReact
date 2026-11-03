@@ -1,8 +1,34 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import BarangaySideBar from '../../../components/skOfficialSideBar';
 import './BarangayNotifications.css';
 
 const API = "http://localhost:8000/api";
+
+// Page that lists the enrolled OSY. A "Reason received" notification opens it with that OSY's record.
+// If your Training Monitoring page uses another URL, change it here.
+const TRAINING_MONITORING_PATH = '/barangay/training';
+
+function getCookie(name) {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${name}=`);
+   if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
+}
+
+async function postRead(url, baseHeaders) {
+   if (!getCookie("XSRF-TOKEN")) {
+      await fetch(API.replace("/api", "") + "/sanctum/csrf-cookie", { credentials: "include" });
+   }
+
+   const res = await fetch(url, {
+      method: "POST",
+      headers: { ...baseHeaders, "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") || "" },
+      credentials: "include",
+   });
+
+   if (!res.ok) throw new Error(`Failed: ${res.status}`);
+   window.dispatchEvent(new Event("notifications-updated"));
+}
 
 // How each status looks: label, color class, and icon
 const STATUS_META = {
@@ -30,6 +56,11 @@ const STATUS_META = {
       label: 'Dropped',
       className: 'barangayNotifRejected',
       icon: 'cross',
+   },
+   'Reason received': {
+      label: 'Reason received',
+      className: 'barangayNotifDefault',
+      icon: 'bell',
    },
 };
 
@@ -262,6 +293,8 @@ function DetailItem({ label, value, wide }) {
 /* ---------- Page ---------- */
 
 function BarangayNotifications() {
+   const navigate = useNavigate();
+
    const [items, setItems] = useState([]);
    const [loading, setLoading] = useState(true);
    const [loadingMore, setLoadingMore] = useState(false);
@@ -367,41 +400,41 @@ function BarangayNotifications() {
    /* ----- Read state ----- */
 
    const markRead = async (id) => {
-      setItems((prev) =>
-         prev.map((n) =>
-            n.id === id ? { ...n, read_at: n.read_at || new Date().toISOString() } : n
-         )
-      );
-
       try {
-         await fetch(`${API}/notifications/${id}/read`, {
-            method: "POST",
-            headers,
-         });
+         await postRead(`${API}/notifications/${id}/read`, headers);
+         setItems((prev) =>
+            prev.map((n) =>
+               n.id === id ? { ...n, read_at: n.read_at || new Date().toISOString() } : n
+            )
+         );
       } catch (err) {
-         // the page already shows it as read, the next refresh will correct it
+         console.error("Mark as read failed:", err);
       }
    };
 
    const markAllRead = async () => {
-      await fetch(`${API}/notifications/read-all`, {
-         method: "POST",
-         headers,
-      });
-
-      setItems((prev) =>
-         prev.map((n) => ({
-            ...n,
-            read_at: n.read_at || new Date().toISOString(),
-         }))
-      );
+      try {
+         await postRead(`${API}/notifications/read-all`, headers);
+         setItems((prev) =>
+            prev.map((n) => ({ ...n, read_at: n.read_at || new Date().toISOString() }))
+         );
+      } catch (err) {
+         console.error("Mark all as read failed:", err);
+      }
    };
 
    /* ----- Modal ----- */
 
-   const openNotif = (n) => {
+   // stay = true keeps the details modal open (used by the Newer / Older buttons)
+   const openNotif = (n, stay = false) => {
       if (!n.read_at) {
          markRead(n.id);
+      }
+
+      // an OSY sent a reason: open that OSY's record in Training Monitoring
+      if (!stay && n.data?.status === 'Reason received' && n.data?.referral_id) {
+         navigate(`${TRAINING_MONITORING_PATH}?open=${n.data.referral_id}`);
+         return;
       }
 
       setSelected(n);
@@ -697,6 +730,7 @@ function BarangayNotifications() {
                               <option value='Completed'>Completed</option>
                               <option value='Rejected'>Rejected</option>
                               <option value='Dropped'>Dropped</option>
+                              <option value='Reason received'>Reason received</option>
                            </select>
                         </div>
                      </div>
@@ -995,7 +1029,7 @@ function BarangayNotifications() {
                         <div className='barangayNotifModalNav'>
                            <button
                               className='barangayNotifGhostBtn'
-                              onClick={() => previousItem && openNotif(previousItem)}
+                              onClick={() => previousItem && openNotif(previousItem, true)}
                               disabled={!previousItem}
                            >
                               <NotifIcon type='chevron-left' size={15} />
@@ -1004,7 +1038,7 @@ function BarangayNotifications() {
 
                            <button
                               className='barangayNotifGhostBtn'
-                              onClick={() => nextItem && openNotif(nextItem)}
+                              onClick={() => nextItem && openNotif(nextItem, true)}
                               disabled={!nextItem}
                            >
                               Older
@@ -1012,9 +1046,19 @@ function BarangayNotifications() {
                            </button>
                         </div>
 
-                        <button className='barangayNotifPrimaryBtn' onClick={closeModal}>
-                           Close
-                        </button>
+                        <div className='barangayNotifModalNav'>
+                           {selected.data?.status === 'Reason received' && selected.data?.referral_id && (
+                              <button
+                                 className='barangayNotifGhostBtn'
+                                 onClick={() => navigate(`${TRAINING_MONITORING_PATH}?open=${selected.data.referral_id}`)}
+                              >
+                                 Open in Training Monitoring
+                              </button>
+                           )}
+                           <button className='barangayNotifPrimaryBtn' onClick={closeModal}>
+                              Close
+                           </button>
+                        </div>
                      </div>
 
                   </div>

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import OsySideBar from '../../../components/osySideBar';
+import { AbsenceReasonPanel, AbsenceReasonSummary } from './OsyAbsenceReason';
 import "./OsyTrainingProg.css"
 
 const RECORDS_PREVIEW = 5;
@@ -16,6 +17,14 @@ const STATUS_CLASS = {
    'Training Started': 'opBadgeOngoing',
    Completed: 'opBadgeCompleted',
    Dropped: 'opBadgeDropped',
+};
+
+// Order of the course tabs: ongoing first, then waiting, completed, dropped
+const STATUS_ORDER = {
+   'Training Started': 0,
+   'Accepted by Maxima': 1,
+   Completed: 2,
+   Dropped: 3,
 };
 
 const ATTENDANCE_CLASS = {
@@ -62,12 +71,28 @@ function attendanceHint(rate) {
    return 'Your attendance is low. Please talk to your trainer if you need help attending.';
 }
 
-function TrainingCard({ training }) {
+function TrainingCard({ training, reasonOptions, onReasonsSaved }) {
    const [showAllRecords, setShowAllRecords] = useState(false);
+   const [onlyNeedsReason, setOnlyNeedsReason] = useState(false);
+   const [openRecordId, setOpenRecordId] = useState(null);
+   const [flash, setFlash] = useState('');
 
    const { status, attendance, documents } = training;
    const pendingDocs = documents.filter((doc) => doc.status === 'pending');
-   const records = showAllRecords ? attendance.records : attendance.records.slice(0, RECORDS_PREVIEW);
+
+   const canAddReason = status === 'Training Started' && !!reasonOptions;
+   const needsReason = attendance.needs_reason ?? 0;
+   const needsReasonRecords = attendance.records.filter((record) => record.status === 'absent' && !record.reason && record.reason_request);
+   const showReasonBanner = canAddReason && needsReason > 0;
+   const listRecords = onlyNeedsReason ? needsReasonRecords : attendance.records;
+   const records = showAllRecords ? listRecords : listRecords.slice(0, RECORDS_PREVIEW);
+
+   function handleReasonsSaved(updatedRecords, message) {
+      onReasonsSaved(training.id, updatedRecords);
+      setOpenRecordId(null);
+      setFlash(message || 'Your reason was sent.');
+      setTimeout(() => setFlash(''), 5000);
+   }
 
    // Time-based progress through the training period
    let percent = null;
@@ -179,22 +204,118 @@ function TrainingCard({ training }) {
                   <div className="opChipBox"><strong>{attendance.absent}</strong><span>Absent</span></div>
                   <div className="opChipBox"><strong>{attendance.excused}</strong><span>Excused</span></div>
                </div>
-               <p className="opHint">{attendanceHint(attendance.rate)}</p>
+               {showReasonBanner && (
+                  <div className="opNotice opNoticeWarn">
+                     <i className="las la-exclamation-circle"></i>
+                     <div>
+                        <strong>
+                           Your SK official asked you to explain {needsReason} {needsReason === 1 ? 'absence' : 'absences'}
+                        </strong>
+                        <p>
+                           {needsReasonRecords[0]?.reason_request?.message
+                              || 'Tell us what happened so your SK official can help you get back on track.'}
+                        </p>
+                        <button
+                           type="button"
+                           className="arBannerBtn"
+                           onClick={() => {
+                              setOnlyNeedsReason(true);
+                              setOpenRecordId(needsReasonRecords[0]?.id ?? null);
+                           }}
+                        >
+                           Add reasons
+                        </button>
+                     </div>
+                  </div>
+               )}
+               {!(showReasonBanner && attendance.rate !== null && attendance.rate < 75) && (
+                  <p className="opHint">{attendanceHint(attendance.rate)}</p>
+               )}
+               {flash && (
+                  <div className="opNotice opNoticeGood arFlash">
+                     <i className="las la-check-circle"></i>
+                     <div><strong>{flash}</strong></div>
+                  </div>
+               )}
 
-               {attendance.records.length > 0 && (
+               {canAddReason && (needsReason > 0 || onlyNeedsReason) && (
+                  <div className="arFilters">
+                     <button
+                        type="button"
+                        className={`arFilter ${!onlyNeedsReason ? 'arFilterOn' : ''}`}
+                        onClick={() => setOnlyNeedsReason(false)}
+                     >
+                        All
+                     </button>
+                     <button
+                        type="button"
+                        className={`arFilter ${onlyNeedsReason ? 'arFilterOn' : ''}`}
+                        onClick={() => setOnlyNeedsReason(true)}
+                     >
+                        Needs reason ({needsReason})
+                     </button>
+                  </div>
+               )}
+
+               {attendance.records.length > 0 && onlyNeedsReason && needsReasonRecords.length === 0 && (
+                  <div className="arEmptyFilter">All your absences have a reason. Nice work.</div>
+               )}
+
+               {attendance.records.length > 0 && listRecords.length > 0 && (
                   <>
                      <div className="opRecords">
                         {records.map((record) => (
-                           <div className="opRecord" key={record.date}>
-                              <span className="opRecordDate">{formatDate(record.date)}</span>
-                              <span className={`opChip ${ATTENDANCE_CLASS[record.status]}`}>{record.status}</span>
-                              <span className="opRecordNote">{record.remarks || ''}</span>
-                           </div>
+                           <Fragment key={record.date}>
+                              <div className="opRecord">
+                                 <span className="opRecordDate">{formatDate(record.date)}</span>
+                                 <span className={`opChip ${ATTENDANCE_CLASS[record.status]}`}>{record.status}</span>
+                                 <span className="opRecordNote">
+                                    {record.status === 'absent' && (record.reason || (canAddReason && record.reason_request)) ? (
+                                       <span className="arRowAction">
+                                          <span>{record.remarks || ''}</span>
+                                          {record.reason ? (
+                                             <button
+                                                type="button"
+                                                className="arSentTag"
+                                                onClick={() => setOpenRecordId(openRecordId === record.id ? null : record.id)}
+                                             >
+                                                <i className="las la-check-circle"></i> Reason sent
+                                             </button>
+                                          ) : (
+                                             <button
+                                                type="button"
+                                                className="arAddBtn"
+                                                onClick={() => setOpenRecordId(openRecordId === record.id ? null : record.id)}
+                                             >
+                                                <span className="arDot" /> Add reason
+                                             </button>
+                                          )}
+                                       </span>
+                                    ) : (
+                                       record.remarks || ''
+                                    )}
+                                 </span>
+                              </div>
+                              {openRecordId === record.id && (
+                                 record.reason ? (
+                                    <AbsenceReasonSummary reason={record.reason} onClose={() => setOpenRecordId(null)} />
+                                 ) : (
+                                    <AbsenceReasonPanel
+                                       trainingId={training.id}
+                                       candidates={needsReasonRecords}
+                                       startRecordId={record.id}
+                                       options={reasonOptions}
+                                       onClose={() => setOpenRecordId(null)}
+                                       onSaved={handleReasonsSaved}
+                                    />
+                                 )
+                              )}
+                           </Fragment>
                         ))}
                      </div>
-                     {attendance.records.length > RECORDS_PREVIEW && (
+                     {listRecords.length > RECORDS_PREVIEW && (
                         <button className="opLinkBtn" onClick={() => setShowAllRecords((prev) => !prev)}>
-                           {showAllRecords ? 'Show less' : `Show all ${attendance.records.length} records`}
+                           {showAllRecords ? 'Show less' : `Show all ${listRecords.length} records`}
                         </button>
                      )}
                   </>
@@ -259,6 +380,31 @@ function OsyTrainingProg() {
    const [trainings, setTrainings] = useState([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
+   const [reasonOptions, setReasonOptions] = useState(null);
+   const [activeId, setActiveId] = useState(null);
+
+   // Ongoing first, then waiting, completed, dropped
+   const sortedTrainings = [...trainings].sort(
+      (a, b) => (STATUS_ORDER[a.status] ?? 9) - (STATUS_ORDER[b.status] ?? 9)
+   );
+   const activeTraining = sortedTrainings.find((t) => t.id === activeId) ?? sortedTrainings[0];
+
+   function handleReasonsSaved(trainingId, updatedRecords) {
+      setTrainings((prev) => prev.map((item) => {
+         if (item.id !== trainingId) return item;
+
+         const byId = new Map(updatedRecords.map((record) => [record.id, record]));
+
+         return {
+            ...item,
+            attendance: {
+               ...item.attendance,
+               records: item.attendance.records.map((record) => byId.get(record.id) ?? record),
+               needs_reason: Math.max(0, (item.attendance.needs_reason ?? 0) - updatedRecords.length),
+            },
+         };
+      }));
+   }
 
    useEffect(() => {
       async function load() {
@@ -270,6 +416,7 @@ function OsyTrainingProg() {
             if (!res.ok) throw new Error('Could not load your training progress.');
             const data = await res.json();
             setTrainings(data.trainings ?? []);
+            setReasonOptions(data.reason_options ?? null);
          } catch (err) {
             setError(err.message);
          } finally {
@@ -282,7 +429,7 @@ function OsyTrainingProg() {
    return (
       <>
          <div className='osyTrainingProgBody'>
-            
+
             <OsySideBar/>
 
             <div className='osyTrainingProgMain'>
@@ -304,13 +451,44 @@ function OsyTrainingProg() {
 
                {!loading && !error && trainings.length > 0 && (
                   <div className="opTracker">
-                     {trainings.map((training) => (
-                        <TrainingCard key={training.id} training={training} />
-                     ))}
+                     {trainings.length > 1 && (
+                        <div className="opCourseTabs" role="tablist" aria-label="My courses">
+                           {sortedTrainings.map((t) => {
+                              const needsReason =
+                                 t.status === 'Training Started' && (t.attendance?.needs_reason ?? 0) > 0;
+                              const isActive = activeTraining?.id === t.id;
+                              return (
+                                 <button
+                                    key={t.id}
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={isActive}
+                                    className={`opCourseTab ${isActive ? 'opCourseTabActive' : ''}`}
+                                    onClick={() => setActiveId(t.id)}
+                                 >
+                                    <span className="opCourseTabName">
+                                       {t.program?.name ?? 'Training program'}
+                                       {needsReason && <i className="opCourseTabAlert" title="Needs your reason" />}
+                                    </span>
+                                    <span className={`opBadge ${STATUS_CLASS[t.status]}`}>{STATUS_LABEL[t.status]}</span>
+                                 </button>
+                              );
+                           })}
+                        </div>
+                     )}
+
+                     {activeTraining && (
+                        <TrainingCard
+                           key={activeTraining.id}
+                           training={activeTraining}
+                           reasonOptions={reasonOptions}
+                           onReasonsSaved={handleReasonsSaved}
+                        />
+                     )}
                   </div>
                )}
             </div>
-            
+
          </div>
       </>
    );

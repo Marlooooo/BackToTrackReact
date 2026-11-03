@@ -1,8 +1,664 @@
 .osyDashboardBody{
-   height: 100vh;
-   width: 100%;
-   background-color: whitesmoke;
    display: flex;
    flex-direction: row;
+   align-items: flex-start;
+   width: 100%;
+   height: 100vh;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+   text-align: left;
+   font-family: "Nunito", sans-serif;
 }
-   
+
+/* keeps the sidebar in the row even if its own CSS makes it fixed */
+.osyDashboardBody .osySideBarDiv{
+   position: sticky;
+   top: 0;
+   height: 100vh;
+   flex-shrink: 0;
+   overflow-y: auto;
+}
+
+.osyDashboardMain{
+   display: flex;
+   flex-direction: column;
+   flex: 1 1 0;
+   min-width: 0;
+   height: 100vh;
+   overflow-y: auto;
+   gap: 22px;
+   padding: 32px 48px 44px;
+   box-sizing: border-box;
+   background: #F5F7F5;
+   font-size: 14px;
+   color: #29332C;
+   -webkit-font-smoothing: antialiased;
+}
+
+.osyDashboardMain > *{
+   flex-shrink: 0;
+}
+
+/* ---------- Header (plain, like the Recommended Courses page) ---------- */
+.osyDashboardHero{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 24px;
+   padding: 0;
+   border-radius: 0;
+   background: transparent;
+   box-shadow: none;
+   color: #14201A;
+}
+
+.osyDashboardDate{
+   display: block;
+   margin-bottom: 4px;
+   font-size: 12.5px;
+   letter-spacing: 0.04em;
+   color: #62705F;
+}
+
+.osyDashboardHero h1{
+   margin: 0;
+   font-family: "Open Sans", sans-serif;
+   font-size: 32px;
+   font-weight: 700;
+   color: #14201A;
+}
+
+.osyDashboardHero p{
+   max-width: 560px;
+   margin: 4px 0 0;
+   font-size: 13.5px;
+   line-height: 1.55;
+   color: #62705F;
+}
+
+.osyDashboardHeroBtn{
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   flex-shrink: 0;
+   padding: 11px 22px;
+   border-radius: 999px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font-size: 13px;
+   font-weight: 600;
+   text-decoration: none;
+   transition: background 0.15s ease;
+}
+
+.osyDashboardHeroBtn:hover{
+   background: #1E5B3F;
+}
+
+/* ---------- States ---------- */
+.osyDashboardState{
+   padding: 28px;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   background: #FFFFFF;
+   text-align: center;
+   color: #62705F;
+}
+
+.osyDashboardStateError{
+   border-color: #F0CACA;
+   background: #FBEBEB;
+   color: #A23E3E;
+}
+
+/* ---------- Alert ---------- */
+.osyDashboardAlert{
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   padding: 16px 20px;
+   border: 1px solid #F1DDB0;
+   border-radius: 16px;
+   background: #FDF6E7;
+}
+
+.osyDashboardAlertIcon{
+   width: 42px;
+   height: 42px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 50%;
+   background: #FBF0DD;
+   color: #96701E;
+   font-size: 24px;
+}
+
+.osyDashboardAlertText{
+   flex: 1;
+   min-width: 0;
+}
+
+.osyDashboardAlertText strong{
+   display: block;
+   font-size: 14px;
+   font-weight: 600;
+   color: #6B4E12;
+}
+
+.osyDashboardAlertText p{
+   margin: 2px 0 0;
+   font-size: 13px;
+   color: #96701E;
+}
+
+.osyDashboardAlert > a{
+   flex-shrink: 0;
+   padding: 9px 20px;
+   border-radius: 999px;
+   background: #96701E;
+   color: #FFFFFF;
+   font-size: 13px;
+   font-weight: 600;
+   text-decoration: none;
+   transition: background 0.15s ease;
+}
+
+.osyDashboardAlert > a:hover{
+   background: #7A5A16;
+}
+
+/* ---------- Stat cards ---------- */
+.osyDashboardStats{
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   align-items: stretch;
+   gap: 18px;
+}
+
+/* All four cards (including the link one) share the same size and position */
+.osyDashboardStat{
+   display: flex;
+   align-items: center;
+   align-self: stretch;
+   gap: 14px;
+   width: auto;
+   height: auto;
+   min-height: 96px;
+   margin: 0;
+   padding: 18px;
+   box-sizing: border-box;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   background: #FFFFFF;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   color: inherit;
+   text-decoration: none;
+   transform: none;
+}
+
+.osyDashboardStatLink{
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.osyDashboardStatLink:hover{
+   border-color: #C5DECE;
+   box-shadow: 0 4px 14px rgba(20, 32, 26, 0.08);
+}
+
+.osyDashboardStatIcon{
+   width: 46px;
+   height: 46px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 14px;
+   font-size: 24px;
+}
+
+.osyDashboardStatIcon.green{ background: #E3F0E7; color: #2F6E4F; }
+.osyDashboardStatIcon.blue{ background: #E4EDF3; color: #35607A; }
+.osyDashboardStatIcon.amber{ background: #FBF0DD; color: #96701E; }
+.osyDashboardStatIcon.rose{ background: #F7E6E6; color: #A23E3E; }
+
+.osyDashboardStatText{
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+}
+
+.osyDashboardStatText span{
+   font-size: 12px;
+   letter-spacing: 0.02em;
+   color: #62705F;
+}
+
+.osyDashboardStatText strong{
+   margin-top: 2px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+   font-size: 18px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.osyDashboardStatText small{
+   margin-top: 2px;
+   font-size: 12px;
+   color: #94A092;
+}
+
+/* ---------- Panels ---------- */
+.osyDashboardGrid{
+   display: grid;
+   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+   gap: 22px;
+   align-items: start;
+}
+
+.osyDashboardPanel{
+   display: flex;
+   flex-direction: column;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   background: #FFFFFF;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+}
+
+.osyDashboardPanelHead{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 16px 22px;
+   border-bottom: 1px solid #E7ECE8;
+}
+
+.osyDashboardPanelHead h2{
+   margin: 0;
+   font-family: "Open Sans", sans-serif;
+   font-size: 17px;
+   font-weight: 600;
+   color: #1E5B3F;
+}
+
+.osyDashboardPanelHead a{
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   font-size: 12.5px;
+   font-weight: 600;
+   color: #2F6E4F;
+   text-decoration: none;
+}
+
+.osyDashboardPanelHead a:hover{
+   color: #1E5B3F;
+}
+
+.osyDashboardPanelBody{
+   padding: 20px 22px 22px;
+}
+
+/* ---------- Training ---------- */
+.osyDashboardProgramRow{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   margin-bottom: 18px;
+}
+
+.osyDashboardProgramRow h3{
+   margin: 0;
+   font-family: "Open Sans", sans-serif;
+   font-size: 18px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.osyDashboardBadge{
+   flex-shrink: 0;
+   padding: 5px 14px;
+   border-radius: 999px;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 12px;
+   font-weight: 600;
+}
+
+.osyDashboardProgressTop{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 8px;
+   font-size: 13px;
+   color: #62705F;
+}
+
+.osyDashboardProgressTop strong{
+   font-family: "Open Sans", sans-serif;
+   font-size: 14px;
+   font-weight: 600;
+   color: #2F6E4F;
+}
+
+.osyDashboardBarTrack{
+   height: 10px;
+   border-radius: 999px;
+   background: #EEF2EE;
+   overflow: hidden;
+}
+
+.osyDashboardBarFill{
+   height: 100%;
+   border-radius: 999px;
+   background: linear-gradient(90deg, #2F6E4F, #4C9A73);
+   transition: width 0.5s ease;
+}
+
+.osyDashboardProgressDates{
+   display: flex;
+   justify-content: space-between;
+   margin-top: 8px;
+   font-size: 12px;
+   color: #94A092;
+}
+
+.osyDashboardMuted{
+   margin: 0;
+   font-size: 13.5px;
+   color: #62705F;
+}
+
+.osyDashboardAttendance{
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 12px;
+   margin-top: 20px;
+}
+
+.osyDashboardAttBox{
+   padding: 12px 8px;
+   border-radius: 12px;
+   text-align: center;
+}
+
+.osyDashboardAttBox strong{
+   display: block;
+   font-family: "Open Sans", sans-serif;
+   font-size: 20px;
+   font-weight: 600;
+}
+
+.osyDashboardAttBox span{
+   font-size: 12px;
+}
+
+.osyDashboardAttBox.present{ background: #E3F0E7; color: #2F6E4F; }
+.osyDashboardAttBox.late{ background: #FBF0DD; color: #96701E; }
+.osyDashboardAttBox.absent{ background: #F7E6E6; color: #A23E3E; }
+.osyDashboardAttBox.excused{ background: #EEF2EE; color: #62705F; }
+
+.osyDashboardInfo{
+   display: grid;
+   grid-template-columns: repeat(3, minmax(0, 1fr));
+   gap: 14px;
+   margin-top: 20px;
+   padding-top: 18px;
+   border-top: 1px solid #E7ECE8;
+}
+
+.osyDashboardInfoItem{
+   display: flex;
+   align-items: flex-start;
+   gap: 10px;
+   min-width: 0;
+}
+
+.osyDashboardInfoItem i{
+   font-size: 22px;
+   color: #2F6E4F;
+}
+
+.osyDashboardInfoItem div{
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+}
+
+.osyDashboardInfoItem span{
+   font-size: 11.5px;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: #62705F;
+}
+
+.osyDashboardInfoItem strong{
+   margin-top: 2px;
+   font-size: 13.5px;
+   font-weight: 600;
+   line-height: 1.4;
+   color: #14201A;
+   overflow-wrap: anywhere;
+}
+
+/* ---------- Announcements ---------- */
+.osyDashboardAnn{
+   display: flex;
+   gap: 12px;
+   padding: 14px 0;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.osyDashboardAnn:first-child{
+   padding-top: 0;
+}
+
+.osyDashboardAnn:last-child{
+   padding-bottom: 0;
+   border-bottom: none;
+}
+
+.osyDashboardAnnIcon{
+   width: 38px;
+   height: 38px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 12px;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 20px;
+}
+
+.osyDashboardAnnBody{
+   min-width: 0;
+}
+
+.osyDashboardAnnBody h3{
+   margin: 0 0 3px;
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.osyDashboardAnnBody p{
+   display: -webkit-box;
+   margin: 0 0 6px;
+   overflow: hidden;
+   -webkit-line-clamp: 2;
+   -webkit-box-orient: vertical;
+   font-size: 13px;
+   line-height: 1.5;
+   color: #62705F;
+}
+
+.osyDashboardAnnBody span{
+   font-size: 12px;
+   color: #94A092;
+}
+
+/* ---------- Empty ---------- */
+.osyDashboardEmpty{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 6px;
+   padding: 40px 24px;
+   text-align: center;
+}
+
+.osyDashboardEmptyIcon{
+   width: 54px;
+   height: 54px;
+   display: grid;
+   place-items: center;
+   margin-bottom: 6px;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 28px;
+}
+
+.osyDashboardEmpty strong{
+   font-family: "Open Sans", sans-serif;
+   font-size: 15px;
+   font-weight: 600;
+   color: #1E5B3F;
+}
+
+.osyDashboardEmpty p{
+   max-width: 320px;
+   margin: 0 0 6px;
+   font-size: 13px;
+   line-height: 1.55;
+   color: #62705F;
+}
+
+.osyDashboardEmpty a{
+   padding: 9px 20px;
+   border-radius: 999px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font-size: 13px;
+   font-weight: 600;
+   text-decoration: none;
+   transition: background 0.15s ease;
+}
+
+.osyDashboardEmpty a:hover{
+   background: #1E5B3F;
+}
+
+/* ---------- Quick links ---------- */
+.osyDashboardQuick{
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 18px;
+}
+
+.osyDashboardQuickItem{
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   padding: 16px 18px;
+   border: 1px solid #E7ECE8;
+   border-radius: 16px;
+   background: #FFFFFF;
+   color: inherit;
+   text-decoration: none;
+   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.osyDashboardQuickItem:hover{
+   border-color: #C5DECE;
+   transform: translateY(-2px);
+   box-shadow: 0 6px 16px rgba(20, 32, 26, 0.08);
+}
+
+.osyDashboardQuickItem > i{
+   width: 40px;
+   height: 40px;
+   flex-shrink: 0;
+   display: grid;
+   place-items: center;
+   border-radius: 50%;
+   background: #E3F0E7;
+   color: #2F6E4F;
+   font-size: 22px;
+}
+
+.osyDashboardQuickItem strong{
+   display: block;
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.osyDashboardQuickItem span{
+   font-size: 12px;
+   color: #62705F;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px){
+   .osyDashboardStats,
+   .osyDashboardQuick{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (max-width: 1000px){
+   .osyDashboardGrid{
+      grid-template-columns: 1fr;
+   }
+}
+
+@media (max-width: 768px){
+   .osyDashboardMain{
+      padding: 72px 20px 32px;
+   }
+
+   .osyDashboardHero{
+      flex-direction: column;
+      align-items: flex-start;
+   }
+
+   .osyDashboardHero h1{
+      font-size: 26px;
+   }
+
+   .osyDashboardAlert{
+      flex-direction: column;
+      align-items: flex-start;
+   }
+
+   .osyDashboardInfo{
+      grid-template-columns: 1fr;
+   }
+}
+
+@media (max-width: 560px){
+   .osyDashboardStats,
+   .osyDashboardQuick{
+      grid-template-columns: 1fr;
+   }
+
+   .osyDashboardAttendance{
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (prefers-reduced-motion: reduce){
+   .osyDashboardHeroBtn,
+   .osyDashboardStatLink,
+   .osyDashboardQuickItem,
+   .osyDashboardBarFill{
+      transition: none;
+   }
+}

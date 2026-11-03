@@ -1,0 +1,88 @@
+/* SK: ask an OSY to explain absences (inside an open concern) */
+
+.brgyAskBar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 10px;
+   margin: 10px 0;
+}
+
+.brgyAskHint {
+   color: #5b6f66;
+   font-size: 13px;
+}
+
+.brgyAskBox {
+   margin: 10px 0 14px;
+   padding: 14px;
+   border: 1px solid #d9e4de;
+   border-radius: 10px;
+   background-color: #f6faf8;
+}
+
+.brgyAskBox strong {
+   color: #1b3d31;
+   font-size: 14px;
+}
+
+.brgyAskBox textarea {
+   display: block;
+   width: 100%;
+   box-sizing: border-box;
+   margin: 8px 0;
+   padding: 10px 12px;
+   border: 1px solid #cfd8d3;
+   border-radius: 8px;
+   background-color: #ffffff;
+   color: #1b3d31;
+   font-family: inherit;
+   font-size: 14px;
+   resize: vertical;
+}
+
+.brgyAskActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 8px;
+}
+
+.brgyAskError {
+   margin: 6px 0;
+   padding: 8px 10px;
+   border-radius: 8px;
+   background-color: #fde4ea;
+   color: #a61e4d;
+   font-size: 13px;
+}
+
+.brgyAskList {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   margin: 8px 0;
+   color: #1b3d31;
+   font-size: 14px;
+}
+
+.brgyAskList label {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
+.brgyReasonCell {
+   display: flex;
+   flex-direction: column;
+   gap: 3px;
+}
+
+.brgyReasonMain {
+   color: #1b3d31;
+   font-weight: 600;
+}
+
+.brgyReasonMeta {
+   color: #5b6f66;
+   font-size: 12px;
+}

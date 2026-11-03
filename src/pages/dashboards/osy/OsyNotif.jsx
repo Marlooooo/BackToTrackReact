@@ -6,6 +6,12 @@ import "./OsyNotif.css"
 const API = "http://localhost:8000/api"; // same base URL as your other pages
 const STORAGE = API.replace('/api', '/storage'); // where uploaded images are served from
 
+function getCookie(name) {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${name}=`);
+   if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
+}
+
 function timeAgo(dateStr) {
    const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
    if (seconds < 60) return 'Just now';
@@ -25,6 +31,11 @@ const STATUS_ICON = {
       <>
          <line x1="22" y1="2" x2="11" y2="13" />
          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+      </>
+   ),
+   'Reason requested': (
+      <>
+         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </>
    ),
    'Withdrawn': (
@@ -142,22 +153,55 @@ function OsyNotif() {
       load();
    }, []);
 
+const postHeaders = () => ({
+   ...headers,
+   "X-XSRF-TOKEN": getCookie("XSRF-TOKEN") || "",
+});
+
    const markRead = async (id) => {
-      await fetch(`${API}/notifications/${id}/read`, { method: "POST", headers });
-      setItems((prev) =>
-         prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n))
-      );
+      try {
+         const res = await fetch(`${API}/notifications/${id}/read`, {
+            method: "POST",
+            headers: postHeaders(),
+            credentials: "include",
+         });
+         if (!res.ok) throw new Error(`Failed: ${res.status}`);
+
+         setItems((prev) =>
+            prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n))
+         );
+         window.dispatchEvent(new Event("notifications-updated"));
+      } catch (err) {
+         console.error("Mark as read failed:", err);
+      }
    };
 
    const markAllRead = async () => {
-      await fetch(`${API}/notifications/read-all`, { method: "POST", headers });
-      setItems((prev) =>
-         prev.map((n) => ({ ...n, read_at: n.read_at || new Date().toISOString() }))
-      );
+      try {
+         const res = await fetch(`${API}/notifications/read-all`, {
+            method: "POST",
+            headers: postHeaders(),
+            credentials: "include",
+         });
+         if (!res.ok) throw new Error(`Failed: ${res.status}`);
+
+         setItems((prev) =>
+            prev.map((n) => ({ ...n, read_at: n.read_at || new Date().toISOString() }))
+         );
+         window.dispatchEvent(new Event("notifications-updated"));
+      } catch (err) {
+         console.error("Mark all as read failed:", err);
+      }
    };
 
    const openNotif = async (n) => {
       if (!n.read_at) markRead(n.id);
+
+      // an SK official asked for a reason: go straight to My Training Progress
+      if (n.data?.status === 'Reason requested') {
+         navigate('/osy/training');
+         return;
+      }
 
       // referral and training updates open My Referrals instead of the program preview
       if (n.data?.type === 'training_status') {
@@ -205,14 +249,14 @@ function OsyNotif() {
    const programName = program ? (program.title ?? program.name) : '';
    const details = program
       ? [
-           ['Status', program.status],
-           ['Duration', program.duration],
-           ['Schedule', program.schedule],
-           ['Location', program.location ?? program.venue],
-           ['Slots', program.slots ?? program.capacity],
-           ['Start date', program.start_date],
-           ['End date', program.end_date],
-        ].filter(([, value]) => value !== undefined && value !== null && value !== '')
+         ['Status', program.status],
+         ['Duration', program.duration],
+         ['Schedule', program.schedule],
+         ['Location', program.location ?? program.venue],
+         ['Slots', program.slots ?? program.capacity],
+         ['Start date', program.start_date],
+         ['End date', program.end_date],
+      ].filter(([, value]) => value !== undefined && value !== null && value !== '')
       : [];
 
    return (

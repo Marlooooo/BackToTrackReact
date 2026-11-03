@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SidebarNotifIndicator from "./SidebarNotifIndicator";
 import { NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -140,7 +141,9 @@ function OsySideBar() {
                   <NavLink to="/osy/notifications" className={({ isActive }) => isActive ? "osyActive" : ""}>
                   Notifications
                   </NavLink>
+                  <SidebarNotifIndicator />
                </div>
+
                {/* NEW: Announcements */}
                <div>
                   <span>

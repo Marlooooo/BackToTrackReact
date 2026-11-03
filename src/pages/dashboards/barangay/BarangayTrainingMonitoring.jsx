@@ -1,14 +1,45 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import BarangaySideBar from '../../../components/skOfficialSideBar';
 import './BarangayTrainingMonitoring.css';
+import './BarangayAskReason.css';
 
 /* ------------------------------------------------------------------ */
 /* API                                                                 */
 /* ------------------------------------------------------------------ */
+function getCookie(name) {
+   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+   return match ? decodeURIComponent(match[2]) : null;
+}
+
+async function ensureCsrfCookie() {
+   await fetch('/sanctum/csrf-cookie', { credentials: 'include' });
+}
+
 async function apiGet(url) {
    const res = await fetch(url, { headers: { Accept: 'application/json' }, credentials: 'include' });
    const data = await res.json().catch(() => null);
    if (!res.ok) throw new Error(data?.message ?? 'Could not load the data.');
+   return data;
+}
+
+async function apiSend(url, method, body) {
+   await ensureCsrfCookie();
+   const res = await fetch(url, {
+      method,
+      credentials: 'include',
+      headers: {
+         Accept: 'application/json',
+         'Content-Type': 'application/json',
+         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+      },
+      body: body ? JSON.stringify(body) : undefined,
+   });
+   const data = await res.json().catch(() => null);
+   if (!res.ok) {
+      const firstError = data?.errors ? Object.values(data.errors)[0]?.[0] : null;
+      throw new Error(firstError ?? data?.message ?? 'Something went wrong.');
+   }
    return data;
 }
 
@@ -148,7 +179,7 @@ function Section({ icon, title, count, alert, children }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Record sections (all read-only, shown in one scrolling view)        */
+/* Record sections (read-only, shown in one scrolling view)            */
 /* ------------------------------------------------------------------ */
 function OverviewSection({ detail }) {
    const s = detail.summary;
@@ -228,6 +259,39 @@ function OverviewSection({ detail }) {
    );
 }
 
+// What the OSY said (or that we are still waiting for them)
+function ReasonCell({ record }) {
+   const reason = record.reason;
+
+   if (reason) {
+      return (
+         <div className="brgyReasonCell">
+            <span className="brgyReasonMain">
+               {reason.category_label}{reason.followup_label ? ` · ${reason.followup_label}` : ''}
+            </span>
+            {reason.return_date && <span className="brgyReasonMeta">Expected back {formatDate(reason.return_date)}</span>}
+            {reason.support?.length > 0 && <span className="brgyReasonMeta">Would help: {reason.support.join(', ')}</span>}
+            {reason.note && <span className="brgyReasonMeta">"{reason.note}"</span>}
+            {reason.proof_url && (
+               <a className="brgyReasonMeta" href={reason.proof_url} target="_blank" rel="noreferrer">View photo</a>
+            )}
+            <span className="brgyReasonMeta">Self-reported, unverified · sent {formatDate(reason.submitted_at)}</span>
+         </div>
+      );
+   }
+
+   if (record.reason_requested_at) {
+      return (
+         <div className="brgyReasonCell">
+            <span className="brgyBadge brgyBadgeWarn">Waiting for OSY</span>
+            <span className="brgyReasonMeta">Asked {formatDate(record.reason_requested_at)}</span>
+         </div>
+      );
+   }
+
+   return '—';
+}
+
 function AttendanceSection({ detail }) {
    const s = detail.summary;
    const records = detail.attendance ?? [];
@@ -246,13 +310,21 @@ function AttendanceSection({ detail }) {
          ) : (
             <div className="brgyAttendanceWrap">
                <table className="brgyTable brgyAttendanceTable">
-                  <thead><tr><th>Date</th><th>Status</th><th>Remarks</th></tr></thead>
+                  <thead>
+                     <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                        <th>Reason</th>
+                     </tr>
+                  </thead>
                   <tbody>
                      {records.map((r) => (
                         <tr key={r.id}>
                            <td>{formatDate(r.attendance_date)}</td>
                            <td><span className={`brgyBadge ${ATTENDANCE_BADGE[r.status]}`}>{r.status}</span></td>
                            <td>{r.remarks || '—'}</td>
+                           <td><ReasonCell record={r} /></td>
                         </tr>
                      ))}
                   </tbody>
@@ -319,9 +391,96 @@ function ConductSection({ detail }) {
    );
 }
 
-function ConcernsSection({ detail }) {
+const ASK_DEFAULT_MESSAGE =
+   'Hi, we noticed you missed some sessions. Can you tell us what happened so we can help?';
+
+// Inside an open concern: the SK asks the OSY to explain absences
+function AskReasonBox({ detail, onAsk }) {
+   const records = (detail.attendance ?? []).filter((r) => r.status === 'absent' && !r.reason);
+
+   const [open, setOpen] = useState(false);
+   const [selectedIds, setSelectedIds] = useState([]);
+   const [message, setMessage] = useState(ASK_DEFAULT_MESSAGE);
+   const [busy, setBusy] = useState(false);
+   const [error, setError] = useState(null);
+
+   if (detail.status !== 'Training Started') return null;
+
+   if (records.length === 0) {
+      return <p className="brgyAskHint">Every absence already has a reason from the OSY.</p>;
+   }
+
+   function start() {
+      setSelectedIds(records.filter((r) => !r.reason_requested_at).map((r) => r.id));
+      setError(null);
+      setOpen(true);
+   }
+
+   function toggle(id) {
+      setSelectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+   }
+
+   async function send() {
+      setBusy(true);
+      setError(null);
+      const err = await onAsk(selectedIds, message.trim() || null);
+      setBusy(false);
+      if (err) {
+         setError(err);
+         return;
+      }
+      setOpen(false);
+   }
+
+   if (!open) {
+      return (
+         <div className="brgyAskBar">
+            <button className="brgyBtn brgyBtnSm" onClick={start}>
+               <span className="material-symbols-outlined">forum</span>
+               Ask OSY for a reason
+            </button>
+         </div>
+      );
+   }
+
+   return (
+      <div className="brgyAskBox">
+         <strong>Which absences should the OSY explain?</strong>
+         <div className="brgyAskList">
+            {records.map((r) => (
+               <label key={r.id}>
+                  <input type="checkbox" checked={selectedIds.includes(r.id)} onChange={() => toggle(r.id)} />
+                  {formatDate(r.attendance_date)}
+                  {r.reason_requested_at && <span className="brgyAskHint"> · already asked</span>}
+               </label>
+            ))}
+         </div>
+         <textarea rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} />
+         {error && <div className="brgyAskError">{error}</div>}
+         <div className="brgyAskActions">
+            <button className="brgyBtn brgyBtnSm" disabled={busy} onClick={() => setOpen(false)}>Cancel</button>
+            <button className="brgyBtn brgyBtnSm" disabled={busy || selectedIds.length === 0} onClick={send}>
+               {busy ? 'Sending...' : 'Send request'}
+            </button>
+         </div>
+      </div>
+   );
+}
+
+// Concerns are raised by Maxima. The SK follows up here (ask the OSY, then mark reviewed / resolved).
+function ConcernsSection({ detail, onReview, onAskReason }) {
    const concerns = detail.concerns ?? [];
+   const records = detail.attendance ?? [];
    const pending = concerns.filter((c) => c.status === 'pending').length;
+   const [remarksById, setRemarksById] = useState({});
+   const [busyId, setBusyId] = useState(null);
+
+   async function review(concern, status) {
+      setBusyId(concern.id);
+      const ok = await onReview(concern, status, remarksById[concern.id]?.trim() || null);
+      setBusyId(null);
+      if (ok) setRemarksById((prev) => ({ ...prev, [concern.id]: '' }));
+   }
 
    return (
       <Section icon="report" title="Concerns" count={pending || concerns.length || null} alert={pending > 0}>
@@ -333,16 +492,57 @@ function ConcernsSection({ detail }) {
                   <div className="brgyCard" key={c.id}>
                      <div className="brgyCardTop">
                         <div>
-                           <span className="brgyCardTitle brgyCapital">{c.type}</span>
-                           <span className="brgyCardMeta">by {c.submitter?.name ?? 'Unknown'} on {formatDate(c.created_at)}</span>
+                           <span className="brgyCardTitle">Attendance concern</span>
+                           <span className="brgyCardMeta">raised by {c.submitter?.name ?? 'Unknown'} on {formatDate(c.created_at)}</span>
                         </div>
                         <span className={`brgyBadge ${CONCERN_BADGE[c.status] ?? ''}`}>{c.status}</span>
                      </div>
                      <p className="brgyCardText">{c.description}</p>
+                     {(() => {
+                        const asked = records.filter(
+                           (r) => r.reason_requested_at && new Date(r.reason_requested_at) >= new Date(c.created_at)
+                        );
+                        if (asked.length === 0) return null;
+                        const replied = asked.filter((r) => r.reason).length;
+                        return (
+                           <p className="brgyAskHint">
+                              You asked the OSY for a reason on {formatDate(asked[0].reason_requested_at)} · {replied} of {asked.length} replied
+                           </p>
+                        );
+                     })()}
                      {c.review_remarks && (
                         <p className="brgyReview">
-                           <strong>Maxima's review{c.reviewer?.name ? ` (${c.reviewer.name})` : ''}:</strong> {c.review_remarks}
+                           <strong>Action taken{c.reviewer?.name ? ` (${c.reviewer.name})` : ''}:</strong> {c.review_remarks}
                         </p>
+                     )}
+
+                     {c.status !== 'resolved' && <AskReasonBox detail={detail} onAsk={onAskReason} />}
+
+                     {c.status !== 'resolved' && (
+                        <div className="brgyConcernActions">
+                           <input
+                              type="text"
+                              placeholder="Action taken / remarks (optional)"
+                              value={remarksById[c.id] ?? ''}
+                              onChange={(e) => setRemarksById((prev) => ({ ...prev, [c.id]: e.target.value }))}
+                           />
+                           {c.status === 'pending' && (
+                              <button
+                                 className="brgyBtn brgyBtnSm"
+                                 disabled={busyId === c.id}
+                                 onClick={() => review(c, 'reviewed')}
+                              >
+                                 Mark reviewed
+                              </button>
+                           )}
+                           <button
+                              className="brgyBtn brgyBtnSm"
+                              disabled={busyId === c.id}
+                              onClick={() => review(c, 'resolved')}
+                           >
+                              Mark resolved
+                           </button>
+                        </div>
                      )}
                   </div>
                ))}
@@ -411,12 +611,21 @@ function BarangayTrainingMonitoring() {
    const [filter, setFilter] = useState('');
    const [program, setProgram] = useState('');
 
+   const [searchParams, setSearchParams] = useSearchParams();
+
    const [selected, setSelected] = useState(null);
    const [detailLoading, setDetailLoading] = useState(false);
+   const [modalError, setModalError] = useState(null);
+   const [tab, setTab] = useState('overview');
 
    useEffect(() => {
       fetchList();
    }, [search]);
+
+   // Every OSY record starts on the Overview tab
+   useEffect(() => {
+      setTab('overview');
+   }, [selected?.id]);
 
    // Escape closes the modal (clicking outside does not)
    useEffect(() => {
@@ -425,6 +634,14 @@ function BarangayTrainingMonitoring() {
       window.addEventListener('keydown', onKeyDown);
       return () => window.removeEventListener('keydown', onKeyDown);
    }, [selected, detailLoading]);
+
+   // Opened from a notification link (?open=<referral id>): show that OSY's record
+   useEffect(() => {
+      const id = searchParams.get('open');
+      if (!id) return;
+      openDetail(id);
+      setSearchParams({}, { replace: true });
+   }, []);
 
    async function fetchList() {
       setError(null);
@@ -443,6 +660,7 @@ function BarangayTrainingMonitoring() {
 
    async function openDetail(id) {
       setDetailLoading(true);
+      setModalError(null);
       try {
          setSelected(await apiGet(`/api/barangay/training-monitoring/${id}`));
       } catch (err) {
@@ -455,6 +673,38 @@ function BarangayTrainingMonitoring() {
    function closeDetail() {
       setSelected(null);
       setDetailLoading(false);
+      setModalError(null);
+   }
+
+   // Mark a concern reviewed / resolved, then refresh the open record and the table
+   async function reviewConcern(concern, status, remarks) {
+      setModalError(null);
+      try {
+         const data = await apiSend(`/api/barangay/concerns/${concern.id}`, 'PATCH', {
+            status,
+            review_remarks: remarks,
+         });
+         if (data?.id) setSelected(data);
+         await fetchList();
+         return true;
+      } catch (err) {
+         setModalError(err.message);
+         return false;
+      }
+   }
+
+   // Ask the OSY to explain selected absences. Returns an error message, or null on success.
+   async function askReason(recordIds, message) {
+      try {
+         const data = await apiSend(`/api/barangay/training-monitoring/${selected.id}/request-reason`, 'POST', {
+            record_ids: recordIds,
+            message,
+         });
+         if (data?.id) setSelected(data);
+         return null;
+      } catch (err) {
+         return err.message;
+      }
    }
 
    const total = counts.ongoing + counts.completed + counts.dropped;
@@ -629,14 +879,51 @@ function BarangayTrainingMonitoring() {
                            </button>
                         </div>
 
+                        <div className="brgyModalTabs" role="tablist">
+                           {[
+                              ['overview', 'Overview', null],
+                              ['attendance', 'Attendance', null],
+                              ['assessments', 'Assessments', selected.assessments?.length],
+                              ['conduct', 'Conduct', selected.conduct?.length],
+                              ['concerns', 'Concerns', (selected.concerns ?? []).filter((c) => c.status === 'pending').length || selected.concerns?.length],
+                              ['notes', 'Notes', selected.notes?.length],
+                              ['history', 'History', null],
+                           ].map(([key, label, count]) => (
+                              <button
+                                 key={key}
+                                 role="tab"
+                                 aria-selected={tab === key}
+                                 className={`brgyModalTab ${tab === key ? 'brgyModalTabActive' : ''}`}
+                                 onClick={() => setTab(key)}
+                              >
+                                 {label}
+                                 {count > 0 && (
+                                    <span
+                                       className={`brgyModalTabCount ${
+                                          key === 'concerns' && (selected.concerns ?? []).some((c) => c.status === 'pending')
+                                             ? 'brgyModalTabCountAlert'
+                                             : ''
+                                       }`}
+                                    >
+                                       {count}
+                                    </span>
+                                 )}
+                              </button>
+                           ))}
+                        </div>
+
                         <div className="brgyModalBody">
-                           <OverviewSection detail={selected} />
-                           <AttendanceSection detail={selected} />
-                           <AssessmentsSection detail={selected} />
-                           <ConductSection detail={selected} />
-                           <ConcernsSection detail={selected} />
-                           <NotesSection detail={selected} />
-                           <HistorySection detail={selected} />
+                           {modalError && <div className="brgyNotice brgyNoticeError">{modalError}</div>}
+
+                           {tab === 'overview' && <OverviewSection detail={selected} />}
+                           {tab === 'attendance' && <AttendanceSection detail={selected} />}
+                           {tab === 'assessments' && <AssessmentsSection detail={selected} />}
+                           {tab === 'conduct' && <ConductSection detail={selected} />}
+                           {tab === 'concerns' && (
+                              <ConcernsSection detail={selected} onReview={reviewConcern} onAskReason={askReason} />
+                           )}
+                           {tab === 'notes' && <NotesSection detail={selected} />}
+                           {tab === 'history' && <HistorySection detail={selected} />}
                         </div>
 
                         <div className="brgyModalFoot">

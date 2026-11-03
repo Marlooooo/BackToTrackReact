@@ -72,6 +72,7 @@ const HIDDEN_PROFILE_FIELDS = [
    'registered_by',
    'profile_photo',
    'profile_photo_url',
+   'latest_referral',
 ];
 
 const EMPTY_COUNTS = { accepted: 0, ongoing: 0, completed: 0 };
@@ -695,8 +696,7 @@ function MaximaEnrollees() {
                                           <option value='not_applicable'>Not applicable</option>
                                        </select>
 
-                                       {!d.is_default && selected.status === 'Accepted by Maxima' && (
-                                          <button
+                                             {!d.is_default && !d.is_program_requirement && selected.status === 'Accepted by Maxima' && (                                          <button
                                              type='button'
                                              className='enrolleesViewBtn'
                                              onClick={() => removeRequirement(d)}

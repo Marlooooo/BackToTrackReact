@@ -283,7 +283,7 @@
                            </div>
                            </td>
                            <td>{program.schedule || '—'}</td>
-                           <td>{program.slots}</td>
+                           <td>{program.slots_left} left of {program.slots}</td>
                            <td>
                            <span
                               className={`pmgmtTag ${

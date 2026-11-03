@@ -74,6 +74,7 @@ function MaximaReferralNotifications() {
          },
       });
       if (!res.ok) throw new Error('Request failed.');
+      window.dispatchEvent(new Event('notifications-updated')); 
    }
 
    async function handleClick(n) {

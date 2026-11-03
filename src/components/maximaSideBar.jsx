@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./maximaSideBar.css";
 import BackToTrack_Logo3 from "../assets/BackToTrack_Logo3.png";
+import SidebarNotifIndicator from "./SidebarNotifIndicator";
 import { useNavigate } from "react-router-dom";
 
 // ADD THIS — same helper as in Login.jsx
@@ -137,6 +138,7 @@ function MaximaSideBar() {
                   <NavLink to="/maxima/notifications" className={({ isActive }) => isActive ? "maximaActive" : ""}>
                   Notifications
                   </NavLink>
+                  <SidebarNotifIndicator />
                </div>
                {/* NEW: Announcements */}
                <div>

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./skOfficialSideBar.css";
 import BackToTrack_Logo3 from "../assets/BackToTrack_Logo3.png";
+import SidebarNotifIndicator from "./SidebarNotifIndicator";
 import { useNavigate } from "react-router-dom";
 
 // same helper as in Login.jsx
@@ -140,6 +141,7 @@ function SkOfficialSideBar() {
                   <NavLink to="/barangay/notifications" className={({ isActive }) => isActive ? "skActive" : ""}>
                   Notifications
                   </NavLink>
+                  <SidebarNotifIndicator />
                </div>
             </div>
 

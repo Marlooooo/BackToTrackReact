@@ -5,17 +5,24 @@ import './OsyRecommendations.css';
 
 const API_URL = 'http://localhost:8000/api';
 
+// Saved recommendations record which interview field they came from.
+// To the OSY, all of those are simply "your interview".
+const INTERVIEW_SOURCE = {
+   short: 'Interview',
+   label: 'Matched to your interview',
+   text: 'These courses were matched to what you shared during your interview: your goals, background and personal observations.',
+};
+
 const BASED_ON = {
    preferred_career: {
       short: 'Preferred career',
       label: 'Matched to your preferred career',
       text: 'These courses were matched to the career you told us you want to pursue.',
    },
-   interview_notes: {
-      short: 'Interview',
-      label: 'Matched to your interview',
-      text: 'These courses were matched to what you shared during your interview: your goals, background and personal observations.',
-   },
+   interview_notes: INTERVIEW_SOURCE,
+   background_circumstances: INTERVIEW_SOURCE,
+   personal_observations: INTERVIEW_SOURCE,
+   expressed_goals: INTERVIEW_SOURCE,
 };
 
 const NEXT_STEPS = [
@@ -27,7 +34,7 @@ const NEXT_STEPS = [
    {
       icon: 'la-user-friends',
       title: 'Talk to your SK official',
-      text: 'Let them know which course you want so they can refer you to TESDA.',
+      text: 'Let them know which course you want so they can refer you to Maxima.',
    },
    {
       icon: 'la-bell',
@@ -107,7 +114,9 @@ function FeaturedCard({ rec }) {
       <article className="oRec-featured">
          <div className="oRec-featuredMedia">
             <CourseImage src={rec.image_url} alt={rec.title} className="oRec-featuredImg" />
-            <span className="oRec-badge"><i className="las la-star"></i> Top match</span>
+            <span className="oRec-badge">
+               <i className="las la-star"></i> {rec.rank === 1 ? 'Top match' : 'Best available'}
+            </span>
          </div>
 
          <div className="oRec-featuredBody">
@@ -127,7 +136,7 @@ function FeaturedCard({ rec }) {
             )}
 
             <div className="oRec-actions">
-               <Link to="/osy/courses" className="oRec-btn primary">
+               <Link to={`/osy/courses?course=${rec.id}`} className="oRec-btn primary">
                   View in available courses <i className="las la-arrow-right"></i>
                </Link>
             </div>
@@ -162,11 +171,44 @@ function CourseCard({ rec, topScore }) {
                </div>
             </div>
 
-            <Link to="/osy/courses" className="oRec-btn ghost">
+            <Link to={`/osy/courses?course=${rec.id}`} className="oRec-btn ghost">
                View course <i className="las la-arrow-right"></i>
             </Link>
          </div>
       </article>
+   );
+}
+
+/* Suggestions that fit the OSY but that Maxima does not offer. Never shown as enrollable. */
+function NotOfferedSection({ items }) {
+   return (
+      <section className="oRec-section">
+         <div className="oRec-sectionHead">
+            <h2>Also suggested for you</h2>
+            <span>{items.length} not offered by Maxima</span>
+         </div>
+
+         <p className="oRec-otherNote">
+            These fit your interview, but Maxima does not offer them right now. They are ideas to talk
+            about with your SK official. You are not enrolled in them and they cannot be referred.
+         </p>
+
+         <ul className="oRec-otherList">
+            {items.map((s) => (
+               <li key={s.rank} className="oRec-other">
+                  <span className="oRec-otherRank">#{s.rank}</span>
+                  <div className="oRec-otherBody">
+                     <div className="oRec-otherHead">
+                        <h3>{s.title}</h3>
+                        <span className="oRec-otherTag">Not Available at Maxima</span>
+                     </div>
+                     {s.career_path && <p className="oRec-otherMeta">Career path: {s.career_path}</p>}
+                     {s.reason && <p className="oRec-otherMeta">{s.reason}</p>}
+                  </div>
+               </li>
+            ))}
+         </ul>
+      </section>
    );
 }
 
@@ -181,6 +223,7 @@ function LoadingSkeleton() {
 
 function OsyRecommendations() {
    const [recommendations, setRecommendations] = useState([]);
+   const [suggestions, setSuggestions] = useState([]);
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState('');
    const [reloadKey, setReloadKey] = useState(0);
@@ -204,8 +247,14 @@ function OsyRecommendations() {
             if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
             const json = await res.json();
-            const list = (json.data || []).slice().sort((a, b) => a.rank - b.rank);
-            if (!cancelled) setRecommendations(list);
+            const byRank = (a, b) => a.rank - b.rank;
+            const list = (json.data || []).slice().sort(byRank);
+            const all = (json.suggestions || []).slice().sort(byRank);
+
+            if (!cancelled) {
+               setRecommendations(list);
+               setSuggestions(all);
+            }
          } catch (err) {
             console.error('Could not load recommendations:', err);
             if (!cancelled) setError('We could not load your recommendations right now.');
@@ -221,8 +270,12 @@ function OsyRecommendations() {
       };
    }, [reloadKey]);
 
+   // Courses Maxima offers (full cards) and suggestions it does not offer
    const featured = recommendations[0];
    const others = recommendations.slice(1);
+   const notOffered = suggestions.filter((s) => !s.available);
+   const total = suggestions.length || recommendations.length;
+
    const topScore = featured?.score || 0;
    const generatedAt = formatDate(featured?.generated_at);
    const source = BASED_ON[featured?.based_on];
@@ -251,7 +304,7 @@ function OsyRecommendations() {
                   </div>
                )}
 
-               {!loading && !error && recommendations.length === 0 && (
+               {!loading && !error && total === 0 && (
                   <div className="oRec-panel">
                      <div className="oRec-empty">
                         <div className="oRec-emptyIcon"><i className="las la-compass"></i></div>
@@ -267,14 +320,14 @@ function OsyRecommendations() {
                   </div>
                )}
 
-               {!loading && !error && featured && (
+               {!loading && !error && total > 0 && (
                   <>
                      <div className="oRec-stats">
                         <div className="oRec-stat">
                            <div className="oRec-statIcon total"><i className="las la-graduation-cap"></i></div>
                            <div>
-                              <strong>{recommendations.length}</strong>
-                              <span>{recommendations.length === 1 ? 'Course recommended' : 'Courses recommended'}</span>
+                              <strong>{total}</strong>
+                              <span>{total === 1 ? 'Course recommended' : 'Courses recommended'}</span>
                            </div>
                         </div>
 
@@ -305,7 +358,7 @@ function OsyRecommendations() {
                         </div>
                      )}
 
-                     <FeaturedCard rec={featured} />
+                     {featured && <FeaturedCard rec={featured} />}
 
                      {others.length > 0 && (
                         <section className="oRec-section">
@@ -321,6 +374,8 @@ function OsyRecommendations() {
                            </div>
                         </section>
                      )}
+
+                     {notOffered.length > 0 && <NotOfferedSection items={notOffered} />}
 
                      <section className="oRec-section">
                         <div className="oRec-sectionHead">

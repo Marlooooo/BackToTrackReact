@@ -1,0 +1,19 @@
+.sbNotifCount {
+   margin-left: auto;
+   margin-right: 8px;
+   min-width: 20px;
+   height: 20px;
+   padding: 0 6px;
+   box-sizing: border-box;
+   border-radius: 999px;
+   background-color: #e53935;
+   color: #fff;
+   font-family: "Inter", sans-serif;
+   font-style: normal;
+   font-size: 0.65rem;
+   font-weight: 700;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   pointer-events: none;
+}

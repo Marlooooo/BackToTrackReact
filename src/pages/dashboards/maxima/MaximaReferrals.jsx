@@ -220,7 +220,7 @@ function ReferralModal({
       (a, b) => (b === 'Rejected' ? 1 : 0) - (a === 'Rejected' ? 1 : 0)
    );
    const osy = referral.osy_profile;
-
+   const programFull = referral.training_program?.slots_left === 0;
    // Escape closes the modal (onClose ignores it while saving).
    useEffect(() => {
       function handleKeyDown(e) {
@@ -353,6 +353,12 @@ function ReferralModal({
                   </div>
                )}
 
+               {programFull && actions.includes('Accepted by Maxima') && (
+                  <div className='referralFormError' role='alert'>
+                     This program has no slots left. Add more slots in Program Management to accept this referral.
+                  </div>
+               )}
+
                {error && (
                   <div className='referralFormError' role='alert'>
                      {error}
@@ -378,7 +384,7 @@ function ReferralModal({
                      type='button'
                      className={`referralBtn ${status === 'Rejected' ? 'referralBtnDanger' : 'referralBtnPrimary'}`}
                      onClick={() => onAction(status)}
-                     disabled={saving}
+                     disabled={saving || (status !== 'Rejected' && programFull)}
                   >
                      {saving && pendingStatus === status
                         ? 'Saving…'
