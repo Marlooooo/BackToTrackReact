@@ -1,0 +1,444 @@
+/* ---------- Page layout ---------- */
+
+.brgyDashBody {
+   display: flex;
+   height: 100vh;
+   overflow: hidden;
+}
+
+.brgyDashMain {
+   flex: 1;
+   min-width: 0;
+   padding: 40px 48px;
+   box-sizing: border-box;
+   background: #F5F7F5;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   overflow-y: auto;
+}
+
+.brgyDashHeader {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
+}
+
+.brgyDashHeader h1 {
+   margin: 0 0 4px;
+   font-size: 24px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.brgyDashHeader p {
+   margin: 0;
+   font-size: 13.5px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Icons + bell ---------- */
+
+.brgyDashIcon {
+   font-size: 22px;
+   line-height: 1;
+}
+
+.brgyDashBell {
+   position: relative;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   width: 42px;
+   height: 42px;
+   padding: 0;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #3D4A3F;
+   cursor: pointer;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   transition: background 0.15s ease;
+}
+
+.brgyDashBell:hover {
+   background: #F1F4F1;
+}
+
+.brgyDashBellBadge {
+   position: absolute;
+   top: -4px;
+   right: -4px;
+   min-width: 19px;
+   height: 19px;
+   padding: 0 5px;
+   box-sizing: border-box;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 999px;
+   background: #A23E3E;
+   color: #FFFFFF;
+   font-size: 11px;
+   font-weight: 700;
+   font-family: "Nunito", sans-serif;
+}
+
+/* ---------- Banners + empty states ---------- */
+
+.brgyDashBanner {
+   margin: 0 0 20px;
+   padding: 12px 16px;
+   border-radius: 8px;
+   font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
+}
+
+.brgyDashBannerError {
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+}
+
+.brgyDashEmpty {
+   padding: 40px 24px;
+   text-align: center;
+   color: #62705F;
+   font-family: "Nunito", sans-serif;
+}
+
+.brgyDashEmpty p {
+   margin: 0;
+}
+
+.brgyDashEmpty span {
+   display: block;
+   margin-top: 6px;
+   font-size: 12.5px;
+   color: #94A092;
+}
+
+/* ---------- Stat cards ---------- */
+
+.brgyDashStats {
+   display: grid;
+   grid-template-columns: repeat(4, 1fr);
+   gap: 16px;
+   margin-bottom: 20px;
+}
+
+.brgyDashStatCard {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   padding: 18px 20px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.brgyDashStatIcon,
+.brgyDashAttentionIcon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   border-radius: 12px;
+}
+
+.brgyDashStatIcon {
+   width: 48px;
+   height: 48px;
+}
+
+.brgyDashStatIcon .brgyDashIcon {
+   font-size: 26px;
+}
+
+.brgyDashStatValue {
+   font-size: 26px;
+   font-weight: 700;
+   line-height: 1.1;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.brgyDashStatLabel {
+   margin-top: 3px;
+   font-size: 12.5px;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Icon tones, same colors as the status pills */
+.brgyDashTone--green { background: #E3F0E7; color: #2F6E4F; }
+.brgyDashTone--blue  { background: #E6EEF7; color: #2F5F8F; }
+.brgyDashTone--amber { background: #FBF0DD; color: #96701E; }
+.brgyDashTone--red   { background: #FBEBEB; color: #A23E3E; }
+
+/* ---------- Cards ---------- */
+
+.brgyDashGrid {
+   display: grid;
+   grid-template-columns: 3fr 2fr;
+   gap: 16px;
+   margin-bottom: 20px;
+}
+
+.brgyDashCard {
+   padding: 22px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.brgyDashCardFlush {
+   padding: 0;
+   overflow: hidden;
+}
+
+.brgyDashCardTitle {
+   margin: 0 0 16px;
+   font-size: 13px;
+   font-weight: 700;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.brgyDashCardHead {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 12px;
+   padding: 16px 20px;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.brgyDashCardHead .brgyDashCardTitle {
+   margin: 0;
+}
+
+/* ---------- Buttons ---------- */
+
+.brgyDashBtn {
+   padding: 7px 14px;
+   border: none;
+   border-radius: 8px;
+   font-size: 12.5px;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   white-space: nowrap;
+   cursor: pointer;
+   transition: background 0.15s ease;
+}
+
+.brgyDashBtnGhost {
+   background: transparent;
+   color: #3D4A3F;
+   border: 1px solid #DCE6DE;
+}
+
+.brgyDashBtnGhost:hover {
+   background: #F1F4F1;
+}
+
+.brgyDashBtn:focus-visible,
+.brgyDashBell:focus-visible,
+.brgyDashActionBtn:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+/* ---------- Needs attention ---------- */
+
+.brgyDashAttentionList {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.brgyDashAttentionItem {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   padding: 12px 14px;
+   background: #FBFCFB;
+   border: 1px solid #EEF2EE;
+   border-radius: 12px;
+}
+
+.brgyDashAttentionIcon {
+   width: 38px;
+   height: 38px;
+}
+
+.brgyDashAttentionText {
+   flex: 1;
+   margin: 0;
+   font-size: 13.5px;
+   color: #29332C;
+   font-family: "Nunito", sans-serif;
+}
+
+.brgyDashAttentionText strong {
+   font-size: 15px;
+   color: #14201A;
+}
+
+/* ---------- Quick actions ---------- */
+
+.brgyDashActions {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 12px;
+}
+
+.brgyDashActionBtn {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 8px;
+   padding: 18px 10px;
+   background: #FFFFFF;
+   border: 1px solid #DCE6DE;
+   border-radius: 12px;
+   color: #3D4A3F;
+   font-size: 12.5px;
+   font-weight: 600;
+   font-family: "Nunito", sans-serif;
+   text-align: center;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.brgyDashActionBtn .brgyDashIcon {
+   font-size: 28px;
+   color: #2F6E4F;
+}
+
+.brgyDashActionBtn:hover {
+   background: #F1F4F1;
+   border-color: #BFD3C6;
+}
+
+/* ---------- Table ---------- */
+
+.brgyDashTableWrap {
+   overflow-x: auto;
+}
+
+.brgyDashTable {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13.5px;
+}
+
+.brgyDashTable thead th {
+   padding: 14px 20px;
+   border-bottom: 1px solid #EEF2EE;
+   background: #FBFCFB;
+   text-align: left;
+   white-space: nowrap;
+   font-size: 11.5px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   font-family: "Open Sans", sans-serif;
+}
+
+.brgyDashTable tbody tr:hover {
+   background: #FAFBF9;
+}
+
+.brgyDashTable tbody td {
+   padding: 13px 20px;
+   border-bottom: 1px solid #F1F4F1;
+   color: #29332C;
+   font-family: "Nunito", sans-serif;
+}
+
+.brgyDashTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+.brgyDashTableName {
+   font-weight: 600;
+   color: #14201A;
+   white-space: nowrap;
+}
+
+/* ---------- Status pills (same colors as the other pages) ---------- */
+
+.brgyDashStatus {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   font-size: 11px;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.brgyDashStatus--Registered       { background: #EAF0EE; color: #55665C; }
+.brgyDashStatus--Validated        { background: #E4EBF6; color: #3A5D8F; }
+.brgyDashStatus--Referred         { background: #FBF0DD; color: #96701E; }
+.brgyDashStatus--AcceptedbyMaxima { background: #E6EEF7; color: #2F5F8F; }
+.brgyDashStatus--TrainingStarted  { background: #FBF0DD; color: #96701E; }
+.brgyDashStatus--Completed        { background: #E3F0E7; color: #2F6E4F; }
+.brgyDashStatus--Rejected         { background: #FBEBEB; color: #A23E3E; }
+.brgyDashStatus--Dropped          { background: #FBEBEB; color: #A23E3E; }
+
+/* ---------- Smaller screens ---------- */
+
+@media (max-width: 1100px) {
+   .brgyDashStats {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .brgyDashGrid {
+      grid-template-columns: 1fr;
+   }
+}
+
+@media (max-width: 768px) {
+   /* The sidebar's burger button is fixed at the top left, so leave room for it */
+   .brgyDashMain {
+      padding: 64px 20px 24px;
+   }
+
+   .brgyDashStats {
+      grid-template-columns: 1fr;
+   }
+
+   .brgyDashAttentionItem {
+      flex-wrap: wrap;
+   }
+
+   .brgyDashAttentionText {
+      flex-basis: calc(100% - 60px);
+   }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+   .brgyDashBell,
+   .brgyDashBtn,
+   .brgyDashActionBtn {
+      transition: none;
+   }
+}

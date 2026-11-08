@@ -1,0 +1,804 @@
+/* ---------- Page layout / scrolling ---------- */
+.maximaReportBody {
+   display: flex;
+   width: 100%;
+   height: 100vh;
+   overflow: hidden;
+}
+
+.maximaReportMainContent {
+   flex: 1;
+   min-width: 0;
+   height: 100vh;
+   overflow-y: auto;
+   overflow-x: hidden;
+}
+
+.maximaReportPage {
+   box-sizing: border-box;
+   width: 100%;
+   min-width: 0;
+   min-height: 100%;
+   height: auto;
+   padding: 40px 48px;
+   background: #F5F7F5;
+   color: #29332C;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   overflow: visible;
+}
+
+.maximaReportPage h1,
+.maximaReportPage h2,
+.maximaReportPage h3,
+.maximaReportPage h4 {
+   font-family: "Open Sans", sans-serif;
+}
+
+.maximaReportPage p {
+   font-family: "Nunito", sans-serif;
+}
+
+.maximaReportPage button,
+.maximaReportPage input,
+.maximaReportPage select,
+.maximaReportPage textarea {
+   font-family: "Nunito", sans-serif;
+}
+
+.maximaReportPage button:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+.maximaReportContainer {
+   max-width: 1180px;
+   margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.maximaReportPrintHeader {
+   display: none;
+}
+
+/* ---------- Header ---------- */
+.maximaReportHeader {
+   background: transparent;
+   padding: 0;
+   width: auto;
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   flex-wrap: wrap;
+   gap: 16px;
+}
+
+.maximaReportTitle {
+   margin: 0;
+   font-size: 26px;
+   font-weight: 700;
+   letter-spacing: -0.02em;
+   color: #14201A;
+}
+
+.maximaReportSubtitle {
+   margin: 6px 0 0;
+   font-size: 14px;
+   color: #66746A;
+}
+
+.maximaReportActions {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+}
+
+.maximaReportBtn {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   height: 40px;
+   padding: 0 16px;
+   border-radius: 10px;
+   font-size: 14px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.maximaReportBtn .material-symbols-outlined {
+   font-size: 19px;
+}
+
+.maximaReportBtn:disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+}
+
+.maximaReportBtnGhost {
+   background: #FFFFFF;
+   border: 1px solid #D5DFD7;
+   color: #29332C;
+}
+
+.maximaReportBtnGhost:hover:not(:disabled) {
+   background: #F1F5F2;
+}
+
+.maximaReportBtnPrimary {
+   background: #2F6E4F;
+   border: 1px solid #2F6E4F;
+   color: #FFFFFF;
+}
+
+.maximaReportBtnPrimary:hover:not(:disabled) {
+   background: #275C42;
+}
+
+/* ---------- Filters ---------- */
+.maximaReportFilterBar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: flex-end;
+   gap: 16px;
+   padding: 14px 18px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 14px;
+}
+
+.maximaReportField {
+   display: flex;
+   flex-direction: column;
+   gap: 5px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #66746A;
+}
+
+.maximaReportField input,
+.maximaReportField select {
+   height: 38px;
+   box-sizing: border-box;
+   padding: 0 12px;
+   border: 1px solid #DCE6DE;
+   border-radius: 9px;
+   background: #FFFFFF;
+   color: #16231C;
+   font-size: 14px;
+   font-weight: 400;
+   outline: none;
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.maximaReportField select {
+   min-width: 210px;
+}
+
+.maximaReportField input:focus,
+.maximaReportField select:focus {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+.maximaReportLink {
+   height: 38px;
+   padding: 0 4px;
+   background: none;
+   border: none;
+   color: #2F6E4F;
+   font-size: 13.5px;
+   font-weight: 600;
+   cursor: pointer;
+}
+
+.maximaReportLink:hover {
+   text-decoration: underline;
+}
+
+.maximaReportFilterNote {
+   margin-left: auto;
+   align-self: center;
+   font-size: 12.5px;
+   color: #8A958C;
+}
+
+.maximaReportLoading {
+   padding: 40px 0;
+   text-align: center;
+   color: #66746A;
+   font-size: 14px;
+}
+
+/* ---------- Alerts ---------- */
+.maximaReportAlert {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 16px;
+   padding: 12px 16px;
+   border-radius: 8px;
+   font-size: 13.5px;
+}
+
+.maximaReportAlertError {
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+}
+
+/* ---------- Body ---------- */
+.maximaReportBodyContent {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   transition: opacity 0.15s ease;
+}
+
+.maximaReportBodyBusy {
+   opacity: 0.55;
+   pointer-events: none;
+}
+
+/* ---------- Key numbers ---------- */
+.maximaReportStatGrid {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 16px;
+}
+
+.maximaReportStat {
+   display: flex;
+   align-items: center;
+   gap: 14px;
+   padding: 18px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 14px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.maximaReportStatIcon {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-shrink: 0;
+   width: 46px;
+   height: 46px;
+   border-radius: 12px;
+}
+
+.maximaReportStatIcon .material-symbols-outlined {
+   font-size: 24px;
+}
+
+.maximaReportToneBlue {
+   background: #E8F0FB;
+   color: #2F5F9E;
+}
+
+.maximaReportToneGreen {
+   background: #E6F2EB;
+   color: #2F6E4F;
+}
+
+.maximaReportToneTeal {
+   background: #E3F3F1;
+   color: #1F7A70;
+}
+
+.maximaReportToneRed {
+   background: #FBEAEA;
+   color: #A23E3E;
+}
+
+.maximaReportToneGrey {
+   background: #EEF1EE;
+   color: #7C877E;
+}
+
+.maximaReportStatText {
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+}
+
+.maximaReportStatLabel {
+   font-size: 12.5px;
+   font-weight: 600;
+   color: #66746A;
+}
+
+.maximaReportStatValue {
+   margin: 2px 0;
+   font-size: 28px;
+   font-weight: 700;
+   line-height: 1.1;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.maximaReportStatSub {
+   font-size: 12.5px;
+   color: #8A958C;
+}
+
+/* ---------- Tabs ---------- */
+.maximaReportTabs {
+   width: 100%;
+   justify-content: flex-start;
+   display: flex;
+   gap: 4px;
+   border-bottom: 1px solid #DFE7E0;
+}
+
+.maximaReportTab {
+   padding: 10px 18px;
+   margin-bottom: -1px;
+   background: none;
+   border: none;
+   border-bottom: 2px solid transparent;
+   color: #66746A;
+   font-size: 14.5px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: color 0.15s ease;
+}
+
+.maximaReportTab:hover {
+   color: #14201A;
+}
+
+.maximaReportTabActive {
+   color: #2F6E4F;
+   border-bottom-color: #2F6E4F;
+}
+
+.maximaReportPanelOff {
+   display: none;
+}
+
+/* ---------- Cards ---------- */
+.maximaReportTwoCol {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 20px;
+   align-items: start;
+}
+
+.maximaReportCard {
+   box-sizing: border-box;
+   width: 100%;
+   padding: 22px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.maximaReportCardHead {
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   flex-wrap: wrap;
+   gap: 12px;
+   margin-bottom: 18px;
+}
+
+.maximaReportCardTitle {
+   margin: 0;
+   font-size: 16px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.01em;
+}
+
+.maximaReportCardHint {
+   margin: 4px 0 0;
+   font-size: 13px;
+   color: #66746A;
+}
+
+.maximaReportEmpty {
+   margin: 0;
+   padding: 24px 0;
+   text-align: center;
+   font-size: 14px;
+   color: #8A958C;
+}
+
+/* ---------- Bars ---------- */
+.maximaReportBars {
+   display: flex;
+   flex-direction: column;
+   gap: 14px;
+}
+
+.maximaReportBarRow {
+   display: grid;
+   grid-template-columns: 170px minmax(0, 1fr) 100px;
+   align-items: center;
+   gap: 12px;
+   font-size: 14px;
+}
+
+.maximaReportBarLabel {
+   white-space: nowrap;
+   color: #3D4A3F;
+   font-weight: 500;
+}
+
+.maximaReportBarTrack {
+   height: 8px;
+   border-radius: 999px;
+   background: #EBEEEB;
+   overflow: hidden;
+}
+
+.maximaReportBarFill {
+   height: 100%;
+   border-radius: 999px;
+   background: #2F6E4F;
+   transition: width 0.3s ease;
+}
+
+.maximaReportBarValue {
+   text-align: right;
+   color: #14201A;
+   font-weight: 700;
+   white-space: nowrap;
+}
+
+.maximaReportBarValue em {
+   margin-left: 4px;
+   font-style: normal;
+   font-weight: 400;
+   font-size: 12.5px;
+   color: #8A958C;
+}
+
+/* ---------- Needs follow-up list ---------- */
+.maximaReportFlagList {
+   display: flex;
+   flex-direction: column;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.maximaReportFlagItem {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   padding: 12px 0;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.maximaReportFlagItem:first-child {
+   padding-top: 0;
+}
+
+.maximaReportFlagItem:last-child {
+   padding-bottom: 0;
+   border-bottom: none;
+}
+
+.maximaReportFlagText {
+   display: flex;
+   flex-direction: column;
+   min-width: 0;
+}
+
+.maximaReportFlagName {
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.maximaReportFlagMeta {
+   font-size: 12.5px;
+   color: #A23E3E;
+}
+
+/* ---------- Program completion mini bar ---------- */
+.maximaReportMini {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   min-width: 120px;
+}
+
+.maximaReportMiniTrack {
+   flex: 1;
+   height: 6px;
+   border-radius: 999px;
+   background: #EBEEEB;
+   overflow: hidden;
+}
+
+.maximaReportMiniFill {
+   height: 100%;
+   border-radius: 999px;
+   background: #2F6E4F;
+}
+
+/* ---------- All / Needs follow-up toggle ---------- */
+.maximaReportSegment {
+   display: inline-flex;
+   padding: 3px;
+   background: #EEF2EE;
+   border-radius: 10px;
+}
+
+.maximaReportSegBtn {
+   padding: 6px 14px;
+   background: none;
+   border: none;
+   border-radius: 8px;
+   color: #66746A;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+}
+
+.maximaReportSegActive {
+   background: #FFFFFF;
+   color: #14201A;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.1);
+}
+
+/* ---------- Tables ---------- */
+.maximaReportTableWrap {
+   flex: 1;
+   min-height: 0;
+   overflow: auto;
+}
+
+.maximaReportTable {
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 13.5px;
+}
+
+.maximaReportTable th {
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   text-align: left;
+   padding: 14px 22px;
+   font-size: 11.5px;
+   font-weight: 600;
+   text-transform: uppercase;
+   letter-spacing: 0.04em;
+   color: #7C877E;
+   background: #FBFCFB;
+   border-bottom: 1px solid #EEF2EE;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+}
+
+.maximaReportTable td {
+   padding: 13px 22px;
+   font-size: 13.5px;
+   color: #29332C;
+   border-bottom: 1px solid #F1F4F1;
+   vertical-align: middle;
+}
+
+.maximaReportTable tbody tr:hover {
+   background: #FAFBF9;
+}
+
+.maximaReportTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+.maximaReportTableEmpty {
+   text-align: center;
+   padding: 60px 24px !important;
+   color: #62705F !important;
+}
+
+.maximaReportMuted {
+   font-size: 12.5px;
+   color: #8A958C;
+}
+
+.maximaReportRateGood { color: #2F6E4F; font-weight: 600; }
+.maximaReportRateWarn { color: #96701E; font-weight: 600; }
+.maximaReportRateLow { color: #A23E3E; font-weight: 600; }
+
+/* ---------- Person cell ---------- */
+.maximaReportPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.maximaReportAvatar {
+   width: 38px;
+   height: 38px;
+   flex-shrink: 0;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+   font-size: 13px;
+   font-weight: 700;
+}
+
+.maximaReportPersonName {
+   display: block;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.maximaReportFlag {
+   display: inline-flex;
+   align-items: center;
+   gap: 3px;
+   margin-top: 3px;
+   font-size: 12px;
+   font-weight: 600;
+   color: #A23E3E;
+}
+
+.maximaReportFlag .material-symbols-outlined {
+   font-size: 14px;
+}
+
+/* ---------- Status: dot + text ---------- */
+.maximaReportStatus {
+   display: inline-flex;
+   align-items: center;
+   gap: 7px;
+   font-size: 13px;
+   font-weight: 600;
+   color: #3D4A3F;
+   white-space: nowrap;
+}
+
+.maximaReportDot {
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background: #A9B3AB;
+}
+
+.maximaReportDotOngoing { background: #2F6E4F; }
+.maximaReportDotCompleted { background: #35607A; }
+.maximaReportDotDropped { background: #B24545; }
+
+/* ---------- Badges ---------- */
+.maximaReportBadge {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   font-size: 11px;
+   font-weight: 600;
+   text-transform: capitalize;
+   background: #F0F1EE;
+   color: #7C877E;
+   white-space: nowrap;
+}
+
+.maximaReportBadgeGood { background: #E3F0E7; color: #2F6E4F; }
+.maximaReportBadgeWarn { background: #FBF0DD; color: #96701E; }
+.maximaReportBadgeBad { background: #FBEBEB; color: #A23E3E; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+   .maximaReportStatGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .maximaReportTwoCol {
+      grid-template-columns: minmax(0, 1fr);
+   }
+}
+
+@media (max-width: 640px) {
+   .maximaReportPage {
+      padding: 20px;
+   }
+}
+
+@media (max-width: 600px) {
+   .maximaReportStatGrid {
+      grid-template-columns: minmax(0, 1fr);
+   }
+
+   .maximaReportFilterNote {
+      margin-left: 0;
+   }
+
+   .maximaReportBarRow {
+      grid-template-columns: 100px minmax(0, 1fr) 70px;
+      gap: 8px;
+      font-size: 13px;
+   }
+}
+
+/* ---------- Print: the whole report, no sidebar, buttons, filters or tabs ---------- */
+@media print {
+   .maximaReportBody .maximaSideBarDiv,
+   .maximaReportBody .maximaBurgerBtn,
+   .maximaReportBody .maximaSideBarOverlay,
+   .maximaReportNoPrint {
+      display: none !important;
+   }
+
+   .maximaReportBody {
+      display: block !important;
+      height: auto !important;
+      overflow: visible !important;
+   }
+
+   .maximaReportMainContent {
+      height: auto !important;
+      overflow: visible !important;
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+   }
+
+   .maximaReportPage {
+      min-height: 0 !important;
+      padding: 0 !important;
+      background: #FFFFFF !important;
+   }
+
+   .maximaReportHeader {
+      display: none;
+   }
+
+   .maximaReportPrintHeader {
+      display: block;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #14201A;
+      color: #14201A;
+   }
+
+   .maximaReportPrintHeader h2 {
+      margin: 0 0 4px;
+      font-size: 20px;
+   }
+
+   .maximaReportPrintHeader p {
+      margin: 2px 0;
+      font-size: 13px;
+   }
+
+   .maximaReportPanelOff {
+      display: block !important;
+   }
+
+   .maximaReportTwoCol {
+      grid-template-columns: minmax(0, 1fr);
+   }
+
+   .maximaReportStatGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+   }
+
+   .maximaReportCard,
+   .maximaReportStat {
+      break-inside: avoid;
+      box-shadow: none !important;
+   }
+
+   .maximaReportPanel {
+      margin-bottom: 16px;
+   }
+
+   .maximaReportBarFill,
+   .maximaReportMiniFill,
+   .maximaReportStatIcon {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+   }
+}

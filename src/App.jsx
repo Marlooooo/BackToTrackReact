@@ -9,7 +9,8 @@ import Register from './pages/register';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Impact from './pages/impact';
-
+import ForgotPassword from './pages/ForgotPassword';
+import ChangePassword from './pages/ChangePassword';
 
 
 
@@ -62,6 +63,8 @@ function App() {
          <Route path="/about" element={<About/>}/>
          <Route path="/contact" element={<Contact/>}/>
          <Route path="/impact" element={<Impact/>}/>
+         <Route path="/forgot-password" element={<ForgotPassword/>}/>
+         <Route path="/change-password" element={<ProtectedRoute> <ChangePassword/> </ProtectedRoute>}/>
 
 
 

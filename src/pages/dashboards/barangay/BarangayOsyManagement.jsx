@@ -1,6 +1,7 @@
    import { useCallback, useEffect, useMemo, useRef, useState } from "react";
    import SkOfficialSideBar from "../../../components/skOfficialSideBar";
    import "./BarangayOsyManagement.css";
+   import OsyPasswordReset from "./OsyPasswordReset";
 
    /* -------------------------------------------------------------------------- */
    /* API helpers                                                                */
@@ -1957,6 +1958,7 @@
                >
                Close
                </button>
+               <OsyPasswordReset osy={viewTarget} />
                <button
                type="button"
                className="bosyBtn bosyBtnPrimary"

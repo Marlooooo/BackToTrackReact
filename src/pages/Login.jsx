@@ -54,8 +54,8 @@
          localStorage.setItem("token", data.token);
          localStorage.setItem("userName", data.name);
          localStorage.setItem("userRole", data.role);
-         navigate(redirects[data.role] || "/");
-      } catch (err) {
+         // A temporary password (set by the SK official) must be changed first
+         navigate(data.must_change_password ? "/change-password" : redirects[data.role] || "/");      } catch (err) {
          setError("Something went wrong. Please try again.");
          console.error(err);
       } finally {
