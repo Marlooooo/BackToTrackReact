@@ -3,49 +3,42 @@ import logo from "../assets/BackToTrack_Logo3.png";
 import tesdaLogo from "../assets/Tesda_Logo4.png";
 import aboutImg from "../assets/aboutImg.png"
 import "./about.css";
+import { useState } from "react";
 
-function aboutUs() {
+function AboutUs() {
+   const [menuOpen, setMenuOpen] = useState(false);
+
    return (
       <>
          <header>
-            
-               <div className="leftSideHeader">
-                  <div id="logo">
-                     <img src={logo} alt="" />
-                  </div>
-                  <div id="webTitle">
-                     <h1>BackToTrack</h1>
-                  </div>
+            <div className="leftSideHeader">
+               <div id="logo">
+                  <img src={logo} alt="" />
                </div>
+               <div id="webTitle">
+                  <h1>BackToTrack</h1>
+               </div>
+            </div>
 
-               <nav>
-                  <Link to="/impact" className="room">
-                  {" "}
-                  Impact
-                  </Link>
+            <button
+               type="button"
+               className="burger"
+               aria-label="Toggle menu"
+               onClick={() => setMenuOpen(!menuOpen)}
+            >
+               <span className="material-symbols-outlined">
+                  {menuOpen ? "close" : "menu"}
+               </span>
+            </button>
 
-                  <Link to="/contact" className="room">
-                  Contact{" "}
-                  </Link>
-
-                  <Link to="/about" className="room activeICA">
-                  About Us
-                  </Link>
-
-                  <Link to="/" className="btn">
-                  {" "}
-                  Home
-                  </Link>
-
-                  <Link to="/login" className="btn">
-                  Login{" "}
-                  </Link>
-                  
-                  <Link to="/register" className="btn">
-                  Register
-                  </Link>
-               </nav>
-         
+            <nav className={menuOpen ? "open" : ""} onClick={() => setMenuOpen(false)}>
+               <Link to="/" className="room">Home</Link>
+               <Link to="/impact" className="room">Impact</Link>
+               <Link to="/contact" className="room">Contact</Link>
+               <Link to="/about" className="room active">About Us</Link>
+               <Link to="/login" className="btn">Login</Link>
+               <Link to="/register" className="btn">Register</Link>
+            </nav>
          </header>
 
 
@@ -62,7 +55,7 @@ function aboutUs() {
                   <h1>About BackToTrack</h1>
                   <p>BackToTrack is a platform designed to help  <br/> Out-of-School Youth (OSY)
                   discover skills training <br/> and career opportunities. It connects 
-                  OSY with <br/> barangay officials and training  providers to make <br/> the
+                  OSY with <br/> barangay officials and training providers to make <br/> the
                   process of finding, referring, and monitoring <br/> training opportunities
                   easier and more organized.</p>
                </div>
@@ -81,7 +74,7 @@ function aboutUs() {
 
                <div className="mainContentAboutUsBottomLeft">
                   <div className="aboutUsCards">
-                     <span class="material-symbols-outlined school">
+                     <span className="material-symbols-outlined school">
                      school
                      </span>
                      <h2>Skills Training</h2>
@@ -89,7 +82,7 @@ function aboutUs() {
                   </div>
 
                   <div className="aboutUsCards">
-                     <span class="material-symbols-outlined diversity_3">
+                     <span className="material-symbols-outlined diversity_3">
                      diversity_3
                      </span>
                      <h2>Youth Referral</h2>
@@ -97,7 +90,7 @@ function aboutUs() {
                   </div>
 
                   <div className="aboutUsCards">
-                     <span class="material-symbols-outlined tools_ladder">
+                     <span className="material-symbols-outlined tools_ladder">
                      tools_ladder
                      </span>
                      <h2>Opportunities</h2>
@@ -112,19 +105,19 @@ function aboutUs() {
 
                   <div>
                         <div className="stakeHolders">
-                           <span class="material-symbols-outlined diversity_4">
+                           <span className="material-symbols-outlined diversity_4">
                               diversity_4
                            </span>
                            <div>
                               <h4>Out-Of-School Youth (OSY)</h4>
-                              <p>Find training and carreer opportunities <br /> that help build a better future.</p>
+                              <p>Find training and career opportunities <br /> that help build a better future.</p>
                            </div>
                         </div>
 
 
          
                         <div className="stakeHolders">
-                           <span class="material-symbols-outlined house">
+                           <span className="material-symbols-outlined house">
                               house
                            </span>
                            <div>
@@ -136,7 +129,7 @@ function aboutUs() {
 
                
                         <div className="stakeHolders">
-                           <span class="material-symbols-outlined book_ribbon">
+                           <span className="material-symbols-outlined book_ribbon">
                               book_ribbon
                            </span>
                            <div>
@@ -183,11 +176,11 @@ function aboutUs() {
                   {" "}
                   Home
                </Link>
-               <Link to="about">About</Link>
+               <Link to="/about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="contact">Contact</Link>
+               <Link to="/contact">Contact</Link>
                <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
@@ -209,4 +202,4 @@ function aboutUs() {
       </>
    );
 }
-export default aboutUs;
+export default AboutUs;

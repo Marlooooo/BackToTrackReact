@@ -6,7 +6,7 @@ function SidebarNotifIndicator() {
 
    const loadUnread = useCallback(async () => {
       try {
-         const res = await fetch("http://localhost:8000/api/notifications/unread-count", {
+         const res = await fetch("/api/notifications/unread-count", {
             headers: { Accept: "application/json" },
             credentials: "include",
          });

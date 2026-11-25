@@ -1,23 +1,24 @@
-   import { useState } from "react";
-   import { Link, useNavigate } from "react-router-dom";
-   import logo from "../assets/BackToTrack_Logo3.png";
-   import tesdaLogo from "../assets/Tesda_Logo4.png";
-   import "./Login.css";
-   
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/BackToTrack_Logo3.png";
+import tesdaLogo from "../assets/Tesda_Logo4.png";
+import "./Login.css";
 
 
-   function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
-   }
-   const redirects = {
-      maxima_tesda_school: "/maxima/dashboard",
-      sk_officials: "/barangay/dashboard",
-      osy: "/osy/dashboard",
-   };
-   function Login() {
 
+function getCookie(name) {
+   const value = `; ${document.cookie}`;
+   const parts = value.split(`; ${name}=`);
+   if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
+}
+const redirects = {
+   maxima_tesda_school: "/maxima/dashboard",
+   sk_officials: "/barangay/dashboard",
+   osy: "/osy/dashboard",
+};
+function Login() {
+
+   const [menuOpen, setMenuOpen] = useState(false);
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [error, setError] = useState("");
@@ -30,11 +31,11 @@
       setLoading(true);
 
       try {
-         await fetch("http://localhost:8000/sanctum/csrf-cookie", {
+         await fetch("/sanctum/csrf-cookie", {
             credentials: "include",
          });
 
-         const res = await fetch("http://localhost:8000/api/login", {
+         const res = await fetch("/api/login", {
             method: "POST",
             headers: {
                "Content-Type": "application/json",
@@ -54,8 +55,15 @@
          localStorage.setItem("token", data.token);
          localStorage.setItem("userName", data.name);
          localStorage.setItem("userRole", data.role);
-         // A temporary password (set by the SK official) must be changed first
-         navigate(data.must_change_password ? "/change-password" : redirects[data.role] || "/");      } catch (err) {
+
+         // Confirm the email first, then replace a temporary password
+         if (data.must_verify_email) {
+            navigate("/verify-email");
+         } else {
+            navigate(data.must_change_password ? "/change-password" : redirects[data.role] || "/");
+         }
+         return;
+      } catch (err) {
          setError("Something went wrong. Please try again.");
          console.error(err);
       } finally {
@@ -66,44 +74,34 @@
    return (
       <>
          <header>
-            
-               <div className="leftSideHeader">
-                  <div id="logo">
-                     <img src={logo} alt="" />
-                  </div>
-                  <div id="webTitle">
-                     <h1>BackToTrack</h1>
-                  </div>
+            <div className="leftSideHeader">
+               <div id="logo">
+                  <img src={logo} alt="" />
                </div>
+               <div id="webTitle">
+                  <h1>BackToTrack</h1>
+               </div>
+            </div>
 
-               <nav>
-                  <Link to="/impact" className="room">
-                  {" "}
-                  Impact
-                  </Link>
+            <button
+               type="button"
+               className="burger"
+               aria-label="Toggle menu"
+               onClick={() => setMenuOpen(!menuOpen)}
+            >
+               <span className="material-symbols-outlined">
+                  {menuOpen ? "close" : "menu"}
+               </span>
+            </button>
 
-                  <Link to="/contact" className="room">
-                  Contact{" "}
-                  </Link>
-
-                  <Link to="/about" className="room">
-                  About Us
-                  </Link>
-
-                  <Link to="/" className="btn">
-                  {" "}
-                  Home
-                  </Link>
-
-                  <Link to="/login" className="active">
-                  Login{" "}
-                  </Link>
-                  
-                  <Link to="/register" className="btn">
-                  Register
-                  </Link>
-               </nav>
-         
+            <nav className={menuOpen ? "open" : ""} onClick={() => setMenuOpen(false)}>
+               <Link to="/" className="room">Home</Link>
+               <Link to="/impact" className="room">Impact</Link>
+               <Link to="/contact" className="room">Contact</Link>
+               <Link to="/about" className="room">About Us</Link>
+               <Link to="/login" className="btn active">Login</Link>
+               <Link to="/register" className="btn">Register</Link>
+            </nav>
          </header>
 
 
@@ -134,7 +132,7 @@
                <div className="inputPart">
                <p>Email</p>
                <input
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   value={email}
@@ -201,11 +199,11 @@
                   {" "}
                   Home
                </Link>
-               <Link to="about">About</Link>
+               <Link to="/about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="contact">Contact</Link>
+               <Link to="/contact">Contact</Link>
                <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
@@ -226,6 +224,6 @@
          </footer>
       </>
    );
-   }
+}
 
-   export default Login;
+export default Login;

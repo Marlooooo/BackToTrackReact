@@ -20,11 +20,13 @@ body{
    background: rgb(243, 243, 243);
    justify-content: center;
    align-items: center;
-   padding: 55px 0px 65px 0px;
+   padding: 55px 15px 65px 15px;
 }
 
 .loginBox{
-   width: 20%;
+   width: 100%;
+   max-width: 420px;
+   box-sizing: border-box;
    background: rgb(243, 243, 243);
    border-radius: 20px;
    padding: 0px 50px 0px 50px;
@@ -46,6 +48,7 @@ body{
    margin: 0px;
    color: black;
    font-size: 2rem;
+   text-align: center;
 }
 .loginBoxLogoTitle p{
    margin: 0px 0px 10px 0px;
@@ -79,10 +82,12 @@ form{
 }
 .inputPart input{
    background-color: white;
-   height: 30px;
+   height: 40px;
+   font-size: 0.9rem;
    border-radius: 10px;
    border: 2px solid #0a386c;
-   padding: 0px 0px 0px 10px;
+   padding: 0px 12px 0px 12px;
+   box-sizing: border-box;
    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .forgotPassword{
@@ -113,7 +118,7 @@ form{
 .signInBtn button{
    background-color: rgb(37, 38, 65);
    color: white;
-   height: 40px;
+   height: 42px;
    width: 100%;
    border-radius: 10px;
    border: 1px solid #0a386c;
@@ -165,40 +170,51 @@ form .errorText{
 }
 
 
+/* ================= RESPONSIVE ================= */
 
+/* Tablets and phones */
+@media (max-width: 600px){
+   .midpartLogin{
+      padding: 35px 12px 45px 12px;
+   }
+   .loginBox{
+      padding: 0px 10px 0px 10px;
+   }
+   .loginBoxLogoTitle h1{
+      font-size: 1.7rem;
+   }
+   .loginBoxLogoTitle p{
+      font-size: 0.9rem;
+   }
+   form{
+      padding: 22px 20px 28px 20px;
+   }
+   .inputPart p{
+      font-size: 0.8rem;
+   }
+   /* bigger tap targets, and 16px text so phones don't zoom in on focus */
+   .inputPart input{
+      height: 44px;
+      font-size: 1rem;
+   }
+   .forgotPassword a{
+      font-size: 0.9rem;
+   }
+   .signInBtn button{
+      height: 46px;
+      font-size: 1rem;
+   }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Small phones */
+@media (max-width: 360px){
+   .loginBox{
+      padding: 0px;
+   }
+   .loginBoxLogoTitle h1{
+      font-size: 1.5rem;
+   }
+   form{
+      padding: 20px 15px 25px 15px;
+   }
+}

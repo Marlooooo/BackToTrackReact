@@ -6,7 +6,7 @@ export default function useUnreadCount(intervalMs = 30000) {
    // Asks Laravel for the unread count and stores it in state
    const refresh = useCallback(async () => {
       try {
-         const res = await fetch("http://localhost:8000/api/notifications/unread-count", {
+         const res = await fetch("/api/notifications/unread-count", {
             headers: { Accept: "application/json" },
             credentials: "include", // sends your Sanctum session cookie
          });

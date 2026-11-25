@@ -1,4 +1,4 @@
-/* Absence reason: guided panel inside the attendance list */
+/* Absence reason: guided panel under the attendance banner */
 
 .arRowAction {
    display: flex;
@@ -118,8 +118,10 @@
 /* The panel */
 
 .arPanel {
+   margin: 12px 0 16px;
    padding: 18px;
-   border-bottom: 1px solid #e3ebe7;
+   border: 1px solid #e3ebe7;
+   border-radius: 12px;
    background-color: #f6faf8;
    animation: arOpen 0.22s ease-out;
 }
@@ -136,6 +138,17 @@
    margin-bottom: 14px;
 }
 
+.arTopText {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.arPanelTitle {
+   color: #1b3d31;
+   font-size: 15px;
+}
+
 .arSteps {
    display: flex;
    align-items: center;
@@ -146,6 +159,13 @@
    margin-left: 8px;
    color: #5b6f66;
    font-size: 12px;
+}
+
+.arStepLabel {
+   margin-right: 4px;
+   color: #355247;
+   font-size: 13px;
+   font-weight: 600;
 }
 
 .arStepDot {
@@ -190,6 +210,59 @@
    font-size: 13px;
 }
 
+.arOptionalTag {
+   display: inline-block;
+   margin-left: 8px;
+   padding: 2px 8px;
+   border-radius: 999px;
+   background-color: #e3ebe7;
+   color: #355247;
+   font-size: 11px;
+   font-weight: 600;
+   vertical-align: middle;
+}
+
+.arMoreGroup {
+   margin-top: 16px;
+}
+
+.arGroupLabel {
+   display: block;
+   margin-bottom: 8px;
+   color: #355247;
+   font-size: 13px;
+   font-weight: 600;
+}
+
+.arFollowup {
+   margin-top: 18px;
+   padding-top: 16px;
+   border-top: 1px solid #e3ebe7;
+}
+
+.arFollowupTitle {
+   display: block;
+   margin-bottom: 10px;
+   color: #1b3d31;
+   font-size: 15px;
+   font-weight: 600;
+}
+
+.arSelectAll {
+   margin: 0 0 10px;
+   padding: 4px 0;
+   border: none;
+   background: transparent;
+   color: #1f6b4f;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+}
+
+.arSelectAll:hover {
+   text-decoration: underline;
+}
+
 .arDays {
    display: flex;
    flex-wrap: wrap;
@@ -207,6 +280,12 @@
    color: #355247;
    font-size: 13px;
    cursor: pointer;
+}
+
+.arDayName {
+   display: block;
+   color: #5b6f66;
+   font-size: 11.5px;
 }
 
 .arDayOn {
@@ -419,5 +498,95 @@
 
    .arCards {
       grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+/* Mobile: the form opens full screen with the buttons pinned at the bottom,
+   so it is clear where to read, where to tap, and how to go back */
+@media (max-width: 768px) {
+   .arPanel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 16px 16px 0;
+      border: none;
+      border-radius: 0;
+      background-color: #ffffff;
+      overflow-y: auto;
+   }
+
+   .arBody {
+      flex: 1;
+   }
+
+   .arBody h4 {
+      font-size: 20px;
+      line-height: 1.3;
+   }
+
+   .arHelp {
+      font-size: 14px;
+   }
+
+   .arPanelTitle {
+      font-size: 16px;
+   }
+
+   .arStepDot {
+      width: 18px;
+   }
+
+   .arDay {
+      padding: 12px 14px;
+      font-size: 14px;
+   }
+
+   .arChoice {
+      padding: 12px 16px;
+   }
+
+   .arField input {
+      font-size: 16px;
+   }
+
+   .arTextarea {
+      font-size: 16px;
+   }
+
+   .arActions {
+      position: sticky;
+      bottom: 0;
+      margin: 16px -16px 0;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid #e3ebe7;
+      background-color: #ffffff;
+   }
+
+   .arActions .arGhostBtn,
+   .arActions .arPrimaryBtn {
+      flex: 1;
+      padding-top: 12px;
+      padding-bottom: 12px;
+   }
+
+   .arSummaryHead {
+      margin-top: 4px;
+   }
+
+   .arPanel > .arGhostBtn {
+      margin-bottom: 16px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+   }
+
+   /* The banner button is the one place to start, so the filter pills are hidden on mobile */
+   .arFilters {
+      display: none;
    }
 }

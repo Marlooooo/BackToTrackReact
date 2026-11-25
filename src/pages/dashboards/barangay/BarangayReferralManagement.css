@@ -543,7 +543,7 @@
 
 
 /* --------------------------------------------------------------------------
-   Modals
+   Modals (shared by create, details and delete)
    -------------------------------------------------------------------------- */
 .referralModalOverlay {
    position: fixed;
@@ -633,14 +633,14 @@
 .referralField {
    display: flex;
    flex-direction: column;
-   gap: 8px;
+   gap: 10px;
 }
 
 .referralField label,
 .referralLabel {
    font-family: "Open Sans", sans-serif;
    font-size: 0.875rem;
-   font-weight: 600;
+   font-weight: 500;
 }
 
 .referralRequired {
@@ -656,34 +656,46 @@
 
 .referralInput {
    width: 100%;
-   padding: 10px 12px;
+   padding: 11px 14px;
    border: 1px solid var(--rm-border-strong);
    border-radius: 10px;
    background: var(--rm-surface);
    box-sizing: border-box;
    color: inherit;
    font: inherit;
+   font-size: 0.9rem;
+}
+
+.referralInput::placeholder {
+   color: #98a2b3;
+}
+
+input#osySearch {
+   height: 44px;
+   padding-left: 40px;
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+   background-position: 14px center;
+   background-repeat: no-repeat;
 }
 
 textarea.referralInput {
+   min-height: 72px;
+   line-height: 1.5;
    resize: vertical;
 }
 
-.referralOptionList,
-.referralChoiceList {
-   max-height: 184px;
+
+/* OSY search results */
+.referralOptionList {
+   max-height: 150px;
    margin: 0;
-   padding: 4px;
+   padding: 6px;
    overflow-y: auto;
    border: 1px solid var(--rm-border);
-   border-radius: 10px;
+   border-radius: 12px;
    list-style: none;
-}
-
-.referralChoiceList {
-   display: flex;
-   flex-direction: column;
-   gap: 4px;
+   scrollbar-width: thin;
+   scrollbar-color: var(--rm-border-strong) transparent;
 }
 
 .referralOption {
@@ -691,7 +703,7 @@ textarea.referralInput {
    flex-direction: column;
    gap: 2px;
    width: 100%;
-   padding: 8px 10px;
+   padding: 10px 12px;
    border: 0;
    border-radius: 8px;
    background: none;
@@ -702,11 +714,12 @@ textarea.referralInput {
 }
 
 .referralOption:hover {
-   background: var(--rm-bg);
+   background: var(--rm-primary-soft);
 }
 
 .referralOptionName {
-   font-weight: 600;
+   font-size: 0.9rem;
+   font-weight: 500;
 }
 
 .referralOptionMeta {
@@ -719,6 +732,41 @@ textarea.referralInput {
    padding: 12px 10px;
    color: var(--rm-muted);
    font-size: 0.875rem;
+   text-align: center;
+}
+
+/* Selected OSY */
+.referralSelectedOsy {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+   padding: 12px 14px;
+   border: 1px solid var(--rm-border);
+   border-radius: 12px;
+   background: var(--rm-hover);
+}
+
+.referralSelectedOsy .referralPersonName {
+   font-weight: 500;
+}
+
+.referralSelectedText {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 2px;
+   min-width: 0;
+}
+
+/* Training programs: two-column cards */
+.referralChoiceList {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 10px;
+}
+
+.referralChoiceList .referralOptionEmpty {
+   grid-column: 1 / -1;
 }
 
 .referralChoice {
@@ -737,11 +785,15 @@ textarea.referralInput {
    display: flex;
    align-items: center;
    gap: 12px;
-   padding: 10px 12px;
-   border: 1px solid transparent;
-   border-radius: 8px;
+   height: 100%;
+   padding: 12px 14px;
+   border: 1px solid var(--rm-border-strong);
+   border-radius: 10px;
    background: var(--rm-surface);
-   font-weight: 600;
+   box-sizing: border-box;
+   font-size: 0.875rem;
+   font-weight: 500;
+   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .referralChoiceBody::before {
@@ -756,35 +808,20 @@ textarea.referralInput {
 }
 
 .referralChoice:hover .referralChoiceBody {
-   background: var(--rm-bg);
+   border-color: var(--rm-primary);
+   background: var(--rm-hover);
 }
 
 .referralChoice input:checked + .referralChoiceBody {
    border-color: var(--rm-primary);
    background: var(--rm-primary-soft);
+   color: var(--rm-primary-dark);
 }
 
 .referralChoice input:checked + .referralChoiceBody::before {
    border-color: var(--rm-primary);
    background: var(--rm-primary);
    box-shadow: inset 0 0 0 2px var(--rm-surface);
-}
-
-.referralSelectedOsy {
-   display: flex;
-   align-items: center;
-   gap: 12px;
-   padding: 10px 12px;
-   border-radius: 10px;
-   background: var(--rm-bg);
-}
-
-.referralSelectedText {
-   display: flex;
-   flex: 1;
-   flex-direction: column;
-   gap: 2px;
-   min-width: 0;
 }
 
 
@@ -968,7 +1005,8 @@ textarea.referralInput {
    .referralSecondaryBtn,
    .referralDangerBtn,
    .referralRowBtn,
-   .referralRowDeleteBtn {
+   .referralRowDeleteBtn,
+   .referralChoiceBody {
       transition: none;
    }
 }
@@ -1011,5 +1049,60 @@ textarea.referralInput {
 
    .referralPager {
       justify-content: center;
+   }
+
+   .referralChoiceList {
+      grid-template-columns: 1fr;
+   }
+}
+
+
+/* --------------------------------------------------------------------------
+   Create referral modal only (scoped to the <form>, so the details and
+   delete modals are not affected). Keep this last so it wins over the
+   shared modal rules above.
+   -------------------------------------------------------------------------- */
+form.referralModal {
+   max-width: 600px;
+   max-height: min(calc(100vh - 160px), 680px);
+}
+
+form.referralModal .referralModalHeader {
+   padding: 20px 28px 16px;
+}
+
+form.referralModal .referralModalHeader h2 {
+   font-weight: 500;
+}
+
+form.referralModal .referralModalHeader p {
+   margin-top: 6px;
+}
+
+form.referralModal .referralModalBody {
+   gap: 18px;
+   padding: 20px 28px;
+   scrollbar-width: thin;
+   scrollbar-color: var(--rm-border-strong) transparent;
+}
+
+form.referralModal .referralModalFooter {
+   padding: 14px 28px;
+   background: var(--rm-hover);
+}
+
+form.referralModal .referralPrimaryBtn,
+form.referralModal .referralSecondaryBtn {
+   min-width: 120px;
+   font-size: 0.9rem;
+   font-weight: 500;
+}
+
+@media (max-width: 520px) {
+   form.referralModal .referralModalHeader,
+   form.referralModal .referralModalBody,
+   form.referralModal .referralModalFooter {
+      padding-right: 16px;
+      padding-left: 16px;
    }
 }

@@ -34,8 +34,8 @@ function MaximaSideBar() {
       try {
          const xsrfToken = getCookie("XSRF-TOKEN");
 
-         await fetch("http://localhost:8000/api/logout", {
-            method: "POST",
+            await fetch("/api/logout", {
+               method: "POST",
             headers: {
                "X-XSRF-TOKEN": xsrfToken,
             },
@@ -116,6 +116,14 @@ function MaximaSideBar() {
                   </span>
                   <NavLink to="/maxima/monitoring" className={({ isActive }) => isActive ? "maximaActive" : ""}>
                   Progress Monitoring
+                  </NavLink>
+               </div>
+               <div>
+                  <span className="material-symbols-outlined">
+                  workspace_premium
+                  </span>
+                  <NavLink to="/maxima/completed" className={({ isActive }) => isActive ? "maximaActive" : ""}>
+                  Completed Trainings
                   </NavLink>
                </div>
             </div>

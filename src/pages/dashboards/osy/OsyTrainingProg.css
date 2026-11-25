@@ -625,13 +625,22 @@
 
    .opInfoGrid {
       grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 12px 0;
    }
 
+   /* Attendance: rate on its own row, then Present / Late / Absent / Excused in one row */
    .opChips {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(4, 1fr);
    }
 
    .opChipBox {
+      padding: 10px 4px;
+   }
+
+   .opChipBoxMain {
+      grid-column: 1 / -1;
+      border-right: none;
       border-bottom: 1px solid #E7ECE8;
    }
 
@@ -645,5 +654,157 @@
 
    .opDoc {
       flex-wrap: wrap;
+   }
+}
+@media (max-width: 768px) {
+   .osyTrainingProgMain {
+      padding-top: 72px;
+   }
+}
+/* Mobile font sizes (match dashboard) */
+@media (max-width: 768px) {
+
+   /* page header */
+   .osyTrainingProgHeader h1 {
+      font-size: 26px;
+      line-height: 1.2;
+   }
+
+   .osyTrainingProgHeader p {
+      font-size: 13.5px;
+      line-height: 1.55;
+   }
+
+   /* course tabs */
+   .opCourseTabName {
+      font-size: 14px;
+   }
+
+   /* states */
+   .opState,
+   .opStateError {
+      font-size: 13px;
+   }
+
+   .opEmpty h3 {
+      font-size: 15px;
+   }
+
+   .opEmpty p {
+      font-size: 13px;
+   }
+
+   /* card header */
+   .opProgram {
+      font-size: 18px;
+   }
+
+   .opBatch {
+      font-size: 13px;
+   }
+
+   /* badges and chips */
+   .opBadge,
+   .opChip,
+   .opDocStatus {
+      font-size: 12px;
+   }
+
+   /* progress */
+   .opProgressCaption {
+      font-size: 13px;
+   }
+
+   .opProgressPercent {
+      font-size: 14px;
+   }
+
+   .opProgressDates {
+      font-size: 12px;
+   }
+
+   /* notices */
+   .opNotice strong {
+      font-size: 14px;
+   }
+
+   .opNotice p {
+      font-size: 13px;
+   }
+
+   /* info row */
+   .opInfoItem span {
+      font-size: 12px;
+   }
+
+   .opInfoItem strong {
+      font-size: 13.5px;
+   }
+
+   /* block titles */
+   .opBlockTitle {
+      font-size: 17px;
+   }
+
+   .opBlockTitle small {
+      font-size: 12px;
+   }
+
+   .opHint {
+      font-size: 13px;
+   }
+
+   /* attendance */
+   .opChipBox strong {
+      font-size: 20px;
+   }
+
+   .opChipBox span {
+      font-size: 12px;
+   }
+
+   .opRecord {
+      font-size: 13.5px;
+   }
+
+   .opRecordDate,
+   .opRecordNote {
+      font-size: 13px;
+   }
+
+   .opLinkBtn {
+      font-size: 13px;
+   }
+
+   /* documents */
+   .opDocText span {
+      font-size: 14px;
+   }
+
+   .opDocText small {
+      font-size: 12px;
+   }
+
+   /* timeline */
+   .opTimelineItem strong {
+      font-size: 14px;
+   }
+
+   .opTimelineItem span {
+      font-size: 13px;
+   }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+   .osyTrainingProgHeader h1 {
+      font-size: 23px;
+   }
+}
+
+/* Status badge in the card header repeats the one in the active course tab, so hide it on mobile */
+@media (max-width: 768px) {
+   .opBadgeDupe {
+      display: none;
    }
 }

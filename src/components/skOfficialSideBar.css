@@ -72,6 +72,7 @@
    transform: scale(1.15);
 }
 .skLinkDiv a{
+   color: white;
    font-family: "Inter", sans-serif;
    font-optical-sizing: auto;
    font-style: normal;

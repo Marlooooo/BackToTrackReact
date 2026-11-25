@@ -21,6 +21,43 @@
    status: 'active',
    };
 
+   const HISTORY_FIELDS = {
+   name: 'Program name',
+   description: 'Description',
+   requirements: 'Requirements',
+   schedule: 'Schedule',
+   slots: 'Slots',
+   tesda_accredited: 'TESDA accreditation',
+   status: 'Status',
+   image: 'Program image',
+   };
+
+   const HISTORY_ACTION = {
+   created: 'Program created',
+   updated: 'Program edited',
+   deleted: 'Program removed',
+   };
+
+   function formatDateTime(value) {
+   if (!value) return '—';
+   const date = new Date(value);
+   if (Number.isNaN(date.getTime())) return '—';
+   return date.toLocaleString('en-PH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+   });
+   }
+
+   function formatHistoryValue(field, value) {
+   if (value === null || value === undefined || value === '') return 'Empty';
+   if (field === 'tesda_accredited') return value ? 'Accredited' : 'Not accredited';
+   if (field === 'status') return value === 'active' ? 'Active' : 'Inactive';
+   return String(value);
+   }
+
    function MaximaProgramManagement() {
    const [programs, setPrograms] = useState([]);
    const [loading, setLoading] = useState(true);
@@ -38,6 +75,11 @@
    const [saving, setSaving] = useState(false);
    const [formError, setFormError] = useState(null);
    const [deleteTarget, setDeleteTarget] = useState(null);
+   const [historyTarget, setHistoryTarget] = useState(null);
+   const [historyItems, setHistoryItems] = useState([]);
+   const [historyLoading, setHistoryLoading] = useState(false);
+   const [historyError, setHistoryError] = useState(null);
+   const latestHistory = useRef(0);
    const fileInputRef = useRef(null);
 
    useEffect(() => {
@@ -73,6 +115,46 @@
       } finally {
          setLoading(false);
       }
+   }
+
+   // Escape closes the history modal
+   useEffect(() => {
+      if (!historyTarget) return;
+      function onKeyDown(e) {
+         if (e.key === 'Escape') closeHistory();
+      }
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+   }, [historyTarget]);
+
+   async function openHistory(program) {
+      const requestId = ++latestHistory.current;
+      setHistoryTarget(program);
+      setHistoryItems([]);
+      setHistoryError(null);
+      setHistoryLoading(true);
+
+      try {
+         const res = await fetch(`/api/training-programs/${program.id}/history`, {
+            headers: { Accept: 'application/json' },
+            credentials: 'include',
+         });
+         const data = await res.json().catch(() => null);
+         if (!res.ok) throw new Error(data?.message ?? 'Could not load the history.');
+         if (requestId !== latestHistory.current) return;
+         setHistoryItems(data);
+      } catch (err) {
+         if (requestId !== latestHistory.current) return;
+         setHistoryError(err.message);
+      } finally {
+         if (requestId === latestHistory.current) setHistoryLoading(false);
+      }
+   }
+
+   function closeHistory() {
+      latestHistory.current += 1;
+      setHistoryTarget(null);
+      setHistoryLoading(false);
    }
 
    const visiblePrograms = useMemo(() => {
@@ -305,6 +387,9 @@
                            </span>
                            </td>
                            <td className="programTable__actions">
+                           <button className="programHistoryBtn" onClick={() => openHistory(program)}>
+                              History
+                           </button>
                            <button className="programEditBtn" onClick={() => openEditModal(program)}>
                               Edit
                            </button>
@@ -589,6 +674,103 @@
                </button>
                <button className="pmgmtBtn pmgmtBtnDanger" onClick={confirmDelete}>
                   Remove program
+               </button>
+               </div>
+            </div>
+         </div>
+         )}
+         {/* Program history modal (does not close when clicking outside) */}
+         {historyTarget && (
+         <div className="pmgmtModalOverlay">
+            <div
+               className="pmgmtModal pmgmtModalWide"
+               role="dialog"
+               aria-modal="true"
+               aria-labelledby="historyModalTitle"
+            >
+               <div className="pmgmtModalHeader">
+               <div>
+                  <h2 id="historyModalTitle">Program History</h2>
+                  <p>{historyTarget.name}</p>
+               </div>
+               <button
+                  type="button"
+                  className="pmgmtModalClose"
+                  onClick={closeHistory}
+                  aria-label="Close"
+               >
+                  ✕
+               </button>
+               </div>
+
+               <div className="pmgmtHistoryBody">
+               {historyLoading && <div className="pmgmtEmpty">Loading history…</div>}
+
+               {historyError && (
+                  <div className="pmgmtBanner pmgmtBannerError pmgmtBannerInModal" role="alert">
+                     {historyError}
+                  </div>
+               )}
+
+               {!historyLoading && !historyError && historyItems.length === 0 && (
+                  <div className="pmgmtEmpty">
+                     <p>No changes recorded yet.</p>
+                     <span>Edits made from now on will appear here.</span>
+                  </div>
+               )}
+
+               {historyItems.length > 0 && (
+                  <ul className="pmgmtHistoryList">
+                     {historyItems.map((item) => (
+                     <li className="pmgmtHistoryItem" key={item.id}>
+                        <span
+                           className={`pmgmtHistoryDot ${
+                           item.action === 'deleted' ? 'pmgmtHistoryDotDeleted' : ''
+                           }`}
+                        />
+                        <div className="pmgmtHistoryContent">
+                           <div className="pmgmtHistoryTop">
+                           <span className="pmgmtHistoryAction">
+                              {HISTORY_ACTION[item.action] ?? item.action}
+                           </span>
+                           <span className="pmgmtHistoryMeta">
+                              {formatDateTime(item.created_at)}
+                              {item.user?.name ? ` · ${item.user.name}` : ''}
+                           </span>
+                           </div>
+
+                           {(item.changes ?? []).map((change) => (
+                           <div className="pmgmtHistoryChange" key={change.field}>
+                              <span className="pmgmtHistoryField">
+                                 {HISTORY_FIELDS[change.field] ?? change.field}
+                              </span>
+                              {item.action === 'created' ? (
+                                 <span className="pmgmtHistoryNew">
+                                 {formatHistoryValue(change.field, change.new)}
+                                 </span>
+                              ) : (
+                                 <span className="pmgmtHistoryDiff">
+                                 <span className="pmgmtHistoryOld">
+                                    {formatHistoryValue(change.field, change.old)}
+                                 </span>
+                                 <span className="pmgmtHistoryArrow">→</span>
+                                 <span className="pmgmtHistoryNew">
+                                    {formatHistoryValue(change.field, change.new)}
+                                 </span>
+                                 </span>
+                              )}
+                           </div>
+                           ))}
+                        </div>
+                     </li>
+                     ))}
+                  </ul>
+               )}
+               </div>
+
+               <div className="pmgmtModalFooter">
+               <button type="button" className="pmgmtBtn pmgmtBtnGhost" onClick={closeHistory}>
+                  Close
                </button>
                </div>
             </div>

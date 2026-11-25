@@ -73,6 +73,7 @@
    transform: scale(1.15);              /* NEW — icon grows a bit on hover, scoped to row hover */
 }
 .maximaLinkDiv a{
+   color: white;
    font-family: "Inter", sans-serif;
    font-optical-sizing: auto;
    font-style: normal;

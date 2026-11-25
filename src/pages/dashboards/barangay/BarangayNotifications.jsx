@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import BarangaySideBar from '../../../components/skOfficialSideBar';
 import './BarangayNotifications.css';
 
-const API = "http://localhost:8000/api";
+const API = "/api";
 
 // Page that lists the enrolled OSY. A "Reason received" notification opens it with that OSY's record.
 // If your Training Monitoring page uses another URL, change it here.
 const TRAINING_MONITORING_PATH = '/barangay/training';
+
+// These notifications open the OSY's record in Training Monitoring instead of the details modal.
+// A concern opens straight on the Concerns tab.
+const MONITORING_STATUSES = ['Reason received', 'Concern raised'];
+
+function monitoringLink(notification) {
+   const tabs = { 'Reason received': 'attendance', 'Concern raised': 'concerns' };
+   const tab = tabs[notification.data?.status];
+   return `${TRAINING_MONITORING_PATH}?open=${notification.data.referral_id}${tab ? `&tab=${tab}` : ''}`;
+}
 
 function getCookie(name) {
    const value = `; ${document.cookie}`;
@@ -431,9 +441,9 @@ function BarangayNotifications() {
          markRead(n.id);
       }
 
-      // an OSY sent a reason: open that OSY's record in Training Monitoring
-      if (!stay && n.data?.status === 'Reason received' && n.data?.referral_id) {
-         navigate(`${TRAINING_MONITORING_PATH}?open=${n.data.referral_id}`);
+      // an OSY sent a reason, or Maxima raised a concern: open that OSY's record in Training Monitoring
+      if (!stay && MONITORING_STATUSES.includes(n.data?.status) && n.data?.referral_id) {
+         navigate(monitoringLink(n));
          return;
       }
 
@@ -912,8 +922,25 @@ function BarangayNotifications() {
                            </div>
                         </div>
 
+                        {selected.data?.requirements?.length > 0 && (
+                           <div className='barangayNotifSection'>
+                              <h3 className='barangayNotifSectionTitle'>Requirements to submit to Maxima</h3>
+                                 {selected.data?.requirements_deadline && (
+                                 <p className='barangayNotifDeadline'>
+                                    Submit by {formatDate(`${selected.data.requirements_deadline}T00:00:00`)}
+                                 </p>
+                              )}
+                              <ul className='barangayNotifReqList'>
+                                 {selected.data.requirements.map((req, i) => (
+                                    <li key={i}>{req}</li>
+                                 ))}
+                              </ul>
+                           </div>
+                        )}
+
                         {detailLoading && (
-                           <div className='barangayNotifModalState'>
+
+                        <div className='barangayNotifModalState'>
                               Loading referral details...
                            </div>
                         )}
@@ -1047,10 +1074,10 @@ function BarangayNotifications() {
                         </div>
 
                         <div className='barangayNotifModalNav'>
-                           {selected.data?.status === 'Reason received' && selected.data?.referral_id && (
+                           {MONITORING_STATUSES.includes(selected.data?.status) && selected.data?.referral_id && (
                               <button
                                  className='barangayNotifGhostBtn'
-                                 onClick={() => navigate(`${TRAINING_MONITORING_PATH}?open=${selected.data.referral_id}`)}
+                                 onClick={() => navigate(monitoringLink(selected))}
                               >
                                  Open in Training Monitoring
                               </button>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import OsySideBar from '../../../components/osySideBar';
 import "./OsyNotif.css"
 
-const API = "http://localhost:8000/api"; // same base URL as your other pages
+const API = "/api";
 const STORAGE = API.replace('/api', '/storage'); // where uploaded images are served from
 
 function getCookie(name) {
@@ -344,7 +344,18 @@ const postHeaders = () => ({
                            <div className='osyNotifText'>
                               <div className='osyNotifItemTitle'>{n.data?.title}</div>
                               <div className='osyNotifItemMessage'>{n.data?.message}</div>
-                              <div className='osyNotifItemMeta'>
+                              {n.data?.requirements_deadline && (
+                                 <div className='osyNotifDeadline'>
+                                    Submit by {new Date(`${n.data.requirements_deadline}T00:00:00`).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
+                                 </div>
+                              )}
+                              {n.data?.requirements?.length > 0 && (
+                                 <ul className='osyNotifReqList'>
+                                    {n.data.requirements.map((req, i) => (
+                                       <li key={i}>{req}</li>
+                                    ))}
+                                 </ul>
+                              )}                              <div className='osyNotifItemMeta'>
                                  {n.data?.category && (
                                     <span className='osyNotifItemTag'>{CATEGORY_LABEL[n.data.category]}</span>
                                  )}

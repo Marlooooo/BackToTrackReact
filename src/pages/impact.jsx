@@ -3,49 +3,42 @@ import logo from "../assets/BackToTrack_Logo3.png";
 import tesdaLogo from "../assets/Tesda_Logo4.png";
 import impactImg from "../assets/impactImg.png"
 import "./impact.css";
+import { useState } from "react";
 
 function Impact() {
+   const [menuOpen, setMenuOpen] = useState(false);
+
    return (
       <>
          <header>
-            
-               <div className="leftSideHeader">
-                  <div id="logo">
-                     <img src={logo} alt="" />
-                  </div>
-                  <div id="webTitle">
-                     <h1>BackToTrack</h1>
-                  </div>
+            <div className="leftSideHeader">
+               <div id="logo">
+                  <img src={logo} alt="" />
                </div>
+               <div id="webTitle">
+                  <h1>BackToTrack</h1>
+               </div>
+            </div>
 
-               <nav>
-                  <Link to="/impact" className="room activeICA">
-                  {" "}
-                  Impact
-                  </Link>
+            <button
+               type="button"
+               className="burger"
+               aria-label="Toggle menu"
+               onClick={() => setMenuOpen(!menuOpen)}
+            >
+               <span className="material-symbols-outlined">
+                  {menuOpen ? "close" : "menu"}
+               </span>
+            </button>
 
-                  <Link to="/contact" className="room">
-                  Contact{" "}
-                  </Link>
-
-                  <Link to="/about" className="room">
-                  About Us
-                  </Link>
-
-                  <Link to="/" className="btn">
-                  {" "}
-                  Home
-                  </Link>
-
-                  <Link to="/login" className="btn">
-                  Login{" "}
-                  </Link>
-                  
-                  <Link to="/register" className="btn">
-                  Register
-                  </Link>
-               </nav>
-         
+            <nav className={menuOpen ? "open" : ""} onClick={() => setMenuOpen(false)}>
+               <Link to="/" className="room">Home</Link>
+               <Link to="/impact" className="room active">Impact</Link>
+               <Link to="/contact" className="room">Contact</Link>
+               <Link to="/about" className="room">About Us</Link>
+               <Link to="/login" className="btn">Login</Link>
+               <Link to="/register" className="btn">Register</Link>
+            </nav>
          </header>
 
 
@@ -63,7 +56,7 @@ function Impact() {
                   One Opportunity <br />
                   at a Time</h1>
                   <p>BackToTrack helps connect out-of-school youth <br />
-                  withs kills training, career opportunities, and <br />
+                  with skills training, career opportunities, and <br />
                   support from their community.</p>
                </div>
 
@@ -82,21 +75,21 @@ function Impact() {
                <div className="impactMainContentMidCardsDiv">
 
                   <div className="impactMainContentMidCards">
-                     <span class="material-symbols-outlined">emoji_people</span>
+                     <span className="material-symbols-outlined">emoji_people</span>
                      <h3>For OSY</h3>
                      <p>We provide easier access <br /> to skills training, resources, <br />
                      and career opportunities <br /> to help youth build their skills <br /> and achieve their dreams.</p>
                   </div>
 
                   <div className="impactMainContentMidCards">
-                     <span class="material-symbols-outlined">school</span>
+                     <span className="material-symbols-outlined">school</span>
                      <h3>For Training Providers</h3>
                      <p>We connect training <br /> institutions with motivated <br />
                         youth who are eager to <br /> learn and develop new <br /> skills.</p>
                   </div>   
 
                   <div className="impactMainContentMidCards">
-                     <span class="material-symbols-outlined">account_balance</span>
+                     <span className="material-symbols-outlined">account_balance</span>
                      <h3>For SK Officials</h3>
                      <p>We help SK officials <br /> monitor, manage, and <br />
                         refer OSY more efficiently <br /> for appropriate training <br /> and support.</p>
@@ -114,7 +107,7 @@ function Impact() {
                <div className="impactMainContentBotITTC">
                   <div>
                      <span className="material-symbols-outlined impactIcon">person_search</span>
-                     <h3>Identity</h3>
+                     <h3>Identify</h3>
                      <p>We identify out-of-school youth and assess their needs and interests.</p>
                   </div>
                   <span className="material-symbols-outlined impactArrow">arrow_forward</span>
@@ -185,11 +178,11 @@ function Impact() {
                   {" "}
                   Home
                </Link>
-               <Link to="about">About</Link>
+               <Link to="/about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="contact">Contact</Link>
+               <Link to="/contact">Contact</Link>
                <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">

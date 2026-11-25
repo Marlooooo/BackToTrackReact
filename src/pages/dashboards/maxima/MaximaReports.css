@@ -802,3 +802,191 @@
       print-color-adjust: exact;
    }
 }
+/* Enrollee status pills */
+.maximaReportStatusBar {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-bottom: 16px;
+}
+
+.maximaReportPill {
+   display: inline-flex;
+   align-items: center;
+   gap: 8px;
+   padding: 7px 14px;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   background: #FFFFFF;
+   color: #3D4A3F;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.maximaReportPill:hover {
+   background: #F1F5F2;
+}
+
+.maximaReportPillActive,
+.maximaReportPillActive:hover {
+   background: #2F6E4F;
+   border-color: #2F6E4F;
+   color: #FFFFFF;
+}
+
+.maximaReportPillCount {
+   min-width: 20px;
+   padding: 1px 7px;
+   border-radius: 999px;
+   background: #EEF2EE;
+   color: #66746A;
+   font-size: 11.5px;
+   font-weight: 700;
+   text-align: center;
+}
+
+.maximaReportPillActive .maximaReportPillCount {
+   background: rgba(255, 255, 255, 0.22);
+   color: #FFFFFF;
+}
+
+/* Program changes */
+.maximaReportNoWrap {
+   white-space: nowrap;
+}
+
+.maximaReportChangeCell {
+   min-width: 280px;
+}
+
+.maximaReportChangeList {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.maximaReportChange {
+   font-size: 13px;
+   line-height: 1.45;
+}
+
+.maximaReportChangeField {
+   display: block;
+   margin-bottom: 1px;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+}
+
+.maximaReportChangeOld {
+   color: #A23E3E;
+   text-decoration: line-through;
+   word-break: break-word;
+   white-space: pre-line;
+}
+
+.maximaReportChangeArrow {
+   margin: 0 6px;
+   color: #7C877E;
+}
+
+.maximaReportChangeNew {
+   color: #2F6E4F;
+   font-weight: 600;
+   word-break: break-word;
+   white-space: pre-line;
+}
+
+.maximaReportAlertFlush {
+   margin: 0 0 16px;
+}
+
+.maximaReportLimitNote {
+   margin: 14px 0 0;
+}
+
+@media print {
+   @page {
+      margin: 12mm;
+   }
+
+   .maximaReportPrintHide {
+      display: none !important;
+   }
+
+   .maximaReportContainer {
+      max-width: none;
+   }
+
+   .maximaReportTableWrap {
+      overflow: visible !important;
+   }
+
+   .maximaReportTable th {
+      position: static;
+      padding: 8px 10px;
+   }
+
+   .maximaReportTable td {
+      padding: 8px 10px;
+   }
+
+   .maximaReportTable thead {
+      display: table-header-group;
+   }
+
+   .maximaReportTable tr {
+      break-inside: avoid;
+   }
+
+   .maximaReportTable td:nth-child(2) {
+      min-width: 140px;
+   }
+
+   .maximaReportChangeCell {
+      min-width: 0;
+   }
+
+   .maximaReportCard:has(.maximaReportTable) {
+      break-inside: auto;
+   }
+}
+/* Print options popup */
+.maximaReportModalOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   background: rgba(20, 32, 26, 0.45);
+}
+
+.maximaReportModal {
+   box-sizing: border-box;
+   width: 100%;
+   max-width: 380px;
+   padding: 24px;
+   background: #FFFFFF;
+   border-radius: 16px;
+   box-shadow: 0 12px 32px rgba(20, 32, 26, 0.2);
+}
+
+.maximaReportModalList {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin: 18px 0 8px;
+}
+
+.maximaReportModalList .maximaReportBtn {
+   justify-content: flex-start;
+}

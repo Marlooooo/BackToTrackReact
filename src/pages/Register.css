@@ -1,38 +1,46 @@
-main{
-   background-color: transparent !important;
+/* register page */
+.registerMain{
+   background-color: #eef3f9 !important;
    height: auto;
    width: 100%;
+   box-sizing: border-box;
    display: flex;
    flex-direction: column;
    align-items: center;
-   padding: 30px 0px 30px 0px;
+   padding: 40px 20px 40px 20px;
+}
+.registerMain > div{
+   width: 100%;
+   max-width: 910px;
 }
 .registrationWorks{
    display: flex;
    flex-direction: row;
    align-items: center;
-   justify-content: space-between
-;}
+   justify-content: space-between;
+   gap: 20px;
+}
 .registrationWorks img{
    height: 100px;
+   border-radius: 12px;
+   box-shadow: 0px 2px 12px rgba(10, 56, 108, 0.12);
 }
 .registrationWorks h3{
    margin: 10px 0px 10px 0px;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 520;
+   font-weight: 600;
    font-style: normal;
-   color: black;
-   font-size: 1.3rem;
-   
+   color: #2196F3;
+   font-size: 1.1rem;
 }
 .registrationWorks h1{
    margin: 10px 0px 10px 0px;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 1000;
+   font-weight: 800;
    font-style: normal;
-   color: black;
+   color: #0a386c;
    font-size: 1.9rem;
 }
 .registrationWorks p{
@@ -46,13 +54,13 @@ main{
    opacity: 0.9;
 }
 .howToGetAnAcc h2{
-   margin: 10px 0px 10px 0px;
+   margin: 25px 0px 15px 0px;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
-   font-weight: 600;
+   font-weight: 700;
    font-style: normal;
-   color: black;
-   font-size: 1.2rem;
+   color: #0a386c;
+   font-size: 1.3rem;
 }
 .threeSteps{
    display: flex;
@@ -62,21 +70,24 @@ main{
 .stepsBox{
    width: 290px;
    height: auto;
-   background: rgb(254, 254, 254);
-   border: 0.5px solid rgb(239, 239, 239);
+   background: white;
+   border: 1px solid #e3eaf3;
+   box-shadow: 0px 2px 12px rgba(10, 56, 108, 0.08);
    border-radius: 14px;
-   padding: 5px 15px 30px 15px;
+   padding: 8px 18px 20px 18px;
    display: flex;
    flex-direction: column;
    align-items: start;
 }
 .stepsBox h4{
    margin: 15px 0px 10px 0px;
-   font-size: 0.9rem;
+   font-size: 0.95rem;
+   color: #0a386c;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
 }
 .stepsBox p{
+   margin: 10px 0px 10px 0px;
    text-align: start;
    color: black;
    font-size: 0.8rem;
@@ -88,7 +99,7 @@ main{
    background-color: #0a386c;
    border-radius: 50%;
    color: white;
-   margin-right: 5px;
+   margin-right: 8px;
 }
 .backToLogin {
    display: flex;
@@ -98,25 +109,24 @@ main{
    background-color: #0A1A3F;
    border-radius: 20px;
    padding: 13px 25px 13px 25px;
-   margin: 20px 0px 20px 0px;
-}
-.backToLogin h1, p, a{
-   color: white;
-   margin: 10px 0px 10px 0px;
+   margin: 25px 0px 25px 0px;
 }
 .backToLogin h1{
+   color: white;
    font-size: 1.1rem;
    font-weight: 700;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
 }
 .backToLogin p{
+   color: white;
    font-size: 0.8rem;
    font-weight: 500;
    font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
 }
 .backToLogin a{
+   display: inline-block;
    font-size: 0.8rem;
    color: black;
    text-decoration: none;
@@ -125,6 +135,11 @@ main{
    border-radius: 20px;
    font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
+   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.backToLogin a:hover{
+   transform: translateY(-2px);
+   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
 }
 .needHelp{
    display: flex;
@@ -134,27 +149,30 @@ main{
 .findBarangayContact, .officialLogin{
    width: 450px;
    height: fit-content;
-   background: rgb(254, 254, 254);
-   border: 0.5px solid rgb(239, 239, 239);
+   background: white;
+   border: 1px solid #e3eaf3;
+   box-shadow: 0px 2px 12px rgba(10, 56, 108, 0.08);
    border-radius: 14px;
-   padding: 10px;
+   padding: 10px 18px 14px 18px;
    display: flex;
    flex-direction: column;
 }
 .findBarangayContact h4, .officialLogin h4{
-   color: black;
+   color: #0a386c;
    font-family: "Open Sans", sans-serif;
    font-optical-sizing: auto;
    font-size: 1rem;
    margin: 10px 0px 5px 0px;
 }
 .findBarangayContact p, .officialLogin p{
+   margin: 10px 0px 10px 0px;
    color: black;
    font-family: "Nunito", sans-serif;
    font-optical-sizing: auto;
    font-size: 0.8rem;
 }
 .findBarangayContact a, .officialLogin a{
+   margin: 10px 0px 10px 0px;
    color: black;
    width: fit-content;
    padding: 5px 20px 5px 20px;
@@ -164,4 +182,136 @@ main{
    font-optical-sizing: auto;
    border-radius: 20px;
    font-size: 0.8rem;
+   transition: background-color 0.2s ease, color 0.2s ease;
+}
+.findBarangayContact a:hover, .officialLogin a:hover{
+   background-color: #0a386c;
+   border-color: #0a386c;
+   color: white;
+}
+
+
+/* tablet */
+@media (max-width: 960px){
+   .stepsBox{
+      width: auto;
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+   }
+   .needHelp{
+      gap: 20px;
+   }
+   .findBarangayContact, .officialLogin{
+      width: auto;
+      flex: 1;
+      min-width: 0;
+      box-sizing: border-box;
+   }
+}
+
+/* phone */
+@media (max-width: 700px){
+   .registerMain{
+      padding: 25px 15px 35px 15px;
+   }
+
+   /* intro */
+   .registrationWorks{
+      flex-direction: column;
+      text-align: center;
+      gap: 6px;
+   }
+   .registrationWorksImage{
+      display: flex;
+      justify-content: center;
+   }
+   .registrationWorks img{
+      height: 80px;
+   }
+   .registrationWorks h3{
+      font-size: 1rem;
+      margin: 12px 0px 4px 0px;
+   }
+   .registrationWorks h1{
+      font-size: 1.6rem;
+      line-height: 1.2;
+      margin: 4px 0px 10px 0px;
+   }
+   .registrationWorks p{
+      font-size: 0.95rem;
+      line-height: 1.55;
+   }
+   .registrationWorks br{
+      display: none;
+   }
+
+   /* steps */
+   .howToGetAnAcc h2{
+      text-align: center;
+      margin: 28px 0px 15px 0px;
+   }
+   .threeSteps{
+      flex-direction: column;
+      gap: 12px;
+   }
+   .stepsBox{
+      width: 100%;
+      flex: none;
+      padding: 6px 16px 12px 16px;
+   }
+   .stepsBox h4{
+      margin: 12px 0px 4px 0px;
+   }
+   .stepsBox p{
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 4px 0px 6px 0px;
+   }
+
+   /* banner */
+   .backToLogin{
+      flex-direction: column;
+      text-align: center;
+      gap: 0px;
+      padding: 22px 20px 24px 20px;
+      margin: 22px 0px 22px 0px;
+   }
+   .backToLogin a{
+      margin-top: 14px;
+      padding: 12px 30px;
+      font-size: 0.9rem;
+   }
+
+   /* help cards */
+   .needHelp{
+      flex-direction: column;
+      gap: 12px;
+   }
+   .findBarangayContact, .officialLogin{
+      width: 100%;
+      flex: none;
+      padding: 12px 16px 18px 16px;
+   }
+   .findBarangayContact p, .officialLogin p{
+      font-size: 0.9rem;
+      line-height: 1.5;
+   }
+   .findBarangayContact a, .officialLogin a{
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+   }
+}
+
+/* small phone */
+@media (max-width: 480px){
+   .registrationWorks h1{
+      font-size: 1.45rem;
+   }
+   .backToLogin h1{
+      font-size: 1rem;
+   }
 }

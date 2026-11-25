@@ -25,6 +25,14 @@ const STATUS_DOT = {
    Dropped: 'maximaReportDotDropped',
 };
 
+// Status filter for the Enrollees tab
+const ENROLLEE_STATUS_FILTERS = [
+   ['', 'All statuses'],
+   ['Training Started', 'Ongoing'],
+   ['Completed', 'Completed'],
+   ['Dropped', 'Dropped'],
+];
+
 const CONDUCT_LABEL = { excellent: 'Excellent', good: 'Good', fair: 'Fair', needs_improvement: 'Needs improvement' };
 const CONDUCT_BADGE = {
    excellent: 'maximaReportBadgeGood',
@@ -33,12 +41,57 @@ const CONDUCT_BADGE = {
    needs_improvement: 'maximaReportBadgeBad',
 };
 
+// Program history labels
+const HISTORY_FIELDS = {
+   name: 'Program name',
+   description: 'Description',
+   requirements: 'Requirements',
+   schedule: 'Schedule',
+   slots: 'Slots',
+   tesda_accredited: 'TESDA accreditation',
+   status: 'Status',
+   image: 'Program image',
+};
+
+const HISTORY_ACTION = {
+   created: 'Created',
+   updated: 'Edited',
+   deleted: 'Removed',
+};
+
+const HISTORY_BADGE = {
+   created: 'maximaReportBadgeGood',
+   updated: '',
+   deleted: 'maximaReportBadgeBad',
+};
+
+const PRINT_OPTIONS = [
+   ['overview', 'Overview'],
+   ['programs', 'Programs'],
+   ['enrollees', 'Enrollees'],
+   ['history', 'Program changes'],
+   ['all', 'Everything'],
+];
+
 function formatDate(value) {
    if (!value) return '';
    const d = new Date(value);
    return Number.isNaN(d.getTime())
       ? ''
       : d.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function formatDateTime(value) {
+   if (!value) return '—';
+   const d = new Date(value);
+   if (Number.isNaN(d.getTime())) return '—';
+   return d.toLocaleString('en-PH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+   });
 }
 
 function formatPercent(v) {
@@ -65,6 +118,24 @@ function rateClass(rate) {
    return 'maximaReportRateLow';
 }
 
+function historyValue(field, value) {
+   if (value === null || value === undefined || value === '') return 'Empty';
+   if (field === 'tesda_accredited') return value ? 'Accredited' : 'Not accredited';
+   if (field === 'status') return value === 'active' ? 'Active' : 'Inactive';
+   return String(value);
+}
+
+function changeText(item) {
+   return (item.changes ?? [])
+      .map((c) => {
+         const label = HISTORY_FIELDS[c.field] ?? c.field;
+         return item.action === 'created'
+            ? `${label}: ${historyValue(c.field, c.new)}`
+            : `${label}: ${historyValue(c.field, c.old)} → ${historyValue(c.field, c.new)}`;
+      })
+      .join('; ');
+}
+
 /* ------------------------------------------------------------------ */
 /* CSV export                                                          */
 /* ------------------------------------------------------------------ */
@@ -73,7 +144,7 @@ function csvCell(value) {
    return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 }
 
-function downloadCsv(report, programName) {
+function downloadCsv(report, programName, history) {
    const rows = [];
    const add = (...cells) => rows.push(cells.map(csvCell).join(','));
 
@@ -132,6 +203,19 @@ function downloadCsv(report, programName) {
          CONDUCT_LABEL[r.conduct_rating] ?? '',
          r.pending_concerns,
          r.reasons.join('; ')
+      )
+   );
+   add();
+
+   add('PROGRAM CHANGES');
+   add('Date', 'Program', 'Action', 'Changes', 'Changed by');
+   history.forEach((item) =>
+      add(
+         formatDateTime(item.created_at),
+         item.program_name,
+         HISTORY_ACTION[item.action] ?? item.action,
+         changeText(item),
+         item.user?.name ?? ''
       )
    );
 
@@ -208,15 +292,23 @@ function MaximaReports() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState(null);
 
+   const [history, setHistory] = useState([]);
+   const [historyLoading, setHistoryLoading] = useState(true);
+   const [historyError, setHistoryError] = useState(null);
+
    const [from, setFrom] = useState('');
    const [to, setTo] = useState('');
    const [program, setProgram] = useState('');
 
    const [tab, setTab] = useState('overview');
    const [onlyFlagged, setOnlyFlagged] = useState(false);
+   const [statusFilter, setStatusFilter] = useState('');
+   const [printScope, setPrintScope] = useState('all');
+   const [showPrint, setShowPrint] = useState(false);
 
    const badRange = Boolean(from && to && to < from);
 
+   // Load the report
    useEffect(() => {
       if (badRange) return undefined;
 
@@ -247,6 +339,37 @@ function MaximaReports() {
       };
    }, [from, to, program, badRange]);
 
+   // Load the program history
+   useEffect(() => {
+      if (badRange) return undefined;
+
+      let cancelled = false;
+
+      async function loadHistory() {
+         setHistoryLoading(true);
+         setHistoryError(null);
+         try {
+            const params = new URLSearchParams();
+            if (from) params.append('from', from);
+            if (to) params.append('to', to);
+            if (program) params.append('program_id', program);
+
+            const data = await apiGet(`/api/maxima/program-history?${params.toString()}`);
+            if (!cancelled) setHistory(data);
+         } catch (err) {
+            if (!cancelled) setHistoryError(err.message);
+         } finally {
+            if (!cancelled) setHistoryLoading(false);
+         }
+      }
+
+      loadHistory();
+
+      return () => {
+         cancelled = true;
+      };
+   }, [from, to, program, badRange]);
+
    const programOptions = report?.program_options ?? [];
 
    const programName = useMemo(
@@ -254,12 +377,24 @@ function MaximaReports() {
       [programOptions, program]
    );
 
+   const allEnrollees = report?.enrollees ?? [];
+
    const flagged = useMemo(
-      () => (report?.enrollees ?? []).filter((r) => r.reasons.length > 0),
-      [report]
+      () => allEnrollees.filter((r) => r.reasons.length > 0),
+      [allEnrollees]
    );
 
-   const visibleEnrollees = onlyFlagged ? flagged : report?.enrollees ?? [];
+   const statusCounts = useMemo(() => {
+      const counts = { '': allEnrollees.length };
+      allEnrollees.forEach((r) => {
+         counts[r.status] = (counts[r.status] ?? 0) + 1;
+      });
+      return counts;
+   }, [allEnrollees]);
+
+   const visibleEnrollees = allEnrollees.filter(
+      (r) => (!onlyFlagged || r.reasons.length > 0) && (!statusFilter || r.status === statusFilter)
+   );
 
    function resetFilters() {
       setFrom('');
@@ -279,10 +414,21 @@ function MaximaReports() {
       ['overview', 'Overview'],
       ['programs', 'Programs'],
       ['enrollees', 'Enrollees'],
+      ['history', 'Program changes'],
    ];
 
-   const panelClass = (name) =>
-      tab === name ? 'maximaReportPanel' : 'maximaReportPanel maximaReportPanelOff';
+   const panelClass = (name) => {
+      let cls = tab === name ? 'maximaReportPanel' : 'maximaReportPanel maximaReportPanelOff';
+      if (printScope !== 'all' && printScope !== name) cls += ' maximaReportPrintHide';
+      return cls;
+   };
+
+   function startPrint(scope) {
+      setPrintScope(scope);
+      setShowPrint(false);
+      // wait a moment so the page re-renders with the chosen section before printing
+      setTimeout(() => window.print(), 150);
+   }
 
    return (
       <>
@@ -301,11 +447,12 @@ function MaximaReports() {
                            </p>
                         </div>
                         <div className="maximaReportActions maximaReportNoPrint">
-                           <button className="maximaReportBtn maximaReportBtnGhost" disabled={!report} onClick={() => downloadCsv(report, programName)}>
+                           <button className="maximaReportBtn maximaReportBtnGhost" disabled={!report} onClick={() => downloadCsv(report, programName, history)}>
                               <span className="material-symbols-outlined">download</span>
                               Download CSV
                            </button>
-                           <button className="maximaReportBtn maximaReportBtnPrimary" disabled={!report} onClick={() => window.print()}>
+               
+                           <button className="maximaReportBtn maximaReportBtnPrimary" disabled={!report} onClick={() => setShowPrint(true)}>
                               <span className="material-symbols-outlined">print</span>
                               Print
                            </button>
@@ -318,8 +465,27 @@ function MaximaReports() {
                         <p>Maxima Technical &amp; Skills Training Institute Inc.</p>
                         <p>Period: {periodLabel(from, to)}</p>
                         <p>Program: {programName || 'All programs'}</p>
+                        <p>Section: {PRINT_OPTIONS.find(([key]) => key === printScope)?.[1]}</p>
                         <p>Generated on {formatDate(new Date())}</p>
                      </div>
+
+                     {/* Print options */}
+                     {showPrint && (
+                        <div className="maximaReportModalOverlay maximaReportNoPrint" onClick={() => setShowPrint(false)}>
+                           <div className="maximaReportModal" onClick={(e) => e.stopPropagation()}>
+                              <h2 className="maximaReportCardTitle">What do you want to print?</h2>
+                              <p className="maximaReportCardHint">Pick a section. The print preview opens right after.</p>
+                              <div className="maximaReportModalList">
+                                 {PRINT_OPTIONS.map(([key, label]) => (
+                                    <button key={key} className="maximaReportBtn maximaReportBtnGhost" onClick={() => startPrint(key)}>
+                                       {label}
+                                    </button>
+                                 ))}
+                              </div>
+                              <button className="maximaReportLink" onClick={() => setShowPrint(false)}>Cancel</button>
+                           </div>
+                        </div>
+                     )}
 
                      {/* Filters */}
                      <section className="maximaReportFilterBar maximaReportNoPrint">
@@ -353,7 +519,7 @@ function MaximaReports() {
                      {report && (
                         <div className={loading ? 'maximaReportBodyContent maximaReportBodyBusy' : 'maximaReportBodyContent'}>
                            {/* Key numbers */}
-                           <div className="maximaReportStatGrid">
+                           <div className={printScope === 'all' || printScope === 'overview' ? 'maximaReportStatGrid' : 'maximaReportStatGrid maximaReportPrintHide'}>
                               <StatCard
                                  icon="assignment_ind"
                                  tone="maximaReportToneBlue"
@@ -489,7 +655,7 @@ function MaximaReports() {
                                  action={
                                     <div className="maximaReportSegment maximaReportNoPrint">
                                        <button className={!onlyFlagged ? 'maximaReportSegBtn maximaReportSegActive' : 'maximaReportSegBtn'} onClick={() => setOnlyFlagged(false)}>
-                                          All ({report.enrollees.length})
+                                          All ({allEnrollees.length})
                                        </button>
                                        <button className={onlyFlagged ? 'maximaReportSegBtn maximaReportSegActive' : 'maximaReportSegBtn'} onClick={() => setOnlyFlagged(true)}>
                                           Needs follow-up ({flagged.length})
@@ -497,6 +663,19 @@ function MaximaReports() {
                                     </div>
                                  }
                               >
+                                 <div className="maximaReportStatusBar maximaReportNoPrint">
+                                    {ENROLLEE_STATUS_FILTERS.map(([key, label]) => (
+                                       <button
+                                          key={key || 'all'}
+                                          className={statusFilter === key ? 'maximaReportPill maximaReportPillActive' : 'maximaReportPill'}
+                                          onClick={() => setStatusFilter(key)}
+                                       >
+                                          {label}
+                                          <span className="maximaReportPillCount">{statusCounts[key] ?? 0}</span>
+                                       </button>
+                                    ))}
+                                 </div>
+
                                  <div className="maximaReportTableWrap">
                                     <table className="maximaReportTable">
                                        <thead>
@@ -514,7 +693,9 @@ function MaximaReports() {
                                           {visibleEnrollees.length === 0 && (
                                              <tr>
                                                 <td colSpan="7" className="maximaReportTableEmpty">
-                                                   {onlyFlagged ? 'No one needs follow-up.' : 'No enrolled OSY for this period.'}
+                                                   {allEnrollees.length === 0
+                                                      ? 'No enrolled OSY for this period.'
+                                                      : 'No enrollees match this filter.'}
                                                 </td>
                                              </tr>
                                           )}
@@ -569,6 +750,94 @@ function MaximaReports() {
                                        </tbody>
                                     </table>
                                  </div>
+                              </ReportCard>
+                           </div>
+
+                           {/* Program changes */}
+                           <div className={panelClass('history')}>
+                              <ReportCard
+                                 title="Program changes"
+                                 hint="Edits, additions and removals of training programs. Filtered by the date the change was made."
+                              >
+                                 {historyError && (
+                                    <div className="maximaReportAlert maximaReportAlertError maximaReportAlertFlush">{historyError}</div>
+                                 )}
+
+                                 <div className="maximaReportTableWrap">
+                                    <table className="maximaReportTable">
+                                       <thead>
+                                          <tr>
+                                             <th>Date</th>
+                                             <th>Program</th>
+                                             <th>Action</th>
+                                             <th>Changes</th>
+                                             <th>Changed by</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          {historyLoading && (
+                                             <tr>
+                                                <td colSpan="5" className="maximaReportTableEmpty">Loading program changes...</td>
+                                             </tr>
+                                          )}
+                                          {!historyLoading && history.length === 0 && (
+                                             <tr>
+                                                <td colSpan="5" className="maximaReportTableEmpty">
+                                                   No program changes recorded for this period.
+                                                </td>
+                                             </tr>
+                                          )}
+                                          {!historyLoading && history.map((item) => (
+                                             <tr key={item.id}>
+                                                <td className="maximaReportNoWrap">{formatDateTime(item.created_at)}</td>
+                                                <td><strong>{item.program_name}</strong></td>
+                                                <td>
+                                                   <span className={`maximaReportBadge ${HISTORY_BADGE[item.action] ?? ''}`}>
+                                                      {HISTORY_ACTION[item.action] ?? item.action}
+                                                   </span>
+                                                </td>
+                                                <td className="maximaReportChangeCell">
+                                                   {(item.changes ?? []).length === 0 ? (
+                                                      <span className="maximaReportMuted">—</span>
+                                                   ) : (
+                                                      <ul className="maximaReportChangeList">
+                                                         {item.changes.map((change) => (
+                                                            <li className="maximaReportChange" key={change.field}>
+                                                               <span className="maximaReportChangeField">
+                                                                  {HISTORY_FIELDS[change.field] ?? change.field}
+                                                               </span>
+                                                               {item.action === 'created' ? (
+                                                                  <span className="maximaReportChangeNew">
+                                                                     {historyValue(change.field, change.new)}
+                                                                  </span>
+                                                               ) : (
+                                                                  <>
+                                                                     <span className="maximaReportChangeOld">
+                                                                        {historyValue(change.field, change.old)}
+                                                                     </span>
+                                                                     <span className="maximaReportChangeArrow">→</span>
+                                                                     <span className="maximaReportChangeNew">
+                                                                        {historyValue(change.field, change.new)}
+                                                                     </span>
+                                                                  </>
+                                                               )}
+                                                            </li>
+                                                         ))}
+                                                      </ul>
+                                                   )}
+                                                </td>
+                                                <td>{item.user?.name ?? '—'}</td>
+                                             </tr>
+                                          ))}
+                                       </tbody>
+                                    </table>
+                                 </div>
+
+                                 {history.length >= 500 && (
+                                    <p className="maximaReportCardHint maximaReportLimitNote">
+                                       Showing the latest 500 changes. Narrow the dates to see older ones.
+                                    </p>
+                                 )}
                               </ReportCard>
                            </div>
                         </div>

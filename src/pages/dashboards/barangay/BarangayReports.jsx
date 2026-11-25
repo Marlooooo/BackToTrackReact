@@ -132,29 +132,41 @@ function downloadCsv(report, programName) {
 /* ------------------------------------------------------------------ */
 /* Small pieces                                                        */
 /* ------------------------------------------------------------------ */
-function BarList({ items }) {
+
+/*
+   Color tones (defined in BarangayReports.css as .brgyTone-<name>):
+   blue, teal, amber, green, slate, red, purple, pink, orange, indigo
+*/
+
+// `tone` colors the whole list. `toneMap` can override the tone for specific labels,
+// and an item can also carry its own `tone`.
+function BarList({ items, toneMap = {} }) {
    const max = Math.max(1, ...items.map((i) => i.count));
 
    return (
       <div className="brgyRepBars">
-         {items.map((item) => (
-            <div className="brgyRepBarRow" key={item.label}>
-               <span className="brgyRepBarLabel">{item.label}</span>
-               <div className="brgyRepBarTrack">
-                  <div className="brgyRepBarFill" style={{ width: `${(item.count / max) * 100}%` }} />
+         {items.map((item) => {
+            const itemTone = item.tone ?? toneMap[item.label];
+
+            return (
+               <div className={`brgyRepBarRow ${itemTone ? `brgyTone-${itemTone}` : ''}`} key={item.label}>
+                  <span className="brgyRepBarLabel">{item.label}</span>
+                  <div className="brgyRepBarTrack">
+                     <div className="brgyRepBarFill" style={{ width: `${(item.count / max) * 100}%` }} />
+                  </div>
+                  <span className="brgyRepBarValue">
+                     {item.count} <em>({formatPercent(item.percent)})</em>
+                  </span>
                </div>
-               <span className="brgyRepBarValue">
-                  {item.count} <em>({formatPercent(item.percent)})</em>
-               </span>
-            </div>
-         ))}
+            );
+         })}
       </div>
    );
 }
 
-function ReportCard({ icon, title, hint, children }) {
+function ReportCard({ icon, title, hint, tone = 'blue', children }) {
    return (
-      <section className="brgyPanel brgyRepCard">
+      <section className={`brgyPanel brgyRepCard brgyTone-${tone}`}>
          <div className="brgyRepCardHead">
             <span className="material-symbols-outlined brgyRepCardIcon">{icon}</span>
             <div>
@@ -234,14 +246,15 @@ function BarangayReports() {
 
    const summary = report?.summary;
 
+   // [label, value, alert, tone]
    const stats = summary
       ? [
-           ['Total OSY', summary.total_osy, false],
-           ['Active referrals', summary.active_referrals, false],
-           ['Ongoing trainings', summary.ongoing, false],
-           ['Completed trainings', summary.completed, false],
-           ['Dropped', summary.dropped, false],
-           ['OSY at risk', summary.at_risk, summary.at_risk > 0],
+           ['Total OSY', summary.total_osy, false, 'blue'],
+           ['Active referrals', summary.active_referrals, false, 'teal'],
+           ['Ongoing trainings', summary.ongoing, false, 'amber'],
+           ['Completed trainings', summary.completed, false, 'green'],
+           ['Dropped', summary.dropped, false, 'slate'],
+           ['OSY at risk', summary.at_risk, summary.at_risk > 0, 'red'],
         ]
       : [];
 
@@ -316,8 +329,11 @@ function BarangayReports() {
                   {report && (
                      <div className={loading ? 'brgyRepBody brgyRepBodyBusy' : 'brgyRepBody'}>
                         <div className="brgyRepStatGrid">
-                           {stats.map(([label, value, alert]) => (
-                              <div className={`brgyStatCard ${alert ? 'brgyStatCardAlert' : ''}`} key={label}>
+                           {stats.map(([label, value, alert, tone]) => (
+                              <div
+                                 className={`brgyStatCard brgyTone-${tone} ${alert ? 'brgyStatCardAlert' : ''}`}
+                                 key={label}
+                              >
                                  <span className="brgyStatLabel">{label}</span>
                                  <span className="brgyStatValue">{value}</span>
                               </div>
@@ -325,19 +341,24 @@ function BarangayReports() {
                         </div>
 
                         <div className="brgyRepGrid">
-                           <ReportCard icon="wc" title="Gender distribution">
-                              <BarList items={report.gender} />
+                           <ReportCard icon="wc" title="Gender distribution" tone="indigo">
+                              <BarList items={report.gender} toneMap={{ Male: 'blue', Female: 'pink' }} />
                            </ReportCard>
 
-                           <ReportCard icon="cake" title="Age distribution">
+                           <ReportCard icon="cake" title="Age distribution" tone="purple">
                               <BarList items={report.age_groups} />
                            </ReportCard>
 
-                           <ReportCard icon="groups" title="OSY by stage" hint="Where each registered OSY is right now.">
+                           <ReportCard
+                              icon="groups"
+                              title="OSY by stage"
+                              hint="Where each registered OSY is right now."
+                              tone="green"
+                           >
                               <BarList items={report.osy_stages} />
                            </ReportCard>
 
-                           <ReportCard icon="assignment_ind" title="Referrals by status">
+                           <ReportCard icon="assignment_ind" title="Referrals by status" tone="orange">
                               <BarList items={report.referral_stages} />
                            </ReportCard>
                         </div>
@@ -346,6 +367,7 @@ function BarangayReports() {
                            icon="directions_bus"
                            title="Transportation support"
                            hint="Useful for proposing community projects, such as a transport allowance."
+                           tone="amber"
                         >
                            {report.transportation.total === 0 ? (
                               <div className="brgyEmptyBlock">No OSY are registered yet.</div>
@@ -363,11 +385,13 @@ function BarangayReports() {
                                           label: 'With support',
                                           count: report.transportation.with_support,
                                           percent: 100 - report.transportation.lacking_percent,
+                                          tone: 'green',
                                        },
                                        {
                                           label: 'Lacking support',
                                           count: report.transportation.lacking,
                                           percent: report.transportation.lacking_percent,
+                                          tone: 'red',
                                        },
                                     ]}
                                  />
@@ -379,6 +403,7 @@ function BarangayReports() {
                            icon="emoji_events"
                            title="Training program performance"
                            hint="Sorted by average assessment score, then completion rate."
+                           tone="teal"
                         >
                            <div className="brgyTableWrap">
                               <table className="brgyTable">
@@ -421,6 +446,7 @@ function BarangayReports() {
                            icon="flag"
                            title="OSY at risk"
                            hint="Low attendance, repeated absences, pending concerns or low assessment scores."
+                           tone="red"
                         >
                            <div className="brgyTableWrap">
                               <table className="brgyTable">

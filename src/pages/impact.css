@@ -1,4 +1,3 @@
-
 .impactMainContent{
    display: flex;
    flex-direction: column;
@@ -45,6 +44,8 @@
 
 .impactMainContentTopRightPart img{
    height: 350px;
+   max-width: 100%;
+   object-fit: contain;
 }
 .impactMainContentMid{
    display: flex;
@@ -60,11 +61,14 @@
    font-weight: 700;
    font-size: 2.6rem;
    margin: 0px 0px 15px 0px;
+   text-align: center;
 }
 .impactMainContentMidCardsDiv{
    display: flex;
    flex-direction: row;
-   align-items: center;
+   flex-wrap: wrap;
+   gap: 20px;
+   align-items: stretch;
    justify-content: space-around;
    width: 100%;
 }
@@ -91,6 +95,7 @@
    font-weight: 700;
    font-size: 1.3rem;
    margin: 10px 0px 0px 0px;
+   text-align: center;
 }
 .impactMainContentMidCards p{
    color: black;
@@ -185,8 +190,84 @@
    margin: 0px;
 }
 
-/* tablets and phones: stack the steps, arrows point down */
+
+/* ================= RESPONSIVE ================= */
+
+/* Small laptops / large tablets */
+@media (max-width: 1024px){
+   .impactMainContentTop{
+      padding: 20px 25px;
+   }
+   .impactMainContentTopLeftPart h1{
+      font-size: 2rem;
+   }
+   .impactMainContentTopRightPart img{
+      height: 280px;
+   }
+   .impactMainContentMid{
+      padding: 20px 30px;
+   }
+   .impactMainContentMid h1{
+      font-size: 2.2rem;
+   }
+   .impactMainContentBotITTC{
+      gap: 10px;
+   }
+   .impactMainContentBotITTC > div{
+      width: 180px;
+   }
+   .impactMainContentBotITTC .impactArrow{
+      font-size: 40px;
+      margin-top: 35px;
+   }
+}
+
+/* Tablets and phones: everything stacks */
 @media (max-width: 900px){
+   /* top section */
+   .impactMainContentTop{
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+      padding: 30px 20px;
+   }
+   .impactMainContentTopLeftPart{
+      align-items: center;
+   }
+   .impactMainContentTopRightPart img{
+      height: auto;
+      width: 100%;
+      max-width: 420px;
+   }
+
+   /* let text wrap naturally instead of using the fixed <br /> breaks */
+   .impactMainContentTopLeftPart p br,
+   .impactMainContentMidCards p br{
+      display: none;
+   }
+
+   /* middle cards */
+   .impactMainContentMid{
+      padding: 30px 20px;
+   }
+   .impactMainContentMidCardsDiv{
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+   }
+   .impactMainContentMidCards{
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+   }
+
+   /* bottom steps: stack, arrows point down */
+   .impactMainContentBot{
+      padding: 40px 5% 50px 5%;
+   }
+   .impactMainContentBotTitle{
+      margin-bottom: 40px;
+   }
    .impactMainContentBotITTC{
       flex-direction: column;
       align-items: center;
@@ -198,6 +279,47 @@
    }
    .impactMainContentBotITTC .impactArrow{
       margin-top: 0px;
+      font-size: 48px;
       transform: rotate(90deg);
+   }
+}
+
+/* Phones */
+@media (max-width: 480px){
+   .impactMainContentTop{
+      padding: 25px 15px;
+   }
+   .impactMainContentTopLeftPart h3{
+      font-size: 1rem;
+   }
+   .impactMainContentTopLeftPart h1{
+      font-size: 1.6rem;
+   }
+   .impactMainContentTopLeftPart p{
+      font-size: 0.85rem;
+   }
+   .impactMainContentMid{
+      padding: 25px 15px;
+   }
+   .impactMainContentMid h1{
+      font-size: 1.7rem;
+   }
+   .impactMainContentMidCards h3{
+      font-size: 1.15rem;
+   }
+   .impactMainContentMidCards span{
+      font-size: 26px;
+      padding: 16px;
+   }
+   .impactMainContentBotTitle h2{
+      font-size: 1.2rem;
+   }
+   .impactMainContentBotITTC .impactIcon{
+      width: 90px;
+      height: 90px;
+      font-size: 46px;
+   }
+   .impactMainContentBotITTC .impactArrow{
+      font-size: 40px;
    }
 }

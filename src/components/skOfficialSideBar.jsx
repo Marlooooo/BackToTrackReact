@@ -33,7 +33,7 @@ function SkOfficialSideBar() {
       try {
          const xsrfToken = getCookie("XSRF-TOKEN");
 
-         await fetch("http://localhost:8000/api/logout", {
+         await fetch("/api/logout", {
             method: "POST",
             headers: {
                "X-XSRF-TOKEN": xsrfToken,

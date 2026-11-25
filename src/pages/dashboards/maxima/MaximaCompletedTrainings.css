@@ -1,0 +1,744 @@
+/* Layout */
+.maximaCompletedMainContent{
+   flex: 1;
+   min-width: 0;
+   display: flex;
+   flex-direction: column;
+   box-sizing: border-box;
+   padding: 40px 48px;
+   background: #F5F7F5;
+   min-height: 100vh;
+   overflow-y: auto;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ctPage {
+   max-width: 100%;
+}
+
+.ctHeader {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   margin-bottom: 26px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #E3E9E3;
+}
+
+.ctTitle {
+   margin: 0 0 4px;
+   font-size: 24px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctSubtitle {
+   margin: 0;
+   font-size: 13.5px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Summary cards */
+.ctStats {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+   gap: 22px;
+   margin-bottom: 22px;
+}
+
+.ctStatCard {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   padding: 18px 20px;
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-left: 4px solid #7C877E;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+}
+
+.ctStatMain { border-left-color: #2F6E4F; }
+.ctStatBlue { border-left-color: #2F5F8F; }
+.ctStatGold { border-left-color: #96701E; }
+.ctStatLight { border-left-color: #5FA37F; }
+.ctStatTeal { border-left-color: #2A7F86; }
+
+.ctStatLabel {
+   font-size: 13px;
+   font-weight: 600;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctStatValue {
+   font-size: 30px;
+   font-weight: 700;
+   color: #14201A;
+   line-height: 1;
+   letter-spacing: -0.015em;
+   font-family: "Open Sans", sans-serif;
+}
+
+/* Panel + toolbar */
+.ctPanel {
+   background: #FFFFFF;
+   border: 1px solid #E3E9E3;
+   border-radius: 16px;
+   box-shadow: 0 1px 3px rgba(20, 32, 26, 0.04);
+   overflow: hidden;
+}
+
+.ctToolbar {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 12px;
+   padding: 16px 20px;
+   border-bottom: 1px solid #EEF2EE;
+   background: #FBFCFB;
+}
+
+.ctSearch,
+.ctFilter {
+   padding: 10px 18px;
+   border: 1px solid #DCE6DE;
+   border-radius: 999px;
+   font-family: "Nunito", sans-serif;
+   font-size: 13.5px;
+   color: #16231C;
+   background: #FFFFFF;
+   outline: none;
+   box-shadow: 0 1px 2px rgba(20, 32, 26, 0.03);
+   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ctSearch {
+   flex: 1;
+   min-width: 200px;
+   max-width: 320px;
+}
+
+.ctFilter {
+   cursor: pointer;
+   color: #3D4A3F;
+   max-width: 240px;
+}
+
+.ctSearch::placeholder {
+   color: #A9B3AB;
+}
+
+.ctSearch:focus,
+.ctFilter:focus {
+   border-color: #2F6E4F;
+   box-shadow: 0 0 0 3px rgba(47, 110, 79, 0.15);
+}
+
+.ctError {
+   margin: 16px 20px 0;
+   padding: 12px 16px;
+   background: #FBEBEB;
+   color: #A23E3E;
+   border: 1px solid #F0CACA;
+   border-radius: 8px;
+   font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctErrorInline {
+   margin: 16px 0 0;
+}
+
+.ctEmpty {
+   padding: 60px 20px;
+   text-align: center;
+   color: #62705F;
+   font-size: 13.5px;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctModalBody .ctEmpty {
+   padding: 30px 20px;
+}
+
+/* Table */
+.ctTableWrap {
+   overflow-x: auto;
+   overflow-y: auto;
+   max-height: 55vh;
+}
+
+.ctTable {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.ctTable th {
+   position: sticky;
+   top: 0;
+   z-index: 1;
+   padding: 14px 22px;
+   text-align: left;
+   font-size: 11.5px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   background: #FBFCFB;
+   border-bottom: 1px solid #EEF2EE;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctTable td {
+   padding: 13px 22px;
+   font-size: 13.5px;
+   color: #29332C;
+   border-bottom: 1px solid #F1F4F1;
+   vertical-align: middle;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctTable tbody tr:hover {
+   background: #FAFBF9;
+}
+
+.ctTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+.ctTable th.ctActionsHead {
+   text-align: right;
+}
+
+.ctCellMain {
+   display: block;
+   font-weight: 600;
+   color: #14201A;
+}
+
+.ctCellSub {
+   display: block;
+   margin-top: 2px;
+   font-size: 12px;
+   color: #7C877E;
+}
+
+.ctPerson {
+   display: flex;
+   align-items: center;
+   gap: 12px;
+}
+
+.ctPersonName {
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctAvatar {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 36px;
+   height: 36px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #EAF1EC;
+   color: #2F6E4F;
+   font-size: 13px;
+   font-weight: 700;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctAvatarLarge {
+   width: 56px;
+   height: 56px;
+   font-size: 20px;
+}
+
+/* Rates + badges */
+.ctMuted {
+   color: #7C877E;
+   font-size: 13px;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctRateGood { color: #2F6E4F; font-weight: 700; }
+.ctRateWarn { color: #96701E; font-weight: 700; }
+.ctRateLow { color: #A23E3E; font-weight: 700; }
+
+.ctBadge {
+   display: inline-block;
+   padding: 3px 11px;
+   border-radius: 999px;
+   background: #F0F1EE;
+   color: #7C877E;
+   font-size: 11px;
+   font-weight: 600;
+   white-space: nowrap;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctBadgeGood { background: #E3F0E7; color: #2F6E4F; }
+.ctBadgeWarn { background: #FBF0DD; color: #96701E; }
+.ctBadgeBad { background: #FBEBEB; color: #A23E3E; }
+.ctBadgeDone { background: #E3F0E7; color: #2F6E4F; }
+
+/* Buttons */
+.ctActions {
+   display: flex;
+   justify-content: flex-end;
+   gap: 8px;
+}
+
+.ctBtnGhost {
+   padding: 6px 13px;
+   border: 1px solid #DCE6DE;
+   border-radius: 7px;
+   background: transparent;
+   color: #3D4A3F;
+   font-family: inherit;
+   font-size: 12.5px;
+   font-weight: 500;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: background 0.15s ease;
+}
+
+.ctBtnGhost:hover {
+   background: #F1F4F1;
+}
+
+.ctBtnPrimary {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   padding: 9px 16px;
+   border: none;
+   border-radius: 8px;
+   background: #2F6E4F;
+   color: #FFFFFF;
+   font-family: inherit;
+   font-size: 13px;
+   font-weight: 600;
+   cursor: pointer;
+   white-space: nowrap;
+   box-shadow: 0 2px 6px rgba(47, 110, 79, 0.25);
+   transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ctBtnPrimary .material-symbols-outlined {
+   font-size: 18px;
+}
+
+.ctBtnPrimary:hover:not(:disabled) {
+   background: #275C42;
+   box-shadow: 0 3px 10px rgba(47, 110, 79, 0.3);
+}
+
+.ctBtnPrimary:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+.ctBtnPrimary:focus-visible,
+.ctBtnGhost:focus-visible,
+.ctModalClose:focus-visible {
+   outline: 2px solid #2F6E4F;
+   outline-offset: 2px;
+}
+
+/* Modal shell */
+.ctOverlay {
+   position: fixed;
+   inset: 0;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 24px;
+   background: rgba(16, 23, 18, 0.55);
+   backdrop-filter: blur(3px);
+   animation: ctFadeIn 0.18s ease;
+   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ctModal {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   max-width: 780px;
+   max-height: 90vh;
+   background: #FFFFFF;
+   border-radius: 18px;
+   box-shadow: 0 24px 60px rgba(16, 23, 18, 0.28);
+   overflow: hidden;
+   animation: ctSlideUp 0.22s ease;
+}
+
+@keyframes ctFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+}
+
+@keyframes ctSlideUp {
+   from { opacity: 0; transform: translateY(14px) scale(0.98); }
+   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ctModalHeader {
+   display: flex;
+   flex-shrink: 0;
+   align-items: flex-start;
+   justify-content: space-between;
+   gap: 16px;
+   padding: 24px 28px 20px;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.ctModalName {
+   margin: 0 0 2px;
+   font-size: 20px;
+   font-weight: 700;
+   color: #14201A;
+   letter-spacing: -0.01em;
+   line-height: 1.25;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctModalSub {
+   margin: 0 0 8px;
+   font-size: 13.5px;
+   color: #66746A;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctModalClose {
+   flex-shrink: 0;
+   width: 32px;
+   height: 32px;
+   border: none;
+   border-radius: 8px;
+   background: transparent;
+   font-family: inherit;
+   font-size: 22px;
+   line-height: 1;
+   color: #7C877E;
+   cursor: pointer;
+   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.ctModalClose:hover {
+   background: #F1F4F1;
+   color: #14201A;
+}
+
+.ctModalBody {
+   flex: 1;
+   min-height: 0;
+   padding: 4px 28px 24px;
+   overflow-y: auto;
+}
+
+.ctModalBody::-webkit-scrollbar {
+   width: 6px;
+}
+
+.ctModalBody::-webkit-scrollbar-thumb {
+   background-color: #CBD5CD;
+   border-radius: 3px;
+}
+
+.ctModalBody::-webkit-scrollbar-track {
+   background-color: transparent;
+}
+
+.ctModalFooter {
+   display: flex;
+   flex-shrink: 0;
+   justify-content: flex-end;
+   gap: 10px;
+   padding: 16px 28px;
+   border-top: 1px solid #EEF2EE;
+   background: #FBFCFB;
+}
+
+/* Modal sections */
+.ctSection {
+   padding: 22px 0;
+   border-bottom: 1px solid #EEF2EE;
+}
+
+.ctSection:last-child {
+   border-bottom: none;
+   padding-bottom: 4px;
+}
+
+.ctSectionTitle {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin: 0 0 16px;
+   font-size: 11.5px;
+   font-weight: 700;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: #2F6E4F;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctSectionTitle::before {
+   content: '';
+   width: 3px;
+   height: 12px;
+   border-radius: 2px;
+   background: #2F6E4F;
+}
+
+.ctInfoGrid {
+   display: grid;
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   gap: 18px 28px;
+}
+
+.ctInfoItem {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   min-width: 0;
+}
+
+.ctInfoWide {
+   grid-column: 1 / -1;
+}
+
+.ctInfoItem span {
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctInfoItem strong {
+   font-size: 14px;
+   font-weight: 600;
+   line-height: 1.45;
+   color: #16231C;
+   word-break: break-word;
+   white-space: pre-line;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Performance metrics */
+.ctMetrics {
+   display: grid;
+   grid-template-columns: repeat(4, minmax(0, 1fr));
+   gap: 12px;
+}
+
+.ctMetric {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+   padding: 14px 16px;
+   background: #FBFCFB;
+   border: 1px solid #EEF2EE;
+   border-radius: 12px;
+}
+
+.ctMetricLabel {
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctMetricValue {
+   font-size: 22px;
+   font-weight: 700;
+   color: #14201A;
+   line-height: 1.1;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctMetricSmall {
+   font-size: 15px;
+}
+
+.ctMetricNote {
+   margin: 12px 0 0;
+}
+
+/* Mini tables */
+.ctMiniWrap {
+   overflow-x: auto;
+   border: 1px solid #EEF2EE;
+   border-radius: 10px;
+}
+
+.ctMiniTable {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+.ctMiniTable th {
+   padding: 10px 14px;
+   text-align: left;
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   background: #FBFCFB;
+   border-bottom: 1px solid #EEF2EE;
+   white-space: nowrap;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctMiniTable td {
+   padding: 10px 14px;
+   font-size: 13px;
+   color: #29332C;
+   border-bottom: 1px solid #F1F4F1;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctMiniTable tbody tr:last-child td {
+   border-bottom: none;
+}
+
+/* Timeline */
+.ctTimeline {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.ctTimelineItem {
+   position: relative;
+   display: flex;
+   gap: 14px;
+   padding-bottom: 18px;
+}
+
+.ctTimelineItem:not(:last-child)::before {
+   content: '';
+   position: absolute;
+   top: 18px;
+   left: 5px;
+   bottom: -2px;
+   width: 2px;
+   background: #E3E9E3;
+}
+
+.ctTimelineItem:last-child {
+   padding-bottom: 0;
+}
+
+.ctTimelineDot {
+   position: relative;
+   width: 12px;
+   height: 12px;
+   margin-top: 4px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 3px #E3F0E7;
+}
+
+.ctTimelineContent {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+   min-width: 0;
+}
+
+.ctTimelineStatus {
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.ctTimelineMeta {
+   font-size: 12px;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+.ctTimelineRemarks {
+   margin-top: 2px;
+   font-size: 13px;
+   line-height: 1.45;
+   color: #4B564F;
+   word-break: break-word;
+   font-family: "Nunito", sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+   .ctMetrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+}
+
+@media (max-width: 640px) {
+   .maximaCompletedMainContent {
+      padding: 20px;
+   }
+
+   .ctHeader {
+      flex-direction: column;
+      align-items: flex-start;
+   }
+
+   .ctToolbar {
+      flex-direction: column;
+   }
+
+   .ctSearch,
+   .ctFilter {
+      max-width: none;
+      width: 100%;
+      box-sizing: border-box;
+   }
+
+   .ctOverlay {
+      padding: 12px;
+   }
+
+   .ctInfoGrid {
+      grid-template-columns: 1fr;
+   }
+
+   .ctModalHeader,
+   .ctModalBody,
+   .ctModalFooter {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .ctOverlay,
+   .ctModal {
+      animation: none;
+   }
+
+   .ctSearch,
+   .ctFilter,
+   .ctBtnGhost,
+   .ctBtnPrimary,
+   .ctModalClose {
+      transition: none;
+   }
+}

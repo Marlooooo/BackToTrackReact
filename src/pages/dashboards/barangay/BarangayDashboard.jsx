@@ -7,7 +7,6 @@ const DASHBOARD_ENDPOINT = "/api/barangay/dashboard";
 
 // Paths taken from App.jsx
 const ROUTES = {
-   notifications: "/barangay/notifications",
    osyManagement: "/barangay/management",
    referrals: "/barangay/referrals",
    monitoring: "/barangay/training",
@@ -78,7 +77,6 @@ function BarangayDashboard() {
 
    const stats = data?.stats;
    const attention = data?.attention;
-   const unread = data?.unread_notifications || 0;
    const userName =
       data?.user?.name || localStorage.getItem("userName") || "SK Official";
 
@@ -140,24 +138,6 @@ function BarangayDashboard() {
                      program in your barangay.
                   </p>
                </div>
-
-               <button
-                  type="button"
-                  className="brgyDashBell"
-                  onClick={() => navigate(ROUTES.notifications)}
-                  aria-label={
-                     unread > 0
-                        ? `Notifications, ${unread} unread`
-                        : "Notifications"
-                  }
-               >
-                  <Icon name="notifications" />
-                  {unread > 0 && (
-                     <span className="brgyDashBellBadge">
-                        {unread > 99 ? "99+" : unread}
-                     </span>
-                  )}
-               </button>
             </div>
 
             {error && (

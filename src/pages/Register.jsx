@@ -1,51 +1,44 @@
-   import { Link } from "react-router-dom";
-   import logo from "../assets/BackToTrack_Logo3.png";
-   import tesdaLogo from "../assets/Tesda_Logo4.png";
-   import skLogo2 from "../assets/skLogo2.jpg";
-   import "./Register.css";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import logo from "../assets/BackToTrack_Logo3.png";
+import tesdaLogo from "../assets/Tesda_Logo4.png";
+import skLogo2 from "../assets/skLogo2.jpg";
+import "./Register.css";
 
-   function Register() {
+function Register() {
+   const [menuOpen, setMenuOpen] = useState(false);
+
    return (
       <>
          <header>
-            
-               <div className="leftSideHeader">
-                  <div id="logo">
-                     <img src={logo} alt="" />
-                  </div>
-                  <div id="webTitle">
-                     <h1>BackToTrack</h1>
-                  </div>
+            <div className="leftSideHeader">
+               <div id="logo">
+                  <img src={logo} alt="" />
                </div>
+               <div id="webTitle">
+                  <h1>BackToTrack</h1>
+               </div>
+            </div>
 
-               <nav>
-                  <Link to="/impact" className="room">
-                  {" "}
-                  Impact
-                  </Link>
+            <button
+               type="button"
+               className="burger"
+               aria-label="Toggle menu"
+               onClick={() => setMenuOpen(!menuOpen)}
+            >
+               <span className="material-symbols-outlined">
+                  {menuOpen ? "close" : "menu"}
+               </span>
+            </button>
 
-                  <Link to="/contact" className="room">
-                  Contact{" "}
-                  </Link>
-
-                  <Link to="/about" className="room">
-                  About Us
-                  </Link>
-
-                  <Link to="/" className="btn">
-                  {" "}
-                  Home
-                  </Link>
-
-                  <Link to="/login" className="btn">
-                  Login{" "}
-                  </Link>
-                  
-                  <Link to="/register" className="active">
-                  Register
-                  </Link>
-               </nav>
-         
+            <nav className={menuOpen ? "open" : ""} onClick={() => setMenuOpen(false)}>
+               <Link to="/" className="room">Home</Link>
+               <Link to="/impact" className="room">Impact</Link>
+               <Link to="/contact" className="room">Contact</Link>
+               <Link to="/about" className="room">About Us</Link>
+               <Link to="/login" className="btn">Login</Link>
+               <Link to="/register" className="btn active">Register</Link>
+            </nav>
          </header>
 
 
@@ -60,7 +53,7 @@
 
 
 
-      <main>
+      <main className="registerMain">
          <div>
             <div className="registrationWorks">
                <div className="registrationWorksImage">
@@ -112,7 +105,7 @@
                   other concerns.</p>
                   <Link to="/contact">Find Your Barangay Contact</Link>
                </div>
-               <div className="  officialLogin">
+               <div className="officialLogin">
                   <h4>For Barangay Officials</h4>
                   <p>If you're a Barangay Official, log in to your account to register and manage
                   OSY records.</p>
@@ -168,11 +161,11 @@
                   {" "}
                   Home
                </Link>
-               <Link to="about">About</Link>
+               <Link to="/about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="contact">Contact</Link>
+               <Link to="/contact">Contact</Link>
                <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
@@ -193,6 +186,6 @@
          </footer>
       </>
    );
-   }
+}
 
-   export default Register;
+export default Register;

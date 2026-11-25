@@ -183,7 +183,7 @@ function initials(profile) {
 
 function rateClass(rate) {
    if (rate === null || rate === undefined) return 'pmMuted';
-   if (rate >= 90) return 'pmRateGood';
+   if (rate >= 90) return 'pmRateGood';   
    if (rate >= 75) return 'pmRateWarn';
    return 'pmRateLow';
 }
@@ -824,6 +824,10 @@ function AttendanceTab({ detail, run }) {
    const summary = detail.summary;
    const records = detail.attendance ?? [];
    const canEdit = detail.status !== 'Accepted by Maxima';
+   const minDate = (detail.started_on ?? detail.training_start_date ?? '').slice(0, 10) || undefined;
+   const maxDate = detail.training_end_date && detail.training_end_date.slice(0, 10) < todayLocal()
+   ? detail.training_end_date.slice(0, 10)
+   : todayLocal();
 
    async function submit(e) {
       e.preventDefault();
@@ -858,7 +862,7 @@ function AttendanceTab({ detail, run }) {
                <h3 className="pmFormTitle">Record attendance</h3>
                <div className="pmFormGrid">
                   <Field label="Date">
-                     <input type="date" required max={todayLocal()} {...bind('attendance_date')} />
+                     <input type="date" required min={minDate} max={maxDate} {...bind('attendance_date')} />
                   </Field>
                   <Field label="Status">
                      <select {...bind('status')}>

@@ -21,6 +21,13 @@ function formatDate(value) {
    return date.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
+function formatWeekday(value) {
+   if (!value) return '';
+   const date = new Date(value);
+   if (Number.isNaN(date.getTime())) return '';
+   return date.toLocaleDateString('en-PH', { weekday: 'long' });
+}
+
 function xsrfHeader() {
    const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
    return match ? { 'X-XSRF-TOKEN': decodeURIComponent(match[1]) } : {};
@@ -48,7 +55,7 @@ export function AbsenceReasonSummary({ reason, onClose }) {
    );
 }
 
-// Guided, step-by-step form that opens inside the attendance list
+// Guided, step-by-step form that opens under the attendance banner
 export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, options, onClose, onSaved }) {
    const [stepIndex, setStepIndex] = useState(0);
    const [selectedIds, setSelectedIds] = useState([startRecordId]);
@@ -64,11 +71,24 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
    const reason = options.reasons.find((item) => item.key === category) ?? null;
    const hasFollowup = !!reason && (reason.followups.length > 0 || reason.asks_return_date);
 
-   const steps = ['days', 'what', ...(hasFollowup ? ['followup'] : []), 'help', 'note', 'review'];
+   // The "days" step is skipped when there is only one absence to explain.
+   // "What would help" and the note are combined into one optional "more" step.
+   // The follow-up question appears on the "what" step itself, so the number of steps never changes.
+   const steps = [
+      ...(candidates.length > 1 ? ['days'] : []),
+      'what',
+      'more',
+      'review',
+   ];
    const step = steps[stepIndex];
+   const allSelected = candidates.length > 0 && selectedIds.length === candidates.length;
 
    function toggleId(id) {
       setSelectedIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
+   }
+
+   function toggleAllIds() {
+      setSelectedIds(allSelected ? [] : candidates.map((item) => item.id));
    }
 
    function toggleSupport(key) {
@@ -106,9 +126,8 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
 
    function canContinue() {
       if (step === 'days') return selectedIds.length > 0;
-      if (step === 'what') return !!category;
-      if (step === 'followup') return reason.followups.length === 0 || !!followup;
-      if (step === 'note') return category !== 'other' || note.trim().length > 0;
+      if (step === 'what') return !!category && (!reason || reason.followups.length === 0 || !!followup);
+      if (step === 'more') return category !== 'other' || note.trim().length > 0;
       return true;
    }
 
@@ -156,18 +175,22 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
    const selectedDates = candidates.filter((item) => selectedIds.includes(item.id));
    const supportLabels = options.support.filter((item) => support.includes(item.key)).map((item) => item.label);
    const followupLabel = reason?.followups.find((item) => item.key === followup)?.label;
+   const isLastBeforeReview = stepIndex === steps.length - 2;
 
    return (
       <div className="arPanel">
          <div className="arTop">
-            <div className="arSteps" aria-label={`Step ${stepIndex + 1} of ${steps.length}`}>
-               {steps.map((name, index) => (
-                  <span
-                     key={name}
-                     className={`arStepDot ${index === stepIndex ? 'arStepDotActive' : ''} ${index < stepIndex ? 'arStepDotDone' : ''}`}
-                  />
-               ))}
-               <small>Step {stepIndex + 1} of {steps.length}</small>
+            <div className="arTopText">
+               <strong className="arPanelTitle">Explain your absence</strong>
+               <div className="arSteps" aria-label={`Step ${stepIndex + 1} of ${steps.length}`}>
+                  <span className="arStepLabel">Step {stepIndex + 1} of {steps.length}</span>
+                  {steps.map((name, index) => (
+                     <span
+                        key={name}
+                        className={`arStepDot ${index === stepIndex ? 'arStepDotActive' : ''} ${index < stepIndex ? 'arStepDotDone' : ''}`}
+                     />
+                  ))}
+               </div>
             </div>
             <button type="button" className="arClose" onClick={onClose} aria-label="Close">
                <i className="las la-times"></i>
@@ -177,12 +200,18 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
          {step === 'days' && (
             <div className="arBody">
                <h4>Which days are you explaining?</h4>
-               <p className="arHelp">Pick every day this reason applies to.</p>
+               <p className="arHelp">Tick every day this reason applies to.</p>
+               <button type="button" className="arSelectAll" onClick={toggleAllIds}>
+                  {allSelected ? 'Clear all' : 'Select all'}
+               </button>
                <div className="arDays">
                   {candidates.map((item) => (
                      <label key={item.id} className={`arDay ${selectedIds.includes(item.id) ? 'arDayOn' : ''}`}>
                         <input type="checkbox" checked={selectedIds.includes(item.id)} onChange={() => toggleId(item.id)} />
-                        <span>{formatDate(item.date)}</span>
+                        <span>
+                           {formatDate(item.date)}
+                           <small className="arDayName">{formatWeekday(item.date)}</small>
+                        </span>
                      </label>
                   ))}
                </div>
@@ -192,7 +221,7 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
          {step === 'what' && (
             <div className="arBody">
                <h4>What happened?</h4>
-               <p className="arHelp">Choose the one that fits best. Your SK official will see this.</p>
+               <p className="arHelp">Tap the one that fits best. Your SK official will see this.</p>
                <div className="arCards">
                   {options.reasons.map((item) => (
                      <button
@@ -206,69 +235,76 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
                      </button>
                   ))}
                </div>
+
+               {reason && hasFollowup && (
+                  <div className="arFollowup">
+                     <span className="arFollowupTitle">{reason.question || 'A little more detail'}</span>
+                     {reason.followups.length > 0 && (
+                        <div className="arChoices">
+                           {reason.followups.map((item) => (
+                              <button
+                                 type="button"
+                                 key={item.key}
+                                 className={`arChoice ${followup === item.key ? 'arChoiceOn' : ''}`}
+                                 onClick={() => setFollowup(item.key)}
+                              >
+                                 {item.label}
+                              </button>
+                           ))}
+                        </div>
+                     )}
+                     {reason.asks_return_date && (
+                        <label className="arField">
+                           <span>When do you expect to be back? <small>(optional)</small></span>
+                           <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+                        </label>
+                     )}
+                  </div>
+               )}
             </div>
          )}
 
-         {step === 'followup' && reason && (
+         {step === 'more' && (
             <div className="arBody">
-               <h4>{reason.question || 'A little more detail'}</h4>
-               {reason.followups.length > 0 && (
+               <h4>
+                  Anything else you want to share?
+                  <span className="arOptionalTag">{category === 'other' ? 'Note required' : 'Optional'}</span>
+               </h4>
+               <p className="arHelp">
+                  {category === 'other'
+                     ? 'Please tell us what happened in the note below.'
+                     : 'You can skip this and tap Review.'}
+               </p>
+
+               <div className="arMoreGroup">
+                  <span className="arGroupLabel">What would help you come back?</span>
                   <div className="arChoices">
-                     {reason.followups.map((item) => (
+                     {options.support.map((item) => (
                         <button
                            type="button"
                            key={item.key}
-                           className={`arChoice ${followup === item.key ? 'arChoiceOn' : ''}`}
-                           onClick={() => setFollowup(item.key)}
+                           className={`arChoice ${support.includes(item.key) ? 'arChoiceOn' : ''}`}
+                           onClick={() => toggleSupport(item.key)}
                         >
+                           {support.includes(item.key) && <i className="las la-check"></i>}
                            {item.label}
                         </button>
                      ))}
                   </div>
-               )}
-               {reason.asks_return_date && (
-                  <label className="arField">
-                     <span>When do you expect to be back? <small>(optional)</small></span>
-                     <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
-                  </label>
-               )}
-            </div>
-         )}
-
-         {step === 'help' && (
-            <div className="arBody">
-               <h4>What would help you come back?</h4>
-               <p className="arHelp">Optional. This helps your SK official know how to support you.</p>
-               <div className="arChoices">
-                  {options.support.map((item) => (
-                     <button
-                        type="button"
-                        key={item.key}
-                        className={`arChoice ${support.includes(item.key) ? 'arChoiceOn' : ''}`}
-                        onClick={() => toggleSupport(item.key)}
-                     >
-                        {support.includes(item.key) && <i className="las la-check"></i>}
-                        {item.label}
-                     </button>
-                  ))}
                </div>
-            </div>
-         )}
 
-         {step === 'note' && (
-            <div className="arBody">
-               <h4>Anything else you want to share?</h4>
-               <p className="arHelp">
-                  {category === 'other' ? 'Please tell us what happened.' : 'Optional. A short note is enough.'}
-               </p>
-               <textarea
-                  className="arTextarea"
-                  rows={4}
-                  maxLength={1000}
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  placeholder="Write here..."
-               />
+               <div className="arMoreGroup">
+                  <span className="arGroupLabel">Your note</span>
+                  <textarea
+                     className="arTextarea"
+                     rows={4}
+                     maxLength={1000}
+                     value={note}
+                     onChange={(e) => setNote(e.target.value)}
+                     placeholder="A short note is enough..."
+                  />
+               </div>
+
                <label className="arField">
                   <span>Add a photo <small>(optional, for example a medical certificate)</small></span>
                   <input type="file" accept="image/*" onChange={chooseProof} />
@@ -279,6 +315,7 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
          {step === 'review' && (
             <div className="arBody">
                <h4>Check before sending</h4>
+               <p className="arHelp">Tap Back if you want to change something.</p>
                <dl className="arSummary">
                   <div><dt>Days</dt><dd>{selectedDates.map((item) => formatDate(item.date)).join(', ')}</dd></div>
                   <div><dt>What happened</dt><dd>{reason?.label}{followupLabel ? ` · ${followupLabel}` : ''}</dd></div>
@@ -304,7 +341,9 @@ export function AbsenceReasonPanel({ trainingId, candidates, startRecordId, opti
                   {saving ? 'Sending...' : 'Send reason'}
                </button>
             ) : (
-               <button type="button" className="arPrimaryBtn" onClick={next} disabled={!canContinue()}>Continue</button>
+               <button type="button" className="arPrimaryBtn" onClick={next} disabled={!canContinue()}>
+                  {isLastBeforeReview ? 'Review' : 'Continue'}
+               </button>
             )}
          </div>
       </div>

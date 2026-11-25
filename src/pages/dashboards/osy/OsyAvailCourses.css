@@ -1,23 +1,36 @@
+/* =========================================================
+   OsyAvailCourses.css
+   Desktop: fixed sidebar + internal scroll.
+   Mobile (<=768px): normal document scrolling.
+   ========================================================= */
+
+/* ---------- Shell ---------- */
 .osyAvailCoursesBody {
+   --osy-mobile-nav-h: 72px; /* match your sidebar's mobile top bar / burger height */
    display: flex;
    flex-direction: row;
    align-items: flex-start;
    width: 100%;
    height: 100vh;
+   height: 100dvh;
    margin: 0;
    padding: 0;
    overflow: hidden;
    text-align: left;
    font-family: "Nunito", sans-serif;
+   -webkit-tap-highlight-color: transparent;
 }
 
-/* keeps the sidebar in the row even if its own CSS makes it fixed */
-.osyAvailCoursesBody .osySideBarDiv {
-   position: sticky;
-   top: 0;
-   height: 100vh;
-   flex-shrink: 0;
-   overflow-y: auto;
+/* Desktop only, so it can't fight the sidebar's mobile menu */
+@media (min-width: 769px) {
+   .osyAvailCoursesBody .osySideBarDiv {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      flex-shrink: 0;
+      overflow-y: auto;
+   }
 }
 
 .osyAvailCoursesBrowse {
@@ -26,7 +39,9 @@
    flex: 1 1 0;
    min-width: 0;
    height: 100vh;
+   height: 100dvh;
    overflow-y: auto;
+   overflow-x: clip;
    gap: 22px;
    padding: 32px 48px 44px;
    box-sizing: border-box;
@@ -38,10 +53,10 @@
 
 .osyAvailCoursesBrowse > * {
    flex-shrink: 0;
+   min-width: 0;
 }
 
-/* ---------- header (plain, same as the dashboard) ---------- */
-
+/* ---------- Header ---------- */
 .osyAvailCoursesTop {
    display: flex;
    flex-direction: column;
@@ -61,12 +76,18 @@
    box-shadow: none;
 }
 
+.osyAvailCoursesBrowseTop {
+   min-width: 0;
+}
+
 .osyAvailCoursesTop h1 {
    margin: 0;
    font-size: 32px;
    font-weight: 700;
+   line-height: 1.2;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 .osyCoursesSubtitle {
@@ -85,8 +106,7 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* stat cards, same look as the dashboard stat cards */
-
+/* ---------- Stat cards ---------- */
 .osyCoursesStats {
    display: flex;
    align-items: stretch;
@@ -122,8 +142,7 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* ---------- referral path ---------- */
-
+/* ---------- Referral path ---------- */
 .osyCoursesPath {
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
@@ -136,6 +155,7 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
+   gap: 12px;
 }
 
 .osyCoursesPath__head h2 {
@@ -147,6 +167,9 @@
 }
 
 .osyCoursesPath__toggle {
+   flex-shrink: 0;
+   min-height: 36px;
+   padding: 6px 0 6px 12px;
    border: none;
    background: none;
    color: #2F6E4F;
@@ -156,17 +179,12 @@
    font-family: "Nunito", sans-serif;
 }
 
-.osyCoursesPath__toggle:hover {
-   color: #1E5B3F;
-   text-decoration: underline;
-}
-
 .osyCoursesPath__steps {
    list-style: none;
    margin: 18px 0 0;
    padding: 0;
    display: grid;
-   grid-template-columns: repeat(4, 1fr);
+   grid-template-columns: repeat(4, minmax(0, 1fr));
    gap: 28px;
 }
 
@@ -175,6 +193,7 @@
    display: flex;
    flex-direction: column;
    gap: 12px;
+   min-width: 0;
 }
 
 .osyCoursesPath__steps li:not(:last-child)::after {
@@ -217,10 +236,9 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* ---------- toolbar ---------- */
-
-/* The negative margin cancels the padding, so the gap to the sections
-   around it stays the same 22px while it is not stuck. */
+/* ---------- Toolbar ---------- */
+/* Sticky on desktop only. The negative margin cancels the padding so the
+   gap to the sections around it stays 22px while it is not stuck. */
 .osyCoursesToolbar {
    position: sticky;
    top: 0;
@@ -244,7 +262,12 @@
    padding: 11px 20px;
    width: 300px;
    max-width: 100%;
+   box-sizing: border-box;
    color: #8A968A;
+}
+
+.osyCoursesSearchWrap svg {
+   flex-shrink: 0;
 }
 
 .osyCoursesSearchWrap:focus-within {
@@ -256,6 +279,7 @@
    outline: none;
    font-size: 13.5px;
    flex: 1;
+   min-width: 0;
    color: #16231C;
    background: transparent;
    font-family: "Nunito", sans-serif;
@@ -265,6 +289,7 @@
    display: flex;
    flex-wrap: wrap;
    gap: 8px;
+   min-width: 0;
 }
 
 .osyCoursesChip {
@@ -279,10 +304,6 @@
    font-family: "Nunito", sans-serif;
 }
 
-.osyCoursesChip:hover {
-   background: #F1F4F1;
-}
-
 .osyCoursesChipOn,
 .osyCoursesChipOn:hover {
    background: #2F6E4F;
@@ -292,6 +313,7 @@
 
 .osyCoursesSort {
    margin-left: auto;
+   max-width: 100%;
    border: 1px solid #DCE6DE;
    background: #FFFFFF;
    border-radius: 999px;
@@ -304,6 +326,7 @@
 
 .osyCoursesViewToggle {
    display: inline-flex;
+   flex-shrink: 0;
    background: #FFFFFF;
    border: 1px solid #DCE6DE;
    border-radius: 999px;
@@ -328,9 +351,9 @@
    color: #1E5B3F;
 }
 
-/* ---------- list area ---------- */
-
+/* ---------- List area ---------- */
 .osyAvailCoursesBot {
+   min-width: 0;
    font-family: "Nunito", sans-serif;
 }
 
@@ -338,6 +361,7 @@
    padding: 12px 16px;
    border-radius: 8px;
    font-size: 13.5px;
+   line-height: 1.5;
    margin-bottom: 16px;
    font-family: "Nunito", sans-serif;
 }
@@ -356,6 +380,8 @@
 
 .osyCoursesRetry {
    margin-left: 8px;
+   min-height: 32px;
+   padding: 4px 6px;
    background: none;
    border: none;
    color: inherit;
@@ -387,25 +413,26 @@
 
 .osyCoursesEmpty span {
    font-size: 12.5px;
-   color: #94A092;
+   color: #7C8979;
    margin-bottom: 10px;
    font-family: "Nunito", sans-serif;
 }
 
+/* min(100%, 270px) means a card can never be wider than its container */
 .osyCoursesGrid {
    display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+   grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr));
    gap: 22px;
 }
 
 .osyCoursesGrid--list {
-   grid-template-columns: 1fr;
+   grid-template-columns: minmax(0, 1fr);
    gap: 16px;
 }
 
-/* ---------- card ---------- */
-
+/* ---------- Card ---------- */
 .osyCourseCard {
+   min-width: 0;
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
@@ -416,11 +443,6 @@
    scroll-margin-top: 90px;
    font-family: "Nunito", sans-serif;
    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.osyCourseCard:hover {
-   border-color: #C5DECE;
-   box-shadow: 0 6px 16px rgba(20, 32, 26, 0.08);
 }
 
 /* the course opened from a recommendation link */
@@ -461,6 +483,7 @@
 }
 
 .osyCourseCard__imageWrap img {
+   display: block;
    width: 100%;
    height: 100%;
    object-fit: cover;
@@ -474,6 +497,7 @@
    position: absolute;
    left: 10px;
    top: 10px;
+   max-width: calc(100% - 64px);
    background: #FBF0DD;
    color: #96701E;
    font-size: 11px;
@@ -525,6 +549,7 @@
    display: flex;
    flex-direction: column;
    gap: 12px;
+   min-width: 0;
    padding: 16px 18px 18px;
    flex: 1;
 }
@@ -536,6 +561,7 @@
    color: #14201A;
    line-height: 1.35;
    font-family: "Open Sans", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 .osyCourseMeta {
@@ -545,6 +571,11 @@
    font-size: 13px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
+}
+
+.osyCourseMeta span {
+   min-width: 0;
+   overflow-wrap: anywhere;
 }
 
 .osyCourseMeta svg {
@@ -569,6 +600,7 @@
    font-size: 13px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 .osyCourseSlots {
@@ -587,6 +619,7 @@
    content: "";
    width: 6px;
    height: 6px;
+   flex-shrink: 0;
    border-radius: 50%;
    background: currentColor;
 }
@@ -611,9 +644,10 @@
    padding-top: 14px;
    border-top: 1px solid #EEF2EE;
    display: flex;
+   flex-wrap: wrap;
    align-items: center;
    justify-content: space-between;
-   gap: 12px;
+   gap: 10px 12px;
 }
 
 .osyCourseReady {
@@ -658,33 +692,25 @@
    font-family: "Nunito", sans-serif;
 }
 
-.osyCourseViewBtn:hover {
-   background: #2F6E4F;
-   border-color: #2F6E4F;
-   color: #FFFFFF;
-}
-
-/* list layout */
-
+/* ---------- List layout ---------- */
 .osyCoursesGrid--list .osyCourseCard {
    flex-direction: row;
 }
 
 .osyCoursesGrid--list .osyCourseCard__imageWrap {
-   width: 230px;
+   width: clamp(150px, 32%, 230px);
    height: auto;
    min-height: 150px;
 }
 
-/* ---------- drawer ---------- */
-
+/* ---------- Drawer ---------- */
 .osyDrawerOverlay {
    position: fixed;
    inset: 0;
    background: rgba(16, 23, 18, 0.5);
    display: flex;
    justify-content: flex-end;
-   z-index: 50;
+   z-index: 1000;
    animation: osyFade 0.18s ease-out;
 }
 
@@ -720,6 +746,7 @@
 }
 
 .osyDrawer__hero img {
+   display: block;
    width: 100%;
    height: 100%;
    object-fit: cover;
@@ -743,7 +770,9 @@
 
 .osyDrawer__scroll {
    flex: 1;
+   min-height: 0;
    overflow-y: auto;
+   overscroll-behavior: contain;
    padding: 22px 28px;
 }
 
@@ -761,6 +790,7 @@
    line-height: 1.25;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 .osyCourseTagAccredited {
@@ -776,7 +806,7 @@
 
 .osyDrawer__facts {
    display: grid;
-   grid-template-columns: 1fr 1fr;
+   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
    gap: 16px 20px;
    padding: 16px 18px;
    background: #F5F7F5;
@@ -789,25 +819,36 @@
    display: flex;
    flex-direction: column;
    gap: 2px;
+   min-width: 0;
 }
 
+/* The bottom line is an inset shadow, so the tabs can scroll sideways
+   on narrow screens without clipping the active underline. */
 .osyDrawer__tabs {
    display: flex;
    gap: 22px;
-   border-bottom: 1px solid #E7ECE8;
    margin-bottom: 18px;
+   overflow-x: auto;
+   box-shadow: inset 0 -1px 0 #E7ECE8;
+   scrollbar-width: none;
+   -webkit-overflow-scrolling: touch;
+}
+
+.osyDrawer__tabs::-webkit-scrollbar {
+   display: none;
 }
 
 .osyDrawer__tabs button {
+   flex-shrink: 0;
+   white-space: nowrap;
    background: none;
    border: none;
    padding: 8px 0 10px;
    font-size: 14px;
    font-weight: 600;
-   color: #8A968A;
+   color: #7C8979;
    cursor: pointer;
    border-bottom: 2px solid transparent;
-   margin-bottom: -1px;
    font-family: "Nunito", sans-serif;
 }
 
@@ -822,6 +863,7 @@
    line-height: 1.65;
    color: #29332C;
    white-space: pre-wrap;
+   overflow-wrap: anywhere;
    max-width: 62ch;
    font-family: "Nunito", sans-serif;
 }
@@ -888,19 +930,18 @@
    display: flex;
    gap: 12px;
    align-items: flex-start;
+   min-height: 44px;
    padding: 12px 14px;
+   box-sizing: border-box;
    border: 1px solid #E7ECE8;
    border-radius: 12px;
    font-size: 14px;
    color: #29332C;
    line-height: 1.45;
    cursor: pointer;
+   overflow-wrap: anywhere;
    font-family: "Nunito", sans-serif;
    transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.osyDrawer__check:hover {
-   background: #F8FAF8;
 }
 
 .osyDrawer__check input {
@@ -964,6 +1005,10 @@
    font-family: "Nunito", sans-serif;
 }
 
+.osyDrawer__steps li > div {
+   min-width: 0;
+}
+
 .osyDrawer__steps li:not(:last-child)::before {
    content: "";
    position: absolute;
@@ -1003,10 +1048,12 @@
    font-size: 13.5px;
    line-height: 1.55;
    color: #62705F;
+   overflow-wrap: anywhere;
 }
 
 .osyDrawer__actions {
    display: flex;
+   flex-wrap: wrap;
    gap: 10px;
    justify-content: flex-end;
    padding: 16px 28px;
@@ -1025,10 +1072,6 @@
    font-family: "Nunito", sans-serif;
 }
 
-.osyCoursesBtnGhost:hover {
-   background: #F1F4F1;
-}
-
 .osyCoursesBtnPrimary {
    border: none;
    background: #2F6E4F;
@@ -1042,18 +1085,55 @@
    transition: background 0.15s ease;
 }
 
-.osyCoursesBtnPrimary:hover {
-   background: #1E5B3F;
+/* Stop the page behind the drawer from scrolling (mobile uses page scroll) */
+body:has(.osyDrawerOverlay) {
+   overflow: hidden;
 }
 
-/* ---------- focus, motion, responsive ---------- */
+/* ---------- Hover: mouse devices only (no sticky hover after a tap) ---------- */
+@media (hover: hover) {
+   .osyCoursesPath__toggle:hover {
+      color: #1E5B3F;
+      text-decoration: underline;
+   }
 
+   .osyCoursesChip:not(.osyCoursesChipOn):hover {
+      background: #F1F4F1;
+   }
+
+   .osyCourseCard:hover {
+      border-color: #C5DECE;
+      box-shadow: 0 6px 16px rgba(20, 32, 26, 0.08);
+   }
+
+   .osyCourseViewBtn:hover {
+      background: #2F6E4F;
+      border-color: #2F6E4F;
+      color: #FFFFFF;
+   }
+
+   .osyDrawer__check:hover {
+      background: #F8FAF8;
+   }
+
+   .osyCoursesBtnGhost:hover {
+      background: #F1F4F1;
+   }
+
+   .osyCoursesBtnPrimary:hover {
+      background: #1E5B3F;
+   }
+}
+
+/* ---------- Keyboard focus ---------- */
 .osyCoursesChip:focus-visible,
+.osyCoursesSort:focus-visible,
 .osyCourseViewBtn:focus-visible,
 .osyCourseCard__save:focus-visible,
 .osyCoursesBtnGhost:focus-visible,
 .osyCoursesBtnPrimary:focus-visible,
 .osyCoursesPath__toggle:focus-visible,
+.osyCoursesRetry:focus-visible,
 .osyCoursesViewToggle button:focus-visible,
 .osyDrawer__tabs button:focus-visible,
 .osyDrawer__close:focus-visible {
@@ -1061,24 +1141,18 @@
    outline-offset: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-   .osyDrawerOverlay,
-   .osyDrawer,
-   .osyCourseSkeleton,
-   .osyCourseCard--target {
-      animation: none;
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+/* Narrow laptops / tablets: the sidebar takes ~250px of the width */
+@media (max-width: 1100px) {
+   .osyAvailCoursesBrowse {
+      padding: 28px 28px 40px;
    }
 
-   .osyCourseCard,
-   .osyCoursesBtnPrimary,
-   .osyDrawer__progressBar span {
-      transition: none;
-   }
-}
-
-@media (max-width: 960px) {
    .osyCoursesPath__steps {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
    }
 
    .osyCoursesPath__steps li:not(:last-child)::after {
@@ -1086,22 +1160,130 @@
    }
 }
 
-/* Same breakpoint and top padding as the dashboard, which leaves room for the sidebar's burger button */
+/* ---------- Mobile: normal page scrolling ---------- */
 @media (max-width: 768px) {
+   .osyAvailCoursesBody {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+   }
+
    .osyAvailCoursesBrowse {
-      padding: 72px 20px 32px;
+      flex: 1 1 auto;
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+      gap: 18px;
+      padding-top: var(--osy-mobile-nav-h);
+      padding-right: 20px;
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left: 20px;
+   }
+
+   /* notched phones in landscape */
+   @supports (padding: max(0px)) {
+      .osyAvailCoursesBrowse {
+         padding-left: max(20px, env(safe-area-inset-left, 0px));
+         padding-right: max(20px, env(safe-area-inset-right, 0px));
+      }
    }
 
    .osyCoursesHero {
       flex-direction: column;
       align-items: flex-start;
+      gap: 16px;
    }
 
    .osyAvailCoursesTop h1 {
       font-size: 26px;
    }
+
+   .osyCoursesPath {
+      padding: 16px 18px 20px;
+   }
+
+   /* The sticky toolbar would fill the screen and sit under the top bar */
+   .osyCoursesToolbar {
+      position: static;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+   }
+
+   .osyCoursesSearchWrap {
+      width: 100%;
+      min-height: 44px;
+   }
+
+   /* 16px stops iOS Safari from zooming the page when the field is focused */
+   .osyCoursesSearchInput,
+   .osyCoursesSort {
+      font-size: 16px;
+   }
+
+   /* chips scroll sideways in one row instead of wrapping into many rows */
+   .osyCoursesChips {
+      flex-wrap: nowrap;
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+   }
+
+   .osyCoursesChips::-webkit-scrollbar {
+      display: none;
+   }
+
+   .osyCoursesChip {
+      flex-shrink: 0;
+      white-space: nowrap;
+      min-height: 40px;
+   }
+
+   /* sort and layout toggle share one row */
+   .osyCoursesSort {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 44px;
+      margin-left: 0;
+   }
+
+   .osyCoursesViewToggle button {
+      width: 40px;
+      height: 38px;
+   }
+
+   .osyCourseCard__save {
+      width: 40px;
+      height: 40px;
+   }
+
+   .osyCourseViewBtn {
+      min-height: 40px;
+   }
+
+   .osyCoursesRetry {
+      min-height: 40px;
+   }
+
+   /* drawer */
+   .osyDrawer__close {
+      width: 44px;
+      height: 44px;
+      font-size: 26px;
+   }
+
+   .osyDrawer__tabs button {
+      padding: 12px 0;
+   }
 }
 
+/* ---------- Phones ---------- */
 @media (max-width: 640px) {
    .osyCoursesStats {
       width: 100%;
@@ -1115,20 +1297,13 @@
    }
 
    .osyCoursesPath__steps {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 18px;
    }
 
-   .osyCoursesSearchWrap {
-      width: 100%;
-   }
-
-   .osyCoursesSort {
-      margin-left: 0;
-   }
-
    .osyCoursesGrid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
    }
 
    .osyCoursesGrid--list .osyCourseCard {
@@ -1141,15 +1316,230 @@
       min-height: 0;
    }
 
+   .osyCoursesEmpty {
+      padding: 40px 16px;
+   }
+
    .osyDrawer {
       max-width: none;
+      box-shadow: none;
    }
 
    .osyDrawer__hero {
       height: 150px;
    }
 
+   .osyDrawer__scroll {
+      padding: 18px 18px;
+   }
+
+   .osyDrawer__head h2 {
+      font-size: 20px;
+   }
+
    .osyDrawer__facts {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+   }
+
+   .osyDrawer__tabs {
+      gap: 18px;
+   }
+
+   .osyDrawer__actions {
+      padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+   }
+
+   .osyDrawer__actions > button {
+      flex: 1 1 140px;
+      min-height: 44px;
+   }
+}
+
+/* ---------- Very small phones (320px) ---------- */
+@media (max-width: 360px) {
+   .osyAvailCoursesBrowse {
+      padding-left: 14px;
+      padding-right: 14px;
+   }
+
+   .osyAvailCoursesTop h1 {
+      font-size: 23px;
+   }
+
+   .osyCoursesStat strong {
+      font-size: 22px;
+   }
+
+   .osyDrawer__scroll {
+      padding-left: 14px;
+      padding-right: 14px;
+   }
+
+   .osyDrawer__actions {
+      padding-left: 14px;
+      padding-right: 14px;
+   }
+
+   .osyDrawer__tabs {
+      gap: 14px;
+   }
+
+   .osyDrawer__tabs button {
+      font-size: 13px;
+   }
+}
+
+/* ---------- Landscape phones (short screens) ---------- */
+@media (max-height: 500px) and (orientation: landscape) {
+   .osyDrawer__hero {
+      height: 90px;
+   }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+   .osyDrawerOverlay,
+   .osyDrawer,
+   .osyCourseSkeleton,
+   .osyCourseCard--target {
+      animation: none;
+   }
+
+   .osyCourseCard,
+   .osyCourseViewBtn,
+   .osyDrawer__check,
+   .osyCoursesBtnPrimary,
+   .osyDrawer__progressBar span {
+      transition: none;
+   }
+}
+
+
+
+
+/* =========================================================
+   Mobile polish (add at the END of the file)
+   ========================================================= */
+@media (max-width: 768px) {
+   .osyAvailCoursesBrowse {
+      padding-top: 68px;
+      gap: 16px;
+   }
+
+   .osyAvailCoursesTop {
+      gap: 16px;
+   }
+
+   .osyCoursesHero {
+      gap: 14px;
+   }
+
+   .osyAvailCoursesTop h1 {
+      font-size: 24px;
+   }
+
+   .osyCoursesSubtitle {
+      font-size: 13px;
+   }
+
+   /* This paragraph repeats the "How enrollment works" card below it */
+   .osyCoursesHeroNote {
+      display: none;
+   }
+
+   /* ---------- Stat cards: compact, centered, equal width ---------- */
+   .osyCoursesStats {
+      width: 100%;
+      gap: 10px;
+   }
+
+   .osyCoursesStat {
+      flex: 1 1 0;
+      min-width: 0;
+      align-items: center;
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 14px;
+   }
+
+   .osyCoursesStat strong {
+      font-size: 22px;
+   }
+
+   .osyCoursesStat span {
+      font-size: 11.5px;
+      line-height: 1.3;
+   }
+
+   /* ---------- How enrollment works: number beside text, not above ---------- */
+   .osyCoursesPath {
+      padding: 14px 16px 16px;
+      border-radius: 14px;
+   }
+
+   .osyCoursesPath__head h2 {
+      font-size: 15px;
+   }
+
+   .osyCoursesPath__steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 14px;
+   }
+
+   .osyCoursesPath__steps li {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 12px;
+   }
+
+   .osyCoursesPath__steps li:not(:last-child)::after {
+      display: block;
+      top: 32px;
+      bottom: -16px;
+      left: 13px;
+      right: auto;
+      width: 1px;
+      height: auto;
+   }
+
+   .osyCoursesPath__num {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+   }
+
+   .osyCoursesPath__steps strong {
+      font-size: 13.5px;
+      line-height: 1.3;
+      padding-top: 4px;
+   }
+
+   .osyCoursesPath__steps p {
+      margin: 2px 0 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+   }
+
+   /* ---------- Cards a bit tighter ---------- */
+   .osyCourseCard__imageWrap {
+      height: 130px;
+   }
+
+   .osyCourseCard__body {
+      padding: 14px 16px 16px;
+      gap: 10px;
+   }
+}
+
+@media (max-width: 360px) {
+   .osyCoursesStat strong {
+      font-size: 20px;
+   }
+
+   .osyCoursesStat span {
+      font-size: 11px;
    }
 }

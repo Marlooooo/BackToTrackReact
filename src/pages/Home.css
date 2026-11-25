@@ -5,9 +5,18 @@ body{
    flex-direction: column;
 
 }
+img{
+   max-width: 100%;
+}
+
+/* ================= HEADER ================= */
 header{
+   position: sticky;
+   top: 0;
+   z-index: 1000;
    display: flex;
    flex-direction: row;
+   align-items: center;
    background: #252641;
    padding: 10px 10px 10px 10px;
    justify-content: space-around;
@@ -15,6 +24,7 @@ header{
 .leftSideHeader{
    display: flex;
    flex-direction: row;
+   align-items: center;
 }
 .leftSideHeader img{
    width: 80px;
@@ -76,6 +86,21 @@ nav a:hover{
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
    transform: translateY(-2px);
    cursor: pointer;
+}
+
+/* burger button: hidden on desktop */
+.burger{
+   display: none;
+   align-items: center;
+   justify-content: center;
+   background: transparent;
+   border: 0;
+   color: white;
+   padding: 4px;
+   cursor: pointer;
+}
+.burger .material-symbols-outlined{
+   font-size: 36px;
 }
 
 
@@ -140,6 +165,7 @@ nav a:hover{
 
 .headerBottomPart img{
    border-radius: 200px;
+   height: auto;
 }
 
 
@@ -180,6 +206,7 @@ nav a:hover{
    line-height: 130%;
    font-size: 2.8rem;
    margin: 30px 0px 20px 0px;
+   text-align: center;
 }
 .socialSpan{
    color: #252641;
@@ -445,11 +472,320 @@ footer{
 
 
 
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 1244px) {
    .leftSide{
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+   }
+}
+
+/* Tablets and phones: the nav turns into a burger dropdown */
+@media (max-width: 1024px){
+   header{
+      justify-content: space-between;
+      padding: 8px 20px;
+   }
+   .leftSideHeader h1{
+      margin: 0px;
+   }
+   .burger{
+      display: flex;
+   }
+   nav{
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: auto;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 10px 20px 20px 20px;
+      background: #252641;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+   }
+   nav.open{
+      display: flex;
+   }
+   nav a{
+      text-align: center;
+      padding: 12px 18px;
+   }
+}
+
+/* Small laptops / large tablets */
+@media (max-width: 1100px){
+   .threeCards{
+      gap: 20px;
+   }
+
+   .midPartFooter{
+      gap: 25px;
+      padding: 20px 30px;
+      margin-left: 20px;
+      margin-right: 20px;
+   }
+
+   .footerTopPart{
+      padding: 0px 30px;
+   }
+   .footerNav{
+      gap: 40px;
+   }
+}
+
+/* Tablets and phones: content and footer stack */
+@media (max-width: 900px){
+
+   /* ---------- HERO ---------- */
+   .headerBottomPart{
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 20px 30px 20px;
+      box-sizing: border-box;
+      gap: 15px;
+   }
+   .headerBottomPart h1{
+      font-size: 2.2rem;
+   }
+   .headerBottomPart > div:last-child{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+   }
+   .headerBottomPart img{
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+   }
+   .twoStartBtn{
+      justify-content: center;
+   }
+
+      .headerBottomPart br,
+   .socialImp br,
+   .cards br,
+   .ourGoal br,
+   .targetMarketGoal br{
+      display: none;
+   }
+
+   /* ---------- MIDDLE ---------- */
+   .socialImp{
+      padding: 0px 20px;
+   }
+   .socialImp h2{
+      font-size: 2.2rem;
+   }
+   .threeCards{
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 0px 20px;
+      width: 100%;
+      box-sizing: border-box;
+   }
+   .cards{
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      box-sizing: border-box;
+      padding: 20px 15px;
+   }
+
+   .midPartFooter{
+      flex-direction: column;
+      text-align: center;
+      width: calc(100% - 40px);
+      box-sizing: border-box;
+      margin: 0px 20px 50px 20px;
+      padding: 30px 20px;
+      border-radius: 30px;
+      gap: 20px;
+   }
+   .targetMarketGoal{
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+   }
+
+   /* ---------- FOOTER ---------- */
+   .footerTopPart{
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 20px;
+      gap: 25px;
+   }
+   .footerLogoTitle{
+      flex-direction: column;
+      text-align: center;
+   }
+   .footerLogoTitle h6{
+      margin-bottom: 10px;
+   }
+   .footerNav{
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+   }
+   .footerNavLinks{
+      align-items: center;
+   }
+   .footerNavLinks h1{
+      margin-bottom: 15px;
+   }
+   .footerBigLogo img{
+      margin-top: 0px;
+   }
+   .footerBottomPart p{
+      width: 90%;
+   }
+}
+
+/* Phones */
+@media (max-width: 480px){
+   .leftSideHeader img{
+      width: 56px;
+      height: 56px;
+   }
+   .leftSideHeader h1{
+      font-size: 1.5rem;
+   }
+
+   .headerBottomPart h1{
+      font-size: 1.8rem;
+   }
+   .headerBottomPart p{
+      font-size: 0.85rem;
+   }
+
+   .socialImp h2{
+      font-size: 1.9rem;
+   }
+
+   .midPartFooter{
+      padding: 25px 15px;
+   }
+   .ourGoal h4{
+      font-size: 1.6rem;
+   }
+
+   .footerNav{
+      gap: 25px;
+   }
+   .footerLogoTitle img{
+      width: 64px;
+      height: 64px;
+   }
+}
+
+/* ===== professional compact footer on tablets and phones ===== */
+@media (max-width: 900px){
+
+   footer{
+      padding: 6px 0px 4px 0px;
+   }
+
+   /* top area becomes a grid: [logo] [title] [TESDA logo] */
+   .footerTopPart{
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      column-gap: 10px;
+      row-gap: 8px;
+      align-items: center;
+      text-align: left;
+      padding: 18px 20px 6px 20px;
+   }
+
+   /* these wrappers disappear so their children sit directly in the grid */
+   .footerLogoTitle,
+   .footerLogoTitle > div{
+      display: contents;
+   }
+
+   .footerLogoTitle img{
+      grid-column: 1;
+      grid-row: 1;
+      width: 44px;
+      height: 44px;
+   }
+   .footerLogoTitle h1{
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0px;
+      font-size: 1.5rem;
+   }
+   .footerBigLogo{
+      grid-column: 3;
+      grid-row: 1;
+   }
+   .footerBigLogo img{
+      width: 44px;
+      height: 44px;
+      margin: 0px;
+   }
+   .footerLogoTitle h6{
+      grid-column: 1 / -1;
+      grid-row: 2;
+      margin: 6px 0px 0px 0px;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      opacity: 0.75;
+   }
+   .footerLogoTitle p{
+      grid-column: 1 / -1;
+      grid-row: 3;
+      margin: 0px;
+      font-size: 0.8rem;
+      color: rgb(123, 195, 255);
+   }
+
+   /* link columns */
+   .footerNav{
+      grid-column: 1 / -1;
+      grid-row: 4;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      justify-items: start;
+      align-items: start;
+      margin-top: 10px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+   }
+   .footerNavLinks{
+      align-items: flex-start;
+   }
+   .footerNavLinks h1{
+      margin: 0px 0px 10px 0px;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+   }
+   .footerNavLinks a{
+      margin: 0px 0px 8px 0px;
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.92);
+   }
+
+   /* copyright line */
+   .footerBottomPart p{
+      width: calc(100% - 40px);
+      margin: 8px 0px 0px 0px;
+      padding: 12px 0px 4px 0px;
+      font-size: 0.75rem;
+      opacity: 0.65;
    }
 }

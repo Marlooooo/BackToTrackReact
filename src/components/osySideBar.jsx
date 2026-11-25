@@ -34,7 +34,7 @@ function OsySideBar() {
       try {
          const xsrfToken = getCookie("XSRF-TOKEN");
 
-         await fetch("http://localhost:8000/api/logout", {
+         await fetch("/api/logout", {
             method: "POST",
             headers: {
                "X-XSRF-TOKEN": xsrfToken,
@@ -53,9 +53,15 @@ function OsySideBar() {
 
    return (
       <>
-         <button className="osyBurgerBtn" onClick={() => setIsOpen(true)}>
-            <i className="las la-bars"></i>
-         </button>
+         <header className="osyMobileHeader">
+            <button
+               className="osyBurgerBtn"
+               onClick={() => setIsOpen(true)}
+               aria-label="Open menu"
+            >
+               <i className="las la-bars"></i>
+            </button>
+         </header>
 
          <div className={`osySideBarOverlay ${isOpen ? "osyShow" : ""}`} onClick={() => setIsOpen(false)}></div>
 

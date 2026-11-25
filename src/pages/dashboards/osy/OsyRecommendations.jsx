@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import OsySideBar from '../../../components/osySideBar';
 import './OsyRecommendations.css';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = '/api';
 
 // Saved recommendations record which interview field they came from.
 // To the OSY, all of those are simply "your interview".

@@ -1,5 +1,6 @@
 /* ---------- Layout: sidebar | content ---------- */
 .oProf-layout {
+   --osy-mobile-nav-h: 72px;
    display: flex;
    flex-direction: row;
    align-items: flex-start;
@@ -7,6 +8,7 @@
    width: 100%;
    max-width: none;
    height: 100vh;
+   height: 100dvh;
    overflow: hidden;
    margin: 0;
    padding: 0;
@@ -14,13 +16,16 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* keeps the sidebar in the row even if its own CSS makes it fixed */
-.oProf-layout .osySideBarDiv {
-   position: sticky;
-   top: 0;
-   height: 100vh;
-   flex-shrink: 0;
-   overflow-y: auto;
+/* sidebar override, desktop only */
+@media (min-width: 769px) {
+   .oProf-layout .osySideBarDiv {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      flex-shrink: 0;
+      overflow-y: auto;
+   }
 }
 
 .oProf-main {
@@ -35,6 +40,7 @@
    min-height: 0;
    max-width: none;
    height: 100vh;
+   height: 100dvh;
    overflow-y: auto;
    margin: 0;
    padding: 32px 48px 44px;
@@ -78,6 +84,7 @@
    font-weight: 700;
    color: #14201A;
    font-family: "Open Sans", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 .oProf-main .oProf-header .oProf-sub {
@@ -85,6 +92,7 @@
    font-size: 13.5px;
    color: #62705F;
    font-family: "Nunito", sans-serif;
+   overflow-wrap: anywhere;
 }
 
 /* ---------- Avatar + photo upload ---------- */
@@ -226,6 +234,7 @@
    display: flex;
    align-items: center;
    gap: 12px;
+   min-width: 0;
    padding: 14px 16px;
    background: #FFFFFF;
    border: 1px solid #E7ECE8;
@@ -524,13 +533,47 @@
    .oProf-stats { grid-template-columns: 1fr; }
 }
 
+/* mobile: normal page scrolling */
+@media (max-width: 768px) {
+   .oProf-layout {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+   }
+
+   .oProf-main {
+      flex: 1 1 auto;
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+      padding-top: var(--osy-mobile-nav-h);
+      padding-right: 20px;
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left: 20px;
+   }
+}
+
+/* phones */
 @media (max-width: 640px) {
-   .oProf-layout { flex-direction: column; }
-   .oProf-main { padding: 20px 20px 32px; }
    .oProf-main .oProf-header h1 { font-size: 26px; }
    .oProf-grid { grid-template-columns: 1fr; }
    .oProf-actions { justify-content: stretch; }
    .oProf-actions .oProf-btn { flex: 1; }
    .oProf-main .oProf-avatarWrap,
    .oProf-main .oProf-avatar { width: 72px; height: 72px; font-size: 24px; }
+}
+@media (max-width: 768px) {
+   .oProf-main {
+      position: relative;
+      z-index: 0;
+   }
+
+   .oProf-layout .osySideBarDiv {
+      z-index: 1000;
+   }
 }

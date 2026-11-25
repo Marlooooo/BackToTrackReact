@@ -15,12 +15,14 @@
 }
 
 /* keeps the sidebar in the row even if its own CSS makes it fixed */
-.oRec-layout .osySideBarDiv {
-   position: sticky;
-   top: 0;
-   height: 100vh;
-   flex-shrink: 0;
-   overflow-y: auto;
+@media (min-width: 769px) {
+   .oRec-layout .osySideBarDiv {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      flex-shrink: 0;
+      overflow-y: auto;
+   }
 }
 
 .oRec-main {
@@ -772,4 +774,28 @@
    .oRec-main .oRec-header h1 { font-size: 26px; }
    .oRec-featuredBody { padding: 20px; }
    .oRec-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+   .oRec-layout {
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+   }
+
+   .oRec-layout .osySideBarDiv {
+      z-index: 1000;
+   }
+
+   .oRec-main {
+      position: relative;
+      z-index: 0;
+      flex: 1 1 auto;
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+      padding: 72px 20px 32px;
+   }
 }

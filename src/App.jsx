@@ -5,12 +5,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from './pages/Login';
-import Register from './pages/register';
+import Register from './pages/Register';
 import About from './pages/about';
 import Contact from './pages/contact';
 import Impact from './pages/impact';
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './pages/ChangePassword';
+import VerifyEmail from './pages/VerifyEmail';
 
 
 
@@ -34,6 +35,7 @@ import MaximaProgramManagement from "./pages/dashboards/maxima/MaximaProgramMana
 import MaximaReferrals from './pages/dashboards/maxima/MaximaReferrals';
 import MaximaEnrollees from './pages/dashboards/maxima/MaximaEnrollees';
 import MaximaProgressMonitoring from './pages/dashboards/maxima/MaximaProgressMonitoring';
+import MaximaCompletedTrainings from './pages/dashboards/maxima/MaximaCompletedTrainings';
 import MaximaReports from './pages/dashboards/maxima/MaximaReports';
 import MaximaNotifications from './pages/dashboards/maxima/MaximaReferralNotifications';
 import MaximaAnnouncement from './pages/dashboards/maxima/MaximaAnnouncement'; 
@@ -64,8 +66,9 @@ function App() {
          <Route path="/contact" element={<Contact/>}/>
          <Route path="/impact" element={<Impact/>}/>
          <Route path="/forgot-password" element={<ForgotPassword/>}/>
+         
          <Route path="/change-password" element={<ProtectedRoute> <ChangePassword/> </ProtectedRoute>}/>
-
+         <Route path="/verify-email" element={<ProtectedRoute> <VerifyEmail/> </ProtectedRoute>}/>
 
 
 
@@ -86,6 +89,7 @@ function App() {
          <Route path="/maxima/referrals" element={<ProtectedRoute> <MaximaReferrals> </MaximaReferrals> </ProtectedRoute>}/>
          <Route path="/maxima/enrollees" element={<ProtectedRoute> <MaximaEnrollees/> </ProtectedRoute>}/>
          <Route path="/maxima/monitoring" element={<ProtectedRoute> <MaximaProgressMonitoring/> </ProtectedRoute>}/>
+         <Route path="/maxima/completed" element={<ProtectedRoute> <MaximaCompletedTrainings/> </ProtectedRoute>}/>
          <Route path="/maxima/reports" element={<ProtectedRoute> <MaximaReports/> </ProtectedRoute>}/>
          <Route path="/maxima/notifications" element={<ProtectedRoute> <MaximaNotifications/> </ProtectedRoute>}/>
          <Route path="/maxima/announcements" element={<ProtectedRoute> <MaximaAnnouncement/> </ProtectedRoute>}/> 

@@ -42,8 +42,7 @@
    font-family: "Nunito", sans-serif;
 }
 
-/* ---------- Icons + bell ---------- */
-
+/* ---------- Icons ---------- */
 .brgyDashIcon {
    font-size: 22px;
    line-height: 1;
@@ -253,7 +252,6 @@
 }
 
 .brgyDashBtn:focus-visible,
-.brgyDashBell:focus-visible,
 .brgyDashActionBtn:focus-visible {
    outline: 2px solid #2F6E4F;
    outline-offset: 2px;
@@ -436,7 +434,6 @@
 
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
-   .brgyDashBell,
    .brgyDashBtn,
    .brgyDashActionBtn {
       transition: none;

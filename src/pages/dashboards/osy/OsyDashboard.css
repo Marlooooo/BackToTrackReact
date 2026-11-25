@@ -1,23 +1,40 @@
+/* =========================================================
+   OsyDashboard.css
+   Mobile-first-safe layout. Desktop keeps the fixed-sidebar +
+   internal-scroll shell; mobile uses normal document scroll.
+   ========================================================= */
+
+/* Change this if your mobile top bar is a different height */
+.osyDashboardBody{
+   --osy-mobile-nav-h: 72px;
+}
+
+/* ---------- Shell (desktop default) ---------- */
 .osyDashboardBody{
    display: flex;
    flex-direction: row;
    align-items: flex-start;
    width: 100%;
    height: 100vh;
+   height: 100dvh;
    margin: 0;
    padding: 0;
    overflow: hidden;
    text-align: left;
    font-family: "Nunito", sans-serif;
+   -webkit-tap-highlight-color: transparent;
 }
 
-/* keeps the sidebar in the row even if its own CSS makes it fixed */
-.osyDashboardBody .osySideBarDiv{
-   position: sticky;
-   top: 0;
-   height: 100vh;
-   flex-shrink: 0;
-   overflow-y: auto;
+/* Sidebar override applies to DESKTOP ONLY so it can't break the mobile nav */
+@media (min-width: 769px){
+   .osyDashboardBody .osySideBarDiv{
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      flex-shrink: 0;
+      overflow-y: auto;
+   }
 }
 
 .osyDashboardMain{
@@ -26,7 +43,9 @@
    flex: 1 1 0;
    min-width: 0;
    height: 100vh;
+   height: 100dvh;
    overflow-y: auto;
+   overflow-x: clip;
    gap: 22px;
    padding: 32px 48px 44px;
    box-sizing: border-box;
@@ -38,9 +57,10 @@
 
 .osyDashboardMain > *{
    flex-shrink: 0;
+   min-width: 0;
 }
 
-/* ---------- Header (plain, like the Recommended Courses page) ---------- */
+/* ---------- Header ---------- */
 .osyDashboardHero{
    display: flex;
    align-items: center;
@@ -51,6 +71,10 @@
    background: transparent;
    box-shadow: none;
    color: #14201A;
+}
+
+.osyDashboardHeroText{
+   min-width: 0;
 }
 
 .osyDashboardDate{
@@ -66,7 +90,9 @@
    font-family: "Open Sans", sans-serif;
    font-size: 32px;
    font-weight: 700;
+   line-height: 1.2;
    color: #14201A;
+   overflow-wrap: anywhere;
 }
 
 .osyDashboardHero p{
@@ -80,9 +106,12 @@
 .osyDashboardHeroBtn{
    display: inline-flex;
    align-items: center;
+   justify-content: center;
    gap: 8px;
    flex-shrink: 0;
+   min-height: 44px;
    padding: 11px 22px;
+   box-sizing: border-box;
    border-radius: 999px;
    background: #2F6E4F;
    color: #FFFFFF;
@@ -90,10 +119,6 @@
    font-weight: 600;
    text-decoration: none;
    transition: background 0.15s ease;
-}
-
-.osyDashboardHeroBtn:hover{
-   background: #1E5B3F;
 }
 
 /* ---------- States ---------- */
@@ -144,18 +169,25 @@
    display: block;
    font-size: 14px;
    font-weight: 600;
+   line-height: 1.4;
    color: #6B4E12;
 }
 
 .osyDashboardAlertText p{
    margin: 2px 0 0;
    font-size: 13px;
+   line-height: 1.5;
    color: #96701E;
 }
 
 .osyDashboardAlert > a{
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
    flex-shrink: 0;
+   min-height: 40px;
    padding: 9px 20px;
+   box-sizing: border-box;
    border-radius: 999px;
    background: #96701E;
    color: #FFFFFF;
@@ -163,10 +195,6 @@
    font-weight: 600;
    text-decoration: none;
    transition: background 0.15s ease;
-}
-
-.osyDashboardAlert > a:hover{
-   background: #7A5A16;
 }
 
 /* ---------- Stat cards ---------- */
@@ -177,7 +205,6 @@
    gap: 18px;
 }
 
-/* All four cards (including the link one) share the same size and position */
 .osyDashboardStat{
    display: flex;
    align-items: center;
@@ -185,6 +212,7 @@
    gap: 14px;
    width: auto;
    height: auto;
+   min-width: 0;
    min-height: 96px;
    margin: 0;
    padding: 18px;
@@ -200,11 +228,6 @@
 
 .osyDashboardStatLink{
    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.osyDashboardStatLink:hover{
-   border-color: #C5DECE;
-   box-shadow: 0 4px 14px rgba(20, 32, 26, 0.08);
 }
 
 .osyDashboardStatIcon{
@@ -248,7 +271,7 @@
 .osyDashboardStatText small{
    margin-top: 2px;
    font-size: 12px;
-   color: #94A092;
+   color: #7C8979;
 }
 
 /* ---------- Panels ---------- */
@@ -262,6 +285,7 @@
 .osyDashboardPanel{
    display: flex;
    flex-direction: column;
+   min-width: 0;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
    background: #FFFFFF;
@@ -290,14 +314,13 @@
    display: inline-flex;
    align-items: center;
    gap: 4px;
+   flex-shrink: 0;
+   min-height: 36px;
+   padding: 6px 0 6px 8px;
    font-size: 12.5px;
    font-weight: 600;
    color: #2F6E4F;
    text-decoration: none;
-}
-
-.osyDashboardPanelHead a:hover{
-   color: #1E5B3F;
 }
 
 .osyDashboardPanelBody{
@@ -307,18 +330,21 @@
 /* ---------- Training ---------- */
 .osyDashboardProgramRow{
    display: flex;
+   flex-wrap: wrap;
    align-items: center;
    justify-content: space-between;
-   gap: 12px;
+   gap: 8px 12px;
    margin-bottom: 18px;
 }
 
 .osyDashboardProgramRow h3{
+   min-width: 0;
    margin: 0;
    font-family: "Open Sans", sans-serif;
    font-size: 18px;
    font-weight: 600;
    color: #14201A;
+   overflow-wrap: anywhere;
 }
 
 .osyDashboardBadge{
@@ -335,6 +361,7 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
+   gap: 12px;
    margin-bottom: 8px;
    font-size: 13px;
    color: #62705F;
@@ -363,10 +390,12 @@
 
 .osyDashboardProgressDates{
    display: flex;
+   flex-wrap: wrap;
    justify-content: space-between;
+   gap: 4px 12px;
    margin-top: 8px;
    font-size: 12px;
-   color: #94A092;
+   color: #7C8979;
 }
 
 .osyDashboardMuted{
@@ -404,9 +433,10 @@
 .osyDashboardAttBox.absent{ background: #F7E6E6; color: #A23E3E; }
 .osyDashboardAttBox.excused{ background: #EEF2EE; color: #62705F; }
 
+/* auto-fit: 3 columns when there is room, wraps to fewer when narrow */
 .osyDashboardInfo{
    display: grid;
-   grid-template-columns: repeat(3, minmax(0, 1fr));
+   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
    gap: 14px;
    margin-top: 20px;
    padding-top: 18px;
@@ -421,6 +451,7 @@
 }
 
 .osyDashboardInfoItem i{
+   flex-shrink: 0;
    font-size: 22px;
    color: #2F6E4F;
 }
@@ -432,7 +463,7 @@
 }
 
 .osyDashboardInfoItem span{
-   font-size: 11.5px;
+   font-size: 12px;
    letter-spacing: 0.06em;
    text-transform: uppercase;
    color: #62705F;
@@ -485,6 +516,7 @@
    font-size: 14px;
    font-weight: 600;
    color: #14201A;
+   overflow-wrap: anywhere;
 }
 
 .osyDashboardAnnBody p{
@@ -492,15 +524,17 @@
    margin: 0 0 6px;
    overflow: hidden;
    -webkit-line-clamp: 2;
+   line-clamp: 2;
    -webkit-box-orient: vertical;
    font-size: 13px;
    line-height: 1.5;
    color: #62705F;
+   overflow-wrap: anywhere;
 }
 
 .osyDashboardAnnBody span{
    font-size: 12px;
-   color: #94A092;
+   color: #7C8979;
 }
 
 /* ---------- Empty ---------- */
@@ -541,7 +575,12 @@
 }
 
 .osyDashboardEmpty a{
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 40px;
    padding: 9px 20px;
+   box-sizing: border-box;
    border-radius: 999px;
    background: #2F6E4F;
    color: #FFFFFF;
@@ -549,10 +588,6 @@
    font-weight: 600;
    text-decoration: none;
    transition: background 0.15s ease;
-}
-
-.osyDashboardEmpty a:hover{
-   background: #1E5B3F;
 }
 
 /* ---------- Quick links ---------- */
@@ -566,6 +601,7 @@
    display: flex;
    align-items: center;
    gap: 14px;
+   min-width: 0;
    padding: 16px 18px;
    border: 1px solid #E7ECE8;
    border-radius: 16px;
@@ -573,12 +609,6 @@
    color: inherit;
    text-decoration: none;
    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.osyDashboardQuickItem:hover{
-   border-color: #C5DECE;
-   transform: translateY(-2px);
-   box-shadow: 0 6px 16px rgba(20, 32, 26, 0.08);
 }
 
 .osyDashboardQuickItem > i{
@@ -593,6 +623,10 @@
    font-size: 22px;
 }
 
+.osyDashboardQuickItem > div{
+   min-width: 0;
+}
+
 .osyDashboardQuickItem strong{
    display: block;
    font-size: 14px;
@@ -605,28 +639,106 @@
    color: #62705F;
 }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 1200px){
+/* ---------- Hover (mouse devices only, no sticky hover on touch) ---------- */
+@media (hover: hover){
+   .osyDashboardHeroBtn:hover{
+      background: #1E5B3F;
+   }
+
+   .osyDashboardAlert > a:hover{
+      background: #7A5A16;
+   }
+
+   .osyDashboardStatLink:hover{
+      border-color: #C5DECE;
+      box-shadow: 0 4px 14px rgba(20, 32, 26, 0.08);
+   }
+
+   .osyDashboardPanelHead a:hover{
+      color: #1E5B3F;
+   }
+
+   .osyDashboardEmpty a:hover{
+      background: #1E5B3F;
+   }
+
+   .osyDashboardQuickItem:hover{
+      border-color: #C5DECE;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(20, 32, 26, 0.08);
+   }
+}
+
+/* ---------- Keyboard focus ---------- */
+.osyDashboardHeroBtn:focus-visible,
+.osyDashboardAlert > a:focus-visible,
+.osyDashboardStatLink:focus-visible,
+.osyDashboardPanelHead a:focus-visible,
+.osyDashboardEmpty a:focus-visible,
+.osyDashboardQuickItem:focus-visible{
+   outline: 3px solid #4C9A73;
+   outline-offset: 2px;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+/* Narrow laptops / tablets landscape (sidebar eats ~250px) */
+@media (max-width: 1280px){
    .osyDashboardStats,
    .osyDashboardQuick{
       grid-template-columns: repeat(2, minmax(0, 1fr));
    }
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1100px){
    .osyDashboardGrid{
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+   }
+
+   .osyDashboardMain{
+      padding: 28px 28px 40px;
    }
 }
 
+/* ---------- Mobile: switch to normal page scrolling ---------- */
 @media (max-width: 768px){
+   .osyDashboardBody{
+      flex-direction: column;
+      align-items: stretch;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+   }
+
    .osyDashboardMain{
-      padding: 72px 20px 32px;
+      flex: 1 1 auto;
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow: visible;
+      gap: 18px;
+      padding-top: var(--osy-mobile-nav-h);
+      padding-right: 20px;
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left: 20px;
+   }
+
+   /* notched phones in landscape */
+   @supports (padding: max(0px)){
+      .osyDashboardMain{
+         padding-left: max(20px, env(safe-area-inset-left, 0px));
+         padding-right: max(20px, env(safe-area-inset-right, 0px));
+      }
    }
 
    .osyDashboardHero{
       flex-direction: column;
       align-items: flex-start;
+      gap: 16px;
    }
 
    .osyDashboardHero h1{
@@ -638,27 +750,84 @@
       align-items: flex-start;
    }
 
+   .osyDashboardAlert > a{
+      align-self: stretch;
+   }
+
+   .osyDashboardPanelHead{
+      padding: 14px 18px;
+   }
+
+   .osyDashboardPanelBody{
+      padding: 18px;
+   }
+
    .osyDashboardInfo{
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
    }
 }
 
+/* ---------- Small phones ---------- */
 @media (max-width: 560px){
    .osyDashboardStats,
    .osyDashboardQuick{
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+   }
+
+   .osyDashboardHeroBtn{
+      width: 100%;
    }
 
    .osyDashboardAttendance{
       grid-template-columns: repeat(2, minmax(0, 1fr));
    }
+
+   /* let long program names wrap to two lines instead of being cut off */
+   .osyDashboardStatText strong{
+      display: -webkit-box;
+      overflow: hidden;
+      white-space: normal;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow-wrap: anywhere;
+   }
+
+   .osyDashboardEmpty{
+      padding: 32px 16px;
+   }
 }
 
+/* ---------- Very small phones (320px) ---------- */
+@media (max-width: 360px){
+   .osyDashboardMain{
+      padding-left: 14px;
+      padding-right: 14px;
+   }
+
+   .osyDashboardHero h1{
+      font-size: 23px;
+   }
+
+   .osyDashboardStat{
+      padding: 14px;
+      gap: 12px;
+   }
+}
+
+/* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
    .osyDashboardHeroBtn,
+   .osyDashboardAlert > a,
+   .osyDashboardEmpty a,
    .osyDashboardStatLink,
    .osyDashboardQuickItem,
    .osyDashboardBarFill{
       transition: none;
+   }
+
+   .osyDashboardQuickItem:hover{
+      transform: none;
    }
 }

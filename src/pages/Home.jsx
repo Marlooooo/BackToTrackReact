@@ -4,51 +4,44 @@ import dartGoalImg from "../assets/dart_goal2.png";
 import tesdaLogo from "../assets/Tesda_Logo4.png";
 import { Link } from "react-router-dom";
 import "./Home.css";
+import { useState } from "react";
 
 function Home() {
+   const [menuOpen, setMenuOpen] = useState(false);
+
    return (
       <>
          <header>
-            
-               <div className="leftSideHeader">
-                  <div id="logo">
-                     <img src={logo} alt="" />
-                  </div>
-                  <div id="webTitle">
-                     <h1>BackToTrack</h1>
-                  </div>
+            <div className="leftSideHeader">
+               <div id="logo">
+                  <img src={logo} alt="" />
                </div>
+               <div id="webTitle">
+                  <h1>BackToTrack</h1>
+               </div>
+            </div>
 
-               <nav>
-                  <Link to="/impact" className="room">
-                  {" "}
-                  Impact
-                  </Link>
+            <button
+               type="button"
+               className="burger"
+               aria-label="Toggle menu"
+               onClick={() => setMenuOpen(!menuOpen)}
+            >
+               <span className="material-symbols-outlined">
+                  {menuOpen ? "close" : "menu"}
+               </span>
+            </button>
 
-                  <Link to="/contact" className="room">
-                  Contact{" "}
-                  </Link>
-
-                  <Link to="/about" className="room">
-                  About Us
-                  </Link>
-
-                  <Link to="/" className="active">
-                  {" "}
-                  Home
-                  </Link>
-
-                  <Link to="/login" className="btn">
-                  Login{" "}
-                  </Link>
-
-                  <Link to="/register" className="btn">
-                  Register
-                  </Link>
-               </nav>
-         
+            <nav className={menuOpen ? "open" : ""} onClick={() => setMenuOpen(false)}>
+               <Link to="/" className="room active">Home</Link>
+               <Link to="/impact" className="room">Impact</Link>
+               <Link to="/contact" className="room">Contact</Link>
+               <Link to="/about" className="room">About Us</Link>
+               <Link to="/login" className="btn">Login</Link>
+               <Link to="/register" className="btn">Register</Link>
+            </nav>
          </header>
-         
+
          <div className="headerBottomPart">
             <div className="leftSide">
                <h1>
@@ -81,9 +74,9 @@ function Home() {
                   <span className="socialSpan">Social</span> Impact
                </h2>
                <p>
-                  BackToTrack creates positve change for the Community, Local
+                  BackToTrack creates positive change for the Community, Local
                   Business, <br />
-                  Maxima Technical & Skills Training Institute , and Baranggay Pogo
+                  Maxima Technical & Skills Training Institute, and Barangay Pogo
                   Grande
                </p>
             </div>
@@ -140,7 +133,7 @@ function Home() {
                   <h4>Our Goal</h4>
                   <p>
                   To build a digital ecosystem that bridges training and employment,
-                  <br /> empowers the youth, and drives socio-economic growth,
+                  <br /> empowers the youth, and drives socio-economic growth.
                   </p>
                </div>
 
@@ -195,11 +188,11 @@ function Home() {
                   {" "}
                   Home
                </Link>
-               <Link to="about">About</Link>
+               <Link to="/about">About</Link>
                </div>
                <div className="footerNavLinks">
                <h1>Supports</h1>
-               <Link to="contact">Contact</Link>
+               <Link to="/contact">Contact</Link>
                <Link to="">Socials</Link>
                </div>
                <div className="footerNavLinks">
@@ -220,6 +213,6 @@ function Home() {
          </footer>
       </>
    );
-   }
+}
 
 export default Home;

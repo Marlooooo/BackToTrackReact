@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BarangaySideBar from '../../../components/skOfficialSideBar';
 import './BarangayTrainingMonitoring.css';
@@ -72,6 +72,9 @@ const AFTER_TRAINING = {
 };
 
 const EMPTY_COUNTS = { ongoing: 0, completed: 0, dropped: 0, needs_attention: 0 };
+
+// Tabs a notification link may ask for (?tab=...)
+const LINK_TABS = ['overview', 'attendance', 'assessments', 'conduct', 'concerns', 'notes', 'history'];
 
 function formatDate(value) {
    if (!value) return '—';
@@ -617,14 +620,16 @@ function BarangayTrainingMonitoring() {
    const [detailLoading, setDetailLoading] = useState(false);
    const [modalError, setModalError] = useState(null);
    const [tab, setTab] = useState('overview');
+   const linkTabRef = useRef(null);
 
    useEffect(() => {
       fetchList();
    }, [search]);
 
-   // Every OSY record starts on the Overview tab
+   // Every OSY record starts on the Overview tab, unless a notification link asked for another tab
    useEffect(() => {
-      setTab('overview');
+      setTab(linkTabRef.current || 'overview');
+      linkTabRef.current = null;
    }, [selected?.id]);
 
    // Escape closes the modal (clicking outside does not)
@@ -639,6 +644,8 @@ function BarangayTrainingMonitoring() {
    useEffect(() => {
       const id = searchParams.get('open');
       if (!id) return;
+      const linkTab = searchParams.get('tab');
+      linkTabRef.current = LINK_TABS.includes(linkTab) ? linkTab : null;
       openDetail(id);
       setSearchParams({}, { replace: true });
    }, []);

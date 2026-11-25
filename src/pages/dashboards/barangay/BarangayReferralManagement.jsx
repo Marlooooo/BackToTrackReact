@@ -3,6 +3,7 @@ import SkOfficialSideBar from '../../../components/skOfficialSideBar';
 import './BarangayReferralManagement.css';
 
 
+
 /* -------------------------------------------------------------------------- */
 /* API helpers                                                                */
 /* -------------------------------------------------------------------------- */
@@ -442,6 +443,7 @@ function BarangayReferralManagement() {
                   <h1>Referral Management</h1>
                   <p>Refer out-of-school youth to MAXIMA training programs and follow each referral.</p>
                </div>
+
 
                {notice && <p className='referralNotice' role='status'>{notice}</p>}
 

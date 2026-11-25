@@ -487,3 +487,15 @@
    .oAnn-searchBox input { width: 100%; }
    .oAnn-row { padding: 14px 16px; }
 }
+@media (max-width: 768px) {
+   .oAnn-main {
+      position: relative;
+      z-index: 0;
+      padding-top: 72px;
+   }
+
+   .oAnn-layout .sideBarDiv,
+   .oAnn-layout .osySideBarDiv {
+      z-index: 1000;
+   }
+}

@@ -738,3 +738,158 @@
       align-items: flex-start;
    }
    }
+   /* Program history */
+.programHistoryBtn {
+   border: 1px solid #DCE6DE;
+   background: transparent;
+   border-radius: 7px;
+   padding: 6px 13px;
+   font-size: 12.5px;
+   font-weight: 500;
+   cursor: pointer;
+   color: #3D4A3F;
+   transition: background 0.15s ease;
+}
+
+.programHistoryBtn:hover {
+   background: #F1F4F1;
+}
+
+.pmgmtModalWide {
+   max-width: 640px;
+}
+
+.pmgmtHistoryBody {
+   flex: 1;
+   min-height: 0;
+   padding: 22px 28px;
+   overflow-y: auto;
+}
+
+.pmgmtHistoryBody .pmgmtEmpty {
+   padding: 40px 20px;
+}
+
+.pmgmtHistoryList {
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.pmgmtHistoryItem {
+   position: relative;
+   display: flex;
+   gap: 14px;
+   padding-bottom: 22px;
+}
+
+.pmgmtHistoryItem:not(:last-child)::before {
+   content: '';
+   position: absolute;
+   top: 18px;
+   left: 5px;
+   bottom: -2px;
+   width: 2px;
+   background: #E3E9E3;
+}
+
+.pmgmtHistoryItem:last-child {
+   padding-bottom: 0;
+}
+
+.pmgmtHistoryDot {
+   width: 12px;
+   height: 12px;
+   margin-top: 4px;
+   flex-shrink: 0;
+   border-radius: 50%;
+   background: #2F6E4F;
+   box-shadow: 0 0 0 3px #E3F0E7;
+}
+
+.pmgmtHistoryDotDeleted {
+   background: #B24545;
+   box-shadow: 0 0 0 3px #FBEBEB;
+}
+
+.pmgmtHistoryContent {
+   flex: 1;
+   min-width: 0;
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+.pmgmtHistoryTop {
+   display: flex;
+   flex-direction: column;
+   gap: 2px;
+}
+
+.pmgmtHistoryAction {
+   font-size: 14px;
+   font-weight: 600;
+   color: #14201A;
+   font-family: "Open Sans", sans-serif;
+}
+
+.pmgmtHistoryMeta {
+   font-size: 12px;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmgmtHistoryChange {
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+   padding: 10px 14px;
+   background: #FBFCFB;
+   border: 1px solid #EEF2EE;
+   border-radius: 10px;
+}
+
+.pmgmtHistoryField {
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.04em;
+   text-transform: uppercase;
+   color: #7C877E;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmgmtHistoryDiff {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: baseline;
+   gap: 8px;
+}
+
+.pmgmtHistoryOld {
+   font-size: 13.5px;
+   color: #A23E3E;
+   text-decoration: line-through;
+   word-break: break-word;
+   white-space: pre-line;
+   font-family: "Nunito", sans-serif;
+}
+
+.pmgmtHistoryArrow {
+   color: #7C877E;
+}
+
+.pmgmtHistoryNew {
+   font-size: 13.5px;
+   font-weight: 600;
+   color: #2F6E4F;
+   word-break: break-word;
+   white-space: pre-line;
+   font-family: "Nunito", sans-serif;
+}
+
+@media (max-width: 640px) {
+   .pmgmtHistoryBody {
+      padding-left: 20px;
+      padding-right: 20px;
+   }
+}

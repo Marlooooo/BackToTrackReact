@@ -73,6 +73,7 @@
    transform: scale(1.15);              /* NEW — icon grows a bit on hover, scoped to row hover */
 }
 .osyLinkDiv a{
+   color: white;
    font-family: "Inter", sans-serif;
    font-optical-sizing: auto;
    font-style: normal;
@@ -345,24 +346,49 @@
 
 @media (max-width: 768px) {
 
+   /* burger button */
    .osyBurgerBtn {
       display: flex;
       align-items: center;
       justify-content: center;
       position: fixed;
-      top: 10px;
+      top: calc(10px + env(safe-area-inset-top, 0px));
       left: 10px;
       z-index: 998;
       width: 40px;
       height: 40px;
+      padding: 0;
       border: 0;
-      border-radius: 10px;
-      background-color: #0f1a3c;
+      background-color: transparent;
       color: white;
       font-size: 22px;
       cursor: pointer;
    }
 
+   /* navy rounded button */
+   .osyBurgerBtn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: 10px;
+      background-color: #0f1a3c;
+   }
+
+   /* page-colored strip that hides scrolled content */
+   .osyBurgerBtn::before {
+      content: "";
+      position: absolute;
+      top: calc(-10px - env(safe-area-inset-top, 0px));
+      left: -10px;
+      z-index: -2;
+      width: 100vw;
+      height: calc(60px + env(safe-area-inset-top, 0px));
+      background-color: #F5F7F5;
+      pointer-events: none;
+   }
+
+   /* drawer */
    .osySideBarDiv {
       position: fixed;
       top: 0;
@@ -378,6 +404,7 @@
       transform: translateX(0);
    }
 
+   /* dim backdrop */
    .osySideBarOverlay {
       display: block;
       position: fixed;
